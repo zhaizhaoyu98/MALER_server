@@ -1,0 +1,29 @@
+from django.urls import path
+# from . import views
+from .views import home_views, analysis_views, predict_views, \
+    classification_oc_result_views, classification_cp_result_views, \
+    survival_oc_result_views, survival_cp_result_views
+urlpatterns=[
+    path('hello_world',home_views.hello_world),
+    path('home',home_views.home),
+
+    # path('analysis_oneclick',analysis_views.analysis_oneclick),
+    # path('analysis_perpara',analysis_views.analysis_perpara),
+    path('analysis',analysis_views.get_analysis_page),
+    path('predict',predict_views.get_predict_page),
+
+    # classification
+    # one click result
+    path('classification_oc_result', classification_oc_result_views.result),
+    path('classification_oc_result/<str:projectid_model>', classification_oc_result_views.download_model),
+    # custom parameter result
+    path('classification_cp_result', classification_cp_result_views.result),
+    path('classification_cp_result/<str:projectid_paramd5>', classification_cp_result_views.show_prev_page),
+
+    # survival
+    path('survival_oc_result', survival_oc_result_views.survival_oc_result),
+    path('survival_cp_result', survival_cp_result_views.survival_cp_result),
+    # ajax get combination
+    # path('get_model',result_views.get_model),
+    path('get_cp_combination', classification_cp_result_views.get_cp_combination),
+]

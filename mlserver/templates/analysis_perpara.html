@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ANALYSIS</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		{% include 'public_templates/bootstrap.html' %}
+
+		<!-- 		<script crossorigin="anonymous" integrity="sha512-vMD/IRB4/cFDdU2MrTwKXOLmIJ1ULs18mzmMIWLCNYg/nZZkCdjBX+UPrtQdkleuuf0YaqXssaKk8ZXOpHo3qg=="
+		 src="https://lib.baomitu.com/echarts/5.0.1/echarts.min.js"></script> -->
+		<style type="text/css">
+			#home span {
+				background-color: aliceblue;
+			}
+
+			.btn.btn-outline-danger {
+				height: 38px;
+				/* margin-top: 30px; */
+			}
+
+			#one_class_test_form .form-row {
+				margin: 0;
+				padding: 0;
+				height: 40px;
+			}
+
+			/* table tbody {
+				font-size: 5px;
+			} */
+			table * {
+				font-size: 15px;
+			}
+
+			.card {
+				cursor: pointer;
+				height: 100%;
+			}
+
+			.f_white {
+				color: black;
+			}
+
+			.hidden {
+				display: none;
+			}
+
+			.card:hover {
+				border: 2px solid #0d6efd;
+			}
+
+			.select {
+				border: 1px solid #0d6efd;
+			}
+
+			.select .card-body {
+				background-color: #e8f1ff;
+			}
+
+			.md-3 {
+				margin-bottom: 15px;
+			}
+		</style>
+		<script>
+			$(document).ready(function(){
+			// 导航栏
+			$("#nav_tools").addClass("active");
+			$("tbody").addClass("bg-white");
+			$("#page_title").text('ANALYSIS');
+			});
+			// function changeUnit(data){
+			// 	var index=data.selectedIndex ; 
+			// 	// var value=data.options[index].getAttribute('value');
+			// 	var feature_selected=data.options[index].text;
+			// 	// units_dict = JSON.parse('{{ units_dict|safe }}')
+			// 	units_dict ={{ units_dict|safe }}
+			// 	selects_id=data.getAttribute('name') //获取name属性，这是单位属性的id
+			// 	console.log(selects_id)
+			// 	for (var key in units_dict){
+			// 		if(feature_selected==key){
+			// 			var options
+			// 			for (var i in units_dict[key]){
+			// 				options+='<option>'+ units_dict[key][i] +'</option>'
+			// 			}
+			// 			// // $('#unit0').append('<option>mg</option>')
+			// 			selected_unit=$('#'+selects_id)
+			// 			selected_unit.children().remove()
+			// 			selected_unit.append(options)
+			// 		}
+			// 	}
+				
+				 
+			// }
+		</script>
+	</head>
+	<body>
+		<!-- 导航栏 -->
+		{% include 'public_templates/nav_tem.html' %}
+		<!-- 主体内容 -->
+		<div class="container col-9">
+			<br />
+			<div class="row">
+				<div class="col-6">
+					<button type="button" onclick="window.location.href='/mlserver/analysis_oneclick'" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">One-click
+						Analysis</button>
+				</div>
+				<div class="col-6">
+					<button type="button" onclick="window.location.href='/mlserver/analysis_perpara'" class="btn btn-info" style="width: 100%;">Personalized
+						Parameters Analysis</button>
+				</div>
+			</div>
+			<hr />
+			<h4>Setp1</h4>
+			<div class="row row-cols-1 row-cols-md-3">
+				<div class="col md-3">
+					<div class="card select" id="task_naivebayes" onclick="selectactive(this.id)">
+						<div class="border-bottom" style="padding: 20px">
+							<!-- <img src="../img/feature_extraction.jpg" class="card-img-top" alt="..."> -->
+						</div>
+						<div class="card-body">
+							<h6 class="card-title">Naive Bayes</h6>
+							<p class="card-text m-0">description</p>
+							<p class="card-text m-0">description</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="col md-3">
+					<div class="card" id="task_svm" onclick="selectactive(this.id)">
+						<div class="border-bottom" style="padding: 20px">
+							<!-- <img src="../img/data_generation.jpg" class="card-img-top" alt="..."> -->
+						</div>
+						<div class="card-body">
+							<h6 class="card-title">SVM</h6>
+							<p class="card-text m-0">description</p>
+							<p class="card-text m-0">description</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="col md-3">
+					<div class="card" id="task_randomforest" onclick="selectactive(this.id)">
+						<div class="border-bottom" style="padding: 20px">
+							<!-- <img src="../img/classification.jpg" class="card-img-top" alt="..."> -->
+						</div>
+						<div class="card-body">
+							<h6 class="card-title">RandomForest</h6>
+							<p class="card-text m-1">description</p>
+							<p class="card-text m-0"> * description * </p>
+						</div>
+					</div>
+				</div>
+
+				<div class="col md-3">
+					<div class="card" id="task_logistic" onclick="selectactive(this.id)">
+						<div class="border-bottom" style="padding: 20px">
+							<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+						</div>
+						<div class="card-body">
+							<h6 class="card-title"> Logistic </h6>
+							<p class="card-text m-1">description</p>
+							<p class="card-text m-0"> * description * </p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row row-cols-1 row-cols-md-3">
+				<div class="col md-3">
+					<div class="card" id="task_knn" onclick="selectactive(this.id)">
+						<div class="border-bottom" style="padding: 20px">
+							<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+						</div>
+						<div class="card-body">
+							<h6 class="card-title"> KNN </h6>
+							<p class="card-text m-1">description</p>
+							<p class="card-text m-0"> * description * </p>
+						</div>
+					</div>
+				</div>
+
+				<div class="col md-3">
+					<div class="card" id="task_xgboost" onclick="selectactive(this.id)">
+						<div class="border-bottom" style="padding: 20px">
+							<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+						</div>
+						<div class="card-body">
+							<h6 class="card-title"> XGBoost </h6>
+							<p class="card-text m-1">description</p>
+							<p class="card-text m-0"> * description * </p>
+						</div>
+					</div>
+				</div>
+
+				<div class="col md-3">
+					<div class="card" id="task_lightgbm" onclick="selectactive(this.id)">
+						<div class="border-bottom" style="padding: 20px">
+							<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+						</div>
+						<div class="card-body">
+							<h6 class="card-title"> lightGBM </h6>
+							<p class="card-text m-1">description</p>
+							<p class="card-text m-0"> * description * </p>
+						</div>
+					</div>
+				</div>
+
+				<div class="col md-3">
+					<div class="card" id="task_adaboost" onclick="selectactive(this.id)">
+						<div class="border-bottom" style="padding: 20px">
+							<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+						</div>
+						<div class="card-body">
+							<h6 class="card-title"> Adaboost </h6>
+							<p class="card-text m-1">description</p>
+							<p class="card-text m-0"> * description * </p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row ">
+				<div class="col-3">
+					<div class="card" id="task_decisiontree" onclick="selectactive(this.id)">
+						<div class="border-bottom" style="padding: 20px">
+							<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+						</div>
+						<div class="card-body">
+							<h6 class="card-title"> DecisionTree </h6>
+							<p class="card-text m-1">description</p>
+							<p class="card-text m-0"> * description * </p>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-3">
+					<div class="card" id="task_gbdt" onclick="selectactive(this.id)">
+						<div class="border-bottom" style="padding: 20px">
+							<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+						</div>
+						<div class="card-body">
+							<h6 class="card-title"> GBDT </h6>
+							<p class="card-text m-1">description</p>
+							<p class="card-text m-0"> * description * </p>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<br />
+			<form action="cp_result" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<!-- <div class="custom-file mb-3">
+				      <input type="file" class="custom-file-input" id="customFile" name="filename">
+				      <label class="custom-file-label" for="customFile">Choose Profile</label>
+				</div> -->
+				Profile: <input type="file" name="upload_profile" />
+				Label: <input type="file" name="upload_label" />
+				<!-- <input type="submit" value="submit" />
+				<input type="submit" value="EXAMPLE(ZIP)" /> -->
+				<br />
+				<br />
+				<input name="select_model" id="select_model" style="display: none;"/>
+				<div>
+					<input type="radio" name="pick_method" value="selectbest" checked />selectbest
+				</div>
+				<br />
+				<div>
+					<input type="radio" name="feature_select_method" value="TopK" checked />TopK
+					<input type="radio" name="feature_select_method" value="FSS" />FSS
+					<input type="radio" name="feature_select_method" value="BSS" />BSS
+				</div>
+			
+			<hr />
+			<h4>Setp2</h4>
+			<div id="detail_svm">
+				<h5>Parameters of SVM</h5>
+				<div class="row">
+					<div class="col-3">
+						<label for="exampleFormControlSelect1">kernels</label>
+						<select name="svm_kernel" class="form-control" id="svm_kernel" required="required" onchange="svm_select()">
+							<option value="linear">linear</option>
+							<option value="poly">poly</option>
+							<option value="sigmoid">sigmoid</option>
+							<option value="rbf">rbf</option>
+						</select>
+					</div>
+					<div class="col-3">
+						<label for="exampleFormControlSelect1">c</label>
+						<input name="svm_c" type="text" class="form-control" id="svm_c" onblur='data_check(this)' placeholder="">
+					</div>
+					<div class="col-3">
+						<label for="exampleFormControlSelect1">degree</label>
+						<input name="svm_degree" type="text" class="form-control" id="svm_degree" onblur='data_check(this)' placeholder=""
+						 disabled="disabled">
+					</div>
+					<div class="col-3">
+						<label for="exampleFormControlSelect1">coef</label>
+						<input name="svm_coef" type="text" class="form-control" id="svm_coef" onblur='data_check(this)' placeholder=""
+						 disabled="disabled">
+					</div>
+				</div>
+			</div>
+			<div id="detail_naivebayes">
+				<h5>Parameters of Naive Bayes</h5>
+			</div>
+			<input type="submit" value="submit" />
+			</form>
+			<br />
+			
+			
+			<br />
+			<br />
+			
+		</div>
+
+
+
+		<!-- 底部 -->
+		{% include 'public_templates/footer.html' %}
+
+
+		<script>
+			function selectactive(id) {
+				document.getElementById('task_naivebayes').setAttribute("class", "card");
+				document.getElementById('task_svm').setAttribute("class", "card")
+				document.getElementById('task_randomforest').setAttribute("class", "card")
+				document.getElementById('task_logistic').setAttribute("class", "card")
+				document.getElementById('task_knn').setAttribute("class", "card")
+				document.getElementById('task_xgboost').setAttribute("class", "card")
+				document.getElementById('task_lightgbm').setAttribute("class", "card")
+				document.getElementById('task_adaboost').setAttribute("class", "card")
+				document.getElementById('task_decisiontree').setAttribute("class", "card")
+				document.getElementById('task_gbdt').setAttribute("class", "card")
+				document.getElementById(id).className = 'card select';
+				document.getElementById('select_model').value = id;
+			}
+
+			function svm_select() {
+				var select = document.getElementById("svm_kernel");
+				var sv = select.value;
+				var c = document.getElementById("svm_c");
+				var degree = document.getElementById("svm_degree");
+				var coef = document.getElementById("svm_coef");
+				switch (sv) {
+					case "linear":
+						c.removeAttribute("disabled")
+						degree.setAttribute("disabled", "disabled")
+						coef.setAttribute("disabled", "disabled")
+						break;
+					case "poly":
+						c.removeAttribute("disabled")
+						degree.removeAttribute("disabled")
+						coef.removeAttribute("disabled")
+						break;
+					case "sigmoid":
+						c.removeAttribute("disabled")
+						degree.setAttribute("disabled", "disabled")
+						coef.removeAttribute("disabled")
+						break;
+					case "rbf":
+						c.removeAttribute("disabled")
+						degree.setAttribute("disabled", "disabled")
+						coef.setAttribute("disabled", "disabled")
+						break;
+					default:
+						alert("error");
+				}
+			}
+
+			function add_example() {
+				$("#exampleFormControlSelect1").val("Mus musculus");
+				$("#genenametypeSelect").val("Gene Symbol");
+				$("#inputup").val("Slc39a8,Haster,Rora,Ring1,Slc8a1,Pdgfra,Mecp2,Nr4a2,Ahcy,Foxa2,Kdm4a,Msx1,Plag1,Tbx18");
+				$("#inputdown").val("Trp73,Yap1,Rnf2,Msx2,Dmd,Mypn,Ubr4,Gne,Ctnnb1,Nfe2l2,Clp1,Ezh2,Gli2,Gli3,Shh,Satb1,Runx1");
+				$("#inputall").val(
+					"Slc39a8,Haster,Rora,Ring1,Slc8a1,Pdgfra,Mecp2,Nr4a2,Ahcy,Foxa2,Kdm4a,Msx1,Plag1,Tbx18,Trp73,Yap1,Rnf2,Msx2,Dmd,Mypn,Ubr4,Gne,Ctnnb1,Nfe2l2,Clp1,Ezh2,Gli2,Gli3,Shh,Satb1,Runx1"
+				);
+			}
+
+			function reset_example() {
+				$("#inputup").val("");
+				$("#inputdown").val("");
+				$("#inputall").val("");
+			}
+
+			function one_test_form_sub() {
+				console.log(exampleFormControlSelect1)
+				if (exampleFormControlSelect1 == "Please select an organism" || exampleFormControlSelect1 ==
+					"Please select gene name type") {
+
+					alert("aaa")
+				}
+				$("#one_test_form").submit()
+			}
+
+			// change differential analysis mode
+			function analysis_mode_select() {
+				var select = document.getElementById("diffgenemodechange");
+				var c = select.value;
+				var submode = document.getElementById("submode");
+				switch (c) {
+					case "updown":
+						submode.innerHTML =
+							'<div class="form-row">' +
+							'<div class="form-group col-md-6">' +
+							'<label for="inputCity">Up-regulated Gene Name(s) (Separated by Comma)</label>' +
+							'<textarea name="up_genes" class="form-control" id="inputup" rows="6" placeholder=""></textarea>' +
+							'</div>' +
+							'<div class="form-group col-md-6">' +
+							'<label for="inputCity">Down-regulated Gene Name(s) (Separated by Comma)</label>' +
+							'<textarea name="down_genes" class="form-control" id="inputdown" rows="6" placeholder=""></textarea>' +
+							'</div>' +
+							'</div>';
+						break;
+					case "all":
+						submode.innerHTML =
+							'<div class="form-row">' +
+							'<div class="form-group col-md-12">' +
+							'<label for="inputCity">Differential Gene Name(s) (Separated by Comma)</label>' +
+							// '<input name="diff_genes" type="text" class="form-control" id="inputCity" style="height: 9.375rem;">'+
+							'<textarea name="diff_genes" class="form-control" id="inputall" rows="6" placeholder=""></textarea>' +
+							'</div>' +
+							'</div>';
+						break;
+					default:
+						alert("error");
+				}
+			};
+
+
+			//  单药物检验
+			$(document).ready(function() {
+				// $('#radar_map').hide()
+				$("#detail_svm").hide()
+				$("#submit_one_test").click(function() {
+
+					$.ajax({
+						type: 'post',
+						// url: '/ddpd/analysis/druglike_analysis?feature_num=' + feature_num,
+						url: '/pertorg/analysis/gene_regulation',
+						data: $('#one_test_form').serialize(),
+						dataType: 'json',
+						async: false,
+						success: function(data) {
+							// console.log(data)
+							if (data == "Data invalid") {
+								window.location.href = '/ddpd/error_ajax?err_msg=Data Invalid! Please Input Valid Numeric Value(s)!';
+								return false
+								// alert('Data invalid')
+								// $("body #footer").addClass("fixed-bottom");
+								// return false
+							}
+							if (data == "Feature repeted!") {
+								window.location.href = '/ddpd/error_ajax?err_msg=Properties repeted!';
+								// alert('Feature repeted!')
+								return false
+							}
+							if (data == "Property invalid") {
+								window.location.href = '/ddpd/error_ajax?err_msg=Property Invalid! Please Select a Valid Property!';
+								// alert('Feature repeted!')
+								return false
+							}
+							//雷达图
+							// $('#radar_title').show()
+							// $('#radar_map').show()
+							// $('#radar_map').children().eq(0).show()
+							// $('#radar_note').show()
+							// $('#radar_map').attr("href", data['radar_map'] + "?" + Math.random());
+							// $('#radar_map').children().eq(0).attr("src", data['radar_map'] + "?" + Math.random());
+
+							// a=$('#Absorption_res').children().eq(1).text();
+							// 先将父元素的所有子元素都隐藏一遍
+							// $("tr[id='Caco-2 Permeability_res']").parent().children().hide();
+							// $('#res_title').show()
+							// for (var featurename in data) {
+							// 	console.log(featurename)
+							// 	// 显示结果
+							// 	$("#one_drug_table_head").show();
+							// 	// res_id = featurename + '_res';
+							// 	res_id = "tr[id='" + featurename + "_res']";
+							// 	// "tr[id='Caco-2 Permeability_res']"
+							// 	console.log(res_id)
+							// 	if (res_id == 'box_data_res') {
+							// 		console.log('jinlaile')
+							// 		continue;
+							// 	}
+							// 	console.log(res_id)
+							// 	// 拼接数据量信息
+							// 	total_data_num = data[featurename].box_data_num + ';'
+							// 	sample_data_num = data[featurename].cur_data_num + ';'
+							// 	// console.log(res_id);
+
+							// 	// $('#' + res_id).show();
+							// 	$(res_id).show();
+							// 	$(res_id).children().eq(1).text(data[featurename].total_normstatistic);
+							// 	$(res_id).children().eq(2).text(data[featurename].total_normpvalue);
+							// 	$(res_id).children().eq(3).text(data[featurename].tstatistic);
+							// 	$(res_id).children().eq(4).text(data[featurename].tpvalue);
+							// 	$(res_id).children().eq(5).text(data[featurename].mwustatistic);
+							// 	$(res_id).children().eq(6).text(data[featurename].mwupvalue);
+							// 	$(res_id).children().eq(7).text(data[featurename].box_median_data);
+							// 	$(res_id).children().eq(8).text(data[featurename].cur_median_data);
+							// 	// img_src = $('#' + res_id).children().eq(7).children().eq(0).attr("src")
+							// 	img_src = data[featurename].img_src
+							// 	console.log(img_src)
+							// 	// 第一个是a标签，第二个是img标签
+							// 	$(res_id).children().eq(9).children().eq(0).attr("href", img_src + "?" + Math.random());
+							// 	// console.log('ookk')
+							// 	$(res_id).children().eq(9).children().eq(0).children().eq(0).attr("src", img_src + "?" + Math.random());
+							// 	// console.log(img_src)
+							// }
+
+						}
+
+					});
+				});
+
+				$("#task_svm").click(function() {
+					$("#detail_naivebayes").hide();
+					$("#detail_svm").show();
+				})
+
+				$("#task_naivebayes").click(function() {
+					$("#detail_svm").hide();
+					$("#detail_naivebayes").show();
+				})
+			});
+
+			// function data_check(data) {
+			// 	// 如果输入的数据不符合规范，予以提醒
+			// 	var pattern = /^[-,0-9]+$/;
+			// 	var x = data.value;
+			// 	if (pattern.test(x)) {
+			// 		console.log('ok')
+			// 	} else {
+			// 		x = ""
+			// 		data.placeholder = "Data invalid"
+			// 	}
+
+			// }
+			window.onpageshow = function(event) {
+				if (event.persisted || window.performance &&
+					window.performance.navigation.type == 2) {
+					window.location.reload();
+				}
+			}
+		</script>
+	</body>
+</html>

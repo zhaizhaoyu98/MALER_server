@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ANALYSIS</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		{% include 'public_templates/bootstrap.html' %}
+		<script src="/static/cdn/js/plotly-2.8.3.min.js"></script>
+<!-- 		<script crossorigin="anonymous" integrity="sha512-vMD/IRB4/cFDdU2MrTwKXOLmIJ1ULs18mzmMIWLCNYg/nZZkCdjBX+UPrtQdkleuuf0YaqXssaKk8ZXOpHo3qg=="
+		 src="https://lib.baomitu.com/echarts/5.0.1/echarts.min.js"></script> -->
+		<style type="text/css">
+			#home span {
+				background-color: aliceblue;
+			}
+
+			.btn.btn-outline-danger {
+				height: 38px;
+				/* margin-top: 30px; */
+			}
+
+			#one_class_test_form .form-row {
+				margin: 0;
+				padding: 0;
+				height: 40px;
+			}
+
+			/* table tbody {
+				font-size: 5px;
+			} */
+			table * {
+				font-size: 15px;
+			}
+		</style>
+		<script>
+			$(document).ready(function(){
+				// feature_num=1;
+				// $("#add_feature").click(function(){
+				// 	$("#feature_list").append('<div class="form-row">'
+				// 					+'<div class="form-group col-md-4">'
+				// 						// +'<label for="exampleFormControlSelect1">Feature</label>'
+				// 						+'<select name="feature_name'+feature_num+'" class="form-control" id="exampleFormControlSelect1" required="required" onchange="changeUnit(this)">'
+				// 							+'<option>Please select a property</option>'
+				// 							+'<option>Caco-2 Permeability</option>'
+				// 							+'<option>Log P</option>'
+				// 							+'<option>Boiling Point</option>'
+				// 							+'<option>Melting Point</option>'
+				// 							+'<option>Water Solubility</option>'
+				// 							+'<option>pKa</option>'
+				// 							+'<option>Log S</option>'
+				// 							+'<option>Absorption</option>'
+				// 							+'<option>AUC</option>'
+				// 							+'<option>Bioavailability</option>'
+				// 							+'<option>C Max</option>'
+				// 							+'<option>T Max</option>'
+				// 							+'<option>Tss</option>'
+				// 							+'<option>Metabolic</option>'
+				// 							+'<option>Clearance</option>'
+				// 							+'<option>Volume of Distribution</option>'
+				// 							+'<option>Half-life</option>'
+				// 							+'<option>Toxicity LD50</option>'
+				// 							+'<option>Toxicity TDLo</option>'
+				// 							+'<option>Toxicity MRLs</option>'
+				// 							+'<option>Eliminate Route</option>'
+				// 							+'<option>Protein Binding</option>'
+				// 							+'<option>Max Dose for Children</option>'
+				// 							+'<option>Max Dose for Adults</option>'
+				// 							+'<option>Max Dose for Adolescents</option>'
+				// 							+'<option>Max Dose for Geriatric</option>'
+				// 							+'<option>Max Dose for Infants</option>'
+				// 							+'<option>Max Dose for Neonates</option>'
+				// 							+'<option>Max Dose for Elderly</option>'
+				// 						+'</select>'
+				// 					+'</div>'
+				// 					+'<div class="form-group col-md-4">'
+				// 						// +'<label for="inputCity">Value</label>'
+				// 						+'<input name="feature_value'+feature_num+'" type="text" class="form-control" id="inputCity">'
+				// 					+'</div>'
+				// 					+'<div class="form-group col-md-2">'
+				// 						// +'<label for="inputZip">Unit</label>'
+				// 						+'<select id="feature_name'+feature_num+'" name="feature_unit'+feature_num+'" class="form-control" id="exampleFormControlSelect1" required="required">'
+				// 							+'<option selected>-</option>'
+				// 							// +'<option>mol</option>'
+				// 							// +'<option>g</option>'
+				// 						+'</select>'
+				// 					+'</div>'
+				// 					+'<button type="button" class="btn btn-outline-danger">Del</button>'
+				// 				+'</div>');
+				// 				feature_num+=1
+			 //  });
+			// 删除当前行
+			// $("#feature_list").on("click",".btn.btn-outline-danger",function(){
+			// 	$(this).parent().remove();
+			// 	feature_num-=1
+			// });
+			
+			// 导航栏
+			$("#nav_tools").addClass("active");
+			$("tbody").addClass("bg-white");
+			$("#page_title").text('ANALYSIS');
+			});
+			// function changeUnit(data){
+			// 	var index=data.selectedIndex ; 
+			// 	// var value=data.options[index].getAttribute('value');
+			// 	var feature_selected=data.options[index].text;
+			// 	// units_dict = JSON.parse('{{ units_dict|safe }}')
+			// 	units_dict ={{ units_dict|safe }}
+			// 	selects_id=data.getAttribute('name') //获取name属性，这是单位属性的id
+			// 	console.log(selects_id)
+			// 	for (var key in units_dict){
+			// 		if(feature_selected==key){
+			// 			var options
+			// 			for (var i in units_dict[key]){
+			// 				options+='<option>'+ units_dict[key][i] +'</option>'
+			// 			}
+			// 			// // $('#unit0').append('<option>mg</option>')
+			// 			selected_unit=$('#'+selects_id)
+			// 			selected_unit.children().remove()
+			// 			selected_unit.append(options)
+			// 		}
+			// 	}
+				
+				 
+			// }
+		</script>
+	</head>
+	<body>
+		<!-- 导航栏 -->
+		{% include 'public_templates/nav_tem.html' %}
+
+		
+		<!-- 主体内容 -->
+		<div class="container col-9">
+			<br />
+			<div class="row">
+				<div class="col-6">
+					<button type="button" onclick="window.location.href='/mlserver/analysis_oneclick'" class="btn btn-info" style="width: 100%;">One-click Analysis</button>
+				</div>
+				<div class="col-6">
+					<button type="button" onclick="window.location.href='/mlserver/analysis_perpara'" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">Personalized Parameters Analysis</button>
+				</div>				
+			</div>
+			<hr />
+			<form action="oc_result" method="POST" enctype="multipart/form-data">
+			    {% csrf_token %}
+				<!-- <div class="custom-file mb-3">
+				      <input type="file" class="custom-file-input" id="customFile" name="filename">
+				      <label class="custom-file-label" for="customFile">Choose Profile</label>
+				</div> -->
+			    Profile: <input type="file" name="upload_profile" />
+				Label: <input type="file" name="upload_label" />
+			    <input type="submit" value="submit" />
+				<input type="submit" value="EXAMPLE(ZIP)" />
+				<br />
+				<div >
+					<input type="radio" name="pick_method" value="selectbest" checked />selectbest
+				</div>
+				<br />
+				<div >
+					<input type="radio" name="feature_select_method" value="TopK" checked />TopK
+					<input type="radio" name="feature_select_method" value="FSS" />FSS
+					<input type="radio" name="feature_select_method" value="BSS" />BSS
+				</div>
+				
+			</form>
+
+			<!-- <h4 style="margin: 1rem 0 1rem 0;text-align: center;">Please set the query condition</h4> -->
+			<!-- 选项卡导航 -->
+			<!-- <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-bottom: 10px;">
+				<li class="nav-item">
+					<a class="nav-link active" id="home-tab" href="/pertorg/analysis/gene_regulation">Differential Gene Overlapping Analysis </a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="profile-tab" href="/pertorg/analysis/gsea">Dataset Enrichment Analysis</a>
+				</li>
+			</ul> -->
+			<!-- <p style="border: 1px solid #b3afb0; padding: 5px;border-radius: 5px;font-size: 14px;">
+				Differential Gene Overlapping Analysis helps to investigate the perturbation datasets 
+				which are significantly enriched in the user-given gene set by hypergeometric test. 
+				It can also allow users to search DEGs in PertOrg.</p> -->
+			<!-- <div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="home-tab">
+					<div class="border border-secondary rounded" style="padding: 10px;">
+						<form id="one_test_form" action="/pertorg/analysis/gene_regulation_analysis" method="post">
+							{% csrf_token %}
+							<div class="form-row" style="height: 90px;line-height: 1.5;">
+								<div class="form-group col-md-4">
+									<label for="exampleFormControlSelect1">Organism</label>
+									<select name="organism" class="form-control" id="exampleFormControlSelect1" required="required">
+										<option>Arabidopsis thaliana</option>
+										<option>Caenorhabditis elegans</option>
+										<option>Danio rerio</option>
+										<option>Drosophila melanogaster</option>
+										<option>Escherichia coli</option>
+										<option selected="selected">Mus musculus</option>
+										<option>Rattus norvegicus</option>
+										<option>Saccharomyces cerevisiae</option>
+									</select>
+								</div>
+								<div class="form-group col-md-4">
+									<label>Mode</label>
+									<select name="mode" class="form-control" id="diffgenemodechange" required="required" onchange="analysis_mode_select()">
+										<option value="updown">Up and Down regulated gene(s)</option>
+										<option value="all">Differential expressed gene(s)</option>
+									</select>
+								</div>
+								<div class="form-group col-md-4">
+									<label>Gene Name Type</label>
+									<select name="gene_name_type" class="form-control" id="genenametypeSelect" required="required"">
+										<option id="der">Gene Symbol</option>
+										<option>Entrez ID</option>
+										<option>Ensembl ID</option>
+									</select>
+								</div>
+							</div>
+							<div id="submode">
+								<div class="form-row">
+									<div class="form-group col-md-6">
+										<label for="inputCity">Up-regulated Gene(s) (Separated by Comma)</label>
+										<textarea name='up_genes' class="form-control" id="inputup" rows="6" placeholder=""></textarea>
+									</div>
+									<div class="form-group col-md-6">
+										<label for="inputCity">Down-regulated Gene(s) (Separated by Comma)</label>
+										<textarea name='down_genes' class="form-control" id="inputdown" rows="6" placeholder=""></textarea>
+									</div>
+								</div>
+
+							</div>
+							<button type="button" class="btn btn-info" onclick="one_test_form_sub()" style="margin-top: 10px;">Submit</button>
+							<button type="button" class="btn btn-info" onclick="add_example()" style="margin-top: 10px;background: #99c3c7;border: #99c3c7;height: 40.25px;">Example</button>
+							<button type="button" class="btn btn-info" onclick="reset_example()" style="margin-top: 10px;background: #99c3c7;border: #99c3c7;height: 40.25px;">Reset</button>
+						</form>
+					</div>
+				</div>
+			</div> -->
+		</div>
+
+
+		<!-- 底部 -->
+		{% include 'public_templates/footer.html' %}
+
+
+		<script>
+			
+
+			
+			function add_example(){
+				$("#exampleFormControlSelect1").val("Mus musculus");
+				$("#genenametypeSelect").val("Gene Symbol");
+				$("#inputup").val("Slc39a8,Haster,Rora,Ring1,Slc8a1,Pdgfra,Mecp2,Nr4a2,Ahcy,Foxa2,Kdm4a,Msx1,Plag1,Tbx18");
+				$("#inputdown").val("Trp73,Yap1,Rnf2,Msx2,Dmd,Mypn,Ubr4,Gne,Ctnnb1,Nfe2l2,Clp1,Ezh2,Gli2,Gli3,Shh,Satb1,Runx1");
+				$("#inputall").val("Slc39a8,Haster,Rora,Ring1,Slc8a1,Pdgfra,Mecp2,Nr4a2,Ahcy,Foxa2,Kdm4a,Msx1,Plag1,Tbx18,Trp73,Yap1,Rnf2,Msx2,Dmd,Mypn,Ubr4,Gne,Ctnnb1,Nfe2l2,Clp1,Ezh2,Gli2,Gli3,Shh,Satb1,Runx1");
+			}
+			function reset_example(){
+				$("#inputup").val("");
+				$("#inputdown").val("");
+				$("#inputall").val("");
+			}
+			
+			function one_test_form_sub(){
+				console.log(exampleFormControlSelect1)
+				if(exampleFormControlSelect1 == "Please select an organism" || exampleFormControlSelect1 == "Please select gene name type"){
+					
+					alert("aaa")
+				}
+				$("#one_test_form").submit()
+			}
+			
+			// change differential analysis mode
+			function analysis_mode_select() {
+				var select = document.getElementById("diffgenemodechange");
+				var c = select.value;
+				var submode = document.getElementById("submode");
+				switch (c) {
+					case "updown":
+						submode.innerHTML =
+							'<div class="form-row">'+
+								'<div class="form-group col-md-6">'+
+									'<label for="inputCity">Up-regulated Gene Name(s) (Separated by Comma)</label>'+
+									'<textarea name="up_genes" class="form-control" id="inputup" rows="6" placeholder=""></textarea>'+
+								'</div>'+
+								'<div class="form-group col-md-6">'+
+									'<label for="inputCity">Down-regulated Gene Name(s) (Separated by Comma)</label>'+
+									'<textarea name="down_genes" class="form-control" id="inputdown" rows="6" placeholder=""></textarea>'+
+								'</div>'+
+							'</div>';
+						break;
+					case "all":
+						submode.innerHTML =
+						'<div class="form-row">'+
+							'<div class="form-group col-md-12">'+
+								'<label for="inputCity">Differential Gene Name(s) (Separated by Comma)</label>'+
+								// '<input name="diff_genes" type="text" class="form-control" id="inputCity" style="height: 9.375rem;">'+
+								'<textarea name="diff_genes" class="form-control" id="inputall" rows="6" placeholder=""></textarea>'+
+							'</div>'+
+						'</div>';
+						break;
+					default:
+						alert("error");
+				}
+			};
+		
+		
+			//  单药物检验
+			$(document).ready(function() {
+				// $('#radar_map').hide()
+				$("#submit_one_test").click(function() {
+
+					$.ajax({
+						type: 'post',
+						// url: '/ddpd/analysis/druglike_analysis?feature_num=' + feature_num,
+						url: '/pertorg/analysis/gene_regulation',
+						data: $('#one_test_form').serialize(),
+						dataType: 'json',
+						async: false,
+						success: function(data) {
+							// console.log(data)
+							if (data == "Data invalid") {
+								window.location.href = '/ddpd/error_ajax?err_msg=Data Invalid! Please Input Valid Numeric Value(s)!';
+								return false
+								// alert('Data invalid')
+								// $("body #footer").addClass("fixed-bottom");
+								// return false
+							}
+							if (data == "Feature repeted!") {
+								window.location.href = '/ddpd/error_ajax?err_msg=Properties repeted!';
+								// alert('Feature repeted!')
+								return false
+							}
+							if (data == "Property invalid") {
+								window.location.href = '/ddpd/error_ajax?err_msg=Property Invalid! Please Select a Valid Property!';
+								// alert('Feature repeted!')
+								return false
+							}
+							//雷达图
+							// $('#radar_title').show()
+							// $('#radar_map').show()
+							// $('#radar_map').children().eq(0).show()
+							// $('#radar_note').show()
+							// $('#radar_map').attr("href", data['radar_map'] + "?" + Math.random());
+							// $('#radar_map').children().eq(0).attr("src", data['radar_map'] + "?" + Math.random());
+							
+							// a=$('#Absorption_res').children().eq(1).text();
+							// 先将父元素的所有子元素都隐藏一遍
+							// $("tr[id='Caco-2 Permeability_res']").parent().children().hide();
+							// $('#res_title').show()
+							// for (var featurename in data) {
+							// 	console.log(featurename)
+							// 	// 显示结果
+							// 	$("#one_drug_table_head").show();
+							// 	// res_id = featurename + '_res';
+							// 	res_id = "tr[id='" + featurename + "_res']";
+							// 	// "tr[id='Caco-2 Permeability_res']"
+							// 	console.log(res_id)
+							// 	if (res_id == 'box_data_res') {
+							// 		console.log('jinlaile')
+							// 		continue;
+							// 	}
+							// 	console.log(res_id)
+							// 	// 拼接数据量信息
+							// 	total_data_num = data[featurename].box_data_num + ';'
+							// 	sample_data_num = data[featurename].cur_data_num + ';'
+							// 	// console.log(res_id);
+
+							// 	// $('#' + res_id).show();
+							// 	$(res_id).show();
+							// 	$(res_id).children().eq(1).text(data[featurename].total_normstatistic);
+							// 	$(res_id).children().eq(2).text(data[featurename].total_normpvalue);
+							// 	$(res_id).children().eq(3).text(data[featurename].tstatistic);
+							// 	$(res_id).children().eq(4).text(data[featurename].tpvalue);
+							// 	$(res_id).children().eq(5).text(data[featurename].mwustatistic);
+							// 	$(res_id).children().eq(6).text(data[featurename].mwupvalue);
+							// 	$(res_id).children().eq(7).text(data[featurename].box_median_data);
+							// 	$(res_id).children().eq(8).text(data[featurename].cur_median_data);
+							// 	// img_src = $('#' + res_id).children().eq(7).children().eq(0).attr("src")
+							// 	img_src = data[featurename].img_src
+							// 	console.log(img_src)
+							// 	// 第一个是a标签，第二个是img标签
+							// 	$(res_id).children().eq(9).children().eq(0).attr("href", img_src + "?" + Math.random());
+							// 	// console.log('ookk')
+							// 	$(res_id).children().eq(9).children().eq(0).children().eq(0).attr("src", img_src + "?" + Math.random());
+							// 	// console.log(img_src)
+							// }
+
+						}
+
+					});
+				});
+			});
+
+			// function data_check(data) {
+			// 	// 如果输入的数据不符合规范，予以提醒
+			// 	var pattern = /^[-,0-9]+$/;
+			// 	var x = data.value;
+			// 	if (pattern.test(x)) {
+			// 		console.log('ok')
+			// 	} else {
+			// 		x = ""
+			// 		data.placeholder = "Data invalid"
+			// 	}
+
+			// }
+			window.onpageshow = function(event) {
+				if (event.persisted || window.performance &&
+					window.performance.navigation.type == 2) {
+					window.location.reload();
+				}
+			}
+		</script>
+	</body>
+</html>

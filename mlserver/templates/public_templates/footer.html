@@ -1,0 +1,102 @@
+<!-- 底栏 -->
+<footer class="footer bg-info " id="footer">
+	<div class="container col-11">
+		<div class="container col-5">
+			<div class="col-12" style="height: 7px;border-top:1px solid #a3a3a3;"></div>
+		</div>
+		<div>
+			<p class="reserve" style="padding-bottom: 20px;">Since 2021 Copyright @ Intelligent Bioinformatics Research Group, Chongqing Medical University.
+				All rights reserved.</p>
+			<!-- <p class="reserve" style="padding-bottom: 20px;"> Chongqing Medical
+				University, Intelligent Bioinformatics Research Group (InBRG). </p> -->
+		</div>
+	</div>
+</footer>
+<style>
+	.reserve {
+		font-size: 14px;
+		color: white;
+		text-align: center;
+		margin: 0;
+
+	}
+
+	#footer a {
+		color: wheat;
+		width: 100%;
+
+	}
+
+	/* .body {
+		height: 100%;
+	} */
+</style>
+<script>
+	$(document).ready(function() {
+		// a=$("#body").css("min-height",(document.documentElement.clientHeight-document.documentElement.otherHeight)+'px');
+		win_height = $(window).height() //窗口高度
+		// console.log(win_height);
+		body_height = $('body').outerHeight()
+		// console.log(outerHeight)
+		if (win_height > body_height) {
+			$("body #footer").addClass("fixed-bottom");
+		}
+
+
+		window.onresize = function() {
+			win_height = $(window).height() //窗口高度
+			// console.log('win', win_height);
+			body_height = $('body').outerHeight()
+			// console.log('body', body_height)
+			body_footer_height = $('body #footer').outerHeight()
+			// console.log('footer', body_footer_height)
+
+			if ((win_height > body_height)) {
+				$("body #footer").addClass("fixed-bottom");
+			} else if ((win_height - body_footer_height) <= body_height) {
+				$("body #footer").removeClass("fixed-bottom");
+			}
+		}
+
+
+	})
+
+	function changeFooter() {
+		$("body #footer").removeClass("fixed-bottom");
+	}
+</script>
+
+
+
+
+<!-- <footer class="footer bg-dark" style="height: 100px;">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+				<ul class="list-inline mb-2">
+					<li class="list-inline-item"><a href="#!">About</a></li>
+					<li class="list-inline-item">⋅</li>
+					<li class="list-inline-item"><a href="#!">Contact</a></li>
+					<li class="list-inline-item">⋅</li>
+					<li class="list-inline-item"><a href="#!">Terms of Use</a></li>
+					<li class="list-inline-item">⋅</li>
+					<li class="list-inline-item"><a href="#!">Privacy Policy</a></li>
+				</ul>
+				<p class="text-muted small mb-4 mb-lg-0">© Your Website 2021. All Rights Reserved.</p>
+			</div>
+			<div class="col-lg-6 h-100 text-center text-lg-right my-auto">
+				<ul class="list-inline mb-0">
+					<li class="list-inline-item mr-3">
+						<a href="#!"><i class="fab fa-facebook fa-2x fa-fw"></i></a>
+					</li>
+					<li class="list-inline-item mr-3">
+						<a href="#!"><i class="fab fa-twitter-square fa-2x fa-fw"></i></a>
+					</li>
+					<li class="list-inline-item">
+						<a href="#!"><i class="fab fa-instagram fa-2x fa-fw"></i></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer> -->

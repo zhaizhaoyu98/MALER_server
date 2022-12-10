@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ANALYSIS</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		{% include 'public_templates/bootstrap.html' %}
+		<script src="https://cdn.plot.ly/plotly-2.8.3.min.js"></script>
+<!-- 		<script crossorigin="anonymous" integrity="sha512-vMD/IRB4/cFDdU2MrTwKXOLmIJ1ULs18mzmMIWLCNYg/nZZkCdjBX+UPrtQdkleuuf0YaqXssaKk8ZXOpHo3qg=="
+		 src="https://lib.baomitu.com/echarts/5.0.1/echarts.min.js"></script> -->
+		 <!-- DataTables CSS -->
+		 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"> 
+		 <!-- jQuery -->
+		 <!-- <script type="text/javascript" charset="utf8" src="http://code.jquery.com/jquery-1.10.2.min.js"></script> -->
+		 <!-- DataTables -->
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+		 <script type="text/javascript" charset="utf8" src="https://cdn.bootcdn.net/ajax/libs/datatables-buttons/2.2.3/js/dataTables.buttons.js"></script>
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>		
+		 <!-- responsive -->
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>		 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css">
+		<style type="text/css">
+			
+			.dataTable {
+				text-align: center;
+				vertical-align: middle !important;
+			}
+			
+			#home span {
+				background-color: aliceblue;
+			}
+
+			.btn.btn-outline-danger {
+				height: 38px;
+				/* margin-top: 30px; */
+			}
+
+			#one_class_test_form .form-row {
+				margin: 0;
+				padding: 0;
+				height: 40px;
+			}
+
+			/* table tbody {
+				font-size: 5px;
+			} */
+			table * {
+				font-size: 15px;
+			}
+			
+			#list-item-1,
+			#list-item-2,
+			#list-item-3,
+			#list-item-4,
+			#list-item-5,
+			#list-item-6,
+			#list-item-7,
+			#list-item-8{
+				padding-top: 10px;
+				padding-bottom: 10px;
+				padding-left: 1rem;
+			}
+			
+			h3 {
+				/* color: cornflowerblue; */
+				color: #17a2b8; margin-bottom: 20px;
+				font-weight: bolder;
+			}
+			
+
+		</style>
+		<script>
+			$(document).ready(function(){
+			// 导航栏
+			$("#nav_tools").addClass("active");
+			$("tbody").addClass("bg-white");
+			$("#page_title").text('ANALYSIS');
+			});
+			// function changeUnit(data){
+			// 	var index=data.selectedIndex ; 
+			// 	// var value=data.options[index].getAttribute('value');
+			// 	var feature_selected=data.options[index].text;
+			// 	// units_dict = JSON.parse('{{ units_dict|safe }}')
+			// 	units_dict ={{ units_dict|safe }}
+			// 	selects_id=data.getAttribute('name') //获取name属性，这是单位属性的id
+			// 	console.log(selects_id)
+			// 	for (var key in units_dict){
+			// 		if(feature_selected==key){
+			// 			var options
+			// 			for (var i in units_dict[key]){
+			// 				options+='<option>'+ units_dict[key][i] +'</option>'
+			// 			}
+			// 			// // $('#unit0').append('<option>mg</option>')
+			// 			selected_unit=$('#'+selects_id)
+			// 			selected_unit.children().remove()
+			// 			selected_unit.append(options)
+			// 		}
+			// 	}
+				
+				 
+			// }
+		</script>
+	</head>
+	<body>
+		<!-- 导航栏 -->
+		{% include 'public_templates/nav_tem.html' %}
+		
+		
+		<!-- 主体内容 -->
+		<div class="container col-9">
+			<br />
+			<div class="row">
+				<h2>PROJECTID: {{ projectid }}</h2>
+			</div>
+			<hr />
+			<form action="" method="">
+				{%  csrf_token %}
+				<input style="display: none;" type="text" id="projectid"  name="projectid" value="{{projectid}}"/>
+			</form>
+			
+			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+				line chart
+			</h3>
+			<div id="linechartDiv"></div>
+			
+			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+				Test Accuracy
+			</h3>
+			<div id="accboxplotDiv"></div>
+			
+			<table id="acctable" class="display" style="width: 100%;" lazyload="True">
+				 <thead>
+					<tr>
+						<th></th>
+						<th>SurvivalSVM</th>
+						<th>SurvivalTree</th>
+						<th>ExtraSurvivalTrees</th>
+						<th>RandomSurvivalForest</th>
+						<th>GradientBoostingSurvival</th>
+					</tr>
+				</thead>
+			</table>
+			
+			<br />
+			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+				Survival
+			</h3>
+			<!-- <div id="survplotDiv"></div> -->
+			<div id="testsurvplotDiv"></div>
+			<br />
+			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+				Validation
+			</h3>
+			<!-- <div id="survplotDiv"></div> -->
+			<div id="vsurvplotDiv"></div>
+			<div id="vlineplotDiv"></div>
+			<br />
+			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+				Final Report
+			</h3>
+			<table id="reporttable" class="display" style="width: 100%;" lazyload="True">
+				 <thead>
+					<tr>
+						<th></th>
+						<th class="none">Feature Names</th>
+						<th>Mean C-index</th>
+						<th>Feature_names/Parameter</th>
+						<th class="none">Parameter</th>
+						<th>Model Download</th>
+					</tr>
+				</thead>
+			</table>
+			<br />
+			<!-- <div class="row">
+				<div class="col-6">
+					<button type="button" onclick="window.location.href='/mlserver/analysis_oneclick'" class="btn btn-info" style="width: 100%;">One-click Analysis</button>
+				</div>
+				<div class="col-6">
+					<button type="button" onclick="window.location.href='/mlserver/analysis_perpara'" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">Personalized Parameters Analysis</button>
+				</div>				
+			</div> -->
+		</div>
+		<!-- 底部 -->
+		{% include 'public_templates/footer.html' %}
+
+		<script>
+			var csrftoken = $("input[name='csrfmiddlewaretoken']").attr('value');
+			var acc_data = {{ test_acc_describe_dict|safe }};
+			var report_data = {{ max_reports_dict|safe }};
+			// plotly layout
+			var acc_layout = {
+				title: 'Boxplot of test accuracy'
+			};
+			var para_obj = eval('(' + '{{para_dict|safe}}' + ')');
+			var xtitle = 'time <i>t</i>'
+			var ytitle = 'probability of survival <i>&#348;(t)</i>'
+			var testlayout = {
+			  title: '', 
+			  legend:{
+				  itemclick: false,
+				  itemdoubleclick: false
+			  },
+			  height: 1200,
+			  xaxis1: {
+			    title: xtitle, 
+			    anchor: 'y1', 
+			    domain: [0.0, 0.45]
+			  }, 
+			  xaxis2: {
+			    title: xtitle, 
+			    anchor: 'y2', 
+			    domain: [0.55, 1.0]
+			  }, 
+			  xaxis3: {
+			    title: xtitle, 
+			    anchor: 'y3', 
+			    domain: [0.0, 0.45], 
+			  }, 
+			  xaxis4: {
+			    title: xtitle, 
+			    anchor: 'y4', 
+			    domain: [0.55, 1.0]
+			  }, 
+			  xaxis5: {
+			    title: xtitle, 
+			    anchor: 'y5', 
+			    domain: [0, 0.45]
+			  }, 
+			  yaxis1: {
+			    title: ytitle, 
+			    anchor: 'x1', 
+			    domain: [0.75, 1.0]
+			  }, 
+			  yaxis2: {
+			    title: ytitle, 
+			    anchor: 'x2', 
+			    domain: [0.75, 1.0]
+			  }, 
+			  yaxis3: {
+			    title: ytitle, 
+			    anchor: 'x3', 
+			    domain: [0.375, 0.625], 
+			  }, 
+			  yaxis4: {
+			    title: ytitle, 
+			    anchor: 'x4', 
+			    domain: [0.375, 0.625]
+			  },
+			  yaxis5: {
+			    title: ytitle, 
+			    anchor: 'x5', 
+			    domain: [0.0, 0.25]
+			  }, 
+			  annotations: [
+			    {
+			      x: 0.225, 
+			      y: 1.0, 
+			      font: {size: 16}, 
+			      text: 'Survival curves of ' + 'SurvivalSVM' + '<br>logrank test p-value = ' + para_obj.SurvivalSVM, 
+			      xref: 'paper', 
+			      yref: 'paper', 
+			      xanchor: 'center', 
+			      yanchor: 'bottom', 
+			      showarrow: false
+			    }, 
+			    {
+			      x: 0.775, 
+			      y: 1.0, 
+			      font: {size: 16}, 
+			      text: 'Survival curves of ' + 'SurvivalTree' + '<br>logrank test p-value = ' + para_obj.SurvivalTree, 
+			      xref: 'paper', 
+			      yref: 'paper', 
+			      xanchor: 'center', 
+			      yanchor: 'bottom', 
+			      showarrow: false
+			    }, 
+			    {
+			      x: 0.225, 
+			      y: 0.625, 
+			      font: {size: 16}, 
+			      text: 'Survival curves of ' + 'ExtraSurvivalTrees' + '<br>logrank test p-value = ' + para_obj.ExtraSurvivalTrees, 
+			      xref: 'paper', 
+			      yref: 'paper', 
+			      xanchor: 'center', 
+			      yanchor: 'bottom', 
+			      showarrow: false
+			    }, 
+			    {
+			      x: 0.775, 
+			      y: 0.625, 
+			      font: {size: 16}, 
+			      text: 'Survival curves of ' + 'RandomSurvivalForest' + '<br>logrank test p-value = ' + para_obj.RandomSurvivalForest, 
+			      xref: 'paper', 
+			      yref: 'paper', 
+			      xanchor: 'center', 
+			      yanchor: 'bottom', 
+			      showarrow: false
+			    }, 
+			    {
+			      x: 0.225, 
+			      y: 0.25, 
+			      font: {size: 16}, 
+			      text: 'Survival curves of ' + 'GradientBoostingSurvival' + '<br>logrank test p-value = ' + para_obj.GradientBoostingSurvival, 
+			      xref: 'paper', 
+			      yref: 'paper', 
+			      xanchor: 'center', 
+			      yanchor: 'bottom', 
+			      showarrow: false
+			    }
+			  ]
+			};
+			var vpara_obj = eval('(' + '{{vpara_dict|safe}}' + ')');
+			var vsubplotlayout = {
+				title: '',
+				legend:{
+				  itemclick: false,
+				  itemdoubleclick: false
+				},
+				height: 1200,
+				xaxis1: {
+				  title: xtitle, 
+				  anchor: 'y1', 
+				  domain: [0.0, 0.45]
+				}, 
+				xaxis2: {
+				  title: xtitle, 
+				  anchor: 'y2', 
+				  domain: [0.55, 1.0]
+				}, 
+				xaxis3: {
+				  title: xtitle, 
+				  anchor: 'y3', 
+				  domain: [0.0, 0.45], 
+				}, 
+				xaxis4: {
+				  title: xtitle, 
+				  anchor: 'y4', 
+				  domain: [0.55, 1.0]
+				}, 
+				xaxis5: {
+				  title: xtitle, 
+				  anchor: 'y5', 
+				  domain: [0, 0.45]
+				}, 
+				yaxis1: {
+				  title: ytitle, 
+				  anchor: 'x1', 
+				  domain: [0.75, 1.0]
+				}, 
+				yaxis2: {
+				  title: ytitle, 
+				  anchor: 'x2', 
+				  domain: [0.75, 1.0]
+				}, 
+				yaxis3: {
+				  title: ytitle, 
+				  anchor: 'x3', 
+				  domain: [0.375, 0.625], 
+				}, 
+				yaxis4: {
+				  title: ytitle, 
+				  anchor: 'x4', 
+				  domain: [0.375, 0.625]
+				},
+				yaxis5: {
+				  title: ytitle, 
+				  anchor: 'x5', 
+				  domain: [0.0, 0.25]
+				}, 
+				annotations: [
+				  {
+				    x: 0.225, 
+				    y: 1.0, 
+				    font: {size: 16}, 
+				    text: 'Survival curves of ' + 'SurvivalSVM' + '<br>logrank test p-value = ' + vpara_obj.SurvivalSVM, 
+				    xref: 'paper', 
+				    yref: 'paper', 
+				    xanchor: 'center', 
+				    yanchor: 'bottom', 
+				    showarrow: false
+				  }, 
+				  {
+				    x: 0.775, 
+				    y: 1.0, 
+				    font: {size: 16}, 
+				    text: 'Survival curves of ' + 'SurvivalTree' + '<br>logrank test p-value = ' + vpara_obj.SurvivalTree, 
+				    xref: 'paper', 
+				    yref: 'paper', 
+				    xanchor: 'center', 
+				    yanchor: 'bottom', 
+				    showarrow: false
+				  }, 
+				  {
+				    x: 0.225, 
+				    y: 0.625, 
+				    font: {size: 16}, 
+				    text: 'Survival curves of ' + 'ExtraSurvivalTrees' + '<br>logrank test p-value = ' + vpara_obj.ExtraSurvivalTrees, 
+				    xref: 'paper', 
+				    yref: 'paper', 
+				    xanchor: 'center', 
+				    yanchor: 'bottom', 
+				    showarrow: false
+				  }, 
+				  {
+				    x: 0.775, 
+				    y: 0.625, 
+				    font: {size: 16}, 
+				    text: 'Survival curves of ' + 'RandomSurvivalForest' + '<br>logrank test p-value = ' + vpara_obj.RandomSurvivalForest, 
+				    xref: 'paper', 
+				    yref: 'paper', 
+				    xanchor: 'center', 
+				    yanchor: 'bottom', 
+				    showarrow: false
+				  }, 
+				  {
+				    x: 0.225, 
+				    y: 0.25, 
+				    font: {size: 16}, 
+				    text: 'Survival curves of ' + 'GradientBoostingSurvival' + '<br>logrank test p-value = ' + vpara_obj.GradientBoostingSurvival, 
+				    xref: 'paper', 
+				    yref: 'paper', 
+				    xanchor: 'center', 
+				    yanchor: 'bottom', 
+				    showarrow: false
+				  }
+				]
+			}
+			var vline_layout = {
+			  title:'Time dependent AUC',
+			  height:750,
+			  xaxis: {
+			    title: 'days from enrollment', 
+			  },
+			  yaxis: {
+			    title: 'time-dependent AUC', 
+			  },
+			  legend:{
+			  				  orientation: 'h',
+			  				  xanchor: 'middle',
+			  				  yanchor: 'right',
+			  				  valign: 'middle',
+			  				  x: 0.05,
+			  				  y: 1.08
+			  },
+			};
+			<!--第三步：初始化Datatables-->
+			$(document).ready( function () {
+				$('#acctable').DataTable({
+					data: acc_data,
+					searching: false, 
+					paging: false, 
+					info: false,
+					sort: false,
+					// order: [[ 4, "asc" ],[ 1, "desc"]],
+					// "dom": "<'row'<'col-sm-12 col-md-1'B><'col-sm-12 col-md-8'i><'col-sm-12 col-md-3'f>>" +
+					// 	"<'row'<'col-sm-12'tr>>" +
+					// 	"<'row'<'col-sm-12 col-md-5'l><'col-sm-12 col-md-7'p>>",
+					// buttons: [{
+					// 	extend: 'csv',
+					// 	text: "",
+					// 	className: "icon_",
+					// 	}],
+					//使用对象数组，一定要配置columns，告诉 DataTables 每列对应的属性
+					//data 这里是固定不变的，name，position，salary，office 为你数据里对应的属性
+					columns: [
+						{ data: 'Method' },
+						{ 
+							data: 'SurvivalSVM' ,
+							
+							// "render": function(data, type, row, meta){
+							//     if(type === 'display'){
+							// 		data = '<a href="' + 'javascript:void(0);' + '" onclick="" data-toggle="modal" data-target="#diffModal" style="color: #4f9eee;">' + data + '</a>';
+							//     }
+							
+							//     return data;
+							// }
+						},
+						{ data: 'SurvivalTree' },
+						{ data: 'ExtraSurvivalTrees' },
+						{ data: 'RandomSurvivalForest' },
+						{ data: 'GradientBoostingSurvival' },
+					]
+				});
+				$('#reporttable').DataTable({
+					responsive: {
+					    details: {
+					        type: 'column',
+					        target: 'tr'
+					    }
+					},
+					columnDefs: [ {
+					    className: 'control',
+					    orderable: false,
+					    targets:   3,
+					} ],
+					data: report_data,
+					searching: false, 
+					paging: false, 
+					info: false,
+					sort: false,
+					columns: [
+						{ data: 'Method' },
+						{ data: 'feature_names' },
+						{ data: 'Mean C-index' },
+						{ 
+							data: 'parameter',
+							render: function(data, type, row) {
+								return '';
+							}
+						 },
+						{ data: 'parameter' },
+						{ 
+							data: 'Method' ,
+							"render": function(data, type, row, meta){
+								if(type === 'display'){
+									// data = '<button style="background: url(https://img.icons8.com/sf-regular-filled/48/undefined/download.png);width: 2.5rem;height: 2.5rem;border: none;" value="' + $('#projectid').val() + '_' + data + '" href="result/' + $('#projectid').val() + '_' + data + '"></button>'
+									data = '<a value="' + $('#projectid').val() + '_' + data + '" href="result/' + $('#projectid').val() + '_' + data + '">Download</a>'
+								}
+								return data;
+							},
+						},
+					]
+				});
+				var test_obj = eval('(' + '{{surv_dict|safe}}' + ')'); 
+				Plotly.newPlot('linechartDiv', {{ line_chart_data|safe }});
+				Plotly.newPlot('accboxplotDiv', {{ test_acc_reports_dict|safe }}, acc_layout);
+				// Plotly.newPlot('survplotDiv', test_obj.SurvivalSVM.surv_trace, test_obj.SurvivalSVM.surv_layout);
+				Plotly.newPlot('testsurvplotDiv', {{subplot_sur|safe}}, testlayout);
+				Plotly.newPlot('vsurvplotDiv', {{vsubplot_sur|safe}}, vsubplotlayout);
+				Plotly.newPlot('vlineplotDiv', {{vlinedata|safe}}, vline_layout);
+			// $('#finaltable').on('click', 'button', function(){
+				
+			// 	var formData=new FormData();
+			// 	// formData.append('gene',fc_table.row(this).data()['symbol'])
+			// 	var modelname = $(this).val().replace(' ','_')
+			// 	formData.append('model',$(this).val())
+			// 	formData.append('projectid',$('#projectid').val())
+			// 	// formData.append('studyid',$('#studyid').val())
+			// 	// formData.append('id',$(this).parent().parent().parent().parent().attr('id'))
+			// 	// add gene name to modal
+			// 	// $('#diffModalLabel').empty()
+			// 	// $("#commonboxplotDiv").empty()
+			// 	// $("#loader-diff").show()
+			// 	// $('#diffModalLabel').append($(this).parent().parent().children().eq(0).text())
+			// 	// $('#myModalLabel').empty()
+			// 	// $('#myModalLabel').append($(this).parent().parent().children().eq(0).text())
+			//    // console.log('API row values: ', formData);
+			//    $.ajax({
+			// 	url:'/mlserver/get_model',
+			// 	type:"POST",
+			// 	headers: {"X-CSRFToken": csrftoken},
+			// 	data:formData,
+			// 	processData:false,
+			// 	contentType:false,
+			// 	success:function(response){
+			// 		// exp_data_decode=JSON.parse(exp_data)
+			// 		var BOM = '\uFEFF';
+			// 		csvString = BOM + response;
+			// 		console.log(csvString)
+			// 		var a = document.createElement('a');
+			// 		a.href = 'data:attachment/pkl,' + encodeURI(csvString);
+			// 		a.target = '_blank';
+			// 		a.download = $('#projectid').val() + '_' + modelname + '.pkl';//文件名
+			// 		document.body.appendChild(a); // Firefox 中必须这么写，不然不会起效果
+			// 		a.click();
+			// 	}
+			//    })
+			//    // window.location.href = 'detail/'+ sample_id;
+			//   })
+			
+			});
+		</script>
+		<script>
+			
+			
+			
+			
+			
+			function add_example(){
+				$("#exampleFormControlSelect1").val("Mus musculus");
+				$("#genenametypeSelect").val("Gene Symbol");
+				$("#inputup").val("Slc39a8,Haster,Rora,Ring1,Slc8a1,Pdgfra,Mecp2,Nr4a2,Ahcy,Foxa2,Kdm4a,Msx1,Plag1,Tbx18");
+				$("#inputdown").val("Trp73,Yap1,Rnf2,Msx2,Dmd,Mypn,Ubr4,Gne,Ctnnb1,Nfe2l2,Clp1,Ezh2,Gli2,Gli3,Shh,Satb1,Runx1");
+				$("#inputall").val("Slc39a8,Haster,Rora,Ring1,Slc8a1,Pdgfra,Mecp2,Nr4a2,Ahcy,Foxa2,Kdm4a,Msx1,Plag1,Tbx18,Trp73,Yap1,Rnf2,Msx2,Dmd,Mypn,Ubr4,Gne,Ctnnb1,Nfe2l2,Clp1,Ezh2,Gli2,Gli3,Shh,Satb1,Runx1");
+			}
+			function reset_example(){
+				$("#inputup").val("");
+				$("#inputdown").val("");
+				$("#inputall").val("");
+			}
+			
+			function one_test_form_sub(){
+				console.log(exampleFormControlSelect1)
+				if(exampleFormControlSelect1 == "Please select an organism" || exampleFormControlSelect1 == "Please select gene name type"){
+					
+					alert("aaa")
+				}
+				$("#one_test_form").submit()
+			}
+			
+			// change differential analysis mode
+			function analysis_mode_select() {
+				var select = document.getElementById("diffgenemodechange");
+				var c = select.value;
+				var submode = document.getElementById("submode");
+				switch (c) {
+					case "updown":
+						submode.innerHTML =
+							'<div class="form-row">'+
+								'<div class="form-group col-md-6">'+
+									'<label for="inputCity">Up-regulated Gene Name(s) (Separated by Comma)</label>'+
+									'<textarea name="up_genes" class="form-control" id="inputup" rows="6" placeholder=""></textarea>'+
+								'</div>'+
+								'<div class="form-group col-md-6">'+
+									'<label for="inputCity">Down-regulated Gene Name(s) (Separated by Comma)</label>'+
+									'<textarea name="down_genes" class="form-control" id="inputdown" rows="6" placeholder=""></textarea>'+
+								'</div>'+
+							'</div>';
+						break;
+					case "all":
+						submode.innerHTML =
+						'<div class="form-row">'+
+							'<div class="form-group col-md-12">'+
+								'<label for="inputCity">Differential Gene Name(s) (Separated by Comma)</label>'+
+								// '<input name="diff_genes" type="text" class="form-control" id="inputCity" style="height: 9.375rem;">'+
+								'<textarea name="diff_genes" class="form-control" id="inputall" rows="6" placeholder=""></textarea>'+
+							'</div>'+
+						'</div>';
+						break;
+					default:
+						alert("error");
+				}
+			};
+		
+		
+			//  单药物检验
+			$(document).ready(function() {
+				// $('#radar_map').hide()
+				$("#submit_one_test").click(function() {
+
+					$.ajax({
+						type: 'post',
+						// url: '/ddpd/analysis/druglike_analysis?feature_num=' + feature_num,
+						url: '/pertorg/analysis/gene_regulation',
+						data: $('#one_test_form').serialize(),
+						dataType: 'json',
+						async: false,
+						success: function(data) {
+							// console.log(data)
+							if (data == "Data invalid") {
+								window.location.href = '/ddpd/error_ajax?err_msg=Data Invalid! Please Input Valid Numeric Value(s)!';
+								return false
+								// alert('Data invalid')
+								// $("body #footer").addClass("fixed-bottom");
+								// return false
+							}
+							if (data == "Feature repeted!") {
+								window.location.href = '/ddpd/error_ajax?err_msg=Properties repeted!';
+								// alert('Feature repeted!')
+								return false
+							}
+							if (data == "Property invalid") {
+								window.location.href = '/ddpd/error_ajax?err_msg=Property Invalid! Please Select a Valid Property!';
+								// alert('Feature repeted!')
+								return false
+							}
+							//雷达图
+							// $('#radar_title').show()
+							// $('#radar_map').show()
+							// $('#radar_map').children().eq(0).show()
+							// $('#radar_note').show()
+							// $('#radar_map').attr("href", data['radar_map'] + "?" + Math.random());
+							// $('#radar_map').children().eq(0).attr("src", data['radar_map'] + "?" + Math.random());
+							
+							// a=$('#Absorption_res').children().eq(1).text();
+							// 先将父元素的所有子元素都隐藏一遍
+							// $("tr[id='Caco-2 Permeability_res']").parent().children().hide();
+							// $('#res_title').show()
+							// for (var featurename in data) {
+							// 	console.log(featurename)
+							// 	// 显示结果
+							// 	$("#one_drug_table_head").show();
+							// 	// res_id = featurename + '_res';
+							// 	res_id = "tr[id='" + featurename + "_res']";
+							// 	// "tr[id='Caco-2 Permeability_res']"
+							// 	console.log(res_id)
+							// 	if (res_id == 'box_data_res') {
+							// 		console.log('jinlaile')
+							// 		continue;
+							// 	}
+							// 	console.log(res_id)
+							// 	// 拼接数据量信息
+							// 	total_data_num = data[featurename].box_data_num + ';'
+							// 	sample_data_num = data[featurename].cur_data_num + ';'
+							// 	// console.log(res_id);
+
+							// 	// $('#' + res_id).show();
+							// 	$(res_id).show();
+							// 	$(res_id).children().eq(1).text(data[featurename].total_normstatistic);
+							// 	$(res_id).children().eq(2).text(data[featurename].total_normpvalue);
+							// 	$(res_id).children().eq(3).text(data[featurename].tstatistic);
+							// 	$(res_id).children().eq(4).text(data[featurename].tpvalue);
+							// 	$(res_id).children().eq(5).text(data[featurename].mwustatistic);
+							// 	$(res_id).children().eq(6).text(data[featurename].mwupvalue);
+							// 	$(res_id).children().eq(7).text(data[featurename].box_median_data);
+							// 	$(res_id).children().eq(8).text(data[featurename].cur_median_data);
+							// 	// img_src = $('#' + res_id).children().eq(7).children().eq(0).attr("src")
+							// 	img_src = data[featurename].img_src
+							// 	console.log(img_src)
+							// 	// 第一个是a标签，第二个是img标签
+							// 	$(res_id).children().eq(9).children().eq(0).attr("href", img_src + "?" + Math.random());
+							// 	// console.log('ookk')
+							// 	$(res_id).children().eq(9).children().eq(0).children().eq(0).attr("src", img_src + "?" + Math.random());
+							// 	// console.log(img_src)
+							// }
+
+						}
+
+					});
+				});
+			});
+
+			// function data_check(data) {
+			// 	// 如果输入的数据不符合规范，予以提醒
+			// 	var pattern = /^[-,0-9]+$/;
+			// 	var x = data.value;
+			// 	if (pattern.test(x)) {
+			// 		console.log('ok')
+			// 	} else {
+			// 		x = ""
+			// 		data.placeholder = "Data invalid"
+			// 	}
+
+			// }
+			window.onpageshow = function(event) {
+				if (event.persisted || window.performance &&
+					window.performance.navigation.type == 2) {
+					window.location.reload();
+				}
+			}
+		</script>
+	</body>
+</html>
