@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-import os, shutil, copy, pickle, json
+import os, shutil, copy, pickle, json, random, string
 import numpy as np
 import pandas as pd
 
@@ -16,8 +16,10 @@ from lifelines.statistics import logrank_test
 
 from ML_WebServer.settings import STATIC_ROOT
 from mlserver.views.classification_oc_result_views import get_file_md5, df2bp
+from mlserver.views.classification_cp_result_views import md5_convert
 from mlserver.views.survival_oc_result_views import sur_data_process, cox_selection, \
-    sur_RSKFold, FSS_fun, train_estimator, mk_surv_data,mk_surv_layout, time_dependent_auc,mk_auc_line
+    sur_RSKFold, FSS_fun, train_estimator, mk_surv_data,mk_surv_layout, time_dependent_auc, \
+    mk_auc_line
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -28,27 +30,47 @@ def survival_cp_result(request):
     select_model = request.POST.get('select_model')
     select_child_model = request.POST.get('select_child_model').replace('task_','')
     # select_child_model = 'survivalsvm'
-    sur_model, sur_model_name = select_sur_model(select_child_model)
     '''
-    IMPORRT DATA
+    sur_model = 'GradientBoostingSurvival'
+    select_model = Survival_gradientboosting()
+    sur_model = Survival_gradientboosting(Loss='coxph', Max_depth=3, Min_samples_split=2,
+                                                 Min_samples_leaf=1, Max_features=None,
+                                                 N_estimators=100, Learning_rate=0.1)
     '''
-    # file load
-    upload_file = request.FILES.get('upload_profile')
-    f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
-    for line in upload_file.chunks():
-        f.write(line)
-    f.close()
 
-    upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
-    projectid = 'SC-' + upload_file_md5[:6] + '-' + feature_select_method
+    sur_model, sur_model_name = select_sur_model(request)
+
+
+    # get project id
+    projectid = request.POST.get('projectid')
+    if projectid == '': projectid = 'None'
+
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
+        '''
+        IMPORRT DATA
+        '''
+        # file load
+        upload_file = request.FILES.get('upload_profile')
+        f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
+        for line in upload_file.chunks():
+            f.write(line)
+        f.close()
+
+        upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
+        token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
+        projectid = 'SC-' + upload_file_md5[:6] + '-' + token
+
         newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
         os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
         shutil.move(STATIC_ROOT + '/cache/' + upload_file.name, newpath)
+        # rename
+        os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, \
+                  STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv")
         '''
+        projectid='SC-e8ce60-FSS'
         data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'load_breast_cancer.csv', header=0, index_col=0).T
         '''
-        data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, header=0, index_col=0).T
+        data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0, index_col=0).T
         x, y = sur_data_process(data)
         x2, vaildation_data, y2, vaildation_label = train_test_split(x, y, random_state=10, train_size=0.7,
                                                                      stratify=y['Status'])
@@ -62,6 +84,9 @@ def survival_cp_result(request):
         max_index = np.array(ms).argmax()
         max_score = max(ms)
         max_features = (sf[:max_index + 1])
+        tmodels = copy.deepcopy(sur_model)
+        tmodels.fit(x3[max_features], y2)
+
         preds, tests, res = [], [], []
         for i in range(len(train_index)):
             xtrain, ytrain = x3.iloc[train_index[i], :], y2[train_index[i]]
@@ -69,6 +94,14 @@ def survival_cp_result(request):
             xtrain, xtest = xtrain[max_features], xtest[max_features]
             estimator, test_acc, predict = train_estimator(sur_model, xtrain, ytrain, xtest, ytest)
             tests.append(test_acc), res.append(estimator), preds.append(predict)
+
+        test_acc_reports = pd.DataFrame(data=tests)
+        test_acc_reports.columns = [sur_model_name]
+        test_acc_reports_dict = df2bp(test_acc_reports)
+        test_acc_describe = np.round(test_acc_reports.describe().loc[("mean", 'min', 'max', 'std'), :],
+                                     3)
+        test_acc_describe_ = test_acc_describe.reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
+        test_acc_describe_dict = test_acc_describe_.to_dict('records')
 
         line_chart_data = []
         line_trace = {
@@ -80,16 +113,6 @@ def survival_cp_result(request):
         }
         line_chart_data.append(line_trace)
 
-        test_acc_reports = pd.DataFrame(data=tests)
-        test_acc_reports.columns = [sur_model_name]
-        test_acc_reports_dict = df2bp(test_acc_reports)
-        test_acc_describe = np.round(test_acc_reports.describe().loc[("mean", 'min', 'max', 'std'), :],
-                                     3)
-        test_acc_describe_ = test_acc_describe.reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
-        test_acc_describe_dict = test_acc_describe_.to_dict('records')
-
-        tmodels = copy.deepcopy(sur_model)
-        tmodels.fit(x3[max_features], y2)
         parameter, test_acc, best_esti = [], [], []
         feature_names = []
         best_esti.append(tmodels)
@@ -131,24 +154,138 @@ def survival_cp_result(request):
             'vsurv_data': vsurv_data,
             'vlinedata': vlinedata
         }
+        # make cache
+        cp_cache = {}
+        para_str = feature_select_method + final_reports['Method'][0] + str(final_reports['parameter'][0])
+        para_md5 = md5_convert(para_str)[:6]
+        # add parameter md5 and feature select method
+        final_reports['md5'], final_reports['fsm'] = para_md5, feature_select_method
+        final_reports_dict = final_reports.to_dict('records')
 
-        with open(STATIC_ROOT + '/cache/' + projectid + '/surv_pickle.pkl',
+        cp_cache[para_md5] = surv_pickle
+        cp_cache['reports'] = final_reports
+
+        with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl',
                   'wb') as f:
-            pickle.dump(surv_pickle, f)
+            pickle.dump(cp_cache, f)
+
     else:
-        with open(STATIC_ROOT + '/cache/' + projectid + '/surv_pickle.pkl', 'rb') as f:
-            surv_pickle = pickle.load(f)
+        with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+            cp_cache = pickle.load(f)
 
-        sur_model_name = surv_pickle['sur_model_name']
-        line_chart_data = surv_pickle['line_chart_data']
-        test_acc_reports_dict = surv_pickle['test_acc_reports_dict']
-        test_acc_describe_dict = surv_pickle['test_acc_describe_dict']
-        final_reports_dict = surv_pickle['final_reports_dict']
-        surv_data = surv_pickle['surv_data']
-        vsurv_data = surv_pickle['vsurv_data']
-        vlinedata = surv_pickle['vlinedata']
+        data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/load_data.csv', header=0, index_col=0).T
+        x, y = sur_data_process(data)
+        x2, vaildation_data, y2, vaildation_label = train_test_split(x, y, random_state=10, train_size=0.7,
+                                                                     stratify=y['Status'])
+        cv = KFold(n_splits=5, shuffle=True, random_state=10)
+        features = cox_selection(x2.values, y2, x2.columns)
+        # features,ss2 = cox_selection(x2,y2)
+        x3 = x2[features]
+        train_index, test_index = sur_RSKFold(x3, y2)
 
-        print(surv_data)
+        sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=6)
+        max_index = np.array(ms).argmax()
+        max_score = max(ms)
+        max_features = (sf[:max_index + 1])
+        tmodels = copy.deepcopy(sur_model)
+        tmodels.fit(x3[max_features], y2)
+
+        select_str = feature_select_method + sur_model_name + str(tmodels.get_params())
+        select_md5 = md5_convert(select_str)[:6]
+
+        if select_md5 not in cp_cache.keys():
+            preds, tests, res = [], [], []
+            for i in range(len(train_index)):
+                xtrain, ytrain = x3.iloc[train_index[i], :], y2[train_index[i]]
+                xtest, ytest = x3.iloc[test_index[i], :], y2[test_index[i]]
+                xtrain, xtest = xtrain[max_features], xtest[max_features]
+                estimator, test_acc, predict = train_estimator(sur_model, xtrain, ytrain, xtest, ytest)
+                tests.append(test_acc), res.append(estimator), preds.append(predict)
+
+            test_acc_reports = pd.DataFrame(data=tests)
+            test_acc_reports.columns = [sur_model_name]
+            test_acc_reports_dict = df2bp(test_acc_reports)
+            test_acc_describe = np.round(test_acc_reports.describe().loc[("mean", 'min', 'max', 'std'), :],
+                                         3)
+            test_acc_describe_ = test_acc_describe.reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
+            test_acc_describe_dict = test_acc_describe_.to_dict('records')
+
+            line_chart_data = []
+            line_trace = {
+                'mode': 'lines+markers',
+                'name': sur_model_name,
+                'type': 'scatter',
+                'x': list(range(1, 50)),
+                'y': ms
+            }
+            line_chart_data.append(line_trace)
+
+            parameter, test_acc, best_esti = [], [], []
+            feature_names = []
+            best_esti.append(tmodels)
+            parameter.append(str(tmodels.get_params()))
+            test_acc.append(test_acc_describe.iloc[0, 0])
+            feature_names.append(str(max_features))
+            final_reports = {'Mean C-index': test_acc,
+                             'parameter': parameter,
+                             'feature_names': feature_names, }
+            final_reports = pd.DataFrame(final_reports, index=[sur_model_name]).reset_index().rename(
+                columns={'index': 'Method'})
+            final_reports['md5'], final_reports['fsm'] = select_md5, feature_select_method
+            final_reports_dict = final_reports.to_dict('records')
+
+            data_median = tmodels.predict(pd.DataFrame(x3[max_features].median()).T)[0]
+            surv_trace, resultp = mk_surv_data(sur_model_name, x3[max_features], y2, best_esti[0], data_median)
+            surv_layout = mk_surv_layout(sur_model_name, resultp)
+            surv_data = {'surv_trace': surv_trace, 'surv_layout': surv_layout}
+
+            # validation
+            vsurv_trace, vresultp = mk_surv_data(sur_model_name, vaildation_data[max_features], vaildation_label,
+                                                 best_esti[0], data_median)
+            vsurv_layout = mk_surv_layout(sur_model_name, vresultp)
+            vsurv_data = {'surv_trace': vsurv_trace, 'surv_layout': vsurv_layout}
+
+            vlinedata = []
+            va_times, rsf_auc, mean_auc, cindex = time_dependent_auc(best_esti[0], vaildation_data,
+                                                                     vaildation_label, y2,
+                                                                     max_features, sur_model_name)
+
+            vlinetrace = mk_auc_line(sur_model_name, va_times, rsf_auc, mean_auc, cindex)
+            vlinedata.append(vlinetrace)
+            # pickle
+            surv_pickle = {
+                'sur_model_name': sur_model_name,
+                'line_chart_data': line_chart_data,
+                'test_acc_reports_dict': test_acc_reports_dict,
+                'test_acc_describe_dict': test_acc_describe_dict,
+                'final_reports_dict': final_reports_dict,
+                'surv_data': surv_data,
+                'vsurv_data': vsurv_data,
+                'vlinedata': vlinedata
+            }
+            para_str = feature_select_method + final_reports['Method'][0] + str(final_reports['parameter'][0])
+            para_md5 = md5_convert(para_str)[:6]
+            final_reports = pd.concat([cp_cache['reports'], final_reports], axis=0).drop_duplicates(keep='last')
+            final_reports_dict = final_reports.to_dict('records')
+            cp_cache[para_md5] = surv_pickle
+            cp_cache['reports'] = final_reports
+
+            with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl',
+                      'wb') as f:
+                pickle.dump(cp_cache, f)
+
+        else:
+            final_reports_dict = cp_cache['reports'].to_dict('records')
+            sur_model_name = cp_cache[select_md5]['sur_model_name']
+            line_chart_data = cp_cache[select_md5]['line_chart_data']
+            test_acc_reports_dict = cp_cache[select_md5]['test_acc_reports_dict']
+            test_acc_describe_dict = cp_cache[select_md5]['test_acc_describe_dict']
+            surv_data = cp_cache[select_md5]['surv_data']
+            vsurv_data = cp_cache[select_md5]['vsurv_data']
+            vlinedata = cp_cache[select_md5]['vlinedata']
+
+
+
     return render(request, 'survival_cp_result.html', {
         'projectid': projectid,
         'sur_model_name': sur_model_name,
@@ -157,10 +294,39 @@ def survival_cp_result(request):
         'test_acc_describe_dict': json.dumps(test_acc_describe_dict),
         'final_reports_dict': json.dumps(final_reports_dict),
         'surv_data': json.dumps(surv_data),
-        'vsurv_data':json.dumps(vsurv_data),
+        'vsurv_data': json.dumps(vsurv_data),
         'vlinedata': json.dumps(vlinedata),
     })
 
+
+def show_prev_page(request, projectid_paramd5):
+    projectid = projectid_paramd5.split('_')[0]
+    paramd5 = projectid_paramd5.split('_')[1]
+    # load pickle
+    with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+        cp_cache = pickle.load(f)
+
+    final_reports_dict = cp_cache['reports'].to_dict('records')
+    sur_model_name = cp_cache[paramd5]['sur_model_name']
+    line_chart_data = cp_cache[paramd5]['line_chart_data']
+    test_acc_reports_dict = cp_cache[paramd5]['test_acc_reports_dict']
+    test_acc_describe_dict = cp_cache[paramd5]['test_acc_describe_dict']
+    surv_data = cp_cache[paramd5]['surv_data']
+    vsurv_data = cp_cache[paramd5]['vsurv_data']
+    vlinedata = cp_cache[paramd5]['vlinedata']
+
+    return render(request, 'survival_cp_result.html', {
+        'projectid': projectid,
+        'final_reports_dict': json.dumps(final_reports_dict),
+        'sur_model_name': sur_model_name,
+        'line_chart_data': json.dumps(line_chart_data),
+        'test_acc_reports_dict': json.dumps(test_acc_reports_dict),
+        'test_acc_describe_dict': json.dumps(test_acc_describe_dict),
+        'surv_data': json.dumps(surv_data),
+        'vsurv_data': json.dumps(vsurv_data),
+        'vlinedata': json.dumps(vlinedata),
+        'change_page': True,
+    })
 
 
 
@@ -200,20 +366,90 @@ def Survival_gradientboosting(Loss='coxph',Learning_rate=0.1,N_estimators=100,Mi
 '''
 METHODS
 '''
-def select_sur_model(select_child_model):
+def select_sur_model(request):
+    select_child_model = request.POST.get('select_child_model').replace('task_', '')
     if select_child_model == 'survivalsvm':
-        select_model = Survival_svm()
         select_model_name = 'SurvivalSVM'
+        kernel, optimizer, alpha, degree, gamma, coef0 = request.POST.get('survivalsvm_kernel'), \
+                                                        request.POST.get('survivalsvm_optimizer'), \
+                                                        request.POST.get('survivalsvm_alpha'), \
+                                                        request.POST.get('survivalsvm_degree'), \
+                                                        request.POST.get('survivalsvm_gamma'), \
+                                                        request.POST.get('survivalsvm_coef0')
+        if kernel == 'linear':
+            select_model = Survival_svm(Kernel=kernel, Alpha=alpha, Optimizer=optimizer)
+        elif kernel == 'ploy':
+            if gamma == '': gamma = None
+            select_model = Survival_svm(Kernel=kernel, Alpha=alpha, Degree=degree, Gamma=gamma, Coef0=coef0)
+        elif kernel == 'rbf':
+            if gamma == '': gamma = None
+            select_model = Survival_svm(Kernel=kernel, Alpha=alpha, Gamma=gamma)
+        elif kernel == 'sigmoid':
+            select_model = Survival_svm(Kernel=kernel, Alpha=alpha, Coef0=coef0)
+        else:
+            select_model = Survival_svm(Kernel=kernel, Alpha=alpha)
     elif select_child_model == 'survivaltree':
-        select_model = Survival_tree()
         select_model_name = 'SurvivalTree'
+        splitter, max_depth, min_samples_split, min_samples_leaf, max_features = \
+            request.POST.get('survivaltree_splitter'),request.POST.get('survivaltree_max_depth'), \
+            request.POST.get('survivaltree_min_samples_split'), request.POST.get('survivaltree_min_samples_leaf'), \
+            request.POST.get('survivaltree_max_features')
+        max_depth, min_samples_split, min_samples_leaf, max_features = \
+            surv_para_group(max_depth, min_samples_split, min_samples_leaf, max_features)
+        select_model = Survival_tree(Splitter=splitter, Max_depth=max_depth,
+                                     Min_samples_split=min_samples_split, Min_samples_leaf=min_samples_leaf,
+                                     Max_features=max_features)
     elif select_child_model == 'extrasurvivaltrees':
-        select_model = Survival_extratrees()
         select_model_name = 'ExtraSurvivalTrees'
+        max_depth, min_samples_split, min_samples_leaf, max_features, n_estimators = \
+            request.POST.get('extrasurvivaltrees_max_depth'), request.POST.get('extrasurvivaltrees_min_samples_split'), \
+            request.POST.get('extrasurvivaltrees_min_samples_leaf'), request.POST.get('extrasurvivaltrees_max_features'), \
+            int(request.POST.get('extrasurvivaltrees_n_estimators'))
+        max_depth, min_samples_split, min_samples_leaf, max_features = \
+            surv_para_group(max_depth, min_samples_split, min_samples_leaf, max_features)
+        select_model = Survival_extratrees(Max_depth=max_depth, Min_samples_split=min_samples_split,
+                                           Min_samples_leaf=min_samples_leaf, Max_features=max_features,
+                                           N_estimators=n_estimators)
     elif select_child_model == 'randomsurvivalforest':
-        select_model = Survival_randomforest()
         select_model_name = 'RandomSurvivalForest'
+        max_depth, min_samples_split, min_samples_leaf, max_features, n_estimators = \
+            request.POST.get('randomsurvivalforest_max_depth'), np.float(request.POST.get('randomsurvivalforest_min_samples_split')), \
+            np.float(request.POST.get('randomsurvivalforest_min_samples_leaf')), request.POST.get('randomsurvivalforest_max_features'), \
+            int(request.POST.get('randomsurvivalforest_n_estimators'))
+        max_depth, min_samples_split, min_samples_leaf, max_features = \
+            surv_para_group(max_depth, min_samples_split, min_samples_leaf, max_features)
+        select_model = Survival_randomforest(Max_depth=max_depth, Min_samples_split=min_samples_split,
+                                             Min_samples_leaf=min_samples_leaf, Max_features=max_features,
+                                             N_estimators=n_estimators)
     else:
-        select_model = Survival_gradientboosting()
         select_model_name = 'GradientBoostingSurvival'
+        loss, max_depth, min_samples_split, min_samples_leaf, max_features, n_estimators, learning_rate = \
+            request.POST.get('gradientboostingsurvival_loss'), request.POST.get('gradientboostingsurvival_max_depth'), \
+            request.POST.get('gradientboostingsurvival_min_samples_split'), request.POST.get('gradientboostingsurvival_min_samples_leaf'), \
+            request.POST.get('gradientboostingsurvival_max_features'), int(request.POST.get('gradientboostingsurvival_n_estimators')), \
+            np.float(request.POST.get('gradientboostingsurvival_learning_rate'))
+        print(loss, max_depth, min_samples_split, min_samples_leaf, max_features, n_estimators, learning_rate)
+        max_depth, min_samples_split, min_samples_leaf, max_features = \
+            surv_para_group(max_depth, min_samples_split, min_samples_leaf, max_features)
+        select_model = Survival_gradientboosting(Loss=loss, Max_depth=max_depth, Min_samples_split=min_samples_split,
+                                                 Min_samples_leaf=min_samples_leaf, Max_features=max_features,
+                                                 N_estimators=n_estimators, Learning_rate=learning_rate)
     return select_model, select_model_name
+
+def surv_para_group(max_depth, min_samples_split, min_samples_leaf, max_features):
+    if max_depth == '': max_depth = None
+    if max_depth != None: max_depth = np.int(max_depth)
+    if max_features == '': max_features = None
+    if max_features != 'auto' and max_features != 'sqrt' and max_features != 'log2' and max_features != None:
+        max_features = np.float(max_features)
+    # min_samples_leaf must be at least 1 or in (0, 0.5]
+    if 0 < np.float(min_samples_leaf) <= 0.5:
+        min_samples_leaf = np.float(min_samples_leaf)
+    elif 1 <= np.float(min_samples_leaf):
+        min_samples_leaf = np.int(min_samples_leaf)
+    # min_samples_split must be an integer greater than 1 or a float in (0.0, 1.0]
+    if 0 < np.float(min_samples_split) <= 1.0:
+        min_samples_split = np.float(min_samples_split)
+    elif 1 <= np.float(min_samples_split):
+        min_samples_split = np.int(min_samples_split)
+    return max_depth, min_samples_split, min_samples_leaf, max_features

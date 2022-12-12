@@ -23,6 +23,8 @@ urlpatterns=[
     # survival
     path('survival_oc_result', survival_oc_result_views.survival_oc_result),
     path('survival_cp_result', survival_cp_result_views.survival_cp_result),
+    path('survival_cp_result/<str:projectid_paramd5>', survival_cp_result_views.show_prev_page),
+
     # ajax get combination
     # path('get_model',result_views.get_model),
     path('get_cp_combination', classification_cp_result_views.get_cp_combination),

@@ -157,6 +157,7 @@
 				 <thead>
 					<tr>
 						<th></th>
+						<th>Feature Select Method</th>
 						<th class="none">Feature Names</th>
 						<th>Mean C-index</th>
 						<th>Feature_names/Parameter</th>
@@ -256,7 +257,7 @@
 					columnDefs: [ {
 					    className: 'control',
 					    orderable: false,
-					    targets:   3,
+					    targets:   4,
 					} ],
 					data: report_data,
 					searching: false, 
@@ -265,6 +266,7 @@
 					sort: false,
 					columns: [
 						{ data: 'Method' },
+						{ data: 'fsm' },
 						{ data: 'feature_names' },
 						{ data: 'Mean C-index' },
 						{ 
@@ -280,7 +282,7 @@
 								if(type === 'display'){
 									// data = '<button style="background: url(https://img.icons8.com/sf-regular-filled/48/undefined/download.png);width: 2.5rem;height: 2.5rem;border: none;" value="' + $('#projectid').val() + '_' + data + '" href="result/' + $('#projectid').val() + '_' + data + '"></button>'
 									{% if change_page != True %}
-									data = '<a value="' + data + '" href="cp_result/{{projectid}}_' + data + '">view</a>'
+									data = '<a value="' + data + '" href="survival_cp_result/{{projectid}}_' + data + '">view</a>'
 									{% else %}
 									data = '<a value="' + data + '" href="{{projectid}}_' + data + '">view</a>'
 									{% endif %}

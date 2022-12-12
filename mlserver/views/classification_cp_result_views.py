@@ -411,7 +411,7 @@ def result(request):
                     'valid_roc_traces': valid_roc_traces,
                 }
 
-                max_reports = pd.concat([cp_cache['reports'], max_reports], axis=0).drop_duplicates()
+                max_reports = pd.concat([cp_cache['reports'], max_reports], axis=0).drop_duplicates(keep='last')
                 max_reports_dict = max_reports.to_dict('records')
                 cp_cache[para_md5] = report_describe_roc
                 cp_cache['reports'] = max_reports
@@ -547,7 +547,7 @@ def result(request):
                 #     'roc': {'mean_FPR': mean_FPR, 'mean_TPR_df': mean_TPR_df, 'auc_mean_std': auc_mean_std},
                 #     # 'report': max_reports
                 # }
-                max_reports = pd.concat([cp_cache['reports'], max_reports], axis=0).drop_duplicates()
+                max_reports = pd.concat([cp_cache['reports'], max_reports], axis=0).drop_duplicates(keep='last')
                 max_reports_dict = max_reports.to_dict('records')
                 cp_cache[para_md5] = report_describe_roc
                 cp_cache['reports'] = max_reports

@@ -161,7 +161,7 @@
 						{% csrf_token %}
 						<input name="select_model" id="select_model" style="display: none;" value="model_bclass"/>
 						<!-- <input name="select_mode" id="select_mode" style="display: none;" value=""/> -->
-						<input name="select_child_model" id="select_child_model" style="display: none;" value="task_naivebayes"/>
+						<input name="select_child_model" id="select_child_model" style="display: none;" value=""/>
 						<div class="row">
 							<h5>Feature Selsect Method</h5>
 							<!-- <input type="radio" name="pick_method" value="selectbest" checked />selectbest -->
@@ -195,7 +195,7 @@
 				<div id="classification_child_model">
 					<div class="row row-cols-1 row-cols-md-3">
 						<div class="col md-3">
-							<div class="card select" id="task_naivebayes" onclick="cp_model_selectactive(this.id)">
+							<div class="card" id="task_naivebayes" onclick="cp_model_selectactive(this.id)">
 								<div class="border-bottom" style="padding: 20px">
 									<!-- <img src="../img/feature_extraction.jpg" class="card-img-top" alt="..."> -->
 								</div>
@@ -330,7 +330,7 @@
 				<div id="regression_child_model">
 					<div class="row row-cols-1 row-cols-md-3">
 						<div class="col md-3">
-							<div class="card select" id="task_linearregression" onclick="cp_model_selectactive(this.id)">
+							<div class="card" id="task_linearregression" onclick="cp_model_selectactive(this.id)">
 								<div class="border-bottom" style="padding: 20px">
 									<!-- <img src="../img/feature_extraction.jpg" class="card-img-top" alt="..."> -->
 								</div>
@@ -453,7 +453,7 @@
 				<div id="survival_child_model">
 					<div class="row row-cols-1 row-cols-md-3">
 						<div class="col md-3">
-							<div class="card select" id="task_survivalsvm" onclick="cp_model_selectactive(this.id)">
+							<div class="card" id="task_survivalsvm" onclick="cp_model_selectactive(this.id)">
 								<div class="border-bottom" style="padding: 20px">
 									<!-- <img src="../img/feature_extraction.jpg" class="card-img-top" alt="..."> -->
 								</div>
@@ -525,6 +525,9 @@
 			
 			<div id="cp_model_detail" class="cp_model_detail">
 				<hr />
+				<div id="detail_naivebayes">
+					<h5>Parameters of Naive Bayes</h5>
+				</div>
 				<div id="detail_svm">
 					<h5>Parameters of SVM</h5>
 					<div class="row">
@@ -553,8 +556,194 @@
 						</div>
 					</div>
 				</div>
-				<div id="detail_naivebayes">
-					<h5>Parameters of Naive Bayes</h5>
+				<div id="detail_randomforest">
+					<h5>Parameters of RandomForest</h5>
+				</div>
+				<div id="detail_logistic">
+					<h5>Parameters of Logistic</h5>
+				</div>
+				<div id="detail_knn">
+					<h5>Parameters of KNN</h5>
+				</div>
+				<div id="detail_xgboost">
+					<h5>Parameters of XGBoost</h5>
+				</div>
+				<div id="detail_lightgbm">
+					<h5>Parameters of lightGBM</h5>
+				</div>
+				<div id="detail_adaboost">
+					<h5>Parameters of Adaboost</h5>
+				</div>
+				<div id="detail_decisiontree">
+					<h5>Parameters of DecisionTree</h5>
+				</div>
+				<div id="detail_gbdt">
+					<h5>Parameters of GBDT</h5>
+				</div>
+				<div id="detail_survivalsvm">
+					<h5>Parameters of SurvivalSVM</h5>
+					<div class="row">
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">kernels</label>
+							<select name="survivalsvm_kernel" class="form-control" id="survivalsvm_kernel" required="required" onchange="survivalsvm_select()">
+								<option value="linear">linear</option>
+								<option value="poly">poly</option>
+								<option value="sigmoid">sigmoid</option>
+								<option value="rbf">rbf</option>
+								<option value="cosine">cosine</option>
+							</select>
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">optimizer</label>
+							<select name="survivalsvm_optimizer" class="form-control" id="survivalsvm_optimizer" required="required" onchange="svm_select()">
+								<option value="avltree">avltree</option>
+								<option value="rbtree">rbtree</option>
+							</select>
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">alpha</label>
+							<input name="survivalsvm_alpha" type="text" class="form-control" id="survivalsvm_alpha" onblur='data_check(this)' placeholder="" value="1">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">degree</label>
+							<input name="survivalsvm_degree" type="text" class="form-control" id="survivalsvm_degree" onblur='data_check(this)' placeholder=""
+							 disabled="disabled" value="">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">gamma</label>
+							<input name="survivalsvm_gamma" type="text" class="form-control" id="survivalsvm_gamma" onblur='data_check(this)' placeholder=""
+							 disabled="disabled" value="">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">coef0</label>
+							<input name="survivalsvm_coef0" type="text" class="form-control" id="survivalsvm_coef0" onblur='data_check(this)' placeholder=""
+							 disabled="disabled" value="">
+						</div>
+					</div>
+				</div>
+				<div id="detail_survivaltree">
+					<h5>Parameters of SurvivalTree</h5>
+					<div class="row">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">splitter</label>
+							<select name="survivaltree_splitter" class="form-control" id="survivaltree_splitter" required="required" onchange="">
+								<option value="best">best</option>
+								<option value="random">random</option>
+							</select>
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">max depth</label>
+							<input name="survivaltree_max_depth" type="text" class="form-control" id="survivaltree_max_depth" onblur='data_check(this)' placeholder="" value="">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">min samples split</label>
+							<input name="survivaltree_min_samples_split" type="text" class="form-control" id="survivaltree_min_samples_split" onblur='data_check(this)' placeholder="" value="6">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">min samples leaf</label>
+							<input name="survivaltree_min_samples_leaf" type="text" class="form-control" id="survivaltree_min_samples_leaf" onblur='data_check(this)' placeholder="" value="3">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">max features</label>
+							<input name="survivaltree_max_features" type="text" class="form-control" id="survivaltree_max_features" onblur='data_check(this)' placeholder="">
+						</div>
+					</div>
+				</div>
+				<div id="detail_extrasurvivaltrees">
+					<h5>Parameters of ExtraSurvivalTrees</h5>
+					<div class="row">
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">max depth</label>
+							<input name="extrasurvivaltrees_max_depth" type="text" class="form-control" id="extrasurvivaltrees_max_depth" onblur='data_check(this)' placeholder="" value="">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min samples split</label>
+							<input name="extrasurvivaltrees_min_samples_split" type="text" class="form-control" id="extrasurvivaltrees_min_samples_split" onblur='data_check(this)' placeholder="" value="6">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min samples leaf</label>
+							<input name="extrasurvivaltrees_min_samples_leaf" type="text" class="form-control" id="extrasurvivaltrees_min_samples_leaf" onblur='data_check(this)' placeholder="" value="3">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">max features</label>
+							<input name="extrasurvivaltrees_max_features" type="text" class="form-control" id="extrasurvivaltrees_max_features" onblur='data_check(this)' placeholder="" value="sqrt">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">n estimators</label>
+							<input name="extrasurvivaltrees_n_estimators" type="text" class="form-control" id="extrasurvivaltrees_n_estimators" onblur='data_check(this)' placeholder="" value="100">
+						</div>
+					</div>
+				</div>
+				<div id="detail_randomsurvivalforest">
+					<h5>Parameters of RandomSurvivalForest</h5>
+					<div class="row">
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">splitter</label>
+							<select name="randomsurvivalforest_splitter" class="form-control" id="randomsurvivalforest_splitter" required="required" onchange="">
+								<option value="best">best</option>
+								<option value="random">random</option>
+							</select>
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">max depth</label>
+							<input name="randomsurvivalforest_max_depth" type="text" class="form-control" id="randomsurvivalforest_max_depth" onblur='data_check(this)' placeholder="" value="">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">min samples split</label>
+							<input name="randomsurvivalforest_min_samples_split" type="text" class="form-control" id="randomsurvivalforest_min_samples_split" onblur='data_check(this)' placeholder="" value="6">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">min samples leaf</label>
+							<input name="randomsurvivalforest_min_samples_leaf" type="text" class="form-control" id="randomsurvivalforest_min_samples_leaf" onblur='data_check(this)' placeholder="" value="3">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">max features</label>
+							<input name="randomsurvivalforest_max_features" type="text" class="form-control" id="randomsurvivalforest_max_features" onblur='data_check(this)' placeholder="">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">n estimators</label>
+							<input name="randomsurvivalforest_n_estimators" type="text" class="form-control" id="randomsurvivalforest_n_estimators" onblur='data_check(this)' placeholder="" value="100">
+						</div>
+					</div>
+				</div>
+				<div id="detail_gradientboostingsurvival">
+					<h5>Parameters of GradientBoostingSurvival</h5>
+					<div class="row">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">loss</label>
+							<select name="gradientboostingsurvival_loss" class="form-control" id="gradientboostingsurvival_loss" required="required" onchange="">
+								<option value="coxph">coxph</option>
+								<option value="squared">squared</option>
+								<option value="ipcwls">ipcwls</option>
+							</select>
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">max depth</label>
+							<input name="gradientboostingsurvival_max_depth" type="text" class="form-control" id="gradientboostingsurvival_max_depth" onblur='data_check(this)' placeholder="" value="3">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">min samples split</label>
+							<input name="gradientboostingsurvival_min_samples_split" type="text" class="form-control" id="gradientboostingsurvival_min_samples_split" onblur='data_check(this)' placeholder="" value="2">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min samples leaf</label>
+							<input name="gradientboostingsurvival_min_samples_leaf" type="text" class="form-control" id="gradientboostingsurvival_min_samples_leaf" onblur='data_check(this)' placeholder="" value="1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">max features</label>
+							<input name="gradientboostingsurvival_max_features" type="text" class="form-control" id="gradientboostingsurvival_max_features" onblur='data_check(this)' placeholder="">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">n estimators</label>
+							<input name="gradientboostingsurvival_n_estimators" type="text" class="form-control" id="gradientboostingsurvival_n_estimators" onblur='data_check(this)' placeholder="" value="100">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">learning rate</label>
+							<input name="gradientboostingsurvival_learning_rate" type="text" class="form-control" id="gradientboostingsurvival_learning_rate" onblur='data_check(this)' placeholder="" value="0.1">
+						</div>
+					</div>
 				</div>
 			</div>
 			</form>
@@ -618,6 +807,63 @@
 				}
 			}
 			
+			function survivalsvm_select() {
+				var kernel = document.getElementById("survivalsvm_kernel").value;
+				var optimizer = document.getElementById("survivalsvm_optimizer");
+				var alpha = document.getElementById("survivalsvm_alpha");
+				var degree = document.getElementById("survivalsvm_degree");
+				var gamma = document.getElementById("survivalsvm_gamma");
+				var coef = document.getElementById("survivalsvm_coef");
+				switch (kernel) {
+					case "linear":
+						optimizer.removeAttribute("disabled")
+						alpha.removeAttribute("disabled")
+						degree.setAttribute("disabled", "disabled")
+						gamma.setAttribute("disabled", "disabled")
+						coef.setAttribute("disabled", "disabled")
+						$(":disabled").val("")
+						optimizer.value = "avltree"
+						break;
+					case "poly":
+						optimizer.setAttribute("disabled", "disabled")
+						alpha.removeAttribute("disabled")
+						degree.removeAttribute("disabled")
+						gamma.removeAttribute("disabled")
+						coef.removeAttribute("disabled")
+						$(":disabled").val("")
+						degree.value = 3
+						coef.value = 1
+						break;
+					case "sigmoid":
+						optimizer.setAttribute("disabled", "disabled")
+						alpha.removeAttribute("disabled")
+						degree.setAttribute("disabled", "disabled")
+						gamma.setAttribute("disabled", "disabled")
+						coef.removeAttribute("disabled")
+						$(":disabled").val("")
+						coef.value = 1
+						break;
+					case "rbf":
+						optimizer.setAttribute("disabled", "disabled")
+						alpha.removeAttribute("disabled")
+						degree.setAttribute("disabled", "disabled")
+						gamma.removeAttribute("disabled")
+						coef.setAttribute("disabled", "disabled")
+						$(":disabled").val("")
+						break;
+					case "cosine":
+						optimizer.setAttribute("disabled", "disabled")
+						alpha.removeAttribute("disabled")
+						degree.setAttribute("disabled", "disabled")
+						gamma.setAttribute("disabled", "disabled")
+						coef.setAttribute("disabled", "disabled")
+						$(":disabled").val("")
+						break;
+					default:
+						alert("error");
+				}
+			}
+			
 			$(document).ready(function() {
 				$("#button_submit").hide()
 				$("#cp_model_select").hide()
@@ -644,22 +890,12 @@
 					$("#form_step23").attr("action",temp_action)
 					$(this).attr("style", "width: 100%;");
 					$("#button_oc").attr("style", "width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;");
-					$("#button_submit").hide()
-					$("#cp_model_select").show()
-					$("#cp_model_detail").show()
-					$("#detail_svm").hide();
-					$("#button_submit").show()
-				})
-				
-				$("#task_svm").click(function() {
+					$("#button_submit").hide();
+					$("#cp_model_select").show();
+					$("#cp_model_detail").show();
+					$("*[id^=task_]").attr('class','card');
 					$("*[id^=detail_]").hide();
-					$("#detail_svm").show();
-				})
-				
-				$("#task_naivebayes").click(function() {
-					$("*[id^=detail_]").hide();
-					$("#detail_naivebayes").show();
-				})
+				});
 				
 				$("#model_bclass").click(function(){
 					$("#classification_child_model").show()
@@ -669,9 +905,11 @@
 					var temp_action = $("#form_step23").attr("action")
 					var temp_action = ("classification_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
 					$("#form_step23").attr("action",temp_action)
-					$("#select_child_model").val("task_naivebayes")
+					// $("#select_child_model").val("task_naivebayes")
 					$("*[id^=task_]").attr('class','card');
-					document.getElementById('task_naivebayes').className = 'card select';
+					// document.getElementById('task_naivebayes').className = 'card select';
+					$("*[id^=detail_]").hide();
+					$("#button_submit").hide()
 				})
 				
 				$("#model_mclass").click(function(){
@@ -682,9 +920,11 @@
 					var temp_action = $("#form_step23").attr("action")
 					var temp_action = ("classification_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
 					$("#form_step23").attr("action",temp_action)
-					$("#select_child_model").val("task_naivebayes")
+					// $("#select_child_model").val("task_naivebayes")
 					$("*[id^=task_]").attr('class','card');
-					document.getElementById('task_naivebayes').className = 'card select';
+					// document.getElementById('task_naivebayes').className = 'card select';
+					$("*[id^=detail_]").hide();
+					$("#button_submit").hide()
 				})
 				
 				$("#model_reg").click(function(){
@@ -695,9 +935,11 @@
 					var temp_action = $("#form_step23").attr("action")
 					var temp_action = ("regression_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
 					$("#form_step23").attr("action",temp_action)
-					$("#select_child_model").val("task_linearregression")
+					// $("#select_child_model").val("task_linearregression")
 					$("*[id^=task_]").attr('class','card');
-					document.getElementById('task_linearregression').className = 'card select';
+					$("*[id^=detail_]").hide();
+					$("#button_submit").hide()
+					// document.getElementById('task_linearregression').className = 'card select';
 				})
 				
 				$("#model_sur").click(function(){
@@ -708,13 +950,22 @@
 					var temp_action = $("#form_step23").attr("action")
 					var temp_action = ("survival_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
 					$("#form_step23").attr("action",temp_action)
-					$("#select_child_model").val("task_survivalsvm")
+					// $("#select_child_model").val("task_survivalsvm")
 					$("*[id^=task_]").attr('class','card');
-					document.getElementById('task_survivalsvm').className = 'card select';
+					$("*[id^=detail_]").hide();
+					$("#button_submit").hide()
+					// document.getElementById('task_survivalsvm').className = 'card select';
 				})
 			})
 			
-			
+			$("*[id^=task_]").click(function() {
+				$("*[id^=detail_]").hide();
+				var a = $(this).attr('id')
+				var detail_id = "#detail_" + a.replace('task_','')
+				$(detail_id).show();
+				$("#select_child_model").val(a);
+				$("#button_submit").show();
+			})
 		</script>
 	</body>
 </html>

@@ -254,10 +254,13 @@ def sur_RSKFold (data,label,n=10,k=5):
     return train_index,test_index
 
 def FSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
+    print('clf:',clf)
+    print('feature_names:', feature_names)
     feature_names2 = list(feature_names)
     selected_feature = []
     max_scores = []
     for i in range(20):
+        print(i)
         cv_scores = []
         for feature in feature_names2:
             train_feature = [feature] + selected_feature
@@ -269,6 +272,7 @@ def FSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
         max_scores.append(max_score)
         selected_feature.append(feature_names2[max_index])
         feature_names2.remove(feature_names2[max_index])
+
     return selected_feature,max_scores
 
 def train_estimator(clf,xtrain,ytrain,xtest,ytest):
