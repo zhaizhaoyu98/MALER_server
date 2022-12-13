@@ -2,7 +2,8 @@ from django.urls import path
 # from . import views
 from .views import home_views, analysis_views, predict_views, \
     classification_oc_result_views, classification_cp_result_views, \
-    survival_oc_result_views, survival_cp_result_views
+    survival_oc_result_views, survival_cp_result_views, \
+    regression_oc_result_views, regression_cp_result_views
 urlpatterns=[
     path('hello_world',home_views.hello_world),
     path('home',home_views.home),
@@ -20,6 +21,9 @@ urlpatterns=[
     path('classification_cp_result', classification_cp_result_views.result),
     path('classification_cp_result/<str:projectid_paramd5>', classification_cp_result_views.show_prev_page),
 
+    # regression
+    path('regression_oc_result', regression_oc_result_views.regression_oc_result),
+    path('regression_cp_result', regression_cp_result_views.regression_cp_result),
     # survival
     path('survival_oc_result', survival_oc_result_views.survival_oc_result),
     path('survival_cp_result', survival_cp_result_views.survival_cp_result),

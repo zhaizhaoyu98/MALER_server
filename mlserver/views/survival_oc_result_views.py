@@ -251,7 +251,7 @@ def sur_RSKFold (data,label,n=10,k=5):
     for train, test in kf.split(data,label):
         train_index.append(train)
         test_index.append(test)
-    return train_index,test_index
+    return train_index, test_index
 
 def FSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
     print('clf:',clf)
