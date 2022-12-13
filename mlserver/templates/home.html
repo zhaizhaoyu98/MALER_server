@@ -1,895 +1,282 @@
 <!DOCTYPE html>
-<html><!--search.html-->
+<html lang="en">
 <head>
-    <title>Home</title>
-	<meta charset="utf-8">
-	{% include 'public_templates/bootstrap.html' %}
-
-	<style>
-		#demo{
-			max-width: 100%;
-			max-height: 100%;
-		}
-		.carousel-caption{
-			color: #000000;
-		}
-		#version_table tbody tr td{
-			font-size: 17px;
-			text-align: center;
-		}
-		#version_table thead th{
-			font-size: 17px;
-		}
-		.card-body .row{
-			line-height: 40px;
-		}
-		.card-body .row img{
-			padding: 0 10px 0 10px;
-		}
-		#data_statistic_table tbody th{
-			font-weight: normal;
-
-		}
-
-
-		#slideshow .card{
-			border: 1px dashed #ababab;
-			padding-top: 20px;
-		}
-		/* 最下面 数据统计部分*/
-		#total_data_static .row{
-			line-height: 1.0;
-		}
-		#data_statistic_table tbody tr td{
-			/* line-height: 5px; */
-			padding: 2px 0 2px 10px;
-			/* height: 15px; */
-
-		}
-		#total_data_static .row img{
-			padding-bottom: 15px;
-		}
-		/* 轮播图字体 */
-		#slideshow .card-title{
-			font-size: 17px;
-		}
-		/* static-table的border */
-		.table-bordered td, .table-bordered th{
-			border: 1px solid #c7c7c7;
-		}
-		/* 右箭头标记 */
-		.mark-symbol{
-			color: #6495ED;font-size: 25px;padding-left: 1rem;font-weight: lighter;
-		}
-
-		#statistic tbody tr td:first-child{
-			text-align: left;
-			padding-top: 0;
-			padding-bottom: 0;
-			margin-bottom: 0;
-		}
-		#statistic {
-			margin-bottom: 0;
-		}
-		#statistic_td {
-			padding: 10px;
-		}
-		#statistic tbody tr td:nth-child(2){
-			text-align: right;
-			padding-top: 0;
-			padding-bottom: 0;
-		}
-		#statistic tbody tr:nth-child(1){
-			border-bottom: 1px solid #ababab;
-		}
-	</style>
-	<script>
+    <meta charset="UTF-8">
+    <title>MALER</title>
+    {% include 'public_templates/bootstrap.html' %}
+	<script type="text/javascript">
+		// 加载提示框
 		$(document).ready(function() {
 			$("#nav_home").addClass("active");
-			$("#page_title").text('HOME');
-			console.log($("input[name='csrfmiddlewaretoken']").attr('value'))
+
 		});
+		// browse加href属性
 	</script>
 </head>
+<style>
+	.card-header{
+		text-align: center;
+		font-style: oblique;
+	}
+	.addborder {
+		border-radius: unset;
+		border: 1px solid #ababab;
+	}
+	#stats_table {
+		width: 100%;
+	}
+	#stats_table td {
+		padding: 0.1em;
+	}
+	#stats_table td.right-align{
+		text-align: right;
+	}
+
+	#news_table {
+		width: 100%;
+	}
+	#news_table td {
+		padding: 0.1em;
+	}
+	#news_table td.right-align{
+		text-align: right;
+	}
+
+	.sum_row>td{
+		font-weight: bold;
+	}
+	.card-body{
+		padding: 1em;
+	}
+
+</style>
 <body>
-		<!-- 导航栏 -->
-		{% include 'public_templates/nav_tem.html' %}
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-3 col-sm-2 mb-4"></div>
-				<div class="col-lg-6 col-sm-8 mb-4" style="margin-bottom: 0px;">
-					<div class="row" >
-						<img style="width: 23%;height: 23%;margin-top: 2rem;margin-left: 50px;" src="/pertorg_static/img/pertorg_logo3.png"/>
-						<div class="col" style="padding-left: 0px;">
-							<h1 class="text-center" style="margin-top: 2rem;color: #17a2b8;font-size: 90px;margin-bottom: 0rem;">PertOrg</h1>
-							<p style="color: darkgray;margin-left: 35px;">Version: 1.0</p>
-						</div>
+    {% include 'public_templates/nav_tem.html' %}
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-3 col-sm-2 mb-4"></div>
+			<div class="col-lg-6 col-sm-8 mb-4">
+				<h1 class="text-center " style="margin-top: 2rem;color: #17a2b8;font-size: 50px;">PreProOmics</h1>
 
-					</div>
-
-					<!-- <h6 class="text-center blockquote-footer" style="color: #17a2b8;;font-size: 20px;">
-
-					</h6> -->
-					<!-- <p style="margin: 0 60px 0rem 0;color: darkgray;text-align: right;">Version: 1.0</p> -->
-				</div>
-				<div class="col-lg-3 col-sm-2 mb-4"></div>
+				<p style="margin: 0 120px 0rem 0;color: darkgray;text-align: right;">Version: 1.0</p>
 			</div>
-
-			<div class="row">
-				<div class="col-lg-2 col-sm-0 mb-1"></div>
-				<div class="col-lg-8 col-sm-12 mb-10">
-					<!--搜索表单-->
-					<div style="text-align: center">
-						<form id='home_search' style="display: inline-block; margin: auto" class="form-inline" action="/pertorg/result"
-						 method="get">
-						 {% csrf_token %}
-							<!-- <p name='csrfmiddlewaretoken' style="display: none;">{% csrf_token %}</p> -->
-							<!-- 					<input id="query_content" class="form-control" style="width: 400px" type="search" placeholder="eg. DDPB00014 or Goserelin"
-						 name='query_content' aria-label="Search"> -->
-							<input id="query_content" class="form-control" style="min-width: 570px;margin-top: 0px;" type="search" placeholder=""
-							 name='query_content' aria-label="Search">
-							<button class="btn btn-info" style="margin-left: 5px;margin-top: 0px;" type="submit">Quick Search</button>
-							<p>Enter a keyword of gene perturbation, e.g. gene name(<a href="#" onclick="test(this)">Slc39a8</a>),
-							perturbation type(<a href="#" onclick="test(this)">knockout</a>),
-							tissue(<a href="#" onclick="test(this)">kidney</a>),
-							phenotype(<a href="#" onclick="test(this)">anemia</a>) or data type(<a href="#" onclick="test(this)">scRNA-Seq</a>).</p>
-						</form>
-						<br />
-						<br />
-
-
-						<!-- <img src="/pertorg_static/study_detail/Pertg00023/pics/GSEA/cel00010.png" /> -->
-					</div>
-				</div>
-				<div class="col-lg-2 col-sm-0 mb-1"></div>
-			</div>
+			<div class="col-lg-3 col-sm-2 mb-4"></div>
 		</div>
+		<div class="card col-12">
+			<div class="card-body">
+				<h4 style="margin: 0 0 10px 0;">Welcome to MALER</h4>
+				<p>A web server to build, evaluate, and apply machine learning models for biological and biomedical data analysis.</p>
+			</div>
+			<div class="row no-gutters">
+				<div class="col-lg-7 col-sm-12 mb-12">
+				<div class="card-body" >
+				<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bolder;">
+				What is MALER?
+				</nav>
+				<div class="card mb-3" style="border-radius: unset;border: 1px solid #ababab;">
+				<div class="card-body">
+				<p class="card-text">
+					Machine learning (ML) methods have accelerated discoveries in biological and biomedical research,
+                    especially in the analysis of big omics data. However, biologists often lack knowledge of ML theories
+                    and programming skills to easily apply ML in their research. The lack of a one-stop web server to
+                    build, evaluate, and compare the performance of different ML models for biological data has been a
+                    major obstacle for biologists to apply ML widely.
+				</p>
+                <p class="card-text">
+                    We developed a user-friendly and easy-to-use web application called <b>MALER</b> (machine learning server)
+                    that helps biologists apply ML models to biological and biomedical data. MALER provides modules for
+                    (i) binary and (ii) multi-class classification, and (iii) regression and (iv) survival analysis that
+                    allow users to build, quantitatively evaluate, and compare the performance of ML models using
+                    visualizations (10, 9, 5 ML algorithms and 2, 3, 4 evaluation indices are available for classification,
+                    and regression and survival analysis, respectively). MALER supports the whole process from feature
+                    selection (5 methods), training/testing, to external validations and blind test, and provides
+                    downloadable models for future predictions using other data in the server.
+                </p>
+                <p class="card-text">
+					In the <a href="analysis" style="font-weight: bold">ANALYSIS</a> tab, users can upload their omics
+                    profile dataset and the corresponding labels to build and compare their custom ML models with step
+                    by step guidance. In the <a href="predict" style="font-weight: bold">PREDICT</a> tab, users can
+                    upload their ML model and a omics profile with unknown labels to predict outcomes.
+                </p>
+				</div>
+				</div>
+				</div>
+				</div>
+				<div class="col-lg-5 col-sm-12 mb-12">
+					<div class="card-body" style="padding-bottom: 0;">
+					<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bolder;">
+					Statistics
+					</nav>
+					<div class="card mb-3" style="border-radius: unset;border: 1px solid #ababab">
+					<div class="card-body" >
+					<table id='stats_table'>
+						<tbody>
+						</tbody>
+					</table>
+					</div>
+					</div>
+					</div>
+					<div class="card-body" style="padding-top: 0;">
+					<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bolder;">
+					News & Updates
+					</nav>
+					<div class="card mb-3" style="border-radius: unset;border: 1px solid #ababab;padding-bottom: 70px">
+					<div class="card-body" >
+					<table id='news_table'>
+						<tbody>
+<!--							<tr><td>Updated based on NAR reviewers' feedback.</td><td class="right-align">[2022-09-24]</td></tr>-->
+<!--							<tr><td>Data were updated.</td><td class="right-align">[2022-07-18]</td></tr>-->
+<!--							<tr><td>OrganoidDB 1.0 was released.</td><td class="right-align">[2022-06-17]</td></tr>-->
+						</tbody>
+					</table>
+					</div>
+					</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-12 no-gutters" >
 
+                <nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bolder;">
+                What can MALER do?
+                </nav>
+                <div class="row no-gutters" style="border: 1px solid #ababab; border-radius: unset; margin-bottom: 1em;">
 
-		<div class="container col-8">
+                    <div class="col-12" >
+                        <div class="row no-gutters" >
+                            <div class="col-4 card-header">Four Analysis Modes</div>
+                            <div class="col-4 card-header">Three Feature Selection Modes</div>
+							<div class="col-4 card-header">One-click Analysis</div>
+                        </div>
+                        <div class="row col-12">
 
-			<!-- 文字加轮播图 -->
-			<div class="card col-12" style="border: none;">
-				<div class="row no-gutters">
-					<div class="col-md-12">
-						<div class="card-body" style="">
-							<!-- 网站介绍 -->
-							<h4 style="margin: 0 0 10px 0;">Welcome to PertOrg 1.0</h4>
-							<p style="font-size: 23px;margin-bottom: 0;">
-								A comprehensive resource of multilevel alterations induced in model organisms by <em style="font-size: 23px;">in vivo</em> genetic perturbation.
+                        <div class="col-4">
+                        <p class="card-text">
+							binary classification, multiple classification, regression, survival
+                        </p>
+                        <br>
+                        <br>
+<!--                        <img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/general_home.PNG" alt="general overview img">-->
+                        </div>
+
+                        <div class="col-4">
+                            <p class="card-text">
+								TopK, FSS, BSS
 							</p>
-						</div>
-					</div>
-				</div>
-				<!-- 第二排 -->
-				<div class="row no-gutters">
-					<div class="col-lg-7 col-sm-12 mb-12">
-						<div class="card-body">
-							<!-- what -->
-							<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bolder;">
-								What is PertOrg?
-							</nav>
-							<div class="card mb-3" style="border-radius: unset;border: 1px solid #ababab;">
-								<div class="card-body" style="padding-bottom: ;">
-									<!-- <h5 class="card-title">Secondary card title</h5> -->
-									<p class="card-text">
-										A genetically modified organism (GMO) is any organism whose genotype has been altered using
-										genetic engineering techniques, e.g. knockdown, knockout and overexpression, et al, and could
-										be considered a good model of human genetic disease or plant disease resistance. PertOrg
-										1.0 is a free database that curates high-throughput gene expression data and associated information
-										like phenotypic alterations from well-conducted studies involving <em>in vivo</em> genetic
-										perturbation in eight model organisms. In current version, <b>58,707 transcriptome profiles</b> are collected,
-										and <b>10,116 comparison datasets</b> including <b>122 scRNA-Seq datasets</b> are organized and analyzed.
-										<b>8,644,148 differentially expressed genes</b> were identified and deposited as signatures of gene
-										perturbations.
-									</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- <div class="col-lg-1 col-sm-1 mb-1"></div> -->
-					<div class="col-lg-5 col-sm-12 mb-12">
-						<div class="card-body">
-							<!-- what -->
-							<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bolder;">
-								Statistic
-							</nav>
-							<div class="card mb-3" style="border-radius: unset;border: 1px solid #ababab;">
+<!--							<img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/org_spec_home.PNG" alt="organoid specificity img">-->
+                        </div>
+						<div class="col-4">
+							<p class="card-text">
+								one-click analysis
+							</p>
+<!--							<img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/org_spec_home.PNG" alt="organoid specificity img">-->
+                        </div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-4 card-header">Custom Parameters Analysis</div>
+							<div class="col-4 card-header">Build and Download ML Models</div>
+							<div class="col-4 card-header">Make Predictions</div>
+                        </div>
+                        <div class="row col-12">
+                             <div class="col-4">
+                            <p class="card-text">
+								custom parameters analysis
+							</p>
+                            <br>
+<!--							<img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/org_dev_home.PNG" alt="general overview img">-->
 
-								<!-- <div class="card-body"> -->
-									<!-- <h5 class="card-title">Secondary card title</h5> -->
-								<table style="width: 100%;">
-									<tbody>
-										<tr>
-											<td id="statistic_td">
-												<table id="statistic" style="width: 100%;" class="table table-bordered">
-													<thead></thead>
-													<tbody>
-														<tr style="border-bottom: #ababab nor;">
-														    <td><h6>Organism</h6></td>
-															<td><h6># Datasets</h6></td>
-														</tr>
-														<tr>
-														    <td>Arabidopsis thaliana</td>
-														    <td>797</td>
-														</tr>
-														<tr>
-														    <td>Caenorhabditis elegans</td>
-														    <td>161</td>
-														</tr>
-														<tr>
-														    <td>Danio rerio</td>
-														    <td>218</td>
-														</tr>
-														<tr>
-														    <td>Drosophila melanogaster</td>
-														    <td>520</td>
-														</tr>
-														<tr>
-														    <td>Escherichia coli</td>
-														    <td>22</td>
-														</tr>
-														<tr>
-														    <td>Mus musculus</td>
-														    <td>8128</td>
-														</tr>
-														<tr>
-														    <td>Rattus norvegicus</td>
-														    <td>84</td>
-														</tr>
-														<tr>
-														    <td>Saccharomyces cerevisiae</td>
-														    <td>186</td>
-														</tr>
-													</tbody>
-												</table>
-											</td>
-										</tr>
-									</tbody>
+                        </div>
+                        <div class="col-4">
+                            <p class="card-text">
+								download ml models after analysis and training with step by step guidance
+							</p>
+                            <br>
+                            <br>
+                            <br>
+<!--							<img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/corr_home.PNG" alt="organoid specificity img">-->
+
+                        </div>
+						<div class="col-4">
+                            <p class="card-text">
+								make predictions
+							</p>
+                            <br>
+                            <br>
+                            <br>
+<!--							<img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/corr_home.PNG" alt="organoid specificity img">-->
+
+                        </div>
+                        </div>
 
 
-								</table>
-
-									<!-- <p class="card-text">
-										<h6>Arabidopsis thaliana: <b>836</b></h6>
-										<h6>Caenorhabditis elegans: <b>150</b></h6>
-										<h6>Danio rerio: <b>221</b></h6>
-										<h6>Drosophila melanogaster: <b>552</b></h6>
-										<h6>Escherichia coli: <b>33</b></h6>
-										<h6>Mus musculus: <b>8228</b></h6>
-										<h6>Rattus norvegicus:<b>92</b></h6>
-										<h6>Saccharomyces cerevisiae: <b>127</b></h6>
-									</p> -->
-								<!-- </div> -->
-							</div>
-						</div>
-						<!-- <table id="version_table " class="table table-bordered" style="margin-top: 1.25rem ;border: none;">
-							<thead class="thead-dark">
-								<tr>
-									<th class="bg-info" scope="col" style="border-radius: 10px 10px 0px 0px;border: none;">News & Updates</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr style="border-bottom:1px solid black">
-									<td style="line-height: 30px;border: 1px solid #ababab;">[05/01/2021] DDPD version 1.0 is fully ready for
-										service.</td>
-								</tr>
-							</tbody>
-						</table> -->
-					</div>
-				</div>
-				<!-- 第三排 -->
-				<div class="row no-gutters">
-					<div class="col-lg-7 col-sm-12 mb-12">
-						<div class="card-body">
-							<!-- what -->
-							<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bold;">
-								What PertOrg can do?
-							</nav>
-							<div class="card mb-3" style="border-radius: unset;border: 1px solid #ababab;">
-								<div class="card-header">Functions of PertOrg 1.0</div>
-								<div class="card-body">
-									<!-- <h5 class="card-title">Secondary card title</h5> -->
-									<!-- <div class="row"> -->
-										<!-- <img src="/pertorg_static/img/home_img/home_right_direct.svg" /> -->
-										<p class="card-text">
-											<span class="mark-symbol">></span>
-											Users can easily search various types of gene perturbations for a model organism using "search" and "browse" functions.</p>
-									<!-- </div> -->
-									<!-- <div class="row"> -->
-										<!-- <img src="/pertorg_static/img/home_img/home_right_direct.svg" /> -->
-										<p class="card-text">
-											<span class="mark-symbol">></span>
-											Users can compare their gene list with PertOrg signatures, to identify potentially perturbed genes or GMO models in their system using the "analysis" function.</p>
-									<!-- </div> -->
-									<!-- <div class="row"> -->
-										<p class="card-text">
-											<span class="mark-symbol">></span>
-											In brief, users can link gene perturbations with differentially expressed genes, pathways, cell types, tissues, phenotypes and diseases to interrogate gene function, tissue development, phenogenesis, disease mechanism, and disease models, and to assess therapeutic targets and potential gene therapy.</p>
-									<!-- </div> -->
-									<!-- <div class="row">
-										<p class="card-text">
-											<span class="mark-symbol">></span>
-											Perform property concentration analysis on drug set.</p>
-									</div> -->
-								</div>
-								<div class="card-header">Features of PertOrg 1.0</div>
-								<div class="card-body">
-									<!-- <div class="row"> -->
-										<p class="card-text">
-											<span class="mark-symbol">></span>
-											The large number of datasets from multiple <em>in vivo</em> perturbed model organisms.</p>
-									<!-- </div> -->
-									<!-- <div class="row"> -->
-										<p class="card-text">
-											<span class="mark-symbol">></span>
-											Genetic perturbation induced changes at multiple levels, i.e. gene/pathway/cell type/phenotype.</p>
-									<!-- </div> -->
-									<!-- <div class="row"> -->
-										<p class="card-text">
-											<span class="mark-symbol">></span>
-											scRNA-Seq data comparison between before and after perturbation.</p>
-									<!-- </div> -->
-									<!-- <div class="row">
-										<p class="card-text">
-											<span class="mark-symbol">></span>
-											Pharmacokinetic/Toxicokinetic/Dosage analysis of a drug set</p>
-									</div>
-									<div class="row">
-										<p class="card-text">
-											<span class="mark-symbol">></span>
-											Drug screening and drug design</p>
-									</div> -->
-								</div>
-							</div>
-						</div>
-						<div class="card-body" style="padding-bottom: 0%;">
-							<!-- what -->
-							<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bolder;">
-								News & Updates
-							</nav>
-							<div class="card mb-3" style="border-radius: unset;border: 1px solid #ababab;">
-								<br />
-								<ul style="list-style-type:disc">
-								         <li style="float: left;">53 datasets were added.</li><div style="float: right;margin-right: 5px;">[2022-07-15]</div>
-										 <br />
-								         <li style="float: left;">PertOrg 1.0 was released with 10,063 datasets.</li><div style="float: right;margin-right: 5px;">[2022-06-15]</div>
-										 <br />
-
-								</ul>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-5 col-sm-12 mb-12">
-
-						<div class="card-body" style="padding-top: 0%;">
-							<!-- 轮播图 -->
-							<div id="demo" class="carousel slide" data-ride="carousel" style="margin-top: 1.25rem ;">
-								<!-- 指示符 -->
-								<!-- 							<ul class="carousel-indicators">
-									<li data-target="#demo" data-slide-to="0" class="active"></li>
-									<li data-target="#demo" data-slide-to="1"></li>
-									<li data-target="#demo" data-slide-to="2"></li>
-								</ul> -->
-								<!-- 轮播图片 -->
-
-								<div id='slideshow' class="carousel-inner">
-									<div class="carousel-item active" data-interval="20000">
-										<!-- 									<img class="card-img-right" style="width: 100%;" src="/pertorg_static/img/home_img/02.jpg" alt="Card image cap">
-										<div class="carousel-caption">
-											<h3>第一张图片描述标题</h3>
-											<p>描述文字!</p>
-										</div> -->
-										<div class="card" style="width: 100%;border-radius: 10px 10px 0 0;">
-											<img class="card-img-right" style="width: 100%;" src="/pertorg_static/img/help_img/adv_search.jpg" alt="Card image cap">
-											<div class="card-body text-center">
-												<h5 class="card-title">SEARCH</h5>
-												<!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-													content.</p> -->
-											</div>
-										</div>
-									</div>
-
-									<div class="carousel-item" data-interval="20000">
-										<!-- 									<img class="card-img-right" style="width: 100%;" src="/pertorg_static/img/home_img/02.jpg" alt="Card image cap">
-										<div class="carousel-caption">
-											<h3>第一张图片描述标题</h3>
-											<p>描述文字!</p>
-										</div> -->
-										<div class="card" style="width: 100%;border-radius: 10px 10px 0 0;">
-											<img class="card-img-right" style="width: 100%;" src="/pertorg_static/img/help_img/detail1.jpg" alt="Card image cap">
-											<div class="card-body text-center">
-												<h5 class="card-title">RESULT</h5>
-												<!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-													content.</p> -->
-											</div>
-										</div>
-									</div>
-									<div class="carousel-item" data-interval="20000">
-										<!-- 									<img class="card-img-right" style="width: 100%;" src="/pertorg_static/img/home_img/02.jpg" alt="Card image cap">
-										<div class="carousel-caption">
-											<h3>第一张图片描述标题</h3>
-											<p>描述文字!</p>
-										</div> -->
-										<div class="card" style="width: 100%;border-radius: 10px 10px 0 0;">
-											<img class="card-img-right" style="width: 100%;" src="/pertorg_static/img/help_img/detail2.jpg" alt="Card image cap">
-											<div class="card-body text-center">
-												<h5 class="card-title">RESULT</h5>
-												<!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-													content.</p> -->
-											</div>
-										</div>
-									</div>
-									<div class="carousel-item" data-interval="20000">
-										<!-- 									<img class="card-img-right" style="width: 100%;" src="/pertorg_static/img/home_img/02.jpg" alt="Card image cap">
-										<div class="carousel-caption">
-											<h3>第一张图片描述标题</h3>
-											<p>描述文字!</p>
-										</div> -->
-										<div class="card" style="width: 100%;border-radius: 10px 10px 0 0;">
-											<img class="card-img-right" style="width: 100%;" src="/pertorg_static/img/help_img/detail3.jpg" alt="Card image cap">
-											<div class="card-body text-center">
-												<h5 class="card-title">RESULT</h5>
-												<!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-													content.</p> -->
-											</div>
-										</div>
-									</div>
-
-
-									<div class="carousel-item" data-interval="20000">
-										<!-- <img src="/pertorg_static/img/home_img/01.jpg"> -->
-										<!-- 									<img class="card-img-right" style="width: 100%;" src="/pertorg_static/img/home_img/01.jpg" alt="Card image cap">
-										<div class="carousel-caption" style="padding: 0;">
-											<h3>第一张图片描述标题</h3>
-											<p>描述文字!</p>
-										</div> -->
-										<div class="card" style="width: 100%;border-radius: 10px 10px 0 0;">
-											<img class="card-img-right" style="width: 100%;" src="/pertorg_static/img/help_img/browse.jpg" alt="Card image cap">
-											<div class="card-body text-center">
-												<h5 class="card-title">BROWSE</h5>
-												<!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-													content.</p> -->
-											</div>
-										</div>
-									</div>
-
-									<div class="carousel-item" data-interval="20000">
-										<!-- 									<img class="card-img-right" style="width: 100%;" src="/pertorg_static/img/home_img/02.jpg" alt="Card image cap">
-										<div class="carousel-caption">
-											<h3>第二张图片描述标题</h3>
-											<p>描述文字!</p>
-										</div> -->
-										<div class="card" style="width: 100%;border-radius: 10px 10px 0 0;">
-											<img class="card-img-right" style="width: 100%;" src="/pertorg_static/img/help_img/analysis_dgea_3.jpg" alt="Card image cap">
-											<div class="card-body text-center">
-												<h5 class="card-title">ANALYSIS</h5>
-												<!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-													content.</p> -->
-											</div>
-										</div>
-									</div>
-									<div class="carousel-item" data-interval="20000">
-										<!-- 									<img class="card-img-right" style="width: 100%;" src="/pertorg_static/img/home_img/02.jpg" alt="Card image cap">
-										<div class="carousel-caption">
-											<h3>第二张图片描述标题</h3>
-											<p>描述文字!</p>
-										</div> -->
-										<div class="card" style="width: 100%;border-radius: 10px 10px 0 0;">
-											<img class="card-img-right" style="width: 100%;" src="/pertorg_static/img/help_img/analysis_gsea_3.jpg" alt="Card image cap">
-											<div class="card-body text-center">
-												<h5 class="card-title">ANALYSIS</h5>
-												<!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-													content.</p> -->
-											</div>
-										</div>
-									</div>
-									<div class="carousel-item" data-interval="20000">
-										<!-- 									<img class="card-img-right" style="width: 100%;" src="/pertorg_static/img/home_img/03.jpg" alt="Card image cap">
-										<div class="carousel-caption">
-											<h3>第三张图片描述标题</h3>
-											<p>描述文字!</p>
-										</div> -->
-										<div class="card" style="width: 100%;border-radius: 10px 10px 0 0;">
-											<img class="card-img-right" style="width: 100%;" src="/pertorg_static/img/help_img/statistics.jpg" alt="Card image cap">
-											<div class="card-body text-center">
-												<h5 class="card-title">STATISTICS</h5>
-												<!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-													content.</p> -->
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- 左右切换按钮 -->
-								<a class="carousel-control-prev " href="#demo" data-slide="prev">
-									<span class="carousel-control-prev-icon bg-dark"></span>
-								</a>
-								<a class="carousel-control-next " href="#demo" data-slide="next">
-									<span class="carousel-control-next-icon bg-dark"></span>
-								</a>
-
-							</div>
-						</div>
-					</div>
-
-				</div>
-
+                    </div>
+                </div>
 			</div>
-			<!-- 数据统计 -->
-			<!-- <div style="color: #2185d0;font-weight: 700; font-size: 22px;">
-				<img style="position: relative; margin-top: -12px;margin-right: 5px; width: 35px;" src="/pertorg_static/img/statistic.svg"
-				 width="26px">
-				<span style="font-size: 23px;">Database Statistics</span>
-			</div>
-			<div  class="card col-12" style="border: none;">
-				<div class="row" id="total_data_static">
-					<div class="card-body col-lg-6 col-sm-12 mb-12">
-						<div class="row">
-							<p>
-								<span class="mark-symbol">></span>
-								Total approved drugs: 2,250</p>
-						</div>
-						<div class="row">
-							<p>
-								<span class="mark-symbol">></span>
-								Total drug properties: 32</p>
-						</div>
-						<div class="row">
-							<p>
-								<span class="mark-symbol">></span>
-								Total non-redundant drug-property pairs: 18,011</p>
-						</div>
-						<div class="row">
-							<p>
-								<span class="mark-symbol">></span>
-								Total drug property values: 30,212</p>
-						</div>
-						<div class="row">
-							<a href="/ddpd/statistic">
-								<span class="mark-symbol">></span>
-								More...</a>
-						</div>
-
-					</div>
-					<div class="card-body col-lg-6 col-sm-12 mb-12" style="text-align: right;padding:30px 60px 0 0;">
-
-						<img style="width: 30%;" src="/pertorg_static/img/home_img/data_statistic.png" />
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-lg-6 col-sm-12 mb-12">
-						<table id="data_statistic_table" class="table table-bordered " style="border: none;">
-							<div style=></div>
-							<thead class="thead-dark">
-								<tr class="text-center">
-									<th class="bg-info" scope="col" colspan="3" style="border-radius: 10px 10px 0 0;border: none;">Experimental
-										Physicochemical Property</th>
-								</tr>
-							</thead>
-							<thead>
-								<tr>
-									<th scope="col">Property</th>
-									<th scope="col"># Drugs</th>
-									<th scope="col"># Values</th>
-								</tr>
-							</thead>
-							<tbody>
-
-								<tr>
-									<td scope="row">Melting Points</td>
-									<td>1,308</td>
-									<td>1,312</td>
-								</tr>
-								<tr>
-									<td scope="row">Log P</td>
-									<td>1,232</td>
-									<td>1,232</td>
-								</tr>
-								<tr>
-									<td scope="row">Water Solubility</td>
-									<td>765</td>
-									<td>772</td>
-								</tr>
-								<tr>
-									<td scope="row">pKa</td>
-									<td>466</td>
-									<td>495</td>
-								</tr>
-								<tr>
-									<td scope="row">Boiling Point </td>
-									<td>389</td>
-									<td>392</td>
-								</tr>
-								<tr>
-									<td scope="row">Log S</td>
-									<td>162</td>
-									<td>162</td>
-								</tr>
-								<tr>
-									<td scope="row">Caco-2 Permeability</td>
-									<td>78</td>
-									<td>78</td>
-								</tr>
-								<tr>
-									<td scope="row">Total</td>
-									<td>4,400</td>
-									<td>4,443</td>
-								</tr>
-							</tbody>
-						</table>
-						<table id="data_statistic_table" class="table table-bordered " style="margin-top: 50px;border: none;">
-							<thead class="thead-dark">
-								<tr class="text-center">
-									<th class="bg-info" scope="col" colspan="3" style="border-radius: 10px 10px 0 0;border: none;">Maximum Dosage</th>
-								</tr>
-							</thead>
-							<thead>
-								<tr>
-									<th scope="col">Property</th>
-									<th scope="col"># Drugs</th>
-									<th scope="col"># Values</th>
-								</tr>
-							</thead>
-							<tbody>
-
-								<tr>
-									<td scope="row">Max Dose for Children</td>
-									<td>569</td>
-									<td>1,848</td>
-								</tr>
-								<tr>
-									<td scope="row">Max Dose for Adults</td>
-									<td>925</td>
-									<td>1,708</td>
-								</tr>
-								<tr>
-									<td scope="row">Max Dose for Adolescents</td>
-									<td>601</td>
-									<td>1,441</td>
-								</tr>
-								<tr>
-									<td scope="row">Max Dose for Geriatric</td>
-									<td>728</td>
-									<td>1,444</td>
-								</tr>
-								<tr>
-									<td scope="row">Max Dose for Infants</td>
-									<td>265</td>
-									<td>635</td>
-								</tr>
-								<tr>
-									<td scope="row">Max Dose for Elderly</td>
-									<td>225</td>
-									<td>352</td>
-								</tr>
-								<tr>
-									<td scope="row">Max Dose for Neonates</td>
-									<td>151</td>
-									<td>325</td>
-								</tr>
-								<tr>
-									<td scope="row">Total</td>
-									<td>3,464</td>
-									<td>7,753</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<div class="col-lg-6 col-sm-12 mb-12">
-						<table id="data_statistic_table" class="table table-bordered " style="border: none;">
-
-							<thead class="thead-dark">
-								<tr class="text-center">
-									<th class="bg-info" scope="col" colspan="3" style="border-radius: 10px 10px 0 0;border: none;">Pharmacokinetic/Toxicokinetic
-										Property</th>
-								</tr>
-							</thead>
-							<thead>
-								<tr>
-									<th scope="col">Property</th>
-									<th scope="col"># Drugs</th>
-									<th scope="col"># Values</th>
-								</tr>
-							</thead>
-							<tbody>
-
-								<tr>
-									<td scope="row">Half-life</td>
-									<td>1,697</td>
-									<td>3,485</td>
-								</tr>
-								<tr>
-									<td scope="row">Clearance</td>
-									<td>1,147</td>
-									<td>2,298</td>
-								</tr>
-								<tr>
-									<td scope="row">Volume of Distribution</td>
-									<td>1,185</td>
-									<td>2,048</td>
-								</tr>
-								<tr>
-									<td scope="row">Eliminate Route</td>
-									<td>964</td>
-									<td>1,932</td>
-								</tr>
-								<tr>
-									<td scope="row">Toxicity LD50</td>
-									<td>780</td>
-									<td>1,765</td>
-								</tr>
-								<tr>
-									<td scope="row">Protein Binding</td>
-									<td>1,180</td>
-									<td>1,553</td>
-								</tr>
-								<tr>
-									<td scope="row">T Max</td>
-									<td>808</td>
-									<td>1,346</td>
-								</tr>
-								<tr>
-									<td scope="row">Bioavailability</td>
-									<td>644</td>
-									<td>961</td>
-								</tr>
-								<tr>
-									<td scope="row">Metabolic</td>
-									<td>292</td>
-									<td>401</td>
-								</tr>
-								<tr>
-									<td scope="row">Absorption</td>
-									<td>362</td>
-									<td>398</td>
-								</tr>
-								<tr>
-									<td scope="row">AUC </td>
-									<td>246</td>
-									<td>372</td>
-								</tr>
-								<tr>
-									<td scope="row">C Max</td>
-									<td>591</td>
-									<td>1,083</td>
-								</tr>
-								<tr>
-									<td scope="row">Tss</td>
-									<td>90</td>
-									<td>98</td>
-								</tr>
-								<tr>
-									<td scope="row">Toxicity MRLs</td>
-									<td>33</td>
-									<td>83</td>
-								</tr>
-								<tr>
-									<td scope="row">Toxicity TDLo</td>
-									<td>44</td>
-									<td>71</td>
-								</tr>
-								<tr>
-									<td scope="row">Toxicity Lethal Dose</td>
-									<td>40</td>
-									<td>65</td>
-								</tr>
-								<tr>
-									<td scope="row">Toxicity LDLo</td>
-									<td>21</td>
-									<td>29</td>
-								</tr>
-								<tr>
-									<td scope="row">Css</td>
-									<td>23</td>
-									<td>28</td>
-								</tr>
-								<tr>
-									<td scope="row">Total</td>
-									<td>10,147</td>
-									<td>18,016</td>
-								</tr>
-							</tbody>
-						</table>
-
-					</div>
-				</div>
-
-
-
-			</div> -->
-
-			<div class="col-12" style="text-align: left;">
-				<div class="row">
-					<div class="col-7">
-						<div class="database-description" style="padding-top: 50px;">
-							<p><em>To get a better experience with this site, <b>Chrome</b>, <b>Firefox</b> are
-									advised!</em></p>
-
-							<h6>
-								<svg class="bi bi-link-45deg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-								 style="color: #0055ff;">
-									<path d="M4.715 6.542L3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.001 1.001 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
-									<path d="M5.712 6.96l.167-.167a1.99 1.99 0 0 1 .896-.518 1.99 1.99 0 0 1 .518-.896l.167-.167A3.004 3.004 0 0 0 6 5.499c-.22.46-.316.963-.288 1.46z" />
-									<path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 0 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 0 0-4.243-4.243L6.586 4.672z" />
-									<path d="M10 9.5a2.99 2.99 0 0 0 .288-1.46l-.167.167a1.99 1.99 0 0 1-.896.518 1.99 1.99 0 0 1-.518.896l-.167.167A3.004 3.004 0 0 0 10 9.501z" />
-								</svg>
-								RELATED RESOURCE:	<b><a target="_blank" href="https://www.ncbi.nlm.nih.gov/geo/">GEO</a> | <a target="_blank" href="https://www.ebi.ac.uk/arrayexpress/">ArrayExpress</a></b>
-							</h6>
-							<br />
-							<b>Please Cite Us:</b>
-							<p><a href="https://academic.oup.com/nar/advance-article/doi/10.1093/nar/gkac872/6761726">Zhaoyu Zhai, Xuelu Zhang, Lu Zhou, Zhewei Lin, Ni Kuang, Qiang Li, Qinfeng Ma, Haodong Tao, Jieya Gao, Shiyong Ma, Jianbo Pan, PertOrg 1.0: a comprehensive resource of multilevel alterations induced in model organisms by in vivo genetic perturbation, Nucleic Acids Research, 2022;, gkac872, https://doi.org/10.1093/nar/gkac872</a></p>
-
-						</div>
-
-					</div>
-					<div class="col-5" style="text-align: right;">
-						<!-- <script type="text/javascript" src="//ra.revolvermaps.com/0/0/9.js?i=5mp028r6s9j&t=statistics" async></script> -->
-						<!-- <script type="text/javascript" src="//rf.revolvermaps.com/0/0/7.js?i=5xyc03406k1&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;sx=0" async="async"></script> -->
-						<svg class="bi bi-link-45deg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-						 style="color: #0055ff;">
-							<div>
-								<script type="text/javascript" src="//rf.revolvermaps.com/0/0/7.js?i=5re13akwnus&amp;m=0&amp;c=ff0000&amp;cr1=ffffff&amp;sx=0" async="async"></script>
-							</div>
-
-						</svg>
-					</div>
-				</div>
-			</div>
-
-			<!-- <div class="col-12" style="text-align: left; margin-top: 30px;"> -->
-
-
-				<!-- 	<a href='https://go.drugbank.com/'><img src="/pertorg_static/img/link_logo/drugbank.jpg"
-						 alt="logo" style="height: 25px;" /></a> |
-					<a href='http://www.t3db.ca/'><img src="/pertorg_static/img/link_logo/T3DB.jpg" alt="logo" style="height: 25px;" /></a> |
-					<a href='https://www.atsdr.cdc.gov/'><img src="/pertorg_static/img/link_logo/ATSDR.jpg" alt="logo" style="height: 25px;" /></a>
-					|
-					<a href='https://www.pdr.net/'><img src="/pertorg_static/img/link_logo/PDR.jpg" alt="logo" style="height: 25px;" /></a>
-					<svg class="bi bi-link-45deg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-					 style="color: #0055ff;display: none;">
-						<path d="M4.715 6.542L3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.001 1.001 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
-						<path d="M5.712 6.96l.167-.167a1.99 1.99 0 0 1 .896-.518 1.99 1.99 0 0 1 .518-.896l.167-.167A3.004 3.004 0 0 0 6 5.499c-.22.46-.316.963-.288 1.46z" />
-						<path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 0 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 0 0-4.243-4.243L6.586 4.672z" />
-						<path d="M10 9.5a2.99 2.99 0 0 0 .288-1.46l-.167.167a1.99 1.99 0 0 1-.896.518 1.99 1.99 0 0 1-.518.896l-.167.167A3.004 3.004 0 0 0 10 9.501z" />
-						<div style="display: none;">
-							<script type="text/javascript" src="//ra.revolvermaps.com/0/0/9.js?i=539cvm4eebo&amp;t=statistics" async></script>
-						</div>
-					</svg> -->
-
-			<!-- </div> -->
-
 		</div>
+	</div>
+    <div class='container'>
+        <div class="database-description">
+            <p><em>To get a better experience with this site, <b>Chrome</b>,<b>Firefox</b> are
+                advised!</em></p>
+        </div>
+    </div>
+
+    <div class='container'>
+        <p style="color: black;">
+        <div class="container col-12">
+            <div class="row">
+                <svg class="bi bi-link-45deg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                     style="color: #0055ff;">
+                    <path d="M4.715 6.542L3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.001 1.001 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
+                    <path d="M5.712 6.96l.167-.167a1.99 1.99 0 0 1 .896-.518 1.99 1.99 0 0 1 .518-.896l.167-.167A3.004 3.004 0 0 0 6 5.499c-.22.46-.316.963-.288 1.46z" />
+                    <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 0 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 0 0-4.243-4.243L6.586 4.672z" />
+                    <path d="M10 9.5a2.99 2.99 0 0 0 .288-1.46l-.167.167a1.99 1.99 0 0 1-.896.518 1.99 1.99 0 0 1-.518.896l-.167.167A3.004 3.004 0 0 0 10 9.501z" />
+                </svg>
+                <div style="display: none;"><script type="text/javascript" src="//ra.revolvermaps.com/0/0/9.js?i=5ph0h5zrf5x&t=statistics" async></script></div>
+                <h6>RELATED RESOURCE:	<b><a target="_blank" href="https://www.ncbi.nlm.nih.gov/geo/">GEO</a> | <a target="_blank" href="https://www.ebi.ac.uk/arrayexpress/">ArrayExpress</a> | <a target="_blank" href="https://www.gtexportal.org/home/">GTEx</a> | <a target="_blank" href="https://www.proteinatlas.org/">HPA</a></b></h6>
+            </div>
+        </div>
+        </p>
+    </div>
 
 
-		<br />
-		<br />
-		<br />
-		<br />
-
-
-
-		<!-- 底栏 -->
-		{% include 'public_templates/footer.html' %}
-		<script>
-			function test(data) {
-				console.log(data.innerHTML)
-				post_data = data.innerHTML
-				$('#query_content').val(post_data);
-				// $('#query_content').submit();
-				// $.ajax({
-				// 	type: 'post',
-				// 	url: '/ddpd/search/home_search',
-				// 	data: $('#home_search').serialize(),
-				// 	dataType: 'json',
-				// 	async: false,
-				// 	success: function(data) {
-
-
-				// 	}
-
-				// });
-			}
-		</script>
+    {% include 'public_templates/footer.html' %}
 </body>
+
+	<script>
+		// (function(){
+		// 	let stats_table = $('#stats_table>tbody');
+		//
+        //     function build_stats_table(data){
+		// 		stats_table.empty();
+        //         Object.entries(data).forEach(function(row){
+		// 			if (row[0].startsWith('#')){
+		// 				stats_table.append('<tr class="sum_row"><td>'+row[0]+'</td><td class="right-align">'+row[1]+'</td></tr>');
+		// 			}else{
+		// 				stats_table.append('<tr><td>'+row[0]+'</td><td class="right-align">'+row[1]+'</td></tr>');
+		// 			}
+		// 		})
+        //     }
+		//
+		// 	$("#nav_home").addClass("active");
+		// 	$("#page_title").text('HOME');
+		//
+		// 	$(document).ready(function() {
+		// 		$.when($.ajax('/organoid_db/statistics/stats_table'))
+		// 		 .then(function(data, status){
+		// 			parsed = JSON.parse(data);
+		// 			build_stats_table(parsed)
+		// 		})
+		// 	})
+		//
+		// 	// function odb_ajax(url, postData) {
+		// 	// 	o_ajax = {
+		// 	// 		type: 'POST',
+		// 	// 		url: url,
+		// 	// 		headers: {'X-CSRFToken': '{{csrf_token}}'},
+		// 	// 		data: postData //used to pass data set choice i.e gtex or organoidDB
+		// 	// 	}
+		// 	// 	return o_ajax;
+		// 	// }
+		// })();
+	</script>
 </html>

@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../../Database/GENE_Database/.idea/GENE_Database.iml" filepath="$PROJECT_DIR$/../../Database/GENE_Database/.idea/GENE_Database.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/ML_WebServer.iml" filepath="$PROJECT_DIR$/.idea/ML_WebServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/MLSERVER.iml" filepath="$PROJECT_DIR$/.idea/MLSERVER.iml" />
     </modules>
   </component>
 </project>
