@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MALER-help</title>
+    {% include 'public_templates/bootstrap.html' %}
+</head>
+<style>
+	.card-header{
+		text-align: center;
+		font-style: oblique;
+	}
+
+	@media (max-width: 950px) {
+		#spy_nav_div {
+			display: none;
+		}
+	}
+
+	.nav-stacked>ul{
+		list-style: none;
+	}
+	.nav-stacked>ul li{
+		margin-top: 1.5rem;
+		margin-bottom: 1.5rem;
+	}
+	.nav-stacked>ul a:hover{
+		text-decoration: none;
+	}
+</style>
+<body>
+    {% include 'public_templates/nav_tem.html' %}
+	<div class="container row col-xl-10 col-lg-10 col-12">
+		<div class="col-xl-3 col-lg-3" id='spy_nav_div'>
+			<nav class="nav nav-pills nav-stacked" style="position:fixed" id="help_spy_scroll">
+				<ul data-spy="affix" data-offset-top="0">
+					<li><a href="#top">Top</a></li>
+					<li><a href="#os_compat">Browser and OS Compatibility</a></li>
+					<li><a href="#gen">Machine Learning Analysis</a></li>
+					<li><a href="#oc">&nbsp; &nbsp; Binary Classification</a></li>
+					<li><a href="#od">&nbsp; &nbsp; Multiclass Classification</a></li>
+					<li><a href="#os">&nbsp; &nbsp; Regression</a></li>
+					<li><a href="#ts">&nbsp; &nbsp; Survival Analysis</a></li>
+					<li><a href="#browse">Feature Selection</a></li>
+                    <li><a href="#one_click">One-click Modeling</a></li>
+					<li><a href="#cus_model">Customized Modeling</a></li>
+                    <li><a href="#predict">External Prediction</a></li>
+                    <li><a href="#samp">Sample Data</a></li>
+					<li><a href="#item-3">Contact Us</a></li>
+				</ul>
+			</nav>
+		</div>
+		<div class='col-xl-9 col-lg-9'>
+			<br>
+			<h1>Introduction</h1>
+				<p>MALER is a user-friendly and easy-to-use web application that helps biologists apply ML models to
+                    biological and biomedical data. This page provides documentation on how to use MALER.</p>
+			<h3 id='os_compat'>Browser and Operating System (OS) Compatibility</h3>
+				<hr>
+                <br>
+                <br>
+			<h3 id='gen'>Machine Learning Analysis</h3>
+				<hr>
+                <p><b>Module selection</b></p>
+				<p>
+                    MALER provides four modules including binary classification, multi-class classification, regression
+                    and survival analysis. Classification is a supervised process that involves predicting the class of
+                    given data points. Regression is a supervised machine learning technique which is used to predict
+                    continuous values. Survival analysis aims to predict time to an event.
+                </p>
+{#				<img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/gen_tab.png" alt="general tab img"/>#}
+				<p><b>Data submit</b></p>
+
+				<p>When the module is selected, the user should submit the corresponding data format as following. Sample
+                    data was also provided in “Sample Data”.</p>
+                <p><b>Format of input files</b></p>
+				<p>In general, a feature-by-sample matrix in a csv format is required to initiate the MALER analysis. A
+                    sample label file is also suggested to be uploaded so as to evaluate the matrix more comprehensive.</p>
+{#				<img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/general_home.PNG" alt="general overview img"/>#}
+				<br>
+				<br>
+			<h3 id='oc'>Binary Classification</h3>
+				<hr>
+				<p>
+                    In this module, the sample name, class of samples and ML set are sequentially provided in the first
+                    3 rows of input file. The class of samples indicates 2 sample groups, or “NA” for blind test set.
+                    ML set must contain “training”, and can also contain “testing”. Sample data of this data type can
+                    be downloaded.
+                </p>
+{#				<img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/comp_tab_help.png" alt="organoid compare tab img"/>#}
+{#				<p>In comparison search, you can choose to 1) search by gene or search by organoid. When searching by gene, you will be able to 2) select a comparison type and its related comparison data sets to display. And 3) filter your search by fold change and P-value.</p>#}
+{#				<p>Parameters</p>#}
+{#				<ul>#}
+{#					<p><strong>Search By</strong>: Select to search by gene or search by organoid type.</p>#}
+{#					<p><strong>Options</strong>: Select between human and mouse samples as well as bulk and single-cell samples.</p>#}
+{#					<br>#}
+{#					<p><strong>Select Comparison Type</strong>: Query the selected comparison type.</p>#}
+{#					<p><strong>Select Comparison</strong>: Query the selected comparison. Click <a data-toggle="modal" data-target="#abbrev_modal" href="###">abbrev.</a> for list of comparison abbreviations.</p>#}
+{#					<p><strong>Gene Name / Entrez ID</strong>: Search for expression by gene name or entrez ID, searching by gene name will have an autocomplete feature after entering 2 characters.</p>#}
+{#					<p><strong>Select Organoid</strong>: When <i>Search by organoid</i> is selected, choose an organoid type.</p>#}
+{#					<p><strong>Log<sub>2</sub>FC cutoff</strong>: Results will have fold-change greater than user defined threshold.</p>#}
+{#					<p><strong>P-value cutoff</strong>: Results will have P-values less than user defined threshold.</p>#}
+{#					<br>#}
+{#					<p>Note: Only top 50,000 results sorted by P-value are shown.</p>#}
+{#				</ul>#}
+{#				<p>Results</p>#}
+{#				<ul><p>As show in picture below, in the search results, you can 1) download the table of differentially expressed genes in the comparison. 2) sort the table by clicking on the column headers, e.g. sort by fold change. 3) See more detailed information about the related study by clicking on the Dataset ID link. 4) get a quick view of the expression box plot.</p></ul>#}
+{#				<img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/org_comp_result_help.png" alt="organoid compare result help img"/>#}
+{#				<ul><p>Clicking on 4) boxplot icons will display the expression comparison as shown below.</p></ul>#}
+{#				<img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/org_compare.PNG" alt="organoid compare img"/>#}
+				<br>
+				<br>
+			<h3 id='od'>Multiclass Classification</h3>
+				<hr>
+				<p>
+                    In this module, the sample name, class of samples and ML set are sequentially provided in the first
+                    3 rows of input file. The class of samples indicates more than 2 sample groups, or “NA” for blind
+                    test set. ML set must contain “training”, and can also contain “testing”. Sample data of this data
+                    type can be downloaded.
+				</p>
+				<br>
+				<br>
+			<h3 id='os'>Regression</h3>
+				<hr>
+				<p>
+                    In this module, the sample name, label of samples and ML set are sequentially provided in the first
+                    4 rows of input file. The label of samples should be continuous/real values as outcome for regression,
+                    or “NA” for blind test set. ML set must contain “training”, and can also contain “testing”. Sample
+                    data of this data type can be downloaded.
+				</p>
+				<br>
+				<br>
+			<h3 id='ts'>Survival Analysis</h3>
+				<hr>
+				<p>
+                    In this module, the sample name, status, time, and ML set are sequentially provided in the first 4
+                    rows of input file. Time is the follow up time until the event occurs. Status denotes the status of
+                    the patient as “dead” or “alive”. The label of samples indicates the information for regression, or
+                    “NA” for blind test set. ML set must contain “training”, and can also contain “testing”. Sample data
+                    of this data type can be downloaded.
+				</p>
+            <h3 id='browse'>Feature Selection</h3>
+				<hr>
+				<p>
+                    Three feature selection methods were provided with the top K as default.
+				</p>
+            <h3 id='one_click'>One-click Modeling</h3>
+				<hr>
+				<p>
+                    One-click Modeling allows users run multiple models within the same process. The default parameters
+                    would be set for each ML model.
+				</p>
+{#                <img style="width: 100%; padding-left: 10%; padding-right: 10%" src="/organoidb_static/img/help_img/Detailed_information_page.PNG" alt="Detailed information img"/>#}
+            <h3 id='cus_model'>Customized Modeling</h3>
+				<hr>
+				<p>
+                    Users can customized the machine learning algorithm using different parameters. The Customized
+                    modeling will be stored in the server and could be compared with other modelings derived from the
+                    same data under the same study ID.
+				</p>
+{#                <img style="width: 75%; padding-left: 25%;" src="/organoidb_static/img/statistics_table.PNG" alt="Statistics img"/>#}
+            <h3 id='predict'>External Prediction</h3>
+                <hr>
+				<p>
+                    Users can apply the models downloaded from ML Analysis on external data, and performed the prediction.
+                    The confusion matrix will be calculated for the validation set, while predictions will be listed in
+                    a table for the blind test set.
+				</p>
+{#                <img style="width: 75%; padding-left: 25%;" src="/organoidb_static/img/help_img/Feedback.png" alt="Feedback img"/>#}
+
+            <h3 id='samp'>Sample Data</h3>
+                <hr>
+                <p>
+                    MALER provides sample data to do the analysis using MALER.
+				</p>
+
+			<div class="card-body" style="width: 100%;">
+				<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;">
+					<h3 id="item-3" style=" padding-top: 400px;margin-top: -400px;">Contact Us</h3>
+				</nav>
+				<div class="card mb-3" style="border-radius: unset;border: 1px solid #ababab;">
+					<h5 id="item-3-1"></h5>
+					<div>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">
+							Please feel free to contact Professor <b><a href="http://www.inbirg.com/team-jacob.html">Jianbo Pan</a></b> with respect to any details pertaining to OrganoidDB
+							</li>
+							<li class="list-group-item">
+							<div class="row">
+							<p class="card-text"><span class="mark-symbol" style="padding-left: 0;">&gt;</span><b>Address :</b></p>
+							</div>
+							<p style="padding:20px 0 0 0px;line-height: 1.0;">Center for Novel Target and Therapeutic Intervention,
+							Institute of Life Sciences, Chongqing Medical University, </p>
+							<p style="padding-left: 0px;line-height: 1.0;">No. 1 Yixueyuan Road, Yuzhong District, Chongqing, 400016,
+							P. R. China.</p>
+							</li>
+							<li class="list-group-item">
+							<div class="row">
+							<p class="card-text"><span class="mark-symbol" style="padding-left: 0;">&gt;</span><b>Email :</b></p>
+							</div>
+							<p style="padding:20px 0 0 0px;">panjianbo@cqmu.edu.cn</p>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    {% include 'public_templates/footer.html' %}
+</body>
+
+	<script>
+
+		$("#nav_help").addClass("active");
+		$("#page_title").text('HELP');
+
+	</script>
+</html>
