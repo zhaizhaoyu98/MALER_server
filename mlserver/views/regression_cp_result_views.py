@@ -32,7 +32,7 @@ pd.set_option('display.float_format', lambda x:'%.3f'%x)
 
 def regression_cp_result(request):
     import sys
-    print(sys.path)
+    print(sys.version_info)
     data = pd.read_csv(r'C:\Users\Administrator\Desktop\jupyter_project\regression\regression_data.csv', header=0, index_col=0).T
 
     x_dum, y = regression_preprocess(data)
@@ -52,6 +52,7 @@ def regression_cp_result(request):
     print('ms: ',ms)
     max_index = np.array(ms).argmax()
     # max_index = ms.index(np.nanmax(ms))
+    print('max_index: ',max_index)
     max_score = max(ms)
     max_features = (sf[:max_index + 1])
     preds, tests, res = [], [], []
