@@ -1073,16 +1073,12 @@ def get_file_md5(file_name):
 
 def df2bp(df):
     data = []
-    i=0
     for col in df.columns:
         trace = {
             'type': 'box',
             'name': col,
-            'y': df[col].to_list(),
-            'xaxis': 'x' + str(i + 1),
-            'yaxis': 'y' + str(i + 1)
+            'y': df[col].to_list()
         }
-        i += 1
         data.append(trace)
     return data
 

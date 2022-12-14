@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-import os, shutil, copy, pickle, json
+import os, shutil, copy, pickle, json, time
 import numpy as np
 import pandas as pd
 
@@ -16,6 +16,7 @@ from lifelines.statistics import logrank_test
 
 from ML_WebServer.settings import STATIC_ROOT
 from mlserver.views.classification_oc_result_views import get_file_md5, df2bp
+# from mlserver.views.regression_cp_result_views import pre_screening
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -44,7 +45,7 @@ def survival_oc_result(request):
     f.close()
 
     upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
-    projectid = upload_file_md5[:6] + '-' + feature_select_method
+    projectid = 'SO-' + upload_file_md5[:6] + '-' + feature_select_method
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
         newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
         os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
@@ -52,6 +53,8 @@ def survival_oc_result(request):
 
         data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, header=0, index_col=0).T
         '''
+        projectid='SOe8ce60-TopK'
+        feature_select_method = 'TopK'
         data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'load_breast_cancer.csv', header=0, index_col=0).T
         '''
         x, y = sur_data_process(data)
@@ -62,39 +65,56 @@ def survival_oc_result(request):
         features = cox_selection(x2.values, y2, x2.columns)
         x3 = x2[features]
         train_index, test_index = sur_RSKFold(x3, y2)
-        import time
-        selected_feature, max_scores = [], []
-        for each_model in sur_models:
-            start = time.perf_counter()
-            sf, ms = FSS_fun(features, each_model, x3, y2, cv, n_jobs=6)
-            selected_feature.append(sf), max_scores.append(ms)
-            end = time.perf_counter()
-            print(round(end - start, 3))
+        if feature_select_method != 'TopK':
+            selected_feature, max_scores = [], []
+            for each_model in sur_models:
+                start = time.perf_counter()
+                sf, ms = FSS_fun(features, each_model, x3, y2, cv, n_jobs=6)
+                selected_feature.append(sf), max_scores.append(ms)
+                end = time.perf_counter()
+                print(round(end - start, 3))
+
+
+
+            max_indexs, max_score, max_features = [], [], []
+            for i in range(len(max_scores)):
+                max_index = np.array(max_scores[i]).argmax()
+                max_indexs.append(max_index)
+                max_score.append(max(max_scores[i]))
+                max_features.append(selected_feature[i][:max_index + 1])
+
+            test_accs, estimators, predicts = {}, {}, {}
+            for j in range(len(sur_names)):
+                preds, tests, res = [], [], []
+                start = time.perf_counter()
+                for i in range(len(train_index)):
+                    xtrain, ytrain = x3.iloc[train_index[i], :], y2[train_index[i]]
+                    xtest, ytest = x3.iloc[test_index[i], :], y2[test_index[i]]
+                    xtrain, xtest = xtrain[max_features[j]], xtest[max_features[j]]
+                    estimator, test_acc, predict = train_estimator(sur_models[j], xtrain, ytrain, xtest, ytest)
+                    tests.append(test_acc), res.append(estimator), preds.append(predict)
+                test_accs[j] = tests
+                estimators[j] = res
+                predicts[j] = preds
+                end = time.perf_counter()
+                print(sur_names[j], ':', round(end - start, 2))
+        else:
+            clf_nums, max_scores, max_indexs = [], [], []
+            test_accs, estimators, mean_accs, predicts, f_names = {}, {}, {}, {}, {}
+            for i in range(len(sur_names)):
+                start = time.perf_counter()
+                clf_num, ms = pre_screening(x3, y2, sur_models[i], features)
+                clf_nums.append(clf_num)
+                max_scores.append(ms)
+                max_indexs.append(np.array(ms).argmax())
+                test_accs[i], estimators[i], mean_accs[i], predicts[i], f_names[i] = train_top3(sur_models[i], x3, y2,
+                                                                                                clf_num, train_index,
+                                                                                                test_index, features)
+                end = time.perf_counter()
+                print(round(end - start, 2))
+            max_features = f_names
 
         line_chart_data = mklinechart(max_scores, sur_names)
-
-        max_indexs, max_score, max_features = [], [], []
-        for i in range(len(max_scores)):
-            max_index = np.array(max_scores[i]).argmax()
-            max_indexs.append(max_index)
-            max_score.append(max(max_scores[i]))
-            max_features.append(selected_feature[i][:max_index + 1])
-
-        test_accs, estimators, predicts = {}, {}, {}
-        for j in range(len(sur_names)):
-            preds, tests, res = [], [], []
-            start = time.perf_counter()
-            for i in range(len(train_index)):
-                xtrain, ytrain = x3.iloc[train_index[i], :], y2[train_index[i]]
-                xtest, ytest = x3.iloc[test_index[i], :], y2[test_index[i]]
-                xtrain, xtest = xtrain[max_features[j]], xtest[max_features[j]]
-                estimator, test_acc, predict = train_estimator(sur_models[j], xtrain, ytrain, xtest, ytest)
-                tests.append(test_acc), res.append(estimator), preds.append(predict)
-            test_accs[j] = tests
-            estimators[j] = res
-            predicts[j] = preds
-            end = time.perf_counter()
-            print(sur_names[j], ':', round(end - start, 2))
 
         test_acc_reports = pd.DataFrame(data=test_accs)
         test_acc_reports.columns = sur_names
@@ -195,7 +215,7 @@ def survival_oc_result(request):
         vsubplot_sur = surv_pickle['vsubplot_sur']
         vpara_dict = surv_pickle['vpara_dict']
         vlinedata = surv_pickle['vlinedata']
-
+        print(test_acc_reports_dict)
     return render(request, 'survival_oc_result.html', {
         'projectid': projectid,
         'line_chart_data': json.dumps(line_chart_data),
@@ -282,6 +302,41 @@ def train_estimator(clf,xtrain,ytrain,xtest,ytest):
     test_acc = res.score(xtest,ytest)
     return res,test_acc,predict
 
+#初筛
+def pre_screening(data2,label,model,features):
+    #第一步筛选
+    cv = KFold(n_splits=10, shuffle=True, random_state=10)
+    feature_names = features
+    data2 = data2[feature_names].to_numpy()
+    #ifs方法得到前三分类器选择的特征数
+    clf = copy.deepcopy(model)
+    cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,n_jobs=4).mean() for i in range(1,21)]
+    clf_num = list(pd.DataFrame(cv_scores).iloc[:,0].sort_values(ascending=False).index[:3]+1)
+    return clf_num, cv_scores
+
+def train_top3(clf,data,label,clf_num,train_index,test_index,feature_names):
+    test_accs,estimators,predicts,f_names = {},{},{},{}
+    mean_accs = []
+    for j in range(len(clf_num)):    #top3分类器
+        preds,tests,res,f_name = [],[],[],[]
+        for i in range(len(train_index)):
+            xtrain,ytrain = data.iloc[train_index[i],:],label[train_index[i]]
+            xtest,ytest = data.iloc[test_index[i],:],label[test_index[i]]
+            xtrain,xtest = xtrain.loc[:,feature_names[:clf_num[j]]],xtest.loc[:,feature_names[:clf_num[j]]]
+            estimator,test_acc,predict = train_estimator(clf,xtrain,ytrain,xtest,ytest)
+            tests.append(test_acc),res.append(estimator),preds.append(predict)
+        mean_accs.append(np.mean(tests))
+        test_accs[clf_num[j]] = tests
+        estimators[clf_num[j]] = res
+        predicts[clf_num[j]] = preds
+        f_names[clf_num[j]] = feature_names[:clf_num[j]]
+    #选择得分最高的topk
+    topk = clf_num[mean_accs.index(max(mean_accs))]
+    test_accs = test_accs[topk]
+    estimators = estimators[topk]
+    predicts = predicts[topk]
+    f_names = f_names[topk]
+    return test_accs,estimators,mean_accs,predicts,f_names
 '''
 plot data
 '''

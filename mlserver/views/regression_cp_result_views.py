@@ -30,7 +30,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5, df2bp
+from mlserver.views.classification_oc_result_views import get_file_md5
 from mlserver.views.regression_oc_result_views import mkvregpredplot, mkvreportbarplot, JsonEncoder
 from mlserver.views.classification_cp_result_views import md5_convert
 from mlserver.views.survival_cp_result_views import surv_para_group
@@ -693,3 +693,18 @@ def reg_cust_val(est, vdata, vlabel, features, reg_model_name):
     validate_mse = mean_squared_error(vlabel,validate_predict)
     val_report = pd.DataFrame({'R-square':validate_r2,'MAE':validate_mae,'MSE':validate_mse},index=[reg_model_name])
     return val_report
+
+def df2bp(df):
+    data = []
+    i=0
+    for col in df.columns:
+        trace = {
+            'type': 'box',
+            'name': col,
+            'y': df[col].to_list(),
+            'xaxis': 'x' + str(i + 1),
+            'yaxis': 'y' + str(i + 1)
+        }
+        i += 1
+        data.append(trace)
+    return data
