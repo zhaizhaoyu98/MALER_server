@@ -372,10 +372,10 @@ def select_sur_model(request):
         select_model_name = 'SurvivalSVM'
         kernel, optimizer, alpha, degree, gamma, coef0 = request.POST.get('survivalsvm_kernel'), \
                                                         request.POST.get('survivalsvm_optimizer'), \
-                                                        request.POST.get('survivalsvm_alpha'), \
-                                                        request.POST.get('survivalsvm_degree'), \
+                                                        int(request.POST.get('survivalsvm_alpha')), \
+                                                        int(request.POST.get('survivalsvm_degree')), \
                                                         request.POST.get('survivalsvm_gamma'), \
-                                                        request.POST.get('survivalsvm_coef0')
+                                                        int(request.POST.get('survivalsvm_coef0'))
         if kernel == 'linear':
             select_model = Survival_svm(Kernel=kernel, Alpha=alpha, Optimizer=optimizer)
         elif kernel == 'ploy':

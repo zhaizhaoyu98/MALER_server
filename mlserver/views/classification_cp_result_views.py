@@ -4,8 +4,8 @@ import os, hashlib, shutil, pickle, time ,json, random, string ,copy
 import pandas as pd
 import numpy as np
 
-from sklearnex import patch_sklearn, unpatch_sklearn
-patch_sklearn()
+# from sklearnex import patch_sklearn, unpatch_sklearn
+# patch_sklearn()
 from sklearn.preprocessing import LabelEncoder, label_binarize
 from sklearn.feature_selection import SelectKBest, chi2, f_classif
 from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score, train_test_split

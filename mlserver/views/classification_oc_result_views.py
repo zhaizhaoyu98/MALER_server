@@ -4,8 +4,8 @@ import os, hashlib, shutil, pickle, time ,json
 import pandas as pd
 import numpy as np
 
-from sklearnex import patch_sklearn, unpatch_sklearn
-patch_sklearn()
+# from sklearnex import patch_sklearn, unpatch_sklearn
+# patch_sklearn()
 from sklearn.preprocessing import LabelEncoder, label_binarize
 from sklearn.feature_selection import SelectKBest, chi2, f_classif
 from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score
@@ -1073,12 +1073,16 @@ def get_file_md5(file_name):
 
 def df2bp(df):
     data = []
+    i=0
     for col in df.columns:
         trace = {
             'type': 'box',
             'name': col,
-            'y': df[col].to_list()
+            'y': df[col].to_list(),
+            'xaxis': 'x' + str(i + 1),
+            'yaxis': 'y' + str(i + 1)
         }
+        i += 1
         data.append(trace)
     return data
 

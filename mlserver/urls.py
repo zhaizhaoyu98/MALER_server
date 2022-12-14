@@ -25,6 +25,7 @@ urlpatterns=[
     # regression
     path('regression_oc_result', regression_oc_result_views.regression_oc_result),
     path('regression_cp_result', regression_cp_result_views.regression_cp_result),
+    path('regression_cp_result/<str:projectid_paramd5>', regression_cp_result_views.show_prev_page),
     # survival
     path('survival_oc_result', survival_oc_result_views.survival_oc_result),
     path('survival_cp_result', survival_cp_result_views.survival_cp_result),

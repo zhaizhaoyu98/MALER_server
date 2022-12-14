@@ -71,11 +71,11 @@ def regression_oc_result(request):
         if feature_select_method == 'TopK':
             clf_nums, cv_scores = [], []
             test_accs, estimators, mean_accs, predicts, max_features = {}, {}, {}, {}, {}
-            for i in range(1, len(models)):
+            for i in range(len(models)):
                 start = time.perf_counter()
                 clf_num, ms = pre_screening(nordata4, nor_age4, models[i], features, cv)
                 clf_nums.append(clf_num), cv_scores.append(ms)
-                print('model num', i)
+                # print('model num', i)
                 test_accs[i], estimators[i], mean_accs[i], predicts[i], max_features[i] = train_top3(models[i],nordata4, nor_age4,clf_num,train_index,test_index,features)
                 end = time.perf_counter()
                 print(round(end - start, 2))
@@ -218,6 +218,7 @@ def regression_oc_result(request):
         vregpred_trace = mkvregpredplot(validate_predicts, vaildation_label, models_str=models_str)
         vreport_trace = mkvreportbarplot(val_report)
 
+        val_report = np.round(val_report, 3)
         val_report = val_report.reset_index().rename(columns={'index': 'Method'})
         val_report_dict = val_report.to_dict('records')
 
@@ -251,7 +252,7 @@ def regression_oc_result(request):
         vreport_trace = reg_pickle['vreport_trace']
         val_report_dict = reg_pickle['val_report_dict']
 
-
+        print(vregpred_trace)
     return render(request, 'regression_oc_result.html', {
         'projectid': projectid,
         'line_chart_data': json.dumps(line_chart_data),
@@ -260,8 +261,8 @@ def regression_oc_result(request):
         'MAE_report_dict': json.dumps(MAE_report_dict),
         'MSE_report_dict': json.dumps(MSE_report_dict),
         'final_reports_dict': json.dumps(final_reports_dict),
-        'vregpred_trace': json.dumps(vregpred_trace),
-        'vreport_trace': json.dumps(vreport_trace),
+        'vregpred_trace': json.dumps(vregpred_trace,ensure_ascii=False, cls=JsonEncoder),
+        'vreport_trace': json.dumps(vreport_trace,ensure_ascii=False, cls=JsonEncoder),
         'val_report_dict': json.dumps(val_report_dict),
     })
 
@@ -316,8 +317,8 @@ def train_top3(clf,data,label,clf_num,train_index,test_index,feature_names):
             xtrain,ytrain = data.iloc[train_index[i],:],label[train_index[i]]
             xtest,ytest = data.iloc[test_index[i],:],label[test_index[i]]
             xtrain,xtest = xtrain.loc[:,feature_names[:clf_num[j]]],xtest.loc[:,feature_names[:clf_num[j]]]
-            print(i)
-            print(len(ytrain))
+            # print(i)
+            # print(len(ytrain))
             estimator,test_acc,predict = train_estimator(clf,xtrain,ytrain,xtest,ytest)
             tests.append(test_acc),res.append(estimator),preds.append(predict)
         mean_accs.append(np.mean(tests))
@@ -426,21 +427,21 @@ def mkvregpredplot(validate_predicts, vaildation_label, models_str=models_str):
             legendshow = True
         else:
             legendshow = False
-        sub_tracev = subplot_trace(x, vaildation_label, 'Actual', index, legendshow, models_str[i])
-        sub_tracep = subplot_trace(x, validate_predicts[i], 'Predicted', index, legendshow, models_str[i])
+        sub_tracev = subplot_trace(x, vaildation_label, 'Actual', index, legendshow, models_str[i], '#1f77b4')
+        sub_tracep = subplot_trace(x, validate_predicts[i], 'Predicted', index, legendshow, models_str[i], '#fd7e14')
         trace.append(sub_tracev)
         trace.append(sub_tracep)
     return trace
 
 
-def subplot_trace(x, y, name, index, legendshow, model_name):
+def subplot_trace(x, y, name, index, legendshow, model_name, color):
     trace = {
-        # 'line': {
-        #     'dash': 'solid',
-        #     'color': 'red',
-        #     'shape': 'hv',
-        #     'width': 2
-        # },
+        'line': {
+            'dash': 'solid',
+            'color': color,
+            # 'shape': 'hv',
+            # 'width': 2
+        },
         'mode': 'lines',
         'name': name,
         'type': 'scatter',
@@ -459,14 +460,14 @@ def mkvreportbarplot(val_report):
     if 'Method' in val_report.columns:
         val_report = val_report.set_index('Method')
     trace = []
-    j = 1
+    j = 0
     for i in val_report.index:
-        x = val_report.columns
-        y = val_report.loc[i, :]
+        x = list(val_report.columns)
+        y = list(val_report.loc[i, :])
         subtrace = {
             'x': x,
             'y': y,
-            'mode': 'bar',
+            'type': 'bar',
             'xaxis': 'x' + str(j + 1),
             'yaxis': 'y' + str(j + 1),
             'showlegend': False
@@ -474,3 +475,14 @@ def mkvreportbarplot(val_report):
         j += 1
         trace.append(subtrace)
     return trace
+
+class JsonEncoder(json.JSONEncoder):
+    """Convert numpy classes to JSON serializable objects."""
+
+    def default(self, obj):
+        if isinstance(obj, (np.integer, np.floating, np.bool_)):
+            return obj.item()
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        else:
+            return super(JsonEncoder, self).default(obj)
