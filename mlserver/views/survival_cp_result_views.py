@@ -311,7 +311,6 @@ def survival_cp_result(request):
         'vlinedata': json.dumps(vlinedata),
     })
 
-
 def show_prev_page(request, projectid_paramd5):
     projectid = projectid_paramd5.split('_')[0]
     paramd5 = projectid_paramd5.split('_')[1]
