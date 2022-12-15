@@ -19,7 +19,7 @@ from mlserver.views.classification_oc_result_views import get_file_md5, df2bp
 from mlserver.views.classification_cp_result_views import md5_convert
 from mlserver.views.survival_oc_result_views import sur_data_process, cox_selection, \
     sur_RSKFold, FSS_fun, train_estimator, mk_surv_data,mk_surv_layout, time_dependent_auc, \
-    mk_auc_line
+    mk_auc_line, pre_screening, train_top3
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -79,21 +79,27 @@ def survival_cp_result(request):
         # features,ss2 = cox_selection(x2,y2)
         x3 = x2[features]
         train_index, test_index = sur_RSKFold(x3, y2)
+        if feature_select_method != 'TopK':
+            sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=6)
+            max_index = np.array(ms).argmax()
+            max_score = max(ms)
+            max_features = (sf[:max_index + 1])
 
-        sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=6)
-        max_index = np.array(ms).argmax()
-        max_score = max(ms)
-        max_features = (sf[:max_index + 1])
+
+            preds, tests, res = [], [], []
+            for i in range(len(train_index)):
+                xtrain, ytrain = x3.iloc[train_index[i], :], y2[train_index[i]]
+                xtest, ytest = x3.iloc[test_index[i], :], y2[test_index[i]]
+                xtrain, xtest = xtrain[max_features], xtest[max_features]
+                estimator, test_acc, predict = train_estimator(sur_model, xtrain, ytrain, xtest, ytest)
+                tests.append(test_acc), res.append(estimator), preds.append(predict)
+        else:
+            clf_num, ms = pre_screening(x3, y2, sur_model, features)
+            tests, estimators, mean_accs, preds, res = train_top3(sur_model, x3, y2, clf_num, train_index,
+                                                                             test_index, features)
+            max_features = res
         tmodels = copy.deepcopy(sur_model)
         tmodels.fit(x3[max_features], y2)
-
-        preds, tests, res = [], [], []
-        for i in range(len(train_index)):
-            xtrain, ytrain = x3.iloc[train_index[i], :], y2[train_index[i]]
-            xtest, ytest = x3.iloc[test_index[i], :], y2[test_index[i]]
-            xtrain, xtest = xtrain[max_features], xtest[max_features]
-            estimator, test_acc, predict = train_estimator(sur_model, xtrain, ytrain, xtest, ytest)
-            tests.append(test_acc), res.append(estimator), preds.append(predict)
 
         test_acc_reports = pd.DataFrame(data=tests)
         test_acc_reports.columns = [sur_model_name]
@@ -108,7 +114,7 @@ def survival_cp_result(request):
             'mode': 'lines+markers',
             'name': sur_model_name,
             'type': 'scatter',
-            'x': list(range(1, 50)),
+            'x': list(range(1, len(ms)+1)),
             'y': ms
         }
         line_chart_data.append(line_trace)
@@ -182,18 +188,12 @@ def survival_cp_result(request):
         # features,ss2 = cox_selection(x2,y2)
         x3 = x2[features]
         train_index, test_index = sur_RSKFold(x3, y2)
+        if feature_select_method != 'TopK':
+            sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=6)
+            max_index = np.array(ms).argmax()
+            max_score = max(ms)
+            max_features = (sf[:max_index + 1])
 
-        sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=6)
-        max_index = np.array(ms).argmax()
-        max_score = max(ms)
-        max_features = (sf[:max_index + 1])
-        tmodels = copy.deepcopy(sur_model)
-        tmodels.fit(x3[max_features], y2)
-
-        select_str = feature_select_method + sur_model_name + str(tmodels.get_params())
-        select_md5 = md5_convert(select_str)[:6]
-
-        if select_md5 not in cp_cache.keys():
             preds, tests, res = [], [], []
             for i in range(len(train_index)):
                 xtrain, ytrain = x3.iloc[train_index[i], :], y2[train_index[i]]
@@ -201,6 +201,19 @@ def survival_cp_result(request):
                 xtrain, xtest = xtrain[max_features], xtest[max_features]
                 estimator, test_acc, predict = train_estimator(sur_model, xtrain, ytrain, xtest, ytest)
                 tests.append(test_acc), res.append(estimator), preds.append(predict)
+        else:
+            clf_num, ms = pre_screening(x3, y2, sur_model, features)
+            tests, estimators, mean_accs, preds, res = train_top3(sur_model, x3, y2, clf_num, train_index,
+                                                                  test_index, features)
+            max_features = res
+
+        tmodels = copy.deepcopy(sur_model)
+        tmodels.fit(x3[max_features], y2)
+
+        select_str = feature_select_method + sur_model_name + str(tmodels.get_params())
+        select_md5 = md5_convert(select_str)[:6]
+
+        if select_md5 not in cp_cache.keys():
 
             test_acc_reports = pd.DataFrame(data=tests)
             test_acc_reports.columns = [sur_model_name]
@@ -215,7 +228,7 @@ def survival_cp_result(request):
                 'mode': 'lines+markers',
                 'name': sur_model_name,
                 'type': 'scatter',
-                'x': list(range(1, 50)),
+                'x': list(range(1, len(ms)+1)),
                 'y': ms
             }
             line_chart_data.append(line_trace)

@@ -69,7 +69,10 @@ def survival_oc_result(request):
             selected_feature, max_scores = [], []
             for each_model in sur_models:
                 start = time.perf_counter()
-                sf, ms = FSS_fun(features, each_model, x3, y2, cv, n_jobs=6)
+                if feature_select_method == 'FSS':
+                    sf, ms = FSS_fun(features, each_model, x3, y2, cv, n_jobs=6)
+                else:
+                    sf, ms = BSS_fun(features, each_model, x3, y2, cv, n_jobs=6)
                 selected_feature.append(sf), max_scores.append(ms)
                 end = time.perf_counter()
                 print(round(end - start, 3))
@@ -293,6 +296,28 @@ def FSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
         selected_feature.append(feature_names2[max_index])
         feature_names2.remove(feature_names2[max_index])
 
+    return selected_feature,max_scores
+
+def BSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
+    feature_names2 = list(feature_names)
+    selected_feature = []
+    max_scores = []
+    for i in range(49):
+        cv_scores = []
+        for feature in feature_names2:
+            train_feature = feature_names2[:] #切片，独立于原列表
+            train_feature.remove(feature)
+            data1 = pd.DataFrame(data.loc[:,train_feature])
+            cv_score = cross_val_score(clf,data1,label,cv=cv,n_jobs=n_jobs).mean()
+            cv_scores.append(cv_score)
+        max_index = np.array(cv_scores).argmax()
+        max_score = max(cv_scores)
+        max_scores.append(max_score)
+        selected_feature.append(feature_names2[max_index])
+        del feature_names2[max_index]
+    selected_feature.append(feature_names2[0])
+    selected_feature.reverse() #反向排序
+    max_scores.reverse()
     return selected_feature,max_scores
 
 def train_estimator(clf,xtrain,ytrain,xtest,ytest):
