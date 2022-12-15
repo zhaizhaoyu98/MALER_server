@@ -16,7 +16,7 @@ from lifelines.statistics import logrank_test
 
 from ML_WebServer.settings import STATIC_ROOT
 from mlserver.views.classification_oc_result_views import get_file_md5, df2bp
-from mlserver.views.classification_cp_result_views import md5_convert
+from mlserver.views.classification_cp_result_views import md5_convert, surv_para_group
 from mlserver.views.survival_oc_result_views import sur_data_process, cox_selection, \
     sur_RSKFold, FSS_fun, train_estimator, mk_surv_data,mk_surv_layout, time_dependent_auc, \
     mk_auc_line, pre_screening, train_top3
@@ -447,20 +447,4 @@ def select_sur_model(request):
                                                  N_estimators=n_estimators, Learning_rate=learning_rate)
     return select_model, select_model_name
 
-def surv_para_group(max_depth, min_samples_split, min_samples_leaf, max_features):
-    if max_depth == '': max_depth = None
-    if max_depth != None: max_depth = np.int(max_depth)
-    if max_features == '': max_features = None
-    if max_features != 'auto' and max_features != 'sqrt' and max_features != 'log2' and max_features != None:
-        max_features = np.float(max_features)
-    # min_samples_leaf must be at least 1 or in (0, 0.5]
-    if 0 < np.float(min_samples_leaf) <= 0.5:
-        min_samples_leaf = np.float(min_samples_leaf)
-    elif 1 <= np.float(min_samples_leaf):
-        min_samples_leaf = np.int(min_samples_leaf)
-    # min_samples_split must be an integer greater than 1 or a float in (0.0, 1.0]
-    if 0 < np.float(min_samples_split) <= 1.0:
-        min_samples_split = np.float(min_samples_split)
-    elif 1 <= np.float(min_samples_split):
-        min_samples_split = np.int(min_samples_split)
-    return max_depth, min_samples_split, min_samples_leaf, max_features
+

@@ -9,7 +9,7 @@ import numpy as np
 from sklearn.preprocessing import LabelEncoder, label_binarize
 from sklearn.feature_selection import SelectKBest, chi2, f_classif
 from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score, train_test_split
-from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import GaussianNB,BernoulliNB,ComplementNB,MultinomialNB
 from sklearn.ensemble import AdaBoostClassifier, GradientBoostingClassifier
 from sklearn.ensemble import RandomForestClassifier as RFC
 from sklearn.neighbors import KNeighborsClassifier
@@ -28,12 +28,6 @@ warnings.filterwarnings("ignore")
 title = ["Naive Bayes","SVM","RandomForest","Logistic","KNN","XGBoost","lightGBM",'Adaboost',"DecisionTree","GBDT"]
 
 def result(request):
-
-    # model
-    model = [GaussianNB(), SVC(cache_size=5000, probability=False), RFC(n_jobs=4, random_state=10),
-             LR(max_iter=5000, n_jobs=4), KNeighborsClassifier(n_jobs=4), XGBClassifier(n_jobs=7, random_state=10),
-             LGBMClassifier(importance_type='gain', n_jobs=4), AdaBoostClassifier(),
-             DecisionTreeClassifier(random_state=10), GradientBoostingClassifier(random_state=10)]
 
     # Feature selection methods
     feature_select_method = request.POST.get('feature_select_method')
@@ -655,6 +649,213 @@ def get_cp_combination(request):
     }))
 
 '''
+MODEL FUNCTIONS
+'''
+def svm(kernels='rbf',degrees=3,c=1,coef=0,Gamma = 'scale',):
+    clf = SVC(kernel=kernels,degree=degrees,cache_size=5000,random_state=10,
+              probability=False,max_iter=1000,C=c,coef0=coef,gamma=Gamma)
+    return clf
+
+def naivebayes(name,Alpha=1.0):
+    naivebayes_model = {'GaussianNB':GaussianNB(),
+                       'BernoulliNB':BernoulliNB(alpha=Alpha),
+                       'ComplementNB':ComplementNB(alpha=Alpha),
+                       'MultinomialNB':MultinomialNB(alpha=Alpha),}
+    return naivebayes_model[name]
+
+def kneighbors(Weight='uniform',N_neighbors=5,P=2,Agorithm='auto',Metric='minkowski',Leaf_size=30):
+    knn = KNeighborsClassifier(n_jobs=4,weights=Weight,n_neighbors=N_neighbors,p=P,algorithm=Agorithm,
+                              metric=Metric,leaf_size=Leaf_size)
+    return knn
+
+def logistic_reg(Penalty='l2',CC=1.0,Fit_intercept=True,Solver='lbfgs',L1_ratio=0.5):
+    lr = LR(random_state=10,penalty=Penalty,C=CC,fit_intercept=Fit_intercept,solver=Solver,
+            n_jobs=4,max_iter=1000,l1_ratio=L1_ratio)
+    return lr
+
+def decisiontree(Criterion='gini',Splitter='best',Max_depth=None,Min_samples_split=2,Min_samples_leaf=1,Max_features=None):
+    dt = DecisionTreeClassifier(random_state=10,criterion=Criterion,splitter=Splitter,max_depth=Max_depth,
+                            min_samples_split=Min_samples_split,min_samples_leaf=Min_samples_leaf,max_features=Max_features)
+    return dt
+
+def randomforest(Criterion='gini',Max_depth=None,Min_samples_split=2,Min_samples_leaf=1,Max_features='auto',N_estimators=100):
+    rf = RFC(random_state=10,criterion=Criterion,max_depth=Max_depth,n_jobs=4,max_features=Max_features,
+             min_samples_split=Min_samples_split,min_samples_leaf=Min_samples_leaf,n_estimators=N_estimators)
+    return rf
+
+def xgboost(Learning_rate=0.3,N_estimators=100,Min_child_weight=1,Subsample=1,Colsample_bytree=1,
+                   Gamma=0,Reg_alpha=1,Reg_lambda=1):
+    xgb = XGBClassifier(learning_rate=Learning_rate,n_estimators=N_estimators,min_child_weight=Min_child_weight,
+                        subsample=Subsample,colsample_bytree=Colsample_bytree,gamma=Gamma,reg_alpha=Reg_alpha,
+                        reg_lambda=Reg_lambda,n_jobs=4,random_state=10)
+    return xgb
+
+def lightgbm(Boosting_type='gbdt',N_estimators=100,Min_child_samples=20,Reg_alpha=0,Reg_lambda=0,Subsample=1,
+             Colsample_bytree=1,Num_leaves=31,Max_bin=255,Learning_rate=0.1):
+    lgbm = LGBMClassifier(boosting_type=Boosting_type,n_estimators=N_estimators,min_child_samples=Min_child_samples,
+                      reg_alpha=Reg_alpha,reg_lambda=Reg_lambda,subsample=Subsample,colsample_bytree=Colsample_bytree,
+                      num_leaves=Num_leaves,max_bin=Max_bin,random_state=10,n_jobs=4,learning_rate=Learning_rate)
+    return lgbm
+
+def adaboost(N_estimators=50, Learning_rate=1.0,Algorithm='SAMME.R',Max_depth=1):
+    ada_clf = AdaBoostClassifier(base_estimator=DecisionTreeClassifier(max_depth=Max_depth),n_estimators=N_estimators,
+                                 learning_rate=Learning_rate,algorithm=Algorithm,random_state=10)
+    return ada_clf
+
+def gbdt(Loss='deviance',Learning_rate=0.1,Subsample=1.0,Criterion='friedman_mse',Min_samples_split=2,Max_features='auto',
+         Min_samples_leaf=1,Max_depth=3,Validation_fraction=0.1,N_iter_no_change=None,N_estimators=100):
+    gbdt_clf = GradientBoostingClassifier(loss=Loss,learning_rate=Learning_rate,subsample=Subsample,criterion=Criterion,
+                                    min_samples_split=Min_samples_split,min_samples_leaf=Min_samples_leaf,max_depth=Max_depth,max_features=Max_features,
+                                    validation_fraction=Validation_fraction,n_iter_no_change=N_iter_no_change,
+                                    n_estimators=N_estimators,random_state=10)
+    return gbdt_clf
+'''
+METHODS
+'''
+def select_class_model(request):
+    select_child_model = request.POST.get('select_child_model').replace('task_', '')
+    if select_child_model == 'naivebayes':
+        select_model_name = 'Naive Bayes'
+        alpha, name = float(request.POST.get('naivebayes_alpha')), request.POST.get('naivebayes_name')
+        select_model = naivebayes(name,Alpha=alpha)
+    elif select_child_model == 'svm':
+        select_model_name = 'SVM'
+        kernel, c, degree, coef, gamma = request.POST.get('svm_kernel'), \
+                                         int(request.POST.get('svm_c')), \
+                                         int(request.POST.get('svm_degree')), \
+                                         int(request.POST.get('svm_coef')), \
+                                         request.POST.get('svm_gamma')
+        select_model = svm(kernels=kernel,degrees=degree,c=c,coef=coef,Gamma=gamma)
+    elif select_child_model == 'randomforest':
+        select_model_name = 'RandomForest'
+        criterion, max_depth, max_features, min_samples_split, \
+        min_samples_leaf, n_estimators = request.POST.get('randomforest_criterion'), \
+                                           request.POST.get('randomforest_max_depth'), \
+                                           request.POST.get('randomforest_max_features'), \
+                                           request.POST.get('randomforest_min_samples_split'), \
+                                           request.POST.get('randomforest_min_samples_leaf'), \
+                                           int(request.POST.get('randomforest_n_estimators'))
+        max_depth, min_samples_split, min_samples_leaf, max_features = \
+            surv_para_group(max_depth, min_samples_split, min_samples_leaf, max_features)
+        select_model = randomforest(Criterion=criterion,Max_depth=max_depth,Min_samples_split=min_samples_split,
+                                    Min_samples_leaf=min_samples_leaf,Max_features=max_features,
+                                    N_estimators=n_estimators)
+
+    elif select_child_model == 'logistic':
+        select_model_name = 'Logistic'
+        penalty, solver, fit_intercept, C, l1_ratio = request.POST.get('logistic_penalty'), \
+                                                        request.POST.get('logistic_solver'), \
+                                                        bool(request.POST.get('logistic_fit_intercept')), \
+                                                        request.POST.get('logistic_C'), \
+                                                        request.POST.get('logistic_l1_ratio')
+        if penalty == 'None': penalty = None
+        if penalty == 'elasticnet':
+            l1_ratio = float(l1_ratio)
+            select_model = logistic_reg(Penalty=penalty, CC=C, Fit_intercept=fit_intercept, Solver=solver, L1_ratio=l1_ratio)
+        else:
+            select_model = logistic_reg(Penalty=penalty, CC=C, Fit_intercept=fit_intercept, Solver=solver)
+    elif select_child_model == 'knn':
+        select_model_name = 'KNN'
+        algorithm, metric, weights, n_neighbors, leaf_size, p = request.POST.get('knn_algorithm'), \
+                                                                request.POST.get('knn_metric'), \
+                                                                request.POST.get('knn_weights'), \
+                                                                int(request.POST.get('knn_n_neighbors')), \
+                                                                request.POST.get('knn_leaf_size'), \
+                                                                request.POST.get('knn_p')
+
+        if algorithm == 'ball_tree' or algorithm == 'kd_tree':
+            leaf_size = int(leaf_size)
+            if metric == 'minkowski':
+                p = int(p)
+                select_model = kneighbors(Weight=weights, N_neighbors=n_neighbors, P=p, Agorithm=algorithm,
+                                          Metric=metric, Leaf_size=leaf_size)
+            else:
+                select_model = kneighbors(Weight=weights, N_neighbors=n_neighbors, Agorithm=algorithm,
+                                          Metric=metric, Leaf_size=leaf_size)
+        else:
+            if metric == 'minkowski':
+                p = int(p)
+                select_model = kneighbors(Weight=weights, N_neighbors=n_neighbors, P=p, Agorithm=algorithm,
+                                          Metric=metric)
+            else:
+                select_model = kneighbors(Weight=weights, N_neighbors=n_neighbors, Agorithm=algorithm,
+                                          Metric=metric)
+
+    elif select_child_model == 'xgboost':
+        select_model_name = 'XGBoost'
+        learning_rate, n_estimators,min_child_weight, subsample, colsample_bytree, Gamma, \
+        reg_alpha, reg_lambda = float(request.POST.get('xgboost_learning_rate')), \
+                                int(request.POST.get('xgboost_n_estimators')), \
+                                int(request.POST.get('xgboost_min_child_weight')), \
+                                int(request.POST.get('xgboost_subsample')), \
+                                int(request.POST.get('xgboost_colsample_bytree')), \
+                                int(request.POST.get('xgboost_Gamma')), \
+                                int(request.POST.get('xgboost_reg_alpha')), \
+                                int(request.POST.get('xgboost_reg_lambda'))
+        select_model = xgboost(Learning_rate=learning_rate,N_estimators=n_estimators,Min_child_weight=min_child_weight,
+                               Subsample=subsample,Colsample_bytree=colsample_bytree,Gamma=Gamma,Reg_alpha=reg_alpha,
+                               Reg_lambda=reg_lambda)
+    elif select_child_model == 'lightgbm':
+        select_model_name = 'lightGBM'
+        boosting_type, reg_alpha, reg_lambda, min_child_samples, subsample, colsample_bytree, learning_rate, n_estimators, \
+        num_leaves, max_bin = request.POST.get('lightgbm_boosting_type'), \
+                                float(request.POST.get('lightgbm_reg_alpha')), \
+                                float(request.POST.get('lightgbm_reg_lambda')), \
+                                int(request.POST.get('lightgbm_min_child_samples')), \
+                                float(request.POST.get('lightgbm_subsample')), \
+                                float(request.POST.get('lightgbm_colsample_bytree')), \
+                                float(request.POST.get('lightgbm_learning_rate')), \
+                                int(request.POST.get('lightgbm_n_estimators')), \
+                                int(request.POST.get('lightgbm_num_leaves')), \
+                                int(request.POST.get('lightgbm_max_bin'))
+        select_model = lightgbm(Boosting_type=boosting_type,N_estimators=n_estimators,
+                                Min_child_samples=min_child_samples,Reg_alpha=reg_alpha,Reg_lambda=reg_lambda,
+                                Subsample=subsample,Colsample_bytree=colsample_bytree,Num_leaves=num_leaves,
+                                Max_bin=max_bin,Learning_rate=learning_rate)
+    elif select_child_model == 'adaboost':
+        select_model_name = 'Adaboost'
+        algorithm, n_estimators, learning_rate, max_depth = request.POST.get('adaboost_algorithm'), \
+                                                             int(request.POST.get('adaboost_n_estimators')), \
+                                                             float(request.POST.get('adaboost_learning_rate')), \
+                                                             int(request.POST.get('adaboost_max_depth'))
+        select_model = adaboost(N_estimators=n_estimators, Learning_rate=learning_rate,Algorithm=algorithm,Max_depth=max_depth)
+    elif select_child_model == 'decisiontree':
+        select_model_name = 'DecisionTree'
+        criterion, splitter, max_depth, min_samples_split, min_samples_leaf, max_features = \
+                                                        request.POST.get('decisiontree_criterion'),\
+                                                        request.POST.get('decisiontree_splitter'), \
+                                                        request.POST.get('decisiontree_max_depth'), \
+                                                        request.POST.get('decisiontree_min_samples_split'), \
+                                                        request.POST.get('decisiontree_min_samples_leaf'), \
+                                                        request.POST.get('decisiontree_max_features')
+        max_depth, min_samples_split, min_samples_leaf, max_features = \
+            surv_para_group(max_depth, min_samples_split, min_samples_leaf, max_features)
+        select_model = decisiontree(Criterion=criterion,Splitter=splitter,Max_depth=max_depth,
+                                    Min_samples_split=min_samples_split,Min_samples_leaf=min_samples_leaf,
+                                    Max_features=max_features)
+    else:
+        select_model_name = 'GBDT'
+        criterion, loss, learning_rate, subsample, min_samples_split, min_samples_leaf, max_depth, max_features, \
+        n_estimators, validation_fraction, n_iter_no_change = request.POST.get('gbdt_criterion'), \
+                                                                             request.POST.get('gbdt_loss'), \
+                                                                             float(request.POST.get('gbdt_learning_rate')), \
+                                                                             float(request.POST.get('gbdt_subsample')), \
+                                                                             request.POST.get('gbdt_min_samples_split'), \
+                                                                             request.POST.get('gbdt_min_samples_leaf'), \
+                                                                             request.POST.get('gbdt_max_depth'), \
+                                                                             request.POST.get('gbdt_max_features'), \
+                                                                             int(request.POST.get('gbdt_n_estimators')), \
+                                                                             float(request.POST.get('gbdt_validation_fraction')), \
+                                                                             request.POST.get('gbdt_n_iter_no_change')
+        if n_iter_no_change == '': n_iter_no_change = None
+        max_depth, min_samples_split, min_samples_leaf, max_features = \
+            surv_para_group(max_depth, min_samples_split, min_samples_leaf, max_features)
+        select_model = gbdt(Loss=loss,Learning_rate=learning_rate,Subsample=subsample,
+                            Criterion=criterion,Min_samples_split=min_samples_split,Max_features=max_features,
+                            Min_samples_leaf=min_samples_leaf,Max_depth=max_depth,Validation_fraction=validation_fraction,
+                            N_iter_no_change=None,N_estimators=n_estimators)
+    return select_model, select_model_name
+'''
 ml function
 '''
 #预处理部分
@@ -687,10 +888,10 @@ def RSKFold (data,label,n=10,k=5):
 
 #SVM分类器
 #kernel = rbf linear poly sigmoid
-def svm(kernels='rbf',degrees=3,c=1,coef=0,max_iters=100):
-    clf = SVC(kernel=kernels,degree=degrees,cache_size=5000,random_state=10,
-              probability=False,max_iter=max_iters,C=c,coef0=coef)
-    return clf
+# def svm(kernels='rbf',degrees=3,c=1,coef=0,max_iters=100):
+#     clf = SVC(kernel=kernels,degree=degrees,cache_size=5000,random_state=10,
+#               probability=False,max_iter=max_iters,C=c,coef0=coef)
+#     return clf
 #初筛
 def pre_screening(data2,label,model,features,cv=2):
     #第一步筛选
@@ -940,22 +1141,13 @@ def get_svc_model(request):
     degree = request.POST.get('svm_degree')
     coef = request.POST.get('svm_coef')
     if kernel == 'linear' or kernel == 'rbf':
-        if c == '':
-            c = 1
+        c = int(c)
         svc = svm(kernels=kernel, c=c, max_iters=500)
     elif kernel == 'poly':
-        if c == '':
-            c = 1
-        if degree == '':
-            degree = 2
-        if coef == '':
-            coef = 0
+        c, degree, coef = int(c),int(degree),int(coef)
         svc = svm(kernels=kernel, c=c, max_iters=500, coef=coef, degrees=degree)
     elif kernel == 'sigmoid':
-        if c == '':
-            c = 1
-        if coef == '':
-            coef = 0
+        c, coef = int(c),int(coef)
         svc = svm(kernels=kernel, c=c, max_iters=500, coef=coef)
     return svc
 
@@ -1043,4 +1235,20 @@ def valid_roc_info(clf_name,estimator,vdata,vlabel,max_features):
     # auc_mean_std.index = ['mean_auc', 'std_auc']
     return mean_FPR, mean_TPR_df, roc_auc
 
-
+def surv_para_group(max_depth, min_samples_split, min_samples_leaf, max_features):
+    if max_depth == '': max_depth = None
+    if max_depth != None: max_depth = np.int(max_depth)
+    if max_features == '': max_features = None
+    if max_features != 'auto' and max_features != 'sqrt' and max_features != 'log2' and max_features != None:
+        max_features = np.float(max_features)
+    # min_samples_leaf must be at least 1 or in (0, 0.5]
+    if 0 < np.float(min_samples_leaf) <= 0.5:
+        min_samples_leaf = np.float(min_samples_leaf)
+    elif 1 <= np.float(min_samples_leaf):
+        min_samples_leaf = np.int(min_samples_leaf)
+    # min_samples_split must be an integer greater than 1 or a float in (0.0, 1.0]
+    if 0 < np.float(min_samples_split) <= 1.0:
+        min_samples_split = np.float(min_samples_split)
+    elif 1 <= np.float(min_samples_split):
+        min_samples_split = np.int(min_samples_split)
+    return max_depth, min_samples_split, min_samples_leaf, max_features
