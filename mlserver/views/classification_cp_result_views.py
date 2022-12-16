@@ -853,7 +853,7 @@ def select_class_model(request):
         select_model = gbdt(Loss=loss,Learning_rate=learning_rate,Subsample=subsample,
                             Criterion=criterion,Min_samples_split=min_samples_split,Max_features=max_features,
                             Min_samples_leaf=min_samples_leaf,Max_depth=max_depth,Validation_fraction=validation_fraction,
-                            N_iter_no_change=None,N_estimators=n_estimators)
+                            N_iter_no_change=n_iter_no_change,N_estimators=n_estimators)
     return select_model, select_model_name
 '''
 ml function
