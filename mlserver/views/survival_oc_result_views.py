@@ -15,7 +15,7 @@ from sksurv.metrics import cumulative_dynamic_auc
 from lifelines.statistics import logrank_test
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5, df2bp
+from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, mklinechart
 # from mlserver.views.regression_cp_result_views import pre_screening
 import warnings
 warnings.filterwarnings("ignore")
@@ -365,31 +365,7 @@ def train_top3(clf,data,label,clf_num,train_index,test_index,feature_names):
 '''
 plot data
 '''
-def mklinechart(max_scores,title):
-    line_chart_data = []
-    for f in range(len(max_scores)):
-        if len(np.argwhere(np.isnan(max_scores[f]))) == 1:
-            xnum = list(range(1, 21))
-            xnum.pop(np.argwhere(np.isnan(max_scores[f]))[0][0])
-            ynum = max_scores[f]
-            ynum.pop(np.argwhere(np.isnan(max_scores[f]))[0][0])
-            trace = {
-                'mode': 'lines+markers',
-                'name': title[f],
-                'type': 'scatter',
-                'x': xnum,
-                'y': ynum
-            }
-        else:
-            trace = {
-                'mode': 'lines+markers',
-                'name': title[f],
-                'type': 'scatter',
-                'x': list(range(1, 21)),
-                'y': max_scores[f]
-            }
-        line_chart_data.append(trace)
-    return line_chart_data
+
 
 def mk_surv_data(sur_name_i, datax,label,estimator,data_median):
     if sur_name_i == '1' or len(sur_name_i) > 3:

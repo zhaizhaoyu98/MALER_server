@@ -21,7 +21,7 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import BaggingRegressor
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5, df2bp
+from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, JsonEncoder
 
 models_str = ['LinearRegression', 'SVM', 'Ridge', 'Lasso', 'DecisionTree', 'XGBoost',
                   'RandomForest', 'AdaBoost', 'GradientBoost', ]
@@ -476,13 +476,3 @@ def mkvreportbarplot(val_report):
         trace.append(subtrace)
     return trace
 
-class JsonEncoder(json.JSONEncoder):
-    """Convert numpy classes to JSON serializable objects."""
-
-    def default(self, obj):
-        if isinstance(obj, (np.integer, np.floating, np.bool_)):
-            return obj.item()
-        elif isinstance(obj, np.ndarray):
-            return obj.tolist()
-        else:
-            return super(JsonEncoder, self).default(obj)

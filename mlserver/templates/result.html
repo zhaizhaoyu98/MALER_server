@@ -275,6 +275,12 @@
 			<div id="radarplotDiv" style="margin-right: 0px;"></div>
 			
 			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+				Validation
+			</h3>
+			<div id="vbarplotDiv"</div>
+			<div id="heatmapDiv"</div>
+			<div id="vrocplotDiv" style="margin-right: 0px;"></div>
+			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
 				Final Report
 			</h3>
 			<table id="finaltable" class="display" style="width: 100%;" lazyload="True">
@@ -344,6 +350,162 @@
 				title: 'Boxplot of f1-score'
 			};
 			
+			// var xtitle = 'Predicted label';
+			var xtitle = {
+				text: 'Predicted label',
+				font: {
+					size: 10
+				},
+				standoff: 0
+			};
+			var ytitle = {
+				text: 'True label',
+				font: {
+					size: 10
+				},
+				standoff: 0
+			};
+			var inside_num = {{heatmap_anno|safe}};
+			var model = ["Naive Bayes","SVM","RandomForest",
+			"Logistic","KNN","XGBoost","lightGBM",'Adaboost',
+			"DecisionTree","GBDT"]
+			for(var i=0;i<model.length;i++){
+				var subtitle = {
+					text: model[i],
+					 showarrow: false,
+					 x: 0.5,
+					 xref: "x"+(i+1)+" domain",
+					 y: 1.15,
+					 yref: "y"+(i+1)+" domain"
+				};
+			    inside_num.push(subtitle) 
+			}
+			
+			var heatmap_layout = {
+				title: 'Confusion Matrix',
+				margin: {
+				  // 'b': 30,
+				  // 'l': 30,
+				  // 'r': 5,
+				  // 't': 75
+				  'b': 50,
+				  'l': 60,
+				  'r': 60,
+				  't': 75
+				},
+				// legend:{
+				//   orientation: 'h',
+				//   xanchor: 'middle',
+				//   yanchor: 'right',
+				//   valign: 'middle',
+				//   x: 0.4,
+				//   y: 1.08,
+				//   itemclick: false,
+				//   itemdoubleclick: false
+				// },
+				height: 600,
+				xaxis1: {
+				  title: xtitle, 
+				  anchor: 'y1', 
+				  domain: [0.0, 0.13]
+				}, 
+				xaxis2: {
+				  title: xtitle, 
+				  anchor: 'y2', 
+				  domain: [0.29, 0.42]
+				}, 
+				xaxis3: {
+				  title: xtitle, 
+				  anchor: 'y3', 
+				  domain: [0.58, 0.71] 
+				}, 
+				xaxis4: {
+				  title: xtitle, 
+				  anchor: 'y4', 
+				  domain: [0.87, 1]
+				}, 
+				xaxis5: {
+				  title: xtitle, 
+				  anchor: 'y5', 
+				  domain: [0.0, 0.13]
+				}, 
+				xaxis6: {
+				  title: xtitle, 
+				  anchor: 'y6', 
+				  domain: [0.29, 0.42]
+				},
+				xaxis7: {
+				  title: xtitle, 
+				  anchor: 'y7', 
+				  domain: [0.58, 0.71] 
+				},
+				xaxis8: {
+				  title: xtitle, 
+				  anchor: 'y8', 
+				  domain: [0.87, 1]
+				},
+				xaxis9: {
+				  title: xtitle, 
+				  anchor: 'y9', 
+				  domain: [0.0, 0.13]
+				},
+				xaxis10: {
+				  title: xtitle, 
+				  anchor: 'y10', 
+				  domain: [0.29, 0.42]
+				},
+				yaxis1: {
+				  title: ytitle, 
+				  anchor: 'x1', 
+				  domain: [0.75, 1.0]
+				}, 
+				yaxis2: {
+				  title: ytitle, 
+				  anchor: 'x2', 
+				  domain: [0.75, 1.0]
+				}, 
+				yaxis3: {
+				  title: ytitle, 
+				  anchor: 'x3', 
+				  domain: [0.75, 1.0]
+				}, 
+				yaxis4: {
+				  title: ytitle, 
+				  anchor: 'x4', 
+				  domain: [0.75, 1]
+				},
+				yaxis5: {
+				  title: ytitle, 
+				  anchor: 'x5', 
+				  domain: [0.375, 0.625]
+				}, 
+				yaxis6: {
+				  title: ytitle, 
+				  anchor: 'x6', 
+				  domain: [0.375, 0.625]
+				}, 
+				yaxis7: {
+				  title: ytitle, 
+				  anchor: 'x7', 
+				  domain: [0.375, 0.625]
+				}, 
+				yaxis8: {
+				  title: ytitle, 
+				  anchor: 'x8', 
+				  domain: [0.375, 0.625]
+				}, 
+				yaxis9: {
+				  title: ytitle, 
+				  anchor: 'x9', 
+				  domain: [0.0, 0.25]
+				},
+				yaxis10: {
+				  title: ytitle, 
+				  anchor: 'x10', 
+				  domain: [0.0, 0.25]
+				},
+				annotations: inside_num
+			}
 			
 			var roc_layout = {
 				title: 'ROC', 
@@ -373,7 +535,7 @@
 			var radar_layout = {
 				polar: {
 					radialaxis: {
-				      range: [0.5, 1], 
+				      range: [0, 1], 
 				      visible: true
 				    },
 				}, 
@@ -555,6 +717,9 @@
 				Plotly.newPlot('rocplotDiv', {{roc_traces|safe}}, roc_layout);
 				Plotly.newPlot('radarplotDiv', {{radar_dict|safe}}, radar_layout);
 			
+				Plotly.newPlot('vbarplotDiv', {{vbar_trace|safe}});
+				Plotly.newPlot('heatmapDiv', {{heatmap_data|safe}}, heatmap_layout);
+				Plotly.newPlot('vrocplotDiv', {{roc_traces|safe}}, roc_layout);
 			// $('#finaltable').on('click', 'button', function(){
 				
 			// 	var formData=new FormData();
