@@ -161,7 +161,7 @@ def result(request):
             # radar plot
             test_acc_radar = test_acc_describe.loc[test_acc_describe['Method'] == 'mean']
             test_acc_radar['Method'] = 'Test Accuracy'
-            auc_radar = df_AUCs_describe.loc[df_AUCs_describe['Method'] == 'mean']
+            auc_radar = df_AUCs_describe_.loc[df_AUCs_describe_['Method'] == 'mean']
             auc_radar['Method'] = 'AUC'
             precision_radar = precision_describe.loc[precision_describe['Method'] == 'mean']
             precision_radar['Method'] = 'Precision'
@@ -211,7 +211,18 @@ def result(request):
                 columns={'index': 'Method', 'f1-score': 'f1score'}).to_dict('records')
 
             # validation
-            validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label, feature_names)
+            if select_model == 'model_bclass':
+                validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label, feature_names, ifmarco)
+                valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info(title, best_esti,
+                                                                                       validation_data,
+                                                                                       validation_label,
+                                                                                       feature_names)
+                valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=title)
+            else:
+                validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label,feature_names, ifmarco)
+                valid_roc_traces = multi_valid_roc_info(best_esti,validation_data,validation_label,feature_names,classes,title=title)
+
+
 
             vbar_trace = mkvbartrace(validate_reports)
 
@@ -222,11 +233,6 @@ def result(request):
                 heatmap_data.append(h_data[0])
                 [heatmap_anno.append(h) for h in h_anno]
                 num += 1
-
-            valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info(title, best_esti,
-                                                                                   validation_data, validation_label,
-                                                                                   feature_names)
-            valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=title)
 
             classification_pickle = {'test_acc_reports_dict': test_acc_reports_dict,
                                          'test_acc_describe_dict': test_acc_describe_dict,
@@ -246,7 +252,7 @@ def result(request):
                                          'vbar_trace': vbar_trace,
                                          'heatmap_data': heatmap_data,
                                          'heatmap_anno': heatmap_anno,
-                                         'valid_roc_traces1': valid_roc_traces}
+                                         'valid_roc_traces': valid_roc_traces}
 
             with open(STATIC_ROOT + '/cache/' + projectid + '/classification_pickle.pkl',
                       'wb') as f:
@@ -541,9 +547,10 @@ def result(request):
               classification_pickle['line_chart_data'], \
               classification_pickle['radar_dict']
 
-    vbar_trace,heatmap_data,heatmap_anno = classification_pickle['vbar_trace'], \
-                                           classification_pickle['heatmap_data'], \
-                                           classification_pickle['heatmap_anno']
+    vbar_trace,heatmap_data,heatmap_anno,valid_roc_traces = classification_pickle['vbar_trace'], \
+                                                            classification_pickle['heatmap_data'], \
+                                                            classification_pickle['heatmap_anno'], \
+                                                            classification_pickle['valid_roc_traces']
 
     return render(request, 'result.html', {
         'projectid': projectid,
@@ -565,6 +572,7 @@ def result(request):
         'vbar_trace': json.dumps(vbar_trace),
         'heatmap_data': json.dumps(heatmap_data),
         'heatmap_anno': json.dumps(heatmap_anno),
+        'valid_roc_traces': json.dumps(valid_roc_traces),
     })
 
 def download_model(request, projectid_model):
@@ -1075,13 +1083,19 @@ def BSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
     max_scores.reverse()
     return selected_feature,max_scores
 
-def validate_result(estimators,vdata,vlabel,features,title=title):
+def validate_result(estimators,vdata,vlabel,features, ifmarco,title=title):
     validate_reports, validate_predicts = [], []
 
     for num in range(len(estimators)):
         validate_predict = estimators[num].predict(vdata[features[num]])
         validate_predicts.append(validate_predict)
-        validate_report = pd.DataFrame(classification_report(vlabel, validate_predict, output_dict=True)).T.iloc[1, :3]
+
+        if ifmarco:
+            validate_report = pd.DataFrame(classification_report(vlabel, validate_predict, output_dict=True)).T
+            validate_report = validate_report.loc['macro avg', ['precision', 'recall', 'f1-score']]
+        else:
+            validate_report = pd.DataFrame(classification_report(vlabel, validate_predict, output_dict=True)).T.iloc[1,
+                              :3]
         validate_report['accuracy'] = estimators[num].score(vdata[features[num]], vlabel)
         validate_report = validate_report.reindex(index=['accuracy', 'precision', 'recall', 'f1-score'])
         validate_reports.append(validate_report)
@@ -1256,7 +1270,7 @@ def mkheatmap(validation_label, validate_predict, classes, num):
     return data, annotation
 
 
-def valid_roc_info(title,best_esti,vdata,vlabel,feature_names):
+def valid_roc_info(title,best_esti,vdata,vlabel,feature_names,ifmarco):
     mean_FPR = np.linspace(0, 1, 100)
     mean_TPR_df = pd.DataFrame()
     auc_mean_std = pd.DataFrame()
@@ -1279,6 +1293,44 @@ def valid_roc_info(title,best_esti,vdata,vlabel,feature_names):
     auc_mean_std.index = ['mean_auc']
     return mean_FPR, mean_TPR_df, auc_mean_std
 
+def multi_valid_roc_info(estimators,vdata,vlabel,features,classes,title=title):
+    data = []
+    for num in range(len(estimators)):
+        if num == 1:
+            proba = estimators[num].decision_function(vdata[features[num]])
+        else:
+            proba = estimators[num].predict_proba(vdata[features[num]])
+        y = label_binarize(vlabel, classes=np.unique(vdata))
+        fpr, tpr, roc_auc, cfpr, ctpr, croc_auc = macro_roc(estimators[0], vdata[features[0]], y, proba,
+                                                            len(np.unique(vlabel)))
+        for i in range(len(cfpr)):
+
+            chance = {
+                'line': {
+                    'dash': 'dash',
+                    'color': 'red'
+                },
+                'name': 'Chance',
+                'mode': 'lines',
+                'type': 'scatter',
+                'x': [0, 1],
+                'y': [0, 1],
+                'showlegend': False
+            }
+            data.append(chance)
+
+            for c in range(len(classes.keys())):
+                trace = {
+                    'mode': 'lines',
+                    'name': r"ROC of {:}(AUC={:})".format(list(classes.keys())[c], np.round(croc_auc[c],3)),
+                    'type': 'scatter',
+                    'x': list(cfpr[c]),
+                    'y': list(ctpr[c]),
+                    'xaxis': 'x' + str(num + 1),
+                    'yaxis': 'y' + str(num + 1)
+                }
+                data.append(trace)
+    return data
 
 class JsonEncoder(json.JSONEncoder):
     """Convert numpy classes to JSON serializable objects."""
