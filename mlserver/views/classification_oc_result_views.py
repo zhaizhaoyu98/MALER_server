@@ -1315,6 +1315,8 @@ def multi_valid_roc_info(estimators,vdata,vlabel,features,classes,title=title):
                 'type': 'scatter',
                 'x': [0, 1],
                 'y': [0, 1],
+                'xaxis': 'x' + str(num + 1),
+                'yaxis': 'y' + str(num + 1),
                 'showlegend': False
             }
             data.append(chance)
