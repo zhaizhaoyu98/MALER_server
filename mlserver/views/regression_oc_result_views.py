@@ -4,6 +4,7 @@ import os, shutil, copy, pickle, json, time
 import pandas as pd
 import numpy as np
 
+from scipy import stats
 from sklearn.feature_selection import SelectKBest, f_classif,chi2,VarianceThreshold,mutual_info_classif,f_regression
 from sklearn.model_selection import cross_val_score,cross_validate ,train_test_split, GridSearchCV, KFold,\
     StratifiedKFold,RepeatedKFold
@@ -26,6 +27,7 @@ from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, J
 models_str = ['LinearRegression', 'SVM', 'Ridge', 'Lasso', 'DecisionTree', 'XGBoost',
                   'RandomForest', 'AdaBoost', 'GradientBoost', ]
 def regression_oc_result(request):
+    select_model = request.POST.get('select_model')
     Alphas = [0.01, 0.05, 0.1, 1.0, 2.0, 5.0, 10.0]
     models = [LinearRegression(n_jobs=4), SVR(kernel='linear', max_iter=5000), RidgeCV(alphas=Alphas),
               LassoCV(n_jobs=4, alphas=Alphas),
@@ -238,6 +240,19 @@ def regression_oc_result(request):
         with open(STATIC_ROOT + '/cache/' + projectid + '/regression_pickle.pkl',
                   'wb') as f:
             pickle.dump(reg_pickle, f)
+
+        for i in range(final_reports.shape[0]):
+            t = models_str[i].replace(' ', '_')
+            model = best_esti[i]
+            model_pickle = {
+                'method': select_model,
+                'name': t,
+                'model': model,
+                'feature_names': feature_names[i]
+            }
+            with open(STATIC_ROOT + '/cache/' + projectid + '/' + t + '.pkl', 'wb') as f:
+                pickle.dump(model_pickle, f)
+
     else:
         with open(STATIC_ROOT + '/cache/' + projectid + '/regression_pickle.pkl', 'rb') as f:
             reg_pickle = pickle.load(f)
@@ -418,43 +433,97 @@ def regression_valreport(est,vdata,vlabel,maxfeatures):
 '''
 PLOT METHODS
 '''
+# def mkvregpredplot(validate_predicts, vaildation_label, models_str=models_str):
+
+#     trace = []
+#     x = [i for i in range(len(vaildation_label))]
+#     for i in range(len(validate_predicts)):
+#         index = i + 1
+#         if index == 1:
+#             legendshow = True
+#         else:
+#             legendshow = False
+#         sub_tracev = subplot_trace(x, vaildation_label, 'Actual', index, legendshow, models_str[i], '#1f77b4')
+#         sub_tracep = subplot_trace(x, validate_predicts[i], 'Predicted', index, legendshow, models_str[i], '#fd7e14')
+#         trace.append(sub_tracev)
+#         trace.append(sub_tracep)
+#     return trace
+
+def get_p_value(arrA, arrB):
+    r = stats.pearsonr(arrA,arrB)  #获取相关性
+    return r
+
 def mkvregpredplot(validate_predicts, vaildation_label, models_str=models_str):
-    trace = []
-    x = [i for i in range(len(vaildation_label))]
-    for i in range(len(validate_predicts)):
-        index = i + 1
-        if index == 1:
-            legendshow = True
-        else:
-            legendshow = False
-        sub_tracev = subplot_trace(x, vaildation_label, 'Actual', index, legendshow, models_str[i], '#1f77b4')
-        sub_tracep = subplot_trace(x, validate_predicts[i], 'Predicted', index, legendshow, models_str[i], '#fd7e14')
-        trace.append(sub_tracev)
-        trace.append(sub_tracep)
-    return trace
+    rs = []
+    for i in range(9):
+        rs.append(get_p_value(vaildation_label, validate_predicts[i]))
+    data = []
+    j = 0
+    for pred, i in zip(validate_predicts, range(len(models_str))):
+        marker = {
+            'mode': 'markers',
+            'type': 'scatter',
+            'x': list(vaildation_label),
+            'y': list(pred),
+            'xaxis': 'x' + str(j + 1),
+            'yaxis': 'y' + str(j + 1),
+            'marker': {
+                # line: {
+                #     color: 'rgba(0,0,0,1.0)',
+                #     width: 1.0
+                # },
+                # 'size': 4.47213595499958,
+                'color': '#1f77b4',
+                'symbol': 'dot'
+            },
+            'showlegend': False
+        }
+        minpred = min(pred)
+        maxpred = max(pred)
+        xl = np.arange(minpred, maxpred, (maxpred - minpred) / 10)
+        line = {
+            'line': {
+                'dash': 'solid',
+                'color': '#1f77b4',
+                'width': 1.0
+            },
+            'mode': 'lines',
+            # 'name': 'fit line',
+            'type': 'scatter',
+            'text': 'fit value: ' + str(np.round(rs[j][0], 3)) + '<br>pvalue: ' + str(np.round(rs[j][1], 3)),
+            'x': xl,
+            'y': xl,
+            'xaxis': 'x' + str(j + 1),
+            'yaxis': 'y' + str(j + 1),
+            'showlegend': False
+        }
+        data.append(marker), data.append(line)
+        j += 1
+    return data
 
 
-def subplot_trace(x, y, name, index, legendshow, model_name, color):
-    trace = {
-        'line': {
-            'dash': 'solid',
-            'color': color,
-            # 'shape': 'hv',
-            # 'width': 2
-        },
-        'mode': 'lines',
-        'name': name,
-        'type': 'scatter',
-        'x': list(x),
-        'y': list(y),
-        'xaxis': 'x' + str(index),
-        'yaxis': 'y' + str(index),
-        'text': model_name,
-        'hoverinfo': 'text',
-        'showlegend': legendshow,
-        # 'legendgroup': 'High Risk'
-    }
-    return trace
+
+# def subplot_trace(x, y, name, index, legendshow, model_name, color):
+#     trace = {
+#         'line': {
+#             'dash': 'solid',
+#             'color': color,
+#             # 'shape': 'hv',
+#             # 'width': 2
+#         },
+#         'mode': 'lines',
+#         'name': name,
+#         'type': 'scatter',
+#         'x': list(x),
+#         'y': list(y),
+#         'xaxis': 'x' + str(index),
+#         'yaxis': 'y' + str(index),
+#         'text': model_name,
+#         'hoverinfo': 'text',
+#         'showlegend': legendshow,
+#         # 'legendgroup': 'High Risk'
+#     }
+#     return trace
 
 def mkvreportbarplot(val_report):
     if 'Method' in val_report.columns:

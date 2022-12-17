@@ -467,118 +467,19 @@ def result(request):
                       'wb') as f:
                 pickle.dump(classification_pickle, f)
 
-            # if label_num == 2:
-            #
-            #
-            #
-            #
-            #
-            #     # generate model pickle files
-            #     # for i in range(final_reports.shape[0]):
-            #     #     t = title[i].replace(' ', '_')
-            #     #     model = best_esti[i]
-            #     #     with open(STATIC_ROOT + '/cache/' + projectid + '/' + t + '.pkl', 'wb') as f:
-            #     #         pickle.dump(model, f)
-            #
-            #     print('analysis time: ', time.time() - start_time)
-            # elif label_num > 2:
-            #     test_acc_reports = pd.DataFrame(data=test_accs)
-            #     test_acc_reports.columns = title
-            #     test_acc_reports_dict = df2bp(test_acc_reports)
-            #     test_acc_describe = np.round(test_acc_reports.describe().loc[("mean", 'min', 'max', 'std'), :],
-            #                                  3).reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
-            #     test_acc_describe_dict = test_acc_describe.to_dict('records')
-            #
-            #     df_AUCs, df_AUCs_describe = FSS_BSS_all_AUC(estimators, data2, label2, test_index, max_features,
-            #                                                 'multiple')  # auc
-            #     df_AUCs_dict = df2bp(df_AUCs)
-            #     df_AUCs_describe_dict = np.round(df_AUCs_describe, 3).reset_index().rename(
-            #         columns={'index': 'Method'}).to_dict('records')
-            #
-            #     precision_reports, precision_describe = multi_classif_report(predicts, label2, test_index, 'precision')
-            #     precision_reports_dict = df2bp(precision_reports)
-            #     precision_describe_dict = np.round(precision_describe, 3).reset_index().rename(
-            #         columns={'index': 'Method'}).to_dict('records')
-            #
-            #     recall_reports, recall_describe = multi_classif_report(predicts, label2, test_index, 'recall')
-            #     recall_reports_dict = df2bp(recall_reports)
-            #     recall_describe_dict = np.round(recall_describe, 3).reset_index().rename(
-            #         columns={'index': 'Method'}).to_dict('records')
-            #
-            #     f1_score_reports, f1_score_describe = multi_classif_report(predicts, label2, test_index, 'f1-score')
-            #     f1_score_reports_dict = df2bp(f1_score_reports)
-            #     f1_score_describe_dict = np.round(f1_score_describe, 3).reset_index().rename(
-            #         columns={'index': 'Method'}).to_dict('records')
-            #
-            #     # ROC
-            #     mean_FPR, mean_TPR_df, auc_mean_std = multi_label_get_FSS_BSS_ROC_info(estimators, data2, label2,
-            #                                                                test_index,
-            #                                                                df_AUCs, max_features,df_AUCs_describe, title=title)
-            #     roc_traces = mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=title)
-            #
-            #     # 最优分类器表格展示
-            #     parameter, train_acc, test_acc, best_esti = [], [], [], []
-            #     precision, AUC, recall, f1_score = [], [], [], []
-            #     feature_names = []
-            #     for i in range(len(estimators)):
-            #         maxauc_index = test_acc_reports.iloc[:, i].argmax()
-            #         best_esti.append(estimators[i][maxauc_index])
-            #         parameter.append(str(estimators[i][maxauc_index].get_params()))
-            #         # train_acc.append(trains[maxauc_index][i])
-            #         test_acc.append(test_accs[i][maxauc_index])
-            #         precision.append(precision_reports.iloc[maxauc_index, i])
-            #         recall.append(recall_reports.iloc[maxauc_index, i])
-            #         f1_score.append(f1_score_reports.iloc[maxauc_index, i])
-            #         AUC.append(df_AUCs.iloc[maxauc_index, i])
-            #         feature_names.append(str(max_features[i]))
-            #
-            #     final_reports = {'parameter': parameter,
-            #                      # 'train_acc':train_acc,
-            #                      'feature_names': feature_names,
-            #                      'test_acc': test_acc,
-            #                      'precision': precision,
-            #                      'AUC': AUC,
-            #                      'recall': recall,
-            #                      'f1-score': f1_score}
-            #     final_reports = pd.DataFrame(final_reports, index=title)
-            #     final_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']] = np.round(
-            #         final_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']], 3)
-            #     final_reports_dict = final_reports.reset_index().rename(
-            #         columns={'index': 'Method', 'f1-score': 'f1score'}).to_dict('records')
-            #
-            #     ifmarco = True
-            #     acc_auc_precision_recall_f1score_roc_final = {'test_acc_reports_dict': test_acc_reports_dict,
-            #                                                   'test_acc_describe_dict': test_acc_describe_dict,
-            #                                                   'df_AUCs_dict': df_AUCs_dict,
-            #                                                   'df_AUCs_describe_dict': df_AUCs_describe_dict,
-            #                                                   'precision_reports_dict': precision_reports_dict,
-            #                                                   'precision_describe_dict': precision_describe_dict,
-            #                                                   'recall_reports_dict': recall_reports_dict,
-            #                                                   'recall_describe_dict': recall_describe_dict,
-            #                                                   'f1_score_reports_dict': f1_score_reports_dict,
-            #                                                   'f1_score_describe_dict': f1_score_describe_dict,
-            #                                                   'roc_traces': roc_traces,
-            #                                                   'final_reports_dict': final_reports_dict,
-            #                                                   'ifmarco': ifmarco,
-            #                                                   'line_chart_data': line_chart_data}
-            #
-            #     with open(STATIC_ROOT + '/cache/' + projectid + '/acc_auc_precision_recall_f1score_roc_final.pkl',
-            #               'wb') as f:
-            #         pickle.dump(acc_auc_precision_recall_f1score_roc_final, f)
-            #
-            #     # generate model pickle files
-            #     for i in range(final_reports.shape[0]):
-            #         t = title[i].replace(' ', '_')
-            #         model = best_esti[i]
-            #         with open(STATIC_ROOT + '/cache/' + projectid + '/' + t + '.pkl', 'wb') as f:
-            #             pickle.dump(model, f)
-            #
-            #     print('analysis time: ', time.time() - start_time)
-            # else:
-            #     print('error')
-            #     return render(request, 'ERROR.html', {
-            #         'error_msg': 'Invalid input!'
-            #     })
+        # generate model pickle files
+        for i in range(final_reports.shape[0]):
+            t = title[i].replace(' ', '_')
+            model = best_esti[i]
+            model_pickle = {
+                'method': select_model,
+                'name': t,
+                'model': model,
+                'classes': classes,
+                'feature_names': feature_names[i]
+            }
+            with open(STATIC_ROOT + '/cache/' + projectid + '/' + t + '.pkl', 'wb') as f:
+                pickle.dump(model_pickle, f)
     else:
         with open(STATIC_ROOT + '/cache/' + projectid + '/classification_pickle.pkl', 'rb') as f:
             classification_pickle = pickle.load(f)
@@ -635,7 +536,7 @@ def result(request):
 def download_model(request, projectid_model):
     projectid = projectid_model.split('_')[0]
     model = projectid_model.split('_')[1].replace(' ','_')
-    # print(projectid,model)
+    print(projectid,model)
     file_path = (STATIC_ROOT + '/cache/' + projectid + '/' + model + '.pkl')
     try:
         response = StreamingHttpResponse(open(file_path, 'rb'))

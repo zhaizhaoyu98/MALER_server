@@ -22,6 +22,7 @@ warnings.filterwarnings("ignore")
 
 
 def survival_oc_result(request):
+    select_model = request.POST.get('select_model')
     sur_models = [FastKernelSurvivalSVM(kernel='linear', random_state=10, max_iter=100),
                   SurvivalTree(random_state=10),
                   ExtraSurvivalTrees(random_state=10, n_jobs=4),
@@ -53,7 +54,7 @@ def survival_oc_result(request):
 
         data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, header=0, index_col=0).T
         '''
-        projectid='SOe8ce60-TopK'
+        projectid='SO-e8ce60-TopK'
         feature_select_method = 'TopK'
         data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'load_breast_cancer.csv', header=0, index_col=0).T
         '''
@@ -62,7 +63,7 @@ def survival_oc_result(request):
                                                                      stratify=y['Status'])
 
         cv = KFold(n_splits=5, shuffle=True, random_state=10)
-        features = cox_selection(x2.values, y2, x2.columns)
+        features = cox_selection(x2, y2)
         x3 = x2[features]
         train_index, test_index = sur_RSKFold(x3, y2)
         if feature_select_method != 'TopK':
@@ -204,6 +205,18 @@ def survival_oc_result(request):
         with open(STATIC_ROOT + '/cache/' + projectid + '/surv_pickle.pkl',
                   'wb') as f:
             pickle.dump(surv_pickle, f)
+
+        for i in range(max_reports.shape[0]):
+            t = sur_names[i].replace(' ', '_')
+            model = best_esti[i]
+            model_pickle = {
+                'method': select_model,
+                'name': t,
+                'model': model,
+                'feature_names': feature_names[i]
+            }
+            with open(STATIC_ROOT + '/cache/' + projectid + '/' + t + '.pkl', 'wb') as f:
+                pickle.dump(model_pickle, f)
     else:
         with open(STATIC_ROOT + '/cache/' + projectid + '/surv_pickle.pkl', 'rb') as f:
             surv_pickle = pickle.load(f)
@@ -218,7 +231,6 @@ def survival_oc_result(request):
         vsubplot_sur = surv_pickle['vsubplot_sur']
         vpara_dict = surv_pickle['vpara_dict']
         vlinedata = surv_pickle['vlinedata']
-        print(test_acc_reports_dict)
     return render(request, 'survival_oc_result.html', {
         'projectid': projectid,
         'line_chart_data': json.dumps(line_chart_data),
@@ -253,19 +265,31 @@ def sur_data_process(data):
     x = pd.get_dummies(x)
     return x,y
 
-def cox_selection(X, y, fnames):
-    n_features = X.shape[1]
-    scores = np.empty(n_features)
-    m = CoxPHSurvivalAnalysis()
-    for j in range(n_features):
-        Xj = X[:, j:j+1]
-        m.fit(Xj, y)
-        scores[j] = m.score(Xj, y)
-    res_c = pd.Series(scores, index=fnames).sort_values(ascending=False)
-    if len(res_c )>50:
-        res_c = res_c[:50]
-    res_c2 = res_c[res_c>0.5]
-    return res_c2.index
+# def cox_selection(X, y, fnames):
+#     n_features = X.shape[1]
+#     scores = np.empty(n_features)
+#     m = CoxPHSurvivalAnalysis()
+#     for j in range(n_features):
+#         Xj = X[:, j:j+1]
+#         m.fit(Xj, y)
+#         scores[j] = m.score(Xj, y)
+#     res_c = pd.Series(scores, index=fnames).sort_values(ascending=False)
+#     if len(res_c )>50:
+#         res_c = res_c[:50]
+#     res_c2 = res_c[res_c>0.5]
+#     return res_c2.index
+
+def cox_selection(x,y):
+    from lifelines import CoxPHFitter
+    cph = CoxPHFitter()
+    ss =[]
+    df = pd.concat([pd.DataFrame(y,index=x.index),x],axis=1)
+    for i in range(2,len(df.columns)):
+        cph.fit(df.iloc[:,[0,1,i]], 'time',event_col='Status')
+        ss.append(cph.summary['p'])
+    ss2 = pd.concat(ss)
+    features = ss2[ss2 <0.05].sort_values()[:50].index
+    return features
 
 def sur_RSKFold (data,label,n=10,k=5):
     train_index = []

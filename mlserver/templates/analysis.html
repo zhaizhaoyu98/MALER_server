@@ -1760,7 +1760,7 @@
 				
 				$("#alphas").hide();
 				$("#button_oc").click(function() {
-					var temp_action = $("#form_step23").attr("action")
+					var temp_action = $("#form_step23").attr("action").replace("_oc_result","")
 					var temp_action = (temp_action + "_oc_result").replace("_cp_result","")
 					$("#form_step23").attr("action",temp_action)
 					$(this).attr("style", "width: 100%;");
@@ -1771,7 +1771,7 @@
 				})
 
 				$("#button_cp").click(function() {
-					var temp_action = $("#form_step23").attr("action")
+					var temp_action = $("#form_step23").attr("action").replace("_cp_result","")
 					var temp_action = (temp_action + "_cp_result").replace("_oc_result","")
 					$("#form_step23").attr("action",temp_action)
 					$(this).attr("style", "width: 100%;");

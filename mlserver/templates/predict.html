@@ -26,6 +26,35 @@
 			table * {
 				font-size: 15px;
 			}
+			
+			.card {
+				cursor: pointer;
+				height: 100%;
+			}
+			
+			.f_white {
+				color: black;
+			}
+			
+			.hidden {
+				display: none;
+			}
+			
+			.card:hover {
+				border: 2px solid #0d6efd;
+			}
+			
+			.select {
+				border: 2px solid #0d6efd;
+			}
+			
+			.select .card-body {
+				background-color: #e8f1ff;
+			}
+			
+			.md-3 {
+				margin-bottom: 15px;
+			}
 		</style>
 		<script>
 			$(document).ready(function(){
@@ -46,7 +75,7 @@
 			<hr />
 			<div class="row row-cols-1 row-cols-md-3">
 				<div class="col md-3">
-					<div class="card select" id="task_naivebayes" onclick="selectactive(this.id)">
+					<div class="card" id="model_bclass" onclick="">
 						<div class="border-bottom" style="padding: 20px">
 							<!-- <img src="../img/feature_extraction.jpg" class="card-img-top" alt="..."> -->
 						</div>
@@ -59,7 +88,7 @@
 				</div>
 			
 				<div class="col md-3">
-					<div class="card" id="task_svm" onclick="selectactive(this.id)">
+					<div class="card" id="model_mclass" onclick="">
 						<div class="border-bottom" style="padding: 20px">
 							<!-- <img src="../img/data_generation.jpg" class="card-img-top" alt="..."> -->
 						</div>
@@ -72,7 +101,7 @@
 				</div>
 			
 				<div class="col md-3">
-					<div class="card" id="task_randomforest" onclick="selectactive(this.id)">
+					<div class="card" id="model_reg" onclick="">
 						<div class="border-bottom" style="padding: 20px">
 							<!-- <img src="../img/classification.jpg" class="card-img-top" alt="..."> -->
 						</div>
@@ -85,7 +114,7 @@
 				</div>
 			
 				<div class="col md-3">
-					<div class="card" id="task_logistic" onclick="selectactive(this.id)">
+					<div class="card" id="model_sur" onclick="">
 						<div class="border-bottom" style="padding: 20px">
 							<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
 						</div>
@@ -101,28 +130,31 @@
 			<h4>Step2</h4>
 			<hr />
 			<div class="col-9" style="vertical-align: middle;">
-				<form action="cp_result" method="POST" enctype="multipart/form-data">
+				<form action="predict_result" method="POST" enctype="multipart/form-data" id="form_data">
 					<div class="row">
 					
 						{% csrf_token %}
+						<input name="select_model" id="select_model" style="display: none;" value=""/>
 						<!-- <div class="custom-file mb-3">
 						      <input type="file" class="custom-file-input" id="customFile" name="filename">
 						      <label class="custom-file-label" for="customFile">Choose Profile</label>
 						</div> -->
 						<h6>Model: <input type="file" name="upload_model" /></h6>
-						<h6>Profile: <input type="file" name="upload_profile" /></h6>
-						<h6>Label: <input type="file" name="upload_label" /></h6>
+						<h6>File: <input type="file" name="upload_file" /></h6>
+						<!-- <h6>Label: <input type="file" name="upload_label" /></h6> -->
 						
 						<!-- <input type="submit" value="submit" />
 						<input type="submit" value="EXAMPLE(ZIP)" /> -->
 					</div>
-					<h5>OR</h5>
+					<!-- <h5>OR</h5>
 					<div class="row">
 						
 						<h6>ProjectID:<input type="text"></h6>
-					</div>
+					</div> -->
 				</form>
 			</div>
+			<hr />
+			<button type="button" id="button_submit" onclick="form_sub()" class="btn btn-info" style="width: 100%;">Submit</button>
 			
 			<!-- <br />
 			<h4>Step3</h4>
@@ -159,5 +191,126 @@
 		</div>
 		<!-- 底部 -->
 		{% include 'public_templates/footer.html' %}
+		<script>
+			function form_sub() {
+				$("#form_data").submit()
+			}
+			
+			$(document).ready(function() {
+					$("#button_submit").hide()
+					// $("#cp_model_select").hide()
+					// $("#cp_model_detail").hide()
+					
+					// $("#survival_child_model").hide()
+					// $("#regression_child_model").hide()
+					
+					// $("#alphas").hide();
+			// 		$("#button_oc").click(function() {
+			// 			var temp_action = $("#form_step23").attr("action")
+			// 			var temp_action = (temp_action + "_oc_result").replace("_cp_result","")
+			// 			$("#form_step23").attr("action",temp_action)
+			// 			$(this).attr("style", "width: 100%;");
+			// 			$("#button_cp").attr("style", "width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;");
+			// 			$("#cp_model_select").hide()
+			// 			$("#button_submit").show()
+			// 			$(".cp_model_detail").hide()
+			// 		})
+			
+			// 		$("#button_cp").click(function() {
+			// 			var temp_action = $("#form_step23").attr("action")
+			// 			var temp_action = (temp_action + "_cp_result").replace("_oc_result","")
+			// 			$("#form_step23").attr("action",temp_action)
+			// 			$(this).attr("style", "width: 100%;");
+			// 			$("#button_oc").attr("style", "width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;");
+			// 			$("#button_submit").hide();
+			// 			$("#cp_model_select").show();
+			// 			$("#cp_model_detail").show();
+			// 			$("*[id^=task_]").attr('class','card');
+			// 			$("*[id^=detail_]").hide();
+			// 		});
+					
+					$("#model_bclass").click(function(){
+						// $("#classification_child_model").show()
+						// $("#regression_child_model").hide()
+						// $("#survival_child_model").hide()
+						
+						
+						// $("#select_child_model").val("task_naivebayes")
+						$("*[id^=model_]").attr('class','card');
+						$(this).attr('class','card select');
+						var id = $(this).attr('id');
+						$("#select_model").val(id)
+						// document.getElementById('task_naivebayes').className = 'card select';
+						// $("*[id^=detail_]").hide();
+						$("#button_submit").show()
+					})
+					
+					$("#model_mclass").click(function(){
+						// $("#classification_child_model").show()
+						// $("#regression_child_model").hide()
+						// $("#survival_child_model").hide()
+						
+						// var temp_action = $("#form_step23").attr("action")
+						// var temp_action = ("classification_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
+						// $("#form_step23").attr("action",temp_action)
+						// $("#select_child_model").val("task_naivebayes")
+						$("*[id^=model_]").attr('class','card');
+						$(this).attr('class','card select');
+						var id = $(this).attr('id');
+						$("#select_model").val(id)
+						// document.getElementById('task_naivebayes').className = 'card select';
+						// $("*[id^=detail_]").hide();
+						$("#button_submit").show()
+					})
+					
+					$("#model_reg").click(function(){
+						// $("#regression_child_model").show()
+						// $("#classification_child_model").hide()
+						// $("#survival_child_model").hide()
+						
+						// var temp_action = $("#form_step23").attr("action")
+						// var temp_action = ("regression_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
+						// $("#form_step23").attr("action",temp_action)
+						// $("#select_child_model").val("task_linearregression")
+						$("*[id^=model_]").attr('class','card');
+						$(this).attr('class','card select');
+						var id = $(this).attr('id');
+						$("#select_model").val(id)
+						// $("*[id^=detail_]").hide();
+						$("#button_submit").show()
+						// document.getElementById('task_linearregression').className = 'card select';
+					})
+					
+					$("#model_sur").click(function(){
+						// $("#survival_child_model").show()
+						// $("#classification_child_model").hide()
+						// $("#regression_child_model").hide()
+						
+						// var temp_action = $("#form_step23").attr("action")
+						// var temp_action = ("survival_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
+						// $("#form_step23").attr("action",temp_action)
+						// $("#select_child_model").val("task_survivalsvm")
+						$("*[id^=model_]").attr('class','card');
+						$(this).attr('class','card select');
+						var id = $(this).attr('id');
+						$("#select_model").val(id)
+						// $("*[id^=detail_]").hide();
+						$("#button_submit").show()
+						// document.getElementById('task_survivalsvm').className = 'card select';
+					})
+				})
+				
+				// $("*[id^=task_]").click(function() {
+				// 	$("*[id^=detail_]").hide();
+				// 	var a = $(this).attr('id')
+				// 	var detail_id = "#detail_" + a.replace('task_','')
+				// 	$(detail_id).show();
+				// 	$("#select_child_model").val(a);
+				// 	$("#button_submit").show();
+				// })
+				
+				
+			</script>
+		</script>
 	</body>
 </html>

@@ -75,7 +75,7 @@ def survival_cp_result(request):
         x2, vaildation_data, y2, vaildation_label = train_test_split(x, y, random_state=10, train_size=0.7,
                                                                      stratify=y['Status'])
         cv = KFold(n_splits=5, shuffle=True, random_state=10)
-        features = cox_selection(x2.values, y2, x2.columns)
+        features = cox_selection(x2, y2)
         # features,ss2 = cox_selection(x2,y2)
         x3 = x2[features]
         train_index, test_index = sur_RSKFold(x3, y2)
@@ -184,7 +184,7 @@ def survival_cp_result(request):
         x2, vaildation_data, y2, vaildation_label = train_test_split(x, y, random_state=10, train_size=0.7,
                                                                      stratify=y['Status'])
         cv = KFold(n_splits=5, shuffle=True, random_state=10)
-        features = cox_selection(x2.values, y2, x2.columns)
+        features = cox_selection(x2, y2)
         # features,ss2 = cox_selection(x2,y2)
         x3 = x2[features]
         train_index, test_index = sur_RSKFold(x3, y2)

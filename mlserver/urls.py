@@ -13,6 +13,7 @@ urlpatterns=[
     # path('analysis_perpara',analysis_views.analysis_perpara),
     path('analysis',analysis_views.get_analysis_page),
     path('predict',predict_views.get_predict_page),
+    path('predict_result',predict_views.predict_result),
     path('help', help_views.get_help_page),
     # classification
     # one click result
