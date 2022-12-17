@@ -143,17 +143,17 @@ def result(request):
             df_AUCs_describe_ = df_AUCs_describe.reset_index().rename(columns={'index': 'Method'})
             df_AUCs_describe_dict = df_AUCs_describe_.to_dict('records')
 
-            precision_reports, precision_describe = classif_report(predicts, label2, test_index, 'precision')
+            precision_reports, precision_describe = classif_report(predicts, label3, test_index, 'precision')
             precision_reports_dict = df2bp(precision_reports)
             precision_describe = np.round(precision_describe, 3).reset_index().rename(columns={'index': 'Method'})
             precision_describe_dict = precision_describe.to_dict('records')
 
-            recall_reports, recall_describe = classif_report(predicts, label2, test_index, 'recall')
+            recall_reports, recall_describe = classif_report(predicts, label3, test_index, 'recall')
             recall_reports_dict = df2bp(recall_reports)
             recall_describe = np.round(recall_describe, 3).reset_index().rename(columns={'index': 'Method'})
             recall_describe_dict = recall_describe.to_dict('records')
 
-            f1_score_reports, f1_score_describe = classif_report(predicts, label2, test_index, 'f1-score')
+            f1_score_reports, f1_score_describe = classif_report(predicts, label3, test_index, 'f1-score')
             f1_score_reports_dict = df2bp(f1_score_reports)
             f1_score_describe = np.round(f1_score_describe, 3).reset_index().rename(columns={'index': 'Method'})
             f1_score_describe_dict = f1_score_describe.to_dict('records')
@@ -216,7 +216,8 @@ def result(request):
                 valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info(title, best_esti,
                                                                                        validation_data,
                                                                                        validation_label,
-                                                                                       feature_names)
+                                                                                       feature_names,
+                                                                                       ifmarco)
                 valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=title)
             else:
                 validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label,feature_names, ifmarco)
@@ -275,12 +276,17 @@ def result(request):
             feature_names = selectkbest_top20(data, label2, k=50)
             data2 = data.loc[:, feature_names]
             cv = RepeatedStratifiedKFold(n_splits=5, n_repeats=1, random_state=10)
+
+            data3, validation_data, label3, validation_label = train_test_split(data2, label2,
+                                                                                          random_state=10,
+                                                                                          train_size=0.9)
+            train_index, test_index = RSKFold(data3, label3)
             # 所有分类器
             selected_feature, max_scores = [], []
             for each_model in model:
                 start = time.perf_counter()
                 if feature_select_method == 'FSS':
-                    sf, ms = FSS_fun(feature_names, each_model, cv, data2, label2)
+                    sf, ms = FSS_fun(feature_names, each_model,data3,label3,cv)
                 else:
                     sf, ms = BSS_fun(feature_names, each_model, cv, data2, label2)
                 selected_feature.append(sf), max_scores.append(ms)
@@ -289,7 +295,7 @@ def result(request):
             line_chart_data = []
             for f in range(len(max_scores)):
                 if len(np.argwhere(np.isnan(max_scores[f]))) == 1:
-                    xnum = list(range(1, 21))
+                    xnum = list(range(1, len(ms)+1))
                     xnum.pop(np.argwhere(np.isnan(max_scores[f]))[0][0])
                     ynum = max_scores[f]
                     ynum.pop(np.argwhere(np.isnan(max_scores[f]))[0][0])
@@ -305,7 +311,7 @@ def result(request):
                         'mode': 'lines+markers',
                         'name': title[f],
                         'type': 'scatter',
-                        'x': list(range(1, 21)),
+                        'x': list(range(1, len(ms)+1)),
                         'y': max_scores[f]
                     }
                 line_chart_data.append(trace)
@@ -316,212 +322,263 @@ def result(request):
                 max_indexs.append(max_index)
                 max_score.append(max(max_scores[i]))
                 max_features.append(selected_feature[i][:max_index + 1])
-            train_index, test_index = RSKFold(data2, label2)
+            # train_index, test_index = RSKFold(data2, label2)
             test_accs, estimators, predicts = {}, {}, {}
             for j in range(len(title)):
                 preds, tests, res = [], [], []
                 start = time.perf_counter()
                 for i in range(len(train_index)):
-                    xtrain, ytrain = data2.iloc[train_index[i], :], label2[train_index[i]]
-                    xtest, ytest = data2.iloc[test_index[i], :], label2[test_index[i]]
+                    xtrain, ytrain = data3.iloc[train_index[i], :], label3[train_index[i]]
+                    xtest, ytest = data3.iloc[test_index[i], :], label3[test_index[i]]
                     xtrain, xtest = xtrain[max_features[j]], xtest[max_features[j]]
-                    estimator, test_acc, predict = train_estimator(title[j], xtrain, ytrain, xtest, ytest)
+                    estimator, test_acc, predict = train_estimator(model[j], xtrain, ytrain, xtest, ytest)
                     tests.append(test_acc), res.append(estimator), preds.append(predict)
                 test_accs[j] = tests
                 estimators[j] = res
                 predicts[j] = preds
                 end = time.perf_counter()
                 print(round(end - start, 2))
-            if label_num == 2:
 
-                # 评价指标acc，auc，precision，recall，f1-score
-                test_acc_reports = pd.DataFrame(data=test_accs)
-                test_acc_reports.columns = title
-                test_acc_reports_dict = df2bp(test_acc_reports)
-                test_acc_describe = np.round(test_acc_reports.describe().loc[("mean", 'min', 'max', 'std'), :],
-                                             3).reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
-                test_acc_describe_dict = test_acc_describe.to_dict('records')
+            # 评价指标acc，auc，precision，recall，f1-score
+            test_acc_reports = pd.DataFrame(data=test_accs)
+            test_acc_reports.columns = title
+            test_acc_reports_dict = df2bp(test_acc_reports)
+            test_acc_describe = np.round(test_acc_reports.describe().loc[("mean", 'min', 'max', 'std'), :],
+                                         3).reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
+            test_acc_describe_dict = test_acc_describe.to_dict('records')
 
-                df_AUCs, df_AUCs_describe = FSS_BSS_all_AUC(estimators, data, label2, test_index, max_features,'binary')  # auc
-                df_AUCs_dict = df2bp(df_AUCs)
-                df_AUCs_describe_dict = np.round(df_AUCs_describe, 3).reset_index().rename(
-                    columns={'index': 'Method'}).to_dict('records')
+            df_AUCs, df_AUCs_describe = all_AUC(estimators, data3, label3, test_index, max_features)  # auc
+            df_AUCs_dict = df2bp(df_AUCs)
+            df_AUCs_describe_ = np.round(df_AUCs_describe, 3).reset_index().rename(columns={'index': 'Method'})
+            df_AUCs_describe_dict = df_AUCs_describe_.to_dict('records')
 
-                precision_reports, precision_describe = classif_report(predicts, label2, test_index, 'precision')
-                precision_reports_dict = df2bp(precision_reports)
-                precision_describe_dict = np.round(precision_describe, 3).reset_index().rename(
-                    columns={'index': 'Method'}).to_dict('records')
+            precision_reports, precision_describe = classif_report(predicts, label3, test_index, 'precision')
+            precision_reports_dict = df2bp(precision_reports)
+            precision_describe_ = np.round(precision_describe, 3).reset_index().rename(columns={'index': 'Method'})
+            precision_describe_dict = precision_describe_.to_dict('records')
 
-                recall_reports, recall_describe = classif_report(predicts, label2, test_index, 'recall')
-                recall_reports_dict = df2bp(recall_reports)
-                recall_describe_dict = np.round(recall_describe, 3).reset_index().rename(
-                    columns={'index': 'Method'}).to_dict('records')
+            recall_reports, recall_describe = classif_report(predicts, label3, test_index, 'recall')
+            recall_reports_dict = df2bp(recall_reports)
+            recall_describe_ = np.round(recall_describe, 3).reset_index().rename(columns={'index': 'Method'})
+            recall_describe_dict = recall_describe_.to_dict('records')
 
-                f1_score_reports, f1_score_describe = classif_report(predicts, label2, test_index, 'f1-score')
-                f1_score_reports_dict = df2bp(f1_score_reports)
-                f1_score_describe_dict = np.round(f1_score_describe, 3).reset_index().rename(
-                    columns={'index': 'Method'}).to_dict('records')
+            f1_score_reports, f1_score_describe = classif_report(predicts, label3, test_index, 'f1-score')
+            f1_score_reports_dict = df2bp(f1_score_reports)
+            f1_score_describe_ = np.round(f1_score_describe, 3).reset_index().rename(columns={'index': 'Method'})
+            f1_score_describe_dict = f1_score_describe_.to_dict('records')
 
-                # ROC
-                mean_FPR, mean_TPR_df, auc_mean_std = get_FSS_BSS_ROC_info(estimators, data, label2, max_features, test_index,
-                                                                   df_AUCs, title=title)
-                roc_traces = mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=title)
+            # radar plot
+            test_acc_radar = test_acc_describe.loc[test_acc_describe['Method'] == 'mean']
+            test_acc_radar['Method'] = 'Test Accuracy'
+            auc_radar = df_AUCs_describe_.loc[df_AUCs_describe_['Method'] == 'mean']
+            auc_radar['Method'] = 'AUC'
+            precision_radar = precision_describe_.loc[precision_describe_['Method'] == 'mean']
+            precision_radar['Method'] = 'Precision'
+            recall_radar = recall_describe_.loc[recall_describe_['Method'] == 'mean']
+            recall_radar['Method'] = 'Recall'
+            f1_score_radar = f1_score_describe_.loc[f1_score_describe_['Method'] == 'mean']
+            f1_score_radar['Method'] = 'F1-score'
+            mean_method_model = pd.concat(
+                [test_acc_radar, auc_radar, precision_radar, recall_radar, f1_score_radar]).set_index('Method')
+            radar_dict = mkradar(mean_method_model)
+            # ROC
+            mean_FPR, mean_TPR_df, auc_mean_std = get_ROC_info(estimators, data3, label3, max_features, test_index, df_AUCs,
+                                                               title=title)
+            roc_traces = mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=title)
 
-                # 最优分类器表格展示
-                parameter, train_acc, test_acc, best_esti = [], [], [], []
-                precision, AUC, recall, f1_score = [], [], [], []
-                feature_names = []
-                for i in range(len(estimators)):
-                    maxauc_index = test_acc_reports.iloc[:, i].argmax()
-                    best_esti.append(estimators[i][maxauc_index])
-                    parameter.append(str(estimators[i][maxauc_index].get_params()))
-                    # train_acc.append(trains[maxauc_index][i])
-                    test_acc.append(test_accs[i][maxauc_index])
-                    precision.append(precision_reports.iloc[maxauc_index, i])
-                    recall.append(recall_reports.iloc[maxauc_index, i])
-                    f1_score.append(f1_score_reports.iloc[maxauc_index, i])
-                    AUC.append(df_AUCs.iloc[maxauc_index, i])
-                    feature_names.append(str(max_features[i]))
-                final_reports = {'parameter': parameter,
-                                 # 'train_acc':train_acc,
-                                 'feature_names': feature_names,
-                                 'test_acc': test_acc,
-                                 'precision': precision,
-                                 'AUC': AUC,
-                                 'recall': recall,
-                                 'f1-score': f1_score}
-                final_reports = pd.DataFrame(final_reports, index=title)
-                final_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']] = np.round(
-                    final_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']], 3)
-                final_reports_dict = final_reports.reset_index().rename(
-                    columns={'index': 'Method', 'f1-score': 'f1score'}).to_dict('records')
+            tmodels = []
+            for i in range(len(title)):
+                model2 = copy.deepcopy(model[i])
+                res = model2.fit(data3[max_features[i]], label3)
+                tmodels.append(res)
 
-                ifmarco = False
-                acc_auc_precision_recall_f1score_roc_final = {'test_acc_reports_dict': test_acc_reports_dict,
-                                                              'test_acc_describe_dict': test_acc_describe_dict,
-                                                              'df_AUCs_dict': df_AUCs_dict,
-                                                              'df_AUCs_describe_dict': df_AUCs_describe_dict,
-                                                              'precision_reports_dict': precision_reports_dict,
-                                                              'precision_describe_dict': precision_describe_dict,
-                                                              'recall_reports_dict': recall_reports_dict,
-                                                              'recall_describe_dict': recall_describe_dict,
-                                                              'f1_score_reports_dict': f1_score_reports_dict,
-                                                              'f1_score_describe_dict': f1_score_describe_dict,
-                                                              'roc_traces': roc_traces,
-                                                              'final_reports_dict': final_reports_dict,
-                                                              'ifmarco': ifmarco,
-                                                              'line_chart_data': line_chart_data}
+            parameter, train_acc, test_acc, best_esti = [], [], [], []
+            precision, AUC, recall, f1_score = [], [], [], []
+            feature_names = []
+            for i in range(len(title)):
+                best_esti.append(tmodels[i])
+                parameter.append(str(tmodels[i].get_params()))
+                test_acc.append(np.mean(test_accs[i]))
+                precision.append(precision_reports.iloc[:, i].mean())
+                recall.append(recall_reports.iloc[:, i].mean())
+                f1_score.append(f1_score_reports.iloc[:, i].mean())
+                AUC.append(df_AUCs.iloc[:, i].mean())
+                feature_names.append(max_features[i])
 
-                with open(STATIC_ROOT + '/cache/' + projectid + '/acc_auc_precision_recall_f1score_roc_final.pkl',
-                          'wb') as f:
-                    pickle.dump(acc_auc_precision_recall_f1score_roc_final, f)
+            final_reports = {'parameter': parameter,
+                             'feature_names': [str(f) for i in feature_names],
+                             'test_acc': test_acc,
+                             'precision': precision,
+                             'AUC': AUC,
+                             'recall': recall,
+                             'f1-score': f1_score}
+            final_reports = pd.DataFrame(final_reports, index=title)
+            final_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']] = np.round(
+                final_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']], 3)
+            final_reports_dict = final_reports.reset_index().rename(
+                columns={'index': 'Method', 'f1-score': 'f1score'}).to_dict('records')
 
-                # generate model pickle files
-                for i in range(final_reports.shape[0]):
-                    t = title[i].replace(' ', '_')
-                    model = best_esti[i]
-                    with open(STATIC_ROOT + '/cache/' + projectid + '/' + t + '.pkl', 'wb') as f:
-                        pickle.dump(model, f)
-
-                print('analysis time: ', time.time() - start_time)
-            elif label_num > 2:
-                test_acc_reports = pd.DataFrame(data=test_accs)
-                test_acc_reports.columns = title
-                test_acc_reports_dict = df2bp(test_acc_reports)
-                test_acc_describe = np.round(test_acc_reports.describe().loc[("mean", 'min', 'max', 'std'), :],
-                                             3).reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
-                test_acc_describe_dict = test_acc_describe.to_dict('records')
-
-                df_AUCs, df_AUCs_describe = FSS_BSS_all_AUC(estimators, data2, label2, test_index, max_features,
-                                                            'multiple')  # auc
-                df_AUCs_dict = df2bp(df_AUCs)
-                df_AUCs_describe_dict = np.round(df_AUCs_describe, 3).reset_index().rename(
-                    columns={'index': 'Method'}).to_dict('records')
-
-                precision_reports, precision_describe = multi_classif_report(predicts, label2, test_index, 'precision')
-                precision_reports_dict = df2bp(precision_reports)
-                precision_describe_dict = np.round(precision_describe, 3).reset_index().rename(
-                    columns={'index': 'Method'}).to_dict('records')
-
-                recall_reports, recall_describe = multi_classif_report(predicts, label2, test_index, 'recall')
-                recall_reports_dict = df2bp(recall_reports)
-                recall_describe_dict = np.round(recall_describe, 3).reset_index().rename(
-                    columns={'index': 'Method'}).to_dict('records')
-
-                f1_score_reports, f1_score_describe = multi_classif_report(predicts, label2, test_index, 'f1-score')
-                f1_score_reports_dict = df2bp(f1_score_reports)
-                f1_score_describe_dict = np.round(f1_score_describe, 3).reset_index().rename(
-                    columns={'index': 'Method'}).to_dict('records')
-
-                # ROC
-                mean_FPR, mean_TPR_df, auc_mean_std = multi_label_get_FSS_BSS_ROC_info(estimators, data2, label2,
-                                                                           test_index,
-                                                                           df_AUCs, max_features,df_AUCs_describe, title=title)
-                roc_traces = mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=title)
-
-                # 最优分类器表格展示
-                parameter, train_acc, test_acc, best_esti = [], [], [], []
-                precision, AUC, recall, f1_score = [], [], [], []
-                feature_names = []
-                for i in range(len(estimators)):
-                    maxauc_index = test_acc_reports.iloc[:, i].argmax()
-                    best_esti.append(estimators[i][maxauc_index])
-                    parameter.append(str(estimators[i][maxauc_index].get_params()))
-                    # train_acc.append(trains[maxauc_index][i])
-                    test_acc.append(test_accs[i][maxauc_index])
-                    precision.append(precision_reports.iloc[maxauc_index, i])
-                    recall.append(recall_reports.iloc[maxauc_index, i])
-                    f1_score.append(f1_score_reports.iloc[maxauc_index, i])
-                    AUC.append(df_AUCs.iloc[maxauc_index, i])
-                    feature_names.append(str(max_features[i]))
-
-                final_reports = {'parameter': parameter,
-                                 # 'train_acc':train_acc,
-                                 'feature_names': feature_names,
-                                 'test_acc': test_acc,
-                                 'precision': precision,
-                                 'AUC': AUC,
-                                 'recall': recall,
-                                 'f1-score': f1_score}
-                final_reports = pd.DataFrame(final_reports, index=title)
-                final_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']] = np.round(
-                    final_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']], 3)
-                final_reports_dict = final_reports.reset_index().rename(
-                    columns={'index': 'Method', 'f1-score': 'f1score'}).to_dict('records')
-
-                ifmarco = True
-                acc_auc_precision_recall_f1score_roc_final = {'test_acc_reports_dict': test_acc_reports_dict,
-                                                              'test_acc_describe_dict': test_acc_describe_dict,
-                                                              'df_AUCs_dict': df_AUCs_dict,
-                                                              'df_AUCs_describe_dict': df_AUCs_describe_dict,
-                                                              'precision_reports_dict': precision_reports_dict,
-                                                              'precision_describe_dict': precision_describe_dict,
-                                                              'recall_reports_dict': recall_reports_dict,
-                                                              'recall_describe_dict': recall_describe_dict,
-                                                              'f1_score_reports_dict': f1_score_reports_dict,
-                                                              'f1_score_describe_dict': f1_score_describe_dict,
-                                                              'roc_traces': roc_traces,
-                                                              'final_reports_dict': final_reports_dict,
-                                                              'ifmarco': ifmarco,
-                                                              'line_chart_data': line_chart_data}
-
-                with open(STATIC_ROOT + '/cache/' + projectid + '/acc_auc_precision_recall_f1score_roc_final.pkl',
-                          'wb') as f:
-                    pickle.dump(acc_auc_precision_recall_f1score_roc_final, f)
-
-                # generate model pickle files
-                for i in range(final_reports.shape[0]):
-                    t = title[i].replace(' ', '_')
-                    model = best_esti[i]
-                    with open(STATIC_ROOT + '/cache/' + projectid + '/' + t + '.pkl', 'wb') as f:
-                        pickle.dump(model, f)
-
-                print('analysis time: ', time.time() - start_time)
+            # validation
+            if select_model == 'model_bclass':
+                validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label,
+                                                                      feature_names, ifmarco)
+                valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info(title, best_esti,
+                                                                                       validation_data,
+                                                                                       validation_label,
+                                                                                       feature_names,ifmarco)
+                valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=title)
             else:
-                print('error')
-                return render(request, 'ERROR.html', {
-                    'error_msg': 'Invalid input!'
-                })
+                validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label,
+                                                                      feature_names, ifmarco)
+                valid_roc_traces = multi_valid_roc_info(best_esti, validation_data, validation_label, feature_names,
+                                                        classes, title=title)
+
+            vbar_trace = mkvbartrace(validate_reports)
+
+            heatmap_data, heatmap_anno = [], []
+            num = 0
+            for array in validate_predicts:
+                h_data, h_anno = mkheatmap(validation_label, array, classes, num + 1)
+                heatmap_data.append(h_data[0])
+                [heatmap_anno.append(h) for h in h_anno]
+                num += 1
+
+            classification_pickle = {'test_acc_reports_dict': test_acc_reports_dict,
+                                     'test_acc_describe_dict': test_acc_describe_dict,
+                                     'df_AUCs_dict': df_AUCs_dict,
+                                     'df_AUCs_describe_dict': df_AUCs_describe_dict,
+                                     'precision_reports_dict': precision_reports_dict,
+                                     'precision_describe_dict': precision_describe_dict,
+                                     'recall_reports_dict': recall_reports_dict,
+                                     'recall_describe_dict': recall_describe_dict,
+                                     'f1_score_reports_dict': f1_score_reports_dict,
+                                     'f1_score_describe_dict': f1_score_describe_dict,
+                                     'ifmarco': ifmarco,
+                                     'roc_traces': roc_traces,
+                                     'radar_dict': radar_dict,
+                                     'final_reports_dict': final_reports_dict,
+                                     'line_chart_data': line_chart_data,
+                                     'vbar_trace': vbar_trace,
+                                     'heatmap_data': heatmap_data,
+                                     'heatmap_anno': heatmap_anno,
+                                     'valid_roc_traces': valid_roc_traces}
+
+            with open(STATIC_ROOT + '/cache/' + projectid + '/classification_pickle.pkl',
+                      'wb') as f:
+                pickle.dump(classification_pickle, f)
+
+            # if label_num == 2:
+            #
+            #
+            #
+            #
+            #
+            #     # generate model pickle files
+            #     # for i in range(final_reports.shape[0]):
+            #     #     t = title[i].replace(' ', '_')
+            #     #     model = best_esti[i]
+            #     #     with open(STATIC_ROOT + '/cache/' + projectid + '/' + t + '.pkl', 'wb') as f:
+            #     #         pickle.dump(model, f)
+            #
+            #     print('analysis time: ', time.time() - start_time)
+            # elif label_num > 2:
+            #     test_acc_reports = pd.DataFrame(data=test_accs)
+            #     test_acc_reports.columns = title
+            #     test_acc_reports_dict = df2bp(test_acc_reports)
+            #     test_acc_describe = np.round(test_acc_reports.describe().loc[("mean", 'min', 'max', 'std'), :],
+            #                                  3).reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
+            #     test_acc_describe_dict = test_acc_describe.to_dict('records')
+            #
+            #     df_AUCs, df_AUCs_describe = FSS_BSS_all_AUC(estimators, data2, label2, test_index, max_features,
+            #                                                 'multiple')  # auc
+            #     df_AUCs_dict = df2bp(df_AUCs)
+            #     df_AUCs_describe_dict = np.round(df_AUCs_describe, 3).reset_index().rename(
+            #         columns={'index': 'Method'}).to_dict('records')
+            #
+            #     precision_reports, precision_describe = multi_classif_report(predicts, label2, test_index, 'precision')
+            #     precision_reports_dict = df2bp(precision_reports)
+            #     precision_describe_dict = np.round(precision_describe, 3).reset_index().rename(
+            #         columns={'index': 'Method'}).to_dict('records')
+            #
+            #     recall_reports, recall_describe = multi_classif_report(predicts, label2, test_index, 'recall')
+            #     recall_reports_dict = df2bp(recall_reports)
+            #     recall_describe_dict = np.round(recall_describe, 3).reset_index().rename(
+            #         columns={'index': 'Method'}).to_dict('records')
+            #
+            #     f1_score_reports, f1_score_describe = multi_classif_report(predicts, label2, test_index, 'f1-score')
+            #     f1_score_reports_dict = df2bp(f1_score_reports)
+            #     f1_score_describe_dict = np.round(f1_score_describe, 3).reset_index().rename(
+            #         columns={'index': 'Method'}).to_dict('records')
+            #
+            #     # ROC
+            #     mean_FPR, mean_TPR_df, auc_mean_std = multi_label_get_FSS_BSS_ROC_info(estimators, data2, label2,
+            #                                                                test_index,
+            #                                                                df_AUCs, max_features,df_AUCs_describe, title=title)
+            #     roc_traces = mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=title)
+            #
+            #     # 最优分类器表格展示
+            #     parameter, train_acc, test_acc, best_esti = [], [], [], []
+            #     precision, AUC, recall, f1_score = [], [], [], []
+            #     feature_names = []
+            #     for i in range(len(estimators)):
+            #         maxauc_index = test_acc_reports.iloc[:, i].argmax()
+            #         best_esti.append(estimators[i][maxauc_index])
+            #         parameter.append(str(estimators[i][maxauc_index].get_params()))
+            #         # train_acc.append(trains[maxauc_index][i])
+            #         test_acc.append(test_accs[i][maxauc_index])
+            #         precision.append(precision_reports.iloc[maxauc_index, i])
+            #         recall.append(recall_reports.iloc[maxauc_index, i])
+            #         f1_score.append(f1_score_reports.iloc[maxauc_index, i])
+            #         AUC.append(df_AUCs.iloc[maxauc_index, i])
+            #         feature_names.append(str(max_features[i]))
+            #
+            #     final_reports = {'parameter': parameter,
+            #                      # 'train_acc':train_acc,
+            #                      'feature_names': feature_names,
+            #                      'test_acc': test_acc,
+            #                      'precision': precision,
+            #                      'AUC': AUC,
+            #                      'recall': recall,
+            #                      'f1-score': f1_score}
+            #     final_reports = pd.DataFrame(final_reports, index=title)
+            #     final_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']] = np.round(
+            #         final_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']], 3)
+            #     final_reports_dict = final_reports.reset_index().rename(
+            #         columns={'index': 'Method', 'f1-score': 'f1score'}).to_dict('records')
+            #
+            #     ifmarco = True
+            #     acc_auc_precision_recall_f1score_roc_final = {'test_acc_reports_dict': test_acc_reports_dict,
+            #                                                   'test_acc_describe_dict': test_acc_describe_dict,
+            #                                                   'df_AUCs_dict': df_AUCs_dict,
+            #                                                   'df_AUCs_describe_dict': df_AUCs_describe_dict,
+            #                                                   'precision_reports_dict': precision_reports_dict,
+            #                                                   'precision_describe_dict': precision_describe_dict,
+            #                                                   'recall_reports_dict': recall_reports_dict,
+            #                                                   'recall_describe_dict': recall_describe_dict,
+            #                                                   'f1_score_reports_dict': f1_score_reports_dict,
+            #                                                   'f1_score_describe_dict': f1_score_describe_dict,
+            #                                                   'roc_traces': roc_traces,
+            #                                                   'final_reports_dict': final_reports_dict,
+            #                                                   'ifmarco': ifmarco,
+            #                                                   'line_chart_data': line_chart_data}
+            #
+            #     with open(STATIC_ROOT + '/cache/' + projectid + '/acc_auc_precision_recall_f1score_roc_final.pkl',
+            #               'wb') as f:
+            #         pickle.dump(acc_auc_precision_recall_f1score_roc_final, f)
+            #
+            #     # generate model pickle files
+            #     for i in range(final_reports.shape[0]):
+            #         t = title[i].replace(' ', '_')
+            #         model = best_esti[i]
+            #         with open(STATIC_ROOT + '/cache/' + projectid + '/' + t + '.pkl', 'wb') as f:
+            #             pickle.dump(model, f)
+            #
+            #     print('analysis time: ', time.time() - start_time)
+            # else:
+            #     print('error')
+            #     return render(request, 'ERROR.html', {
+            #         'error_msg': 'Invalid input!'
+            #     })
     else:
         with open(STATIC_ROOT + '/cache/' + projectid + '/classification_pickle.pkl', 'rb') as f:
             classification_pickle = pickle.load(f)
@@ -809,35 +866,61 @@ def all_AUC(estimators,data,label,test_index,f_names,title=title):
 #     df_AUCs_describe = df_AUCs.describe().loc[("mean",'min','max','std'),:]
 #     return df_AUCs,df_AUCs_describe
 
-def classif_report(predict,label,test_index,evaluation_index):
+def classif_report(predict,label,test_index,evaluation_index,title=title):
     reports = dict()
     final_reports = list()
-    for t in range(len(predict[0])):  # 50
-        for i in range(len(predict)):  # 6
-            ytest = label[test_index[t]]
-            report = classification_report(ytest, predict[i][t], output_dict=True)
-            reports[i] = pd.DataFrame.from_dict(report).iloc[:-1, 1]
-        final_report = pd.DataFrame.from_dict(reports).T.loc[:, evaluation_index]
-        final_reports.append(final_report)
-    final_reports = pd.concat(final_reports, axis=1).T
-    final_reports.columns = title
-    f_describe = final_reports.describe().loc[("mean", 'min', 'max', 'std'), :]
-    return final_reports, f_describe
-
-def multi_classif_report(predict,label,test_index,evaluation_index):
-    reports = {}
-    final_reports = []
-    for t in range(len(predict[0])):  #50
-        for i in range(len(predict)): #6
-            ytest = label[test_index[t]]
-            report = classification_report(ytest,predict[i][t],output_dict=True)
-            reports[i] = pd.DataFrame.from_dict(report).iloc[:-1,:]['macro avg']
-        final_report = pd.DataFrame.from_dict(reports).T.loc[:,evaluation_index]
-        final_reports.append(final_report)
+    if len(np.unique(label))>2:
+        for t in range(len(predict[0])):  #50
+            for i in range(len(predict)): #6
+                ytest = label[test_index[t]]
+                report = classification_report(ytest,predict[i][t],output_dict=True)
+                reports[i] = pd.DataFrame.from_dict(report).loc[['precision','recall','f1-score'],'macro avg']
+            final_report = pd.DataFrame.from_dict(reports).T.loc[:,evaluation_index]
+            final_reports.append(final_report)
+    else:
+        for t in range(len(predict[0])):  #50
+            for i in range(len(predict)): #6
+                ytest = label[test_index[t]]
+                report = classification_report(ytest,predict[i][t],output_dict=True)
+                reports[i] = pd.DataFrame.from_dict(report).iloc[:-1,1]
+            final_report = pd.DataFrame.from_dict(reports).T.loc[:,evaluation_index]
+            final_reports.append(final_report)
     final_reports = pd.concat(final_reports,axis=1).T
     final_reports.columns = title
     f_describe = final_reports.describe().loc[("mean",'min','max','std'),:]
     return final_reports,f_describe
+
+# def classif_report(predict,label,test_index,evaluation_index):
+#     reports = dict()
+#     final_reports = list()
+#     for t in range(len(predict[0])):  # 50
+#         for i in range(len(predict)):  # 6
+#             ytest = label[test_index[t]]
+#             report = classification_report(ytest, predict[i][t], output_dict=True)
+#             reports[i] = pd.DataFrame.from_dict(report).iloc[:-1, 1]
+#         final_report = pd.DataFrame.from_dict(reports).T.loc[:, evaluation_index]
+#         final_reports.append(final_report)
+#     final_reports = pd.concat(final_reports, axis=1).T
+#     final_reports.columns = title
+#     f_describe = final_reports.describe().loc[("mean", 'min', 'max', 'std'), :]
+#     return final_reports, f_describe
+
+
+
+# def multi_classif_report(predict,label,test_index,evaluation_index):
+#     reports = {}
+#     final_reports = []
+#     for t in range(len(predict[0])):  #50
+#         for i in range(len(predict)): #6
+#             ytest = label[test_index[t]]
+#             report = classification_report(ytest,predict[i][t],output_dict=True)
+#             reports[i] = pd.DataFrame.from_dict(report).iloc[:-1,:]['macro avg']
+#         final_report = pd.DataFrame.from_dict(reports).T.loc[:,evaluation_index]
+#         final_reports.append(final_report)
+#     final_reports = pd.concat(final_reports,axis=1).T
+#     final_reports.columns = title
+#     f_describe = final_reports.describe().loc[("mean",'min','max','std'),:]
+#     return final_reports,f_describe
 
 def get_ROC_info(estimators, data, label, f_names, test_index, df_AUC, title=title):
     mean_FPR = np.linspace(0, 1, 100)
@@ -1159,11 +1242,21 @@ def mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=title):
                 'y': list(mean_TPR_df[t])
             }
             data.append(trace)
-    else:
+    elif auc_mean_std.shape == ():
         for t in title:
             trace = {
                 'mode': 'lines',
                 'name': r"ROC of {:}(AUC={:})".format(t,np.round(auc_mean_std,3)),
+                'type': 'scatter',
+                'x': list(mean_FPR),
+                'y': list(mean_TPR_df[t])
+            }
+            data.append(trace)
+    else:
+        for t in title:
+            trace = {
+                'mode': 'lines',
+                'name': r"ROC of {:}(AUC={:})".format(t,np.round(auc_mean_std[t]['mean_auc'],3)),
                 'type': 'scatter',
                 'x': list(mean_FPR),
                 'y': list(mean_TPR_df[t])
