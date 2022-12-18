@@ -50,7 +50,7 @@ def survival_cp_result(request):
         IMPORRT DATA
         '''
         # file load
-        upload_file = request.FILES.get('upload_profile')
+        upload_file = request.FILES.get('upload_file')
         f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
         for line in upload_file.chunks():
             f.write(line)
@@ -384,18 +384,21 @@ def select_sur_model(request):
         kernel, optimizer, alpha, degree, gamma, coef0 = request.POST.get('survivalsvm_kernel'), \
                                                         request.POST.get('survivalsvm_optimizer'), \
                                                         int(request.POST.get('survivalsvm_alpha')), \
-                                                        int(request.POST.get('survivalsvm_degree')), \
+                                                        request.POST.get('survivalsvm_degree'), \
                                                         request.POST.get('survivalsvm_gamma'), \
-                                                        int(request.POST.get('survivalsvm_coef0'))
+                                                        request.POST.get('survivalsvm_coef0')
         if kernel == 'linear':
             select_model = Survival_svm(Kernel=kernel, Alpha=alpha, Optimizer=optimizer)
         elif kernel == 'ploy':
             if gamma == '': gamma = None
+            degree = int(degree)
+            coef0 = int(coef0)
             select_model = Survival_svm(Kernel=kernel, Alpha=alpha, Degree=degree, Gamma=gamma, Coef0=coef0)
         elif kernel == 'rbf':
             if gamma == '': gamma = None
             select_model = Survival_svm(Kernel=kernel, Alpha=alpha, Gamma=gamma)
         elif kernel == 'sigmoid':
+            coef0 = int(coef0)
             select_model = Survival_svm(Kernel=kernel, Alpha=alpha, Coef0=coef0)
         else:
             select_model = Survival_svm(Kernel=kernel, Alpha=alpha)

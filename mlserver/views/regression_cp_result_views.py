@@ -56,7 +56,7 @@ def regression_cp_result(request):
         IMPORRT DATA
         '''
         # file load
-        upload_file = request.FILES.get('upload_profile')
+        upload_file = request.FILES.get('upload_file')
         f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
         for line in upload_file.chunks():
             f.write(line)

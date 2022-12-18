@@ -28,7 +28,13 @@ warnings.filterwarnings("ignore")
 title = ["Naive Bayes","SVM","RandomForest","Logistic","KNN","XGBoost","lightGBM",'Adaboost',"DecisionTree","GBDT"]
 
 def result(request):
-
+    select_model = request.POST.get('select_model')
+    if select_model == 'model_bclass':
+        prefix_id = 'BCC-'
+        ifmarco = False
+    else:
+        prefix_id = 'MCC-'
+        ifmarco = True
     # Feature selection methods
     feature_select_method = request.POST.get('feature_select_method')
     print('feature_select_method: ', feature_select_method)
@@ -45,8 +51,10 @@ def result(request):
     '''
     MODULE PARAMETERS
     '''
-    if select_child_model == 'svm':
-        svc = get_svc_model(request)
+    # if select_child_model == 'svm':
+    #     svc = get_svc_model(request)
+
+    svc, clf_name = select_class_model(request)
     # get project id
     projectid = request.POST.get('projectid')
     if projectid == '': projectid='None'
@@ -56,17 +64,17 @@ def result(request):
         IMPORT DATA
         '''
         # label load
-        obj_label = request.FILES.get('upload_label')
-        print(obj_label.name)
-        f = open(os.path.join(STATIC_ROOT, 'cache', obj_label.name), 'wb')
-        for line in obj_label.chunks():
-            f.write(line)
-        f.close()
+        # obj_label = request.FILES.get('upload_label')
+        # print(obj_label.name)
+        # f = open(os.path.join(STATIC_ROOT, 'cache', obj_label.name), 'wb')
+        # for line in obj_label.chunks():
+        #     f.write(line)
+        # f.close()
 
         # profile load
-        obj_profile = request.FILES.get('upload_profile')
-        f = open(os.path.join(STATIC_ROOT, 'cache', obj_profile.name), 'wb')
-        for line in obj_profile.chunks():
+        obj_file = request.FILES.get('upload_file')
+        f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
+        for line in obj_file.chunks():
             f.write(line)
         f.close()
 
@@ -75,12 +83,12 @@ def result(request):
         CALCULATE PROJECTID
         '''
         # calculate projectid(profile md5 + label md5)
-        labelmd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_label.name))
-        profilemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_profile.name))
+        # labelmd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_label.name))
+        filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
         # random token
         token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
 
-        projectid = labelmd5[:6] + '-' + profilemd5[:6] + '-' + token
+        projectid = prefix_id + filemd5[:6] + '-' + token
         print(projectid)
         '''
             feature_select_method = 'TopK'
@@ -93,32 +101,46 @@ def result(request):
         '''
         newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
         os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-        shutil.move(STATIC_ROOT + '/cache/' + obj_profile.name, newpath)
-        shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
+        shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
+        # shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
         # rename
-        os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_profile.name, \
+        os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, \
                   STATIC_ROOT + '/cache/' + projectid + '/' + "express_data.csv")
-        os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_label.name, \
-                  STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv")
+        # os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_label.name, \
+        #           STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv")
         # read files
 
         # label = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'label_3columns.csv', header=0, index_col=0)
         # data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'express_data.csv', header=0, index_col=0).T
         # label = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'label.csv', header=0, index_col=0)
-        data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "express_data.csv", header=0, index_col=0).T
-        label = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv", header=0, index_col=0)
-        line_chart_data = 'null'
+        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "express_data.csv", header=0, index_col=0).T
+        # label = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv", header=0, index_col=0)
+        # line_chart_data = 'null'
         # preprocess
-        label = np.array(label).ravel()
+        # label = np.array(label).ravel()
+        # label2, classes = label_pre(label)
+
+        train_set, test_set, blind_set = split_train_test(inputdata)
+        data, label = classification_process(train_set)
         label2, classes = label_pre(label)
+        if len(test_set) > 0:
+            validation_data, validation_label = classification_process(test_set)
+            validation_label, ll = label_pre(validation_label)
 
         features = selectkbest_top20(data, label2, k=50)
         data2 = data.loc[:, features]
-        # 拆分验证集
-        data3, validation_data, label3, validation_label = train_test_split(data2, label2, random_state=10,
+        data3, validation_data, label3, validation_label = train_test_split(data2, label2,
+                                                                            random_state=10,
                                                                             train_size=0.9)
         train_index, test_index = RSKFold(data3, label3)  # 十次五折交叉验证
-        clf_name = select_child_model.upper()
+
+        # features = selectkbest_top20(data, label2, k=50)
+        # data2 = data.loc[:, features]
+        # 拆分验证集
+        # data3, validation_data, label3, validation_label = train_test_split(data2, label2, random_state=10,
+        #                                                                     train_size=0.9)
+        # train_index, test_index = RSKFold(data3, label3)  # 十次五折交叉验证
+        # clf_name = select_child_model.upper()
         if feature_select_method == 'TopK':
             cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=1, random_state=10)
             clf_num = pre_screening(data3, label3, svc, features, cv=cv)
@@ -174,6 +196,8 @@ def result(request):
             heatmap_dict, heatmap_anno = mkheatmap(validation_label, validate_predict, classes)
             # roc
             valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info(clf_name, best_esti[0], validation_data, validation_label, f_names)
+            print(valid_auc_mean_std)
+            print(1111111111111111111)
             valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=[clf_name])
 
             report_describe_roc = {
@@ -292,7 +316,7 @@ def result(request):
         # make cache
         cp_cache = {}
         para_str = feature_select_method + max_reports['Method'][0] + str(max_reports['parameter'][0])
-        para_md5 = md5_convert(para_str)
+        para_md5 = md5_convert(para_str)[:6]
         # add parameter md5 and feature select method
         max_reports['md5'],max_reports['fsm'] = para_md5, feature_select_method
         max_reports_dict = max_reports.to_dict('records')
@@ -318,7 +342,7 @@ def result(request):
         data3, validation_data, label3, validation_label = train_test_split(data2, label2, random_state=10,
                                                                             train_size=0.9)
         train_index, test_index = RSKFold(data3, label3)  # 十次五折交叉验证
-        clf_name = select_child_model.upper()
+        # clf_name = select_child_model.upper()
         if feature_select_method == 'TopK':
             cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=1, random_state=10)
             clf_num = pre_screening(data3, label3, svc, features, cv=cv)
@@ -328,7 +352,7 @@ def result(request):
 
             maxauc_index = np.array(test_accs).argmax()
             select_str = feature_select_method + clf_name + str(estimators[maxauc_index].get_params())
-            select_md5 = md5_convert(select_str)
+            select_md5 = md5_convert(select_str)[:6]
             # load pickle
             with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
                 cp_cache = pickle.load(f)
@@ -377,7 +401,7 @@ def result(request):
                     columns={'index': 'Method', 'f1-score': 'f1score'})
 
                 para_str = feature_select_method + max_reports['Method'][0] + str(max_reports['parameter'][0])
-                para_md5 = md5_convert(para_str)
+                para_md5 = md5_convert(para_str)[:6]
                 print(para_md5)
                 # add parameter md5 and feature select method
                 max_reports['md5'], max_reports['fsm'] = para_md5, feature_select_method
@@ -459,7 +483,7 @@ def result(request):
 
             maxauc_index = np.array(tests).argmax()
             select_str = feature_select_method + clf_name + str(res[maxauc_index].get_params())
-            select_md5 = md5_convert(select_str)
+            select_md5 = md5_convert(select_str)[:6]
             # load pickle
             with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
                 cp_cache = pickle.load(f)
@@ -507,7 +531,7 @@ def result(request):
                     columns={'index': 'Method', 'f1-score': 'f1score'})
 
                 para_str = feature_select_method + max_reports['Method'][0] + str(max_reports['parameter'][0])
-                para_md5 = md5_convert(para_str)
+                para_md5 = md5_convert(para_str)[:6]
                 print(para_md5)
                 # add parameter md5 and feature select method
                 max_reports['md5'], max_reports['fsm'] = para_md5, feature_select_method
@@ -856,6 +880,36 @@ def select_class_model(request):
                             N_iter_no_change=n_iter_no_change,N_estimators=n_estimators)
     return select_model, select_model_name
 '''
+file preprocess
+'''
+def split_train_test(data,datatype='other'):
+    train_set,test_set,blind_set = pd.DataFrame(),pd.DataFrame(),pd.DataFrame()
+    num = (1,2)[datatype == 'survival']  #datatype == 'survival'时选第三列，否则为第二列
+    blind_set = data[data.iloc[:,:num].isna().T.any()]
+    if len(blind_set)>0:
+        blind_set = blind_set.drop(labels=blind_set.columns[num], axis=1)
+    else:
+        blind_set = pd.DataFrame()
+    data2 = data[~data.index.isin(blind_set.index)]
+    if 'training' in np.unique(data2.iloc[:,num]):
+        train_set = data2[data2.iloc[:,num]=='training']
+        train_set = train_set.drop(labels=train_set.columns[num], axis=1)
+    else:
+        train_set = data2.drop(labels=data2.columns[num], axis=1)
+    if 'testing' in np.unique(data2.iloc[:,num]):
+        test_set = data2[data2.iloc[:,num]=='testing']
+        test_set = test_set.drop(labels=test_set.columns[num], axis=1)
+    return train_set,test_set,blind_set
+
+def classification_process(data):
+    data = data.apply(pd.to_numeric,errors='ignore')#转成数值型
+    x=data.iloc[:,data.columns!=data.columns[0]]
+    if np.any(x.isnull()) == True:
+        x=x.fillna(x.mean())  #填充缺失值
+    y=np.array(data.iloc[:,0]).ravel()
+    return x,y
+
+'''
 ml function
 '''
 #预处理部分
@@ -978,13 +1032,33 @@ def customized_report(clf_name,estimator,data,label,predict,test_index,f_names,t
     f_describe = final_reports.describe().loc[("mean",'min','max','std'),:]
     return final_reports,f_describe
 
+# def macro_roc(estimator,xtest,ytest,proba,n_classes):
+#     mean_fpr = np.linspace(0, 1, 100)
+#     fpr,tpr,roc_auc = {},{},{}
+#     for i in range(n_classes):
+#         fpr[i], tpr[i], _ = roc_curve(ytest[:,i], proba[:,i])
+#         roc_auc[i] = auc(fpr[i], tpr[i])
+#         #plt.plot(fpr[i], tpr[i])
+#     # First aggregate all false positive rates
+#     all_fpr = np.unique(np.concatenate([fpr[i] for i in range(n_classes)]))
+#     # Then interpolate all ROC curves at this points
+#     mean_tpr = np.zeros_like(all_fpr)
+#     for i in range(n_classes):
+#         mean_tpr += np.interp(all_fpr, fpr[i], tpr[i])
+#     # Finally average it and compute AUC
+#     mean_tpr /= n_classes
+#     macro_fpr = (all_fpr)
+#     macro_tpr = (mean_tpr)
+#     macro_roc_auc = (auc(all_fpr,mean_tpr))
+#     print(mean_tpr)
+#     return macro_fpr,macro_tpr,macro_roc_auc
+
 def macro_roc(estimator,xtest,ytest,proba,n_classes):
     mean_fpr = np.linspace(0, 1, 100)
     fpr,tpr,roc_auc = {},{},{}
     for i in range(n_classes):
         fpr[i], tpr[i], _ = roc_curve(ytest[:,i], proba[:,i])
         roc_auc[i] = auc(fpr[i], tpr[i])
-        #plt.plot(fpr[i], tpr[i])
     # First aggregate all false positive rates
     all_fpr = np.unique(np.concatenate([fpr[i] for i in range(n_classes)]))
     # Then interpolate all ROC curves at this points
@@ -996,8 +1070,7 @@ def macro_roc(estimator,xtest,ytest,proba,n_classes):
     macro_fpr = (all_fpr)
     macro_tpr = (mean_tpr)
     macro_roc_auc = (auc(all_fpr,mean_tpr))
-    print(mean_tpr)
-    return macro_fpr,macro_tpr,macro_roc_auc
+    return macro_fpr,macro_tpr,macro_roc_auc,fpr,tpr,roc_auc
 
 def get_ROC_info(clf_name,estimator,data,label,test_index,f_names,reports,predicts):
     mean_FPR = np.linspace(0, 1, 100)
@@ -1013,7 +1086,9 @@ def get_ROC_info(clf_name,estimator,data,label,test_index,f_names,reports,predic
                 proba = estimator[i].decision_function(xtest)
             else:
                 proba = estimator[i].predict_proba(xtest)
-            fpr,tpr,roc_auc = macro_roc(estimator[i],xtest,y,proba,len(np.unique(ytest)))
+            fpr, tpr, roc_auc, cfpr, ctpr, croc_auc = macro_roc(estimator[i], xtest, y, proba,
+                                                                len(np.unique(label)))
+            # fpr,tpr,roc_auc = macro_roc(estimator[i],xtest,y,proba,len(np.unique(ytest)))
             interp_tpr = np.interp(mean_FPR, fpr, tpr)
             interp_tpr[0] = 0.0
             tprs.append(interp_tpr)
@@ -1210,16 +1285,21 @@ def valid_roc_info(clf_name,estimator,vdata,vlabel,max_features):
     mean_TPR_df = pd.DataFrame()
     # auc_mean_std = pd.DataFrame()
     tprs = []
-    if clf_name == "SVM":
-        proba = estimator.decision_function(vdata[max_features])
-    else:
-        proba = estimator.predict_proba(vdata[max_features])
+
     if len(np.unique(vlabel)) > 2:
+        if clf_name == "SVM":
+            proba = estimator.decision_function(vdata[max_features])
+        else:
+            proba = estimator.predict_proba(vdata[max_features])
         y = label_binarize(vlabel, classes=np.unique(vlabel))
-        fpr, tpr, roc_auc = macro_roc(estimator, vdata, y, proba, len(np.unique(vlabel)))
+        fpr, tpr, roc_auc, cfpr, ctpr, croc_auc = macro_roc(estimator, vdata, y, proba, len(np.unique(vlabel)))
         # mean_auc = np.mean(reports['AUC'])
         # std_auc = np.std(reports["AUC"])
     else:
+        if clf_name == "SVM":
+            proba = estimator.decision_function(vdata[max_features])
+        else:
+            proba = estimator.predict_proba(vdata[max_features])[:,1]
         fpr, tpr, threshold = roc_curve(vlabel, proba)
         roc_auc = auc(fpr, tpr)
         # Auc = reports['AUC'][i]

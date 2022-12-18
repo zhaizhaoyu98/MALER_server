@@ -15,7 +15,7 @@ from sksurv.metrics import cumulative_dynamic_auc
 from lifelines.statistics import logrank_test
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, mklinechart
+from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, mklinechart, split_train_test, classification_process
 # from mlserver.views.regression_cp_result_views import pre_screening
 import warnings
 warnings.filterwarnings("ignore")
@@ -39,7 +39,7 @@ def survival_oc_result(request):
     IMPORRT DATA
     '''
     # file load
-    upload_file = request.FILES.get('upload_profile')
+    upload_file = request.FILES.get('upload_file')
     f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
     for line in upload_file.chunks():
         f.write(line)
@@ -52,15 +52,16 @@ def survival_oc_result(request):
         os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
         shutil.move(STATIC_ROOT + '/cache/' + upload_file.name, newpath)
 
-        data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, header=0, index_col=0).T
+        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, header=0, index_col=0).T
         '''
-        projectid='SO-e8ce60-TopK'
+        projectid='SO-c319b6-TopK'
         feature_select_method = 'TopK'
-        data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'load_breast_cancer.csv', header=0, index_col=0).T
+        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'tpm_gbm_surdata.csv', header=0, index_col=0).T
         '''
-        x, y = sur_data_process(data)
-        x2, vaildation_data, y2, vaildation_label = train_test_split(x, y, random_state=10, train_size=0.7,
-                                                                     stratify=y['Status'])
+
+        train_set, test_set, blind_set = split_train_test(inputdata, datatype='survival')
+        x, y = sur_data_process(train_set)
+        x2, validation_data, y2, validation_label = train_test_split(x, y, random_state=10, train_size=0.7,stratify=y['Status'])
 
         cv = KFold(n_splits=5, shuffle=True, random_state=10)
         features = cox_selection(x2, y2)
@@ -169,7 +170,7 @@ def survival_oc_result(request):
         # validation
         vsurv_dict, vpara_dict = {}, {}
         for i in range(len(sur_names)):
-            vsurv_trace, vresultp = mk_surv_data(str(i+1), vaildation_data[max_features[i]], vaildation_label, best_esti[i],
+            vsurv_trace, vresultp = mk_surv_data(str(i+1), validation_data[max_features[i]], validation_label, best_esti[i],
                                         data_medians_dict[i])
             vsurv_layout = mk_surv_layout(sur_names[i], vresultp)
             t_dict = {'surv_trace': vsurv_trace, 'surv_layout': vsurv_layout}
@@ -183,7 +184,7 @@ def survival_oc_result(request):
 
         vlinedata = []
         for i in range(len(sur_names)):
-            va_times, rsf_auc, mean_auc, cindex = time_dependent_auc(tmodels[i],vaildation_data,vaildation_label,y2[train_index[max_indexs[i]]],
+            va_times, rsf_auc, mean_auc, cindex = time_dependent_auc(tmodels[i],validation_data,validation_label,y2[train_index[max_indexs[i]]],
                                                                         max_features[i],sur_names[i])
 
             vlinetrace = mk_auc_line(sur_names[i], va_times, rsf_auc, mean_auc, cindex)
@@ -510,26 +511,48 @@ def mk_surv_layout(name, resultp):
     }
     return layout
 
-def time_dependent_auc(estimator,data,label,ytrain,max_feature,name):
-    cindex = estimator.score(data[max_feature], label)
-    va_times = np.arange(max([min(ytrain['time']), min(label['time'])]),
-                         min([max(ytrain['time']), max(label['time']), 3650]), 30)  ##时间要修改加判断
-    if name == 'SurvivalSVM' or name == "Lasso":
-        cph_risk_scores = estimator.predict(data[max_feature])
+# def time_dependent_auc(estimator,data,label,ytrain,max_feature,name):
+#     cindex = estimator.score(data[max_feature], label)
+#     va_times = np.arange(max([min(ytrain['time']), min(label['time'])]),
+#                          min([max(ytrain['time']), max(label['time']), 3650]), 30)  ##时间要修改加判断
+#     if name == 'SurvivalSVM' or name == "Lasso":
+#         cph_risk_scores = estimator.predict(data[max_feature])
+#         rsf_auc, rsf_mean_auc = cumulative_dynamic_auc(
+#             ytrain, label, cph_risk_scores, va_times
+#         )
+#     else:
+#         rsf_chf_funcs = estimator.predict_cumulative_hazard_function(
+#             data[max_feature])
+#         va_times = np.arange(max([min(ytrain['time']), min(label['time']), min(rsf_chf_funcs[0].x)]),
+#                              min([max(rsf_chf_funcs[0].x), 3650]), 30)
+#         rsf_risk_scores = np.row_stack([chf(va_times) for chf in rsf_chf_funcs])
+#         rsf_auc, rsf_mean_auc = cumulative_dynamic_auc(
+#             ytrain, label, rsf_risk_scores, va_times
+#         )
+#     mean_auc = np.nan_to_num(rsf_auc).mean()
+#     cindex = np.round(cindex,3)
+#     return va_times, rsf_auc, mean_auc, cindex
+
+def time_dependent_auc(estimator,data,label,ytrain,max_features,name):
+    cindex = estimator.score(data[max_features],label)
+    va_times = np.arange(max([min(ytrain['time']),min(label['time'])]),
+                         min([max(ytrain['time']),max(label['time']),3650]),30)  ##时间要修改加判断
+    if name =='SurvivalSVM' or name == "Lasso":
+        cph_risk_scores = estimator.predict(data[max_features])
         rsf_auc, rsf_mean_auc = cumulative_dynamic_auc(
             ytrain, label, cph_risk_scores, va_times
         )
     else:
         rsf_chf_funcs = estimator.predict_cumulative_hazard_function(
-            data[max_feature])
-        va_times = np.arange(max([min(ytrain['time']), min(label['time']), min(rsf_chf_funcs[0].x)]),
-                             min([max(rsf_chf_funcs[0].x), 3650]), 30)
+            data[max_features])
+        va_times = np.arange(max([min(ytrain['time']),min(label['time']),min(rsf_chf_funcs[0].x)]),
+                             min([max(rsf_chf_funcs[0].x),max(label['time']),3650]),30)
         rsf_risk_scores = np.row_stack([chf(va_times) for chf in rsf_chf_funcs])
         rsf_auc, rsf_mean_auc = cumulative_dynamic_auc(
-            ytrain, label, rsf_risk_scores, va_times
+            ytrain,label, rsf_risk_scores,va_times
         )
     mean_auc = np.nan_to_num(rsf_auc).mean()
-    cindex = np.round(cindex,3)
+    cindex = np.round(cindex, 3)
     return va_times, rsf_auc, mean_auc, cindex
 
 def mk_auc_line(name, va_times, rsf_auc, mean_auc, cindex):

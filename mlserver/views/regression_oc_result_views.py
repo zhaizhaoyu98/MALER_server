@@ -22,7 +22,7 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import BaggingRegressor
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, JsonEncoder
+from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, JsonEncoder, split_train_test, classification_process
 
 models_str = ['LinearRegression', 'SVM', 'Ridge', 'Lasso', 'DecisionTree', 'XGBoost',
                   'RandomForest', 'AdaBoost', 'GradientBoost', ]
@@ -42,7 +42,7 @@ def regression_oc_result(request):
     IMPORRT DATA
     '''
     # file load
-    upload_file = request.FILES.get('upload_profile')
+    upload_file = request.FILES.get('upload_file')
     f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
     for line in upload_file.chunks():
         f.write(line)
@@ -58,9 +58,10 @@ def regression_oc_result(request):
         projectid='RO-19f4d5-TopK'
         data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'regression_data.csv', header=0, index_col=0).T
         '''
-        data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, header=0, index_col=0).T
-
-        x_dum, y = regression_preprocess(data)
+        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, header=0, index_col=0).T
+        train_set, test_set, blind_set = split_train_test(inputdata)
+        # data, label = classification_process(train_set)
+        x_dum, y = regression_preprocess(train_set)
 
         nordata4, vaildation_data, nor_age4, vaildation_label = train_test_split(x_dum, y, random_state=10,
                                                                                  train_size=0.7)  # 分验证集
@@ -455,7 +456,7 @@ def get_p_value(arrA, arrB):
 
 def mkvregpredplot(validate_predicts, vaildation_label, models_str=models_str):
     rs = []
-    for i in range(9):
+    for i in range(len(validate_predicts)):
         rs.append(get_p_value(vaildation_label, validate_predicts[i]))
     data = []
     j = 0

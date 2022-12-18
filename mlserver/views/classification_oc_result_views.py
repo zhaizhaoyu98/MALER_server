@@ -48,17 +48,17 @@ def result(request):
     IMPORRT DATA
     '''
     # label load
-    obj_label = request.FILES.get('upload_label')
-    print(obj_label.name)
-    f = open(os.path.join(STATIC_ROOT, 'cache', obj_label.name), 'wb')
-    for line in obj_label.chunks():
-        f.write(line)
-    f.close()
+    # obj_label = request.FILES.get('upload_label')
+    # print(obj_label.name)
+    # f = open(os.path.join(STATIC_ROOT, 'cache', obj_label.name), 'wb')
+    # for line in obj_label.chunks():
+    #     f.write(line)
+    # f.close()
 
     # profile load
-    obj_profile = request.FILES.get('upload_profile')
-    f = open(os.path.join(STATIC_ROOT, 'cache', obj_profile.name), 'wb')
-    for line in obj_profile.chunks():
+    obj_file = request.FILES.get('upload_file')
+    f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
+    for line in obj_file.chunks():
         f.write(line)
     f.close()
 
@@ -67,11 +67,11 @@ def result(request):
     '''
     # calculate projectid(profile md5 + label md5)
 
-    labelmd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_label.name))
-    profilemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_profile.name))
-    print('labelmd5:', labelmd5)
-    print('profilemd5:', profilemd5)
-    projectid = prefix_id + labelmd5[:6] + '-' + profilemd5[:6] + '-' + feature_select_method
+    # labelmd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_label.name))
+    filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
+    # print('labelmd5:', labelmd5)
+    # print('profilemd5:', profilemd5)
+    projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
     print(projectid)
     '''
     projectid = 'BCO-911c4d-c3ceec-TopK'
@@ -86,25 +86,32 @@ def result(request):
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
         newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
         os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-        shutil.move(STATIC_ROOT + '/cache/' + obj_profile.name, newpath)
-        shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
+        shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
+        # shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
         # read files
 
         # label = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'label_3columns.csv', header=0, index_col=0)
 
-        data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + obj_profile.name, header=0, index_col=0).T
-        label = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + obj_label.name, header=0, index_col=0)
+        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, header=0, index_col=0).T
+        # label = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + obj_label.name, header=0, index_col=0)
 
-        if label.shape[1] == 2:
-            blind_label, train_label, validation_label, blind_data, train_data, validation_data = label_data_split(
-                label, data)
-            label = train_label.iloc[:, 0]
-            data = train_data.iloc[:, ]
-            print(label.shape)
+        # if label.shape[1] == 2:
+        #     blind_label, train_label, validation_label, blind_data, train_data, validation_data = label_data_split(
+        #         label, data)
+        #     label = train_label.iloc[:, 0]
+        #     data = train_data.iloc[:, ]
+        #     print(label.shape)
 
-        label = np.array(label).ravel()
+        # label = np.array(label).ravel()
+        # label2, classes = label_pre(label)
+        # label_num = len(np.unique(label2))
+        train_set, test_set, blind_set = split_train_test(inputdata)
+        data, label = classification_process(train_set)
+
         label2, classes = label_pre(label)
-        label_num = len(np.unique(label2))
+        if len(test_set) > 0:
+            validation_data, validation_label = classification_process(test_set)
+            validation_label, ll = label_pre(validation_label)
 
         if feature_select_method == 'TopK':
             features = selectkbest_top20(data, label2, k=50)
@@ -560,7 +567,35 @@ def download_model(request, projectid_model):
 #     except Exception:
 #         raise Http404
 
+'''
+file preprocess
+'''
+def split_train_test(data,datatype='other'):
+    train_set,test_set,blind_set = pd.DataFrame(),pd.DataFrame(),pd.DataFrame()
+    num = (1,2)[datatype == 'survival']  #datatype == 'survival'时选第三列，否则为第二列
+    blind_set = data[data.iloc[:,:num].isna().T.any()]
+    if len(blind_set)>0:
+        blind_set = blind_set.drop(labels=blind_set.columns[num], axis=1)
+    else:
+        blind_set = pd.DataFrame()
+    data2 = data[~data.index.isin(blind_set.index)]
+    if 'training' in np.unique(data2.iloc[:,num]):
+        train_set = data2[data2.iloc[:,num]=='training']
+        train_set = train_set.drop(labels=train_set.columns[num], axis=1)
+    else:
+        train_set = data2.drop(labels=data2.columns[num], axis=1)
+    if 'testing' in np.unique(data2.iloc[:,num]):
+        test_set = data2[data2.iloc[:,num]=='testing']
+        test_set = test_set.drop(labels=test_set.columns[num], axis=1)
+    return train_set,test_set,blind_set
 
+def classification_process(data):
+    data = data.apply(pd.to_numeric,errors='ignore')#转成数值型
+    x=data.iloc[:,data.columns!=data.columns[0]]
+    if np.any(x.isnull()) == True:
+        x=x.fillna(x.mean())  #填充缺失值
+    y=np.array(data.iloc[:,0]).ravel()
+    return x,y
 '''
 machine learning functions
 '''
@@ -875,33 +910,33 @@ def get_ROC_info(estimators, data, label, f_names, test_index, df_AUC, title=tit
     auc_mean_std.index = ['mean_auc', 'std_auc']
     return mean_FPR, mean_TPR_df, auc_mean_std
 
-def get_FSS_BSS_ROC_info(estimators, data, label, f_names, test_index, df_AUC, title=title):
-    mean_FPR = np.linspace(0, 1, 100)
-    mean_TPR_df = pd.DataFrame()
-    auc_mean_std = pd.DataFrame()
-    for j in range(len(estimators)):  # 6分类器
-        tprs = []
-        for i in range(len(estimators[0])):  # 50重复次数
-            xtest = data[f_names[j]].iloc[test_index[i]]
-            ytest = label[test_index[i]]
-            if j==1 :
-                proba = estimators[j][i].decision_function(xtest)
-            else:
-                proba = estimators[j][i].predict_proba(xtest)[:,1]
-            fpr, tpr, threshold = roc_curve(ytest, proba)
-            interp_tpr = np.interp(mean_FPR, fpr, tpr)
-            interp_tpr[0] = 0.0
-            tprs.append(interp_tpr)
-    #对曲线进行插值，因为每个曲线的样本不一样，所以获取到的fpr和tpr也不一样长度，所以需要进行插值
-    #插值原理，获取所有fpr的值，然后将每个交叉验证的roc都插值成和fpr的值一样多的长度。并不会改变每个roc曲线的形状
-        mean_tpr = np.mean(tprs, axis=0)
-        mean_tpr[-1] = 1.0
-        mean_auc = auc(mean_FPR, mean_tpr)
-        std_auc = np.std(df_AUC[title[j]])
-        mean_TPR_df[title[j]] = mean_tpr
-        auc_mean_std[title[j]] = [mean_auc, std_auc]
-    auc_mean_std.index = ['mean_auc', 'std_auc']
-    return mean_FPR, mean_TPR_df, auc_mean_std
+# def get_FSS_BSS_ROC_info(estimators, data, label, f_names, test_index, df_AUC, title=title):
+#     mean_FPR = np.linspace(0, 1, 100)
+#     mean_TPR_df = pd.DataFrame()
+#     auc_mean_std = pd.DataFrame()
+#     for j in range(len(estimators)):  # 6分类器
+#         tprs = []
+#         for i in range(len(estimators[0])):  # 50重复次数
+#             xtest = data[f_names[j]].iloc[test_index[i]]
+#             ytest = label[test_index[i]]
+#             if j==1 :
+#                 proba = estimators[j][i].decision_function(xtest)
+#             else:
+#                 proba = estimators[j][i].predict_proba(xtest)[:,1]
+#             fpr, tpr, threshold = roc_curve(ytest, proba)
+#             interp_tpr = np.interp(mean_FPR, fpr, tpr)
+#             interp_tpr[0] = 0.0
+#             tprs.append(interp_tpr)
+#     #对曲线进行插值，因为每个曲线的样本不一样，所以获取到的fpr和tpr也不一样长度，所以需要进行插值
+#     #插值原理，获取所有fpr的值，然后将每个交叉验证的roc都插值成和fpr的值一样多的长度。并不会改变每个roc曲线的形状
+#         mean_tpr = np.mean(tprs, axis=0)
+#         mean_tpr[-1] = 1.0
+#         mean_auc = auc(mean_FPR, mean_tpr)
+#         std_auc = np.std(df_AUC[title[j]])
+#         mean_TPR_df[title[j]] = mean_tpr
+#         auc_mean_std[title[j]] = [mean_auc, std_auc]
+#     auc_mean_std.index = ['mean_auc', 'std_auc']
+#     return mean_FPR, mean_TPR_df, auc_mean_std
 
 #macro_roc函数修改，增加了三个返回值
 def macro_roc(estimator,xtest,ytest,proba,n_classes):
@@ -1133,26 +1168,27 @@ def mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=title):
     }
     data.append(chance)
 
-    if auc_mean_std.shape != (1, 10):
+    if auc_mean_std.shape == ():
         for t in title:
             trace = {
                 'mode': 'lines',
-                'name': 'Mean ROC of {}(AUC=%0.2f ± %0.3f)'.format(t) %(auc_mean_std[t]['mean_auc'], auc_mean_std[t]['std_auc']),
+                'name': r"ROC of {:}(AUC={:})".format(t, np.round(auc_mean_std, 3)),
                 'type': 'scatter',
                 'x': list(mean_FPR),
                 'y': list(mean_TPR_df[t])
             }
             data.append(trace)
-    elif auc_mean_std.shape == ():
+    elif auc_mean_std.shape != (1, 10):
         for t in title:
             trace = {
                 'mode': 'lines',
-                'name': r"ROC of {:}(AUC={:})".format(t,np.round(auc_mean_std,3)),
+                'name': 'Mean ROC of {}(AUC=%0.2f ± %0.3f)'.format(t) % (
+                auc_mean_std[t]['mean_auc'], auc_mean_std[t]['std_auc']),
                 'type': 'scatter',
                 'x': list(mean_FPR),
                 'y': list(mean_TPR_df[t])
             }
-            data.append(trace)
+        data.append(trace)
     else:
         for t in title:
             trace = {
