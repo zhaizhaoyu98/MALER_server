@@ -196,8 +196,6 @@ def result(request):
             heatmap_dict, heatmap_anno = mkheatmap(validation_label, validate_predict, classes)
             # roc
             valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info(clf_name, best_esti[0], validation_data, validation_label, f_names)
-            print(valid_auc_mean_std)
-            print(1111111111111111111)
             valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=[clf_name])
 
             report_describe_roc = {

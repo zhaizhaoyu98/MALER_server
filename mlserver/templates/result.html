@@ -54,7 +54,9 @@
 			#list-item-5,
 			#list-item-6,
 			#list-item-7,
-			#list-item-8{
+			#list-item-8,
+			#list-item-9,
+			#list-item-10{
 				padding-top: 10px;
 				padding-bottom: 10px;
 				padding-left: 1rem;
@@ -109,204 +111,262 @@
 		<div class="container col-9">
 			<br />
 			<div class="row">
-				<h2>PROJECTID: {{ projectid }}</h2>
-			</div>
-			<hr />
-			<form action="" method="">
-				{%  csrf_token %}
-				<input style="display: none;" type="text" id="projectid"  name="projectid" value="{{projectid}}"/>
-			</form>
-			
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				line chart
-			</h3>
-			<div id="linechartDiv"></div>
-			
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				Test Accuracy
-			</h3>
-			<div id="accboxplotDiv"></div>
-			
-			<table id="acctable" class="display" style="width: 100%;" lazyload="True">
-				 <thead>
-					<tr>
-						<th></th>
-						<th>Naive Bayes</th>
-						<th>SVM</th>
-						<th>RandomForest</th>
-						<th>Logistic</th>
-						<th>KNN</th>
-						<th>XGBoost</th>
-						<th>lightGBM</th>
-						<th>Adaboost</th>
-						<th>DecisionTree</th>
-						<th>GBDT</th>
-					</tr>
-				</thead>
-			</table>
-			
-			<br />
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				{% if ifmarco != True %}
-					AUC
-				{% else %}
-					Marco AUC
-				{% endif %}
-				
-			</h3>
-			<div id="aucboxplotDiv"></div>
-			<table id="auctable" class="display" style="width: 100%;" lazyload="True">
-				 <thead>
-					<tr>
-						<th></th>
-						<th>Naive Bayes</th>
-						<th>SVM</th>
-						<th>RandomForest</th>
-						<th>Logistic</th>
-						<th>KNN</th>
-						<th>XGBoost</th>
-						<th>lightGBM</th>
-						<th>Adaboost</th>
-						<th>DecisionTree</th>
-						<th>GBDT</th>
-					</tr>
-				</thead>
-			</table>
-			<br />
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				{% if ifmarco != True %}
-					Precision
-				{% else %}
-					Marco Precision
-				{% endif %}
-				
-			</h3>
-			<div id="precisionboxplotDiv"></div>
-			<table id="precisiontable" class="display" style="width: 100%;" lazyload="True">
-				 <thead>
-					<tr>
-						<th></th>
-						<th>Naive Bayes</th>
-						<th>SVM</th>
-						<th>RandomForest</th>
-						<th>Logistic</th>
-						<th>KNN</th>
-						<th>XGBoost</th>
-						<th>lightGBM</th>
-						<th>Adaboost</th>
-						<th>DecisionTree</th>
-						<th>GBDT</th>
-					</tr>
-				</thead>
-			</table>
-			<br />
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				{% if ifmarco != True %}
-					Recall
-				{% else %}
-					Marco Recall
-				{% endif %}
-				
-			</h3>
-			<div id="recallboxplotDiv"></div>
-			<table id="recalltable" class="display" style="width: 100%;" lazyload="True">
-				 <thead>
-					<tr>
-						<th></th>
-						<th>Naive Bayes</th>
-						<th>SVM</th>
-						<th>RandomForest</th>
-						<th>Logistic</th>
-						<th>KNN</th>
-						<th>XGBoost</th>
-						<th>lightGBM</th>
-						<th>Adaboost</th>
-						<th>DecisionTree</th>
-						<th>GBDT</th>
-					</tr>
-				</thead>
-			</table>
-			<br />
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				{% if ifmarco != True %}
-					F1-score
-				{% else %}
-					Marco F1-score
-				{% endif %}
-				
-			</h3>
-			<div id="f1_scoreboxplotDiv"></div>
-			<table id="f1_scoretable" class="display" style="width: 100%;" lazyload="True">
-				 <thead>
-					<tr>
-						<th></th>
-						<th>Naive Bayes</th>
-						<th>SVM</th>
-						<th>RandomForest</th>
-						<th>Logistic</th>
-						<th>KNN</th>
-						<th>XGBoost</th>
-						<th>lightGBM</th>
-						<th>Adaboost</th>
-						<th>DecisionTree</th>
-						<th>GBDT</th>
-					</tr>
-				</thead>
-			</table>
-			<br />
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				{% if ifmarco != True %}
-					ROC
-				{% else %}
-					Marco ROC
-				{% endif %}
-				
-			</h3>
-			<div id="rocplotDiv" style="margin-right: 0px;"></div>
-			
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				{% if ifmarco != True %}
-					Radar
-				{% else %}
-					Marco Radar
-				{% endif %}
-				
-			</h3>
-			<div id="radarplotDiv" style="margin-right: 0px;"></div>
-			
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				Validation
-			</h3>
-			<div id="vbarplotDiv"</div>
-			<div id="heatmapDiv"</div>
-			<div id="vrocplotDiv" style="margin-right: 0px;"></div>
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				Final Report
-			</h3>
-			<table id="finaltable" class="display" style="width: 100%;" lazyload="True">
-				 <thead>
-					<tr>
-						<th></th>
-						<th class="none">Feature Names</th>
-						<th>Test Accuracy</th>
+				<div class='col-2 d-none d-xl-block' style="">
+					<div id="list-example" class="list-group "
+						style="position: fixed; width:250px;height: 500px;margin-left: -50px;padding-left: 0;">
+						<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-2">Accuracy</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-3">
+							{% if ifmarco != True %}
+								AUC
+							{% else %}
+								Marco AUC
+							{% endif %}
+						</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-4">
+							{% if ifmarco != True %}
+								Precision
+							{% else %}
+								Marco Precision
+							{% endif %}
+						</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-5">
+							{% if ifmarco != True %}
+								Recall
+							{% else %}
+								Marco Recall
+							{% endif %}
+						</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-6">
+							{% if ifmarco != True %}
+								F1-score
+							{% else %}
+								Marco F1-score
+							{% endif %}
+						</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-7">
+							{% if ifmarco != True %}
+								ROC
+							{% else %}
+								Marco ROC
+							{% endif %}
+						</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-8">
+							{% if ifmarco != True %}
+								Radar
+							{% else %}
+								Marco Radar
+							{% endif %}
+						</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-9">Test</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-10">Final Report</a>
+						<!-- <a class="list-group-item list-group-item-action" href="#list-item-5">Drug Property Radar Chart</a> -->
+					</div>
+				</div>
+				<div class='col-xl-9 col-lg-12'>
+					<div class="row">
+						<h2>PROJECTID: {{ projectid }}</h2>
+					</div>
+					<hr />
+					<form action="" method="">
+						{%  csrf_token %}
+						<input style="display: none;" type="text" id="projectid"  name="projectid" value="{{projectid}}"/>
+					</form>
+					
+					<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Optimal feature subset result
+					</h3>
+					<div id="linechartDiv"></div>
+					
+					<h3 class="panel-heading" id="list-item-2" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Accuracy
+					</h3>
+					<div id="accboxplotDiv"></div>
+					
+					<table id="acctable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>Naive Bayes</th>
+								<th>SVM</th>
+								<th>RandomForest</th>
+								<th>Logistic</th>
+								<th>KNN</th>
+								<th>XGBoost</th>
+								<th>lightGBM</th>
+								<th>Adaboost</th>
+								<th>DecisionTree</th>
+								<th>GBDT</th>
+							</tr>
+						</thead>
+					</table>
+					
+					<br />
+					<h3 class="panel-heading" id="list-item-3" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
 						{% if ifmarco != True %}
-							<th>Precision</th>
-							<th>AUC</th>
-							<th>Recall</th>
-							<th>F1-score</th>
+							AUC
 						{% else %}
-							<th>Marco Precision</th>
-							<th>Marco AUC</th>
-							<th>Marco Recall</th>
-							<th>Marco F1-score</th>
+							Marco AUC
 						{% endif %}
-						<th>Feature_names/Parameter</th>
-						<th class="none">Parameter</th>
-						<th>Model Download</th>
-					</tr>
-				</thead>
-			</table>
-			<br />
+						
+					</h3>
+					<div id="aucboxplotDiv"></div>
+					<table id="auctable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>Naive Bayes</th>
+								<th>SVM</th>
+								<th>RandomForest</th>
+								<th>Logistic</th>
+								<th>KNN</th>
+								<th>XGBoost</th>
+								<th>lightGBM</th>
+								<th>Adaboost</th>
+								<th>DecisionTree</th>
+								<th>GBDT</th>
+							</tr>
+						</thead>
+					</table>
+					<br />
+					<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						{% if ifmarco != True %}
+							Precision
+						{% else %}
+							Marco Precision
+						{% endif %}
+						
+					</h3>
+					<div id="precisionboxplotDiv"></div>
+					<table id="precisiontable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>Naive Bayes</th>
+								<th>SVM</th>
+								<th>RandomForest</th>
+								<th>Logistic</th>
+								<th>KNN</th>
+								<th>XGBoost</th>
+								<th>lightGBM</th>
+								<th>Adaboost</th>
+								<th>DecisionTree</th>
+								<th>GBDT</th>
+							</tr>
+						</thead>
+					</table>
+					<br />
+					<h3 class="panel-heading" id="list-item-5" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						{% if ifmarco != True %}
+							Recall
+						{% else %}
+							Marco Recall
+						{% endif %}
+						
+					</h3>
+					<div id="recallboxplotDiv"></div>
+					<table id="recalltable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>Naive Bayes</th>
+								<th>SVM</th>
+								<th>RandomForest</th>
+								<th>Logistic</th>
+								<th>KNN</th>
+								<th>XGBoost</th>
+								<th>lightGBM</th>
+								<th>Adaboost</th>
+								<th>DecisionTree</th>
+								<th>GBDT</th>
+							</tr>
+						</thead>
+					</table>
+					<br />
+					<h3 class="panel-heading" id="list-item-6" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						{% if ifmarco != True %}
+							F1-score
+						{% else %}
+							Marco F1-score
+						{% endif %}
+						
+					</h3>
+					<div id="f1_scoreboxplotDiv"></div>
+					<table id="f1_scoretable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>Naive Bayes</th>
+								<th>SVM</th>
+								<th>RandomForest</th>
+								<th>Logistic</th>
+								<th>KNN</th>
+								<th>XGBoost</th>
+								<th>lightGBM</th>
+								<th>Adaboost</th>
+								<th>DecisionTree</th>
+								<th>GBDT</th>
+							</tr>
+						</thead>
+					</table>
+					<br />
+					<h3 class="panel-heading" id="list-item-7" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						{% if ifmarco != True %}
+							ROC
+						{% else %}
+							Marco ROC
+						{% endif %}
+						
+					</h3>
+					<div id="rocplotDiv" style="margin-right: 0px;"></div>
+					
+					<h3 class="panel-heading" id="list-item-8" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						{% if ifmarco != True %}
+							Radar
+						{% else %}
+							Marco Radar
+						{% endif %}
+						
+					</h3>
+					<div id="radarplotDiv" style="margin-right: 0px;"></div>
+					
+					<h3 class="panel-heading" id="list-item-9" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Test
+					</h3>
+					<div id="vbarplotDiv"</div>
+					<div id="heatmapDiv"</div>
+					<div id="vrocplotDiv" style="margin-right: 0px;"></div>
+					<h3 class="panel-heading" id="list-item-10" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Final Report
+					</h3>
+					<table id="finaltable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th class="none">Feature Names</th>
+								<th>Test Accuracy</th>
+								{% if ifmarco != True %}
+									<th>Precision</th>
+									<th>AUC</th>
+									<th>Recall</th>
+									<th>F1-score</th>
+								{% else %}
+									<th>Marco Precision</th>
+									<th>Marco AUC</th>
+									<th>Marco Recall</th>
+									<th>Marco F1-score</th>
+								{% endif %}
+								<th>Feature_names/Parameter</th>
+								<th class="none">Parameter</th>
+								<th>Model Download</th>
+							</tr>
+						</thead>
+					</table>
+					<br />
+				</div>
+			</div>
+			</div>
+			</div>
 			<!-- <div class="row">
 				<div class="col-6">
 					<button type="button" onclick="window.location.href='/mlserver/analysis_oneclick'" class="btn btn-info" style="width: 100%;">One-click Analysis</button>
