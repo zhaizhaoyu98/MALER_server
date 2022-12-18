@@ -4,7 +4,7 @@ import os, shutil, copy, pickle, json, time
 import numpy as np
 import pandas as pd
 
-from sklearn.model_selection import cross_val_score,cross_validate ,train_test_split, GridSearchCV, KFold,StratifiedKFold,RepeatedKFold
+from sklearn.model_selection import cross_val_score,cross_validate, GridSearchCV, KFold,StratifiedKFold,RepeatedKFold
 from sksurv.datasets import get_x_y
 from sksurv.svm import FastKernelSurvivalSVM,FastSurvivalSVM
 from sksurv.tree import SurvivalTree
@@ -60,8 +60,10 @@ def survival_oc_result(request):
         '''
 
         train_set, test_set, blind_set = split_train_test(inputdata, datatype='survival')
-        x, y = sur_data_process(train_set)
-        x2, validation_data, y2, validation_label = train_test_split(x, y, random_state=10, train_size=0.7,stratify=y['Status'])
+        x2, y2 = sur_data_process(train_set)
+        # x2, validation_data, y2, validation_label = train_test_split(x, y, random_state=10, train_size=0.7,stratify=y['Status'])
+        if len(test_set) > 0:
+            validation_data, validation_label = sur_data_process(test_set)
 
         cv = KFold(n_splits=5, shuffle=True, random_state=10)
         features = cox_selection(x2, y2)
@@ -141,11 +143,11 @@ def survival_oc_result(request):
             best_esti.append(tmodels[i])
             parameter.append(str(estimators[i][0].get_params()))
             test_acc.append(test_acc_describe.loc['mean',][i])
-            feature_names.append(str(max_features[i]))
+            feature_names.append(max_features[i])
 
         max_reports = {'Mean C-index': test_acc,
                        'parameter': parameter,
-                       'feature_names': feature_names, }
+                       'feature_names': [str(f) for f in feature_names], }
         max_reports = pd.DataFrame(max_reports, index=sur_names).reset_index().rename(
             columns={'index': 'Method'})
         max_reports_dict = max_reports.to_dict('records')

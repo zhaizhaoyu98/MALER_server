@@ -1,6 +1,9 @@
+import json
+
 from django.shortcuts import render
 
 import os, shutil, pickle
+import numpy as np
 import pandas as pd
 
 
@@ -37,37 +40,124 @@ def predict_result(request):
 
     modelmd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_model.name))
     filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
-    projectid = 'PRED' + select_model.replace('model_', '').upper() + modelmd5[:6] + '-' + filemd5[:6]
+    projectid = 'PRED' + '-' + select_model.replace('model_', '').upper() + '-' + modelmd5[:6] + '-' + filemd5[:6]
     print(projectid)
 
     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-    os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-    shutil.move(STATIC_ROOT + '/cache/' + obj_model.name, newpath)
-    shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
+    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
+        os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+        shutil.move(STATIC_ROOT + '/cache/' + obj_model.name, newpath)
+        shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
+
+
+    '''
+        select_model='model_bclass'
+        blind_set = pd.read_csv(r'C:/Users/Administrator/Desktop/jupyter_project/example/ml示例数据/tpm_binary_df.csv', header=0, index_col=0).T
+        with open(r'E:\/CodeProject/WebServer/ML_WebServer/mlserver/static/cache/BCO-e5e9da-TopK/Naive_Bayes.pkl', 'rb') as f:
+            model_pickle = pickle.load(f)
+        
+        select_model='model_reg'
+        blind_set = pd.read_csv(r'C:/Users/Administrator/Desktop/jupyter_project/example/ml示例数据/regression_exemple.csv', header=0, index_col=0).T
+        with open(r'E:\/CodeProject/WebServer/ML_WebServer/mlserver/static/cache/RO-a4de3d-TopK/LinearRegression.pkl', 'rb') as f:
+            model_pickle = pickle.load(f)
+        
+        select_model='model_sur'
+        blind_set = pd.read_csv(r'C:/Users/Administrator/Desktop/jupyter_project/example/ml示例数据/tpm_gbm_surdata.csv', header=0, index_col=0).T
+        with open(r'E:\/CodeProject/WebServer/ML_WebServer/mlserver/static/cache/SO-c319b6-TopK/SurvivalTree.pkl', 'rb') as f:
+            model_pickle = pickle.load(f)
+    '''
 
     with open(STATIC_ROOT + '/cache/' + projectid + '/' + obj_model.name, 'rb') as f:
         model_pickle = pickle.load(f)
 
-    blind_set = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, header=0, index_col=0).T
-    if select_model == 'model_bclass' or select_model == 'model_mclass':
-        blind_set = vaildation_data[:15]  # 模拟的blind数据
+    method, model_name, model, feature_names = \
+        model_pickle['method'], model_pickle['name'], model_pickle['model'], model_pickle['feature_names']
 
+    blind_set = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, header=0, index_col=0).T
+
+    if select_model == 'model_bclass' or select_model == 'model_mclass':
+        classes = model_pickle['classes']
+
+        blind_set = blind_set[5:20]  # 模拟的blind数据
         predict_reports = {}
         mapping = dict(zip(classes.values(), classes.keys()))  # 键值对翻转
-        predict_reports[clf_name] = best_esti[0].predict(blind_set[feature_names[0]])
+
+        predict_reports[model_name] = model.predict(blind_set[feature_names])
+
         predict_reports = pd.DataFrame(predict_reports, index=blind_set.index).applymap(lambda x: mapping[x])
-        predict_reports.T
+        predict_reports_dict = predict_reports.reset_index().rename(columns={'index': 'Name', model_name: 'Label'}).to_dict('records')
+        showtable = True
+        method = 'Classification'
+        surv_plot = None
     elif select_model == 'model_reg':
-        blind_set = vaildation_data[:15]  # 模拟的blind数据
+        blind_set = blind_set[5:20]  # 模拟的blind数据
 
         predict_reports = {}
-        predict_reports[reg_model_name] = best_esti[0].predict(blind_set[feature_names[0]])
+        predict_reports[model_name] = model.predict(blind_set[feature_names])
         predict_reports = pd.DataFrame(predict_reports, index=blind_set.index)
-        predict_reports.T
+        predict_reports_dict = predict_reports.reset_index().rename(columns={'index': 'Name', model_name: 'Label'}).to_dict('records')
+        showtable = True
+        method = 'Regression'
+        surv_plot = None
     else:
-        blind_set = vaildation_data[:15]  # 模拟的blind数据
+        blind_set = blind_set[5:20]  # 模拟的blind数据
 
-        if sur_model_name != 'SurvivalSVM':
-            sur_pred_plot(best_esti[0], blind_set, feature_names[0], sur_model_name)
+        if model_name != 'SurvivalSVM':
+            surv_plot = sur_pred_plot(model, blind_set, feature_names)
         else:
+            surv_plot = None
             print('The svm model does not support the prediction function')
+        showtable = False
+        predict_reports_dict = None
+        method = 'Survival'
+    shutil.rmtree(os.path.join(STATIC_ROOT, 'cache', projectid))
+    return render(request, 'predict_result.html', {
+        'projectid': projectid,
+        'method': method,
+        'showtable': showtable,
+        'predict_reports_dict': json.dumps(predict_reports_dict),
+        'surv_plot': json.dumps(surv_plot),
+    })
+
+
+def sur_pred_plot(model, blind_set, feature_names):
+    data = blind_set[list(feature_names)]
+    surv = model.predict_survival_function(data)
+    surv2 = model.predict_cumulative_hazard_function(data)
+    tarce_data = []
+    for i in range(len(surv)):
+        trace1 = surv_trace_struct(surv[i].x, surv[i].y, 1, data.index[i])
+        trace2 = surv_trace_struct(surv2[i].x, surv2[i].y, 2, data.index[i])
+        tarce_data.append(trace1), tarce_data.append(trace2)
+    return tarce_data
+
+def surv_trace_struct(x, y, num, name):
+    trace = {
+        # 'key': null,
+        'line': {
+            'dash': 'solid',
+            # 'color': 'red',
+            'shape': 'hv',
+            'width': 2
+        },
+        'mode': 'lines',
+        'name': name,
+        'type': 'scatter',
+        'x': list(x),
+        'y': list(y),
+        'xaxis': 'x' + str(num),
+        'yaxis': 'y' + str(num),
+        'text': make_surv_text(x, y),
+        'hoverinfo': 'text',
+        'showlegend': True
+        # 'legendgroup': 'High Risk'
+    }
+    return trace
+
+def make_surv_text(x, y):
+    string = 'time: %s<br>surv: %s'
+    text = []
+    for i in range(len(x)):
+        str = string %(x[i], np.round(y[i], 3))
+        text.append(str)
+    return text

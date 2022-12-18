@@ -8,7 +8,7 @@ import numpy as np
 # patch_sklearn()
 from sklearn.preprocessing import LabelEncoder, label_binarize
 from sklearn.feature_selection import SelectKBest, chi2, f_classif
-from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score, train_test_split
+from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score
 from sklearn.naive_bayes import GaussianNB,BernoulliNB,ComplementNB,MultinomialNB
 from sklearn.ensemble import AdaBoostClassifier, GradientBoostingClassifier
 from sklearn.ensemble import RandomForestClassifier as RFC
@@ -122,16 +122,16 @@ def result(request):
 
         train_set, test_set, blind_set = split_train_test(inputdata)
         data, label = classification_process(train_set)
-        label2, classes = label_pre(label)
+        label3, classes = label_pre(label)
         if len(test_set) > 0:
             validation_data, validation_label = classification_process(test_set)
             validation_label, ll = label_pre(validation_label)
 
-        features = selectkbest_top20(data, label2, k=50)
-        data2 = data.loc[:, features]
-        data3, validation_data, label3, validation_label = train_test_split(data2, label2,
-                                                                            random_state=10,
-                                                                            train_size=0.9)
+        features = selectkbest_top20(data, label3, k=50)
+        data3 = data.loc[:, features]
+        # data3, validation_data, label3, validation_label = train_test_split(data2, label2,
+        #                                                                     random_state=10,
+        #                                                                     train_size=0.9)
         train_index, test_index = RSKFold(data3, label3)  # 十次五折交叉验证
 
         # features = selectkbest_top20(data, label2, k=50)
@@ -156,7 +156,7 @@ def result(request):
                                   3).reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
             f_describe_dict = f_describe.to_dict('records')
             # ROC
-            mean_FPR, mean_TPR_df, auc_mean_std = get_ROC_info(clf_name, estimators, data, label2, test_index, f_names,
+            mean_FPR, mean_TPR_df, auc_mean_std = get_ROC_info(clf_name, estimators, data3, label3, test_index, f_names,
                                                                final_reports, predicts)
             roc_traces = mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=[clf_name])
 
@@ -250,7 +250,7 @@ def result(request):
             f_describe_dict = f_describe.to_dict('records')
 
             # ROC
-            mean_FPR, mean_TPR_df, auc_mean_std = get_ROC_info(clf_name, res, data, label2, test_index, max_features,
+            mean_FPR, mean_TPR_df, auc_mean_std = get_ROC_info(clf_name, res, data3, label3, test_index, max_features,
                                                                final_reports, preds)
             roc_traces = mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=[clf_name])
 
@@ -329,18 +329,26 @@ def result(request):
             pickle.dump(cp_cache, f)
 
     else:
-        data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "express_data.csv", header=0, index_col=0).T
-        label = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv", header=0, index_col=0)
-        line_chart_data = 'null'
+        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "express_data.csv", header=0, index_col=0).T
+        # label = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv", header=0, index_col=0)
+        # line_chart_data = 'null'
         # preprocess
-        label = np.array(label).ravel()
-        label2, classes = label_pre(label)
+        # label = np.array(label).ravel()
+        # label3, classes = label_pre(label)
 
-        features = selectkbest_top20(data, label2, k=50)
-        data2 = data.loc[:, features]
+        train_set, test_set, blind_set = split_train_test(inputdata)
+        data, label = classification_process(train_set)
+        label3, classes = label_pre(label)
+
+        if len(test_set) > 0:
+            validation_data, validation_label = classification_process(test_set)
+            validation_label, ll = label_pre(validation_label)
+
+        features = selectkbest_top20(data, label3, k=50)
+        data3 = data.loc[:, features]
         # 拆分验证集
-        data3, validation_data, label3, validation_label = train_test_split(data2, label2, random_state=10,
-                                                                            train_size=0.9)
+        # data3, validation_data, label3, validation_label = train_test_split(data2, label2, random_state=10,
+        #                                                                     train_size=0.9)
         train_index, test_index = RSKFold(data3, label3)  # 十次五折交叉验证
         # clf_name = select_child_model.upper()
         if feature_select_method == 'TopK':
@@ -366,7 +374,7 @@ def result(request):
                                       3).reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
                 f_describe_dict = f_describe.to_dict('records')
 
-                mean_FPR, mean_TPR_df, auc_mean_std = get_ROC_info(clf_name, estimators, data, label2, test_index,
+                mean_FPR, mean_TPR_df, auc_mean_std = get_ROC_info(clf_name, estimators, data3, label3, test_index,
                                                                    f_names,
                                                                    final_reports, predicts)
                 roc_traces = mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=[clf_name])
@@ -498,7 +506,7 @@ def result(request):
                 f_describe_dict = f_describe.to_dict('records')
 
                 # ROC
-                mean_FPR, mean_TPR_df, auc_mean_std = get_ROC_info(clf_name, res, data, label2, test_index, max_features,
+                mean_FPR, mean_TPR_df, auc_mean_std = get_ROC_info(clf_name, res, data3, label3, test_index, max_features,
                                                                    final_reports, preds)
                 roc_traces = mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=[clf_name])
 
@@ -746,10 +754,20 @@ def select_class_model(request):
         select_model_name = 'SVM'
         kernel, c, degree, coef, gamma = request.POST.get('svm_kernel'), \
                                          int(request.POST.get('svm_c')), \
-                                         int(request.POST.get('svm_degree')), \
-                                         int(request.POST.get('svm_coef')), \
+                                         request.POST.get('svm_degree'), \
+                                         request.POST.get('svm_coef'), \
                                          request.POST.get('svm_gamma')
-        select_model = svm(kernels=kernel,degrees=degree,c=c,coef=coef,Gamma=gamma)
+        if kernel == 'linear':
+            select_model = svm(kernels=kernel, c=c)
+        elif kernel == 'poly':
+            degree, coef = int(degree), int(coef)
+            select_model = svm(kernels=kernel, degrees=degree, c=c, coef=coef, Gamma=gamma)
+        elif kernel == 'sigmoid':
+            coef = int(coef)
+            select_model = svm(kernels=kernel, c=c, coef=coef, Gamma=gamma)
+        else:
+            select_model = svm(kernels=kernel, c=c, Gamma=gamma)
+
     elif select_child_model == 'randomforest':
         select_model_name = 'RandomForest'
         criterion, max_depth, max_features, min_samples_split, \

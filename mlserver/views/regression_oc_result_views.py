@@ -6,7 +6,7 @@ import numpy as np
 
 from scipy import stats
 from sklearn.feature_selection import SelectKBest, f_classif,chi2,VarianceThreshold,mutual_info_classif,f_regression
-from sklearn.model_selection import cross_val_score,cross_validate ,train_test_split, GridSearchCV, KFold,\
+from sklearn.model_selection import cross_val_score,cross_validate , GridSearchCV, KFold,\
     StratifiedKFold,RepeatedKFold
 from sklearn.metrics import mean_absolute_error,mean_squared_error
 from sklearn.linear_model import LinearRegression
@@ -61,10 +61,12 @@ def regression_oc_result(request):
         inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, header=0, index_col=0).T
         train_set, test_set, blind_set = split_train_test(inputdata)
         # data, label = classification_process(train_set)
-        x_dum, y = regression_preprocess(train_set)
+        nordata4, nor_age4 = regression_preprocess(train_set)
+        if len(test_set) > 0:
+            validation_data, validation_label = regression_preprocess(test_set)
 
-        nordata4, vaildation_data, nor_age4, vaildation_label = train_test_split(x_dum, y, random_state=10,
-                                                                                 train_size=0.7)  # 分验证集
+        # nordata4, vaildation_data, nor_age4, vaildation_label = train_test_split(x_dum, y, random_state=10,
+        #                                                                          train_size=0.7)  # 分验证集
         features = selectkbest_top20(nordata4, nor_age4, score_func=f_regression, k=50)
 
         nordata4 = nordata4[features]
@@ -206,9 +208,9 @@ def regression_oc_result(request):
             R2.append(test_acc_describe.iloc[0, :][i])
             Mae.append(MAE_report_describe.iloc[0, :][i])
             Mse.append(MSE_report_describe.iloc[0, :][i])
-            feature_names.append(str(max_features[i]))
+            feature_names.append(max_features[i])
         final_reports = {'parameter': parameter,
-                         'feature_names': feature_names,
+                         'feature_names': [str(f) for f in feature_names],
                          'Mean R-square': R2,
                          'Mean MAE': Mae,
                          'Mean MSE': Mse}
@@ -217,8 +219,8 @@ def regression_oc_result(request):
         final_reports_dict = final_reports.to_dict('records')
 
         # validation
-        val_report, validate_predicts = regression_valreport(best_esti, vaildation_data, vaildation_label, max_features)
-        vregpred_trace = mkvregpredplot(validate_predicts, vaildation_label, models_str=models_str)
+        val_report, validate_predicts = regression_valreport(best_esti, validation_data, validation_label, max_features)
+        vregpred_trace = mkvregpredplot(validate_predicts, validation_label, models_str=models_str)
         vreport_trace = mkvreportbarplot(val_report)
 
         val_report = np.round(val_report, 3)

@@ -4,7 +4,7 @@ import os, shutil, copy, pickle, json, random, string
 import numpy as np
 import pandas as pd
 
-from sklearn.model_selection import cross_val_score,cross_validate ,train_test_split, GridSearchCV, KFold,StratifiedKFold,RepeatedKFold
+from sklearn.model_selection import cross_val_score,cross_validate, GridSearchCV, KFold,StratifiedKFold,RepeatedKFold
 from sksurv.datasets import get_x_y
 from sksurv.svm import FastKernelSurvivalSVM,FastSurvivalSVM
 from sksurv.tree import SurvivalTree
@@ -15,11 +15,11 @@ from sksurv.metrics import cumulative_dynamic_auc
 from lifelines.statistics import logrank_test
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5, df2bp
+from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, split_train_test
 from mlserver.views.classification_cp_result_views import md5_convert, surv_para_group
 from mlserver.views.survival_oc_result_views import sur_data_process, cox_selection, \
     sur_RSKFold, FSS_fun, train_estimator, mk_surv_data,mk_surv_layout, time_dependent_auc, \
-    mk_auc_line, pre_screening, train_top3
+    mk_auc_line, pre_screening, train_top3, BSS_fun
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -70,17 +70,24 @@ def survival_cp_result(request):
         projectid='SC-e8ce60-FSS'
         data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'load_breast_cancer.csv', header=0, index_col=0).T
         '''
-        data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0, index_col=0).T
-        x, y = sur_data_process(data)
-        x2, vaildation_data, y2, vaildation_label = train_test_split(x, y, random_state=10, train_size=0.7,
-                                                                     stratify=y['Status'])
+        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0, index_col=0).T
+        train_set, test_set, blind_set = split_train_test(inputdata, datatype='survival')
+
+        x2, y2 = sur_data_process(train_set)
+        # x2, vaildation_data, y2, vaildation_label = train_test_split(x, y, random_state=10, train_size=0.7,
+        #                                                              stratify=y['Status'])
+        if len(test_set) > 0:
+            validation_data, validation_label = sur_data_process(test_set)
         cv = KFold(n_splits=5, shuffle=True, random_state=10)
         features = cox_selection(x2, y2)
         # features,ss2 = cox_selection(x2,y2)
         x3 = x2[features]
         train_index, test_index = sur_RSKFold(x3, y2)
         if feature_select_method != 'TopK':
-            sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=6)
+            if feature_select_method == 'FSS':
+                sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=6)
+            else:
+                sf, ms = BSS_fun(features, sur_model, x3, y2, cv, n_jobs=6)
             max_index = np.array(ms).argmax()
             max_score = max(ms)
             max_features = (sf[:max_index + 1])
@@ -138,13 +145,13 @@ def survival_cp_result(request):
         surv_data = {'surv_trace': surv_trace, 'surv_layout': surv_layout}
 
         # validation
-        vsurv_trace, vresultp = mk_surv_data(sur_model_name, vaildation_data[max_features],vaildation_label,best_esti[0],data_median)
+        vsurv_trace, vresultp = mk_surv_data(sur_model_name, validation_data[max_features],validation_label,best_esti[0],data_median)
         vsurv_layout = mk_surv_layout(sur_model_name, vresultp)
         vsurv_data = {'surv_trace': vsurv_trace, 'surv_layout': vsurv_layout}
 
         vlinedata = []
-        va_times, rsf_auc, mean_auc, cindex = time_dependent_auc(best_esti[0], vaildation_data,
-                                                                 vaildation_label, y2,
+        va_times, rsf_auc, mean_auc, cindex = time_dependent_auc(best_esti[0], validation_data,
+                                                                 validation_label, y2,
                                                                  max_features, sur_model_name)
 
         vlinetrace = mk_auc_line(sur_model_name, va_times, rsf_auc, mean_auc, cindex)
@@ -179,17 +186,24 @@ def survival_cp_result(request):
         with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
             cp_cache = pickle.load(f)
 
-        data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/load_data.csv', header=0, index_col=0).T
-        x, y = sur_data_process(data)
-        x2, vaildation_data, y2, vaildation_label = train_test_split(x, y, random_state=10, train_size=0.7,
-                                                                     stratify=y['Status'])
+        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/load_data.csv', header=0, index_col=0).T
+        train_set, test_set, blind_set = split_train_test(inputdata, datatype='survival')
+
+        x2, y2 = sur_data_process(train_set)
+        if len(test_set) > 0:
+            validation_data, validation_label = sur_data_process(test_set)
+        # x2, vaildation_data, y2, vaildation_label = train_test_split(x, y, random_state=10, train_size=0.7,
+        #                                                              stratify=y['Status'])
         cv = KFold(n_splits=5, shuffle=True, random_state=10)
         features = cox_selection(x2, y2)
         # features,ss2 = cox_selection(x2,y2)
         x3 = x2[features]
         train_index, test_index = sur_RSKFold(x3, y2)
         if feature_select_method != 'TopK':
-            sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=6)
+            if feature_select_method == 'FSS':
+                sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=6)
+            else:
+                sf, ms = BSS_fun(features, sur_model, x3, y2, cv, n_jobs=6)
             max_index = np.array(ms).argmax()
             max_score = max(ms)
             max_features = (sf[:max_index + 1])
@@ -253,14 +267,14 @@ def survival_cp_result(request):
             surv_data = {'surv_trace': surv_trace, 'surv_layout': surv_layout}
 
             # validation
-            vsurv_trace, vresultp = mk_surv_data(sur_model_name, vaildation_data[max_features], vaildation_label,
+            vsurv_trace, vresultp = mk_surv_data(sur_model_name, validation_data[max_features], validation_label,
                                                  best_esti[0], data_median)
             vsurv_layout = mk_surv_layout(sur_model_name, vresultp)
             vsurv_data = {'surv_trace': vsurv_trace, 'surv_layout': vsurv_layout}
 
             vlinedata = []
-            va_times, rsf_auc, mean_auc, cindex = time_dependent_auc(best_esti[0], vaildation_data,
-                                                                     vaildation_label, y2,
+            va_times, rsf_auc, mean_auc, cindex = time_dependent_auc(best_esti[0], validation_data,
+                                                                     validation_label, y2,
                                                                      max_features, sur_model_name)
 
             vlinetrace = mk_auc_line(sur_model_name, va_times, rsf_auc, mean_auc, cindex)

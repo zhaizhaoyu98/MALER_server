@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os, random, string, shutil, pickle, re
-from sklearn.model_selection import train_test_split,RepeatedKFold,KFold
+from sklearn.model_selection import RepeatedKFold,KFold
 from sklearn.preprocessing import StandardScaler
 import copy
 from sklearn.metrics import accuracy_score
@@ -30,7 +30,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5
+from mlserver.views.classification_oc_result_views import get_file_md5, split_train_test
 from mlserver.views.regression_oc_result_views import mkvregpredplot, mkvreportbarplot, JsonEncoder
 from mlserver.views.classification_cp_result_views import md5_convert
 from mlserver.views.survival_cp_result_views import surv_para_group
@@ -76,10 +76,14 @@ def regression_cp_result(request):
         data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0, index_col=0).T
 
         '''
-        data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0, index_col=0).T
-        x_dum, y = regression_preprocess(data)
-        nordata4, vaildation_data, nor_age4, vaildation_label = train_test_split(x_dum, y, random_state=10,
-                                                                                 train_size=0.7)  # 分验证集
+        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0, index_col=0).T
+        train_set, test_set, blind_set = split_train_test(inputdata, datatype='survival')
+
+        nordata4, nor_age4 = regression_preprocess(train_set)
+        if len(test_set) > 0:
+            validation_data, validation_label = regression_preprocess(test_set)
+        # nordata4, vaildation_data, nor_age4, vaildation_label = train_test_split(x_dum, y, random_state=10,
+        #                                                                          train_size=0.7)  # 分验证集
         features = selectkbest_top20(nordata4, nor_age4, score_func=f_regression, k=50)
         nordata4 = nordata4[features]
 
@@ -150,10 +154,10 @@ def regression_cp_result(request):
         final_reports_dict = final_reports.to_dict('records')
 
         # validation
-        val_report = reg_cust_val(best_esti,vaildation_data,vaildation_label,max_features, reg_model_name)
+        val_report = reg_cust_val(best_esti,validation_data,validation_label,max_features, reg_model_name)
 
-        validate_predict = best_esti[0].predict(vaildation_data[max_features])
-        vregpred_trace = mkvregpredplot([validate_predict], vaildation_label, [reg_model_name])
+        validate_predict = best_esti[0].predict(validation_data[max_features])
+        vregpred_trace = mkvregpredplot([validate_predict], validation_label, [reg_model_name])
         vreport_trace = []
         i=0
         for m in list(val_report.columns):
@@ -195,10 +199,14 @@ def regression_cp_result(request):
         with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
             cp_cache = pickle.load(f)
 
-        data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0, index_col=0).T
-        x_dum, y = regression_preprocess(data)
-        nordata4, vaildation_data, nor_age4, vaildation_label = train_test_split(x_dum, y, random_state=10,
-                                                                                 train_size=0.7)  # 分验证集
+        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0, index_col=0).T
+        train_set, test_set, blind_set = split_train_test(inputdata, datatype='survival')
+
+        nordata4, nor_age4 = regression_preprocess(train_set)
+        if len(test_set) > 0:
+            validation_data, validation_label = regression_preprocess(test_set)
+        # nordata4, vaildation_data, nor_age4, vaildation_label = train_test_split(x_dum, y, random_state=10,
+        #                                                                          train_size=0.7)  # 分验证集
         features = selectkbest_top20(nordata4, nor_age4, score_func=f_regression, k=50)
         nordata4 = nordata4[features]
 
@@ -278,10 +286,10 @@ def regression_cp_result(request):
             final_reports_dict = final_reports.to_dict('records')
 
             # validation
-            val_report = reg_cust_val(best_esti, vaildation_data, vaildation_label, max_features, reg_model_name)
+            val_report = reg_cust_val(best_esti, validation_data, validation_label, max_features, reg_model_name)
 
-            validate_predict = best_esti[0].predict(vaildation_data[max_features])
-            vregpred_trace = mkvregpredplot([validate_predict], vaildation_label, [reg_model_name])
+            validate_predict = best_esti[0].predict(validation_data[max_features])
+            vregpred_trace = mkvregpredplot([validate_predict], validation_label, [reg_model_name])
             vreport_trace = []
             i = 0
             for m in list(val_report.columns):

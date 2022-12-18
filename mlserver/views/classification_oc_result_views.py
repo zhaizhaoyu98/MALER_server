@@ -8,7 +8,7 @@ import numpy as np
 # patch_sklearn()
 from sklearn.preprocessing import LabelEncoder, label_binarize
 from sklearn.feature_selection import SelectKBest, chi2, f_classif
-from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score, train_test_split
+from sklearn.model_selection import RepeatedStratifiedKFold, cross_val_score
 from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import AdaBoostClassifier, GradientBoostingClassifier
 from sklearn.ensemble import RandomForestClassifier as RFC
@@ -108,17 +108,17 @@ def result(request):
         train_set, test_set, blind_set = split_train_test(inputdata)
         data, label = classification_process(train_set)
 
-        label2, classes = label_pre(label)
+        label3, classes = label_pre(label)
         if len(test_set) > 0:
             validation_data, validation_label = classification_process(test_set)
             validation_label, ll = label_pre(validation_label)
 
         if feature_select_method == 'TopK':
-            features = selectkbest_top20(data, label2, k=50)
-            data2 = data.loc[:, features]
-            data3, validation_data, label3, validation_label = train_test_split(data2, label2,
-                                                                                          random_state=10,
-                                                                                          train_size=0.9)
+            features = selectkbest_top20(data, label3, k=50)
+            data3 = data.loc[:, features]
+            # data3, validation_data, label3, validation_label = train_test_split(data2, label2,
+            #                                                                               random_state=10,
+            #                                                                               train_size=0.9)
             train_index, test_index = RSKFold(data3, label3)  # 十次五折交叉验证
             cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=1, random_state=10)
 
@@ -280,13 +280,13 @@ def result(request):
             '''
             DETERMINE BINARY OR MULTIPLE CLASSIFICATION
             '''
-            feature_names = selectkbest_top20(data, label2, k=50)
-            data2 = data.loc[:, feature_names]
+            feature_names = selectkbest_top20(data, label3, k=50)
+            data3 = data.loc[:, feature_names]
             cv = RepeatedStratifiedKFold(n_splits=5, n_repeats=1, random_state=10)
 
-            data3, validation_data, label3, validation_label = train_test_split(data2, label2,
-                                                                                          random_state=10,
-                                                                                          train_size=0.9)
+            # data3, validation_data, label3, validation_label = train_test_split(data2, label2,
+            #                                                                               random_state=10,
+            #                                                                               train_size=0.9)
             train_index, test_index = RSKFold(data3, label3)
             # 所有分类器
             selected_feature, max_scores = [], []
@@ -295,7 +295,7 @@ def result(request):
                 if feature_select_method == 'FSS':
                     sf, ms = FSS_fun(feature_names, each_model,data3,label3,cv)
                 else:
-                    sf, ms = BSS_fun(feature_names, each_model, cv, data2, label2)
+                    sf, ms = BSS_fun(feature_names, each_model, data3, label3, cv)
                 selected_feature.append(sf), max_scores.append(ms)
                 end = time.perf_counter()
                 print(round(end - start, 3))
