@@ -109,89 +109,106 @@
 		<div class="container col-9">
 			<br />
 			<div class="row">
-				<h2>PROJECTID: {{ projectid }}</h2>
-			</div>
-			<hr />
-			<form action="" method="" id="form_data">
-				{%  csrf_token %}
-				<input style="display: none;" type="text" id="projectid"  name="projectid" value="{{projectid}}"/>
-			</form>
-			
-			<!-- <h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				line chart
-			</h3>
-			<div id="linechartDiv"></div> -->
-			
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				{{model_name}}
-			</h3>
-			<div id="accboxplotDiv"></div>
-			
-			<table id="ftable" class="display" style="width: 100%;" lazyload="True">
-				 <thead>
-					<tr>
-						<th></th>
-						<th>Test Accuracy</th>
-						<th>Precision</th>
-						<th>AUC</th>
-						<th>Recall</th>
-						<th>F1-score</th>
-					</tr>
-				</thead>
-			</table>
-			
-			<br />
-			
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				{% if ifmarco != True %}
-					ROC
-				{% else %}
-					Marco ROC
-				{% endif %}
-				
-			</h3>
-			<div id="rocplotDiv" style="margin-right: 0px;"></div>
-			
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				Final Report
-			</h3>
-			<table id="paratable" class="display" style="width: 100%;" lazyload="True">
-				 <thead>
-					<tr>
-						<th></th>
-						<th>Index</th>
-						<th>Feature Select Method</th>
-						<th class="none">Feature Names</th>
-						
-						<th>Test Accuracy</th>
-						
+				<div class='col-2 d-none d-xl-block' style="">
+					<div id="list-example" class="list-group "
+						style="position: fixed; width:250px;height: 500px;margin-left: -50px;padding-left: 0;">
+						<a class="list-group-item list-group-item-action" href="#list-item-1">Evaluation metrics</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-2">ROC</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-3">Test</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-4">Report</a>
+					</div>
+				</div>
+				<div class='col-xl-9 col-lg-12'>
+					<div class="row">
+						<h2>PROJECTID: {{ projectid }}</h2>
+					</div>
+					<hr />
+					<form action="" method="" id="form_data">
+						{%  csrf_token %}
+						<input style="display: none;" type="text" id="projectid"  name="projectid" value="{{projectid}}"/>
+					</form>
+					
+					<!-- <h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						line chart
+					</h3>
+					<div id="linechartDiv"></div> -->
+					
+					<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						{{model_name}}
+					</h3>
+					<div id="accboxplotDiv"></div>
+					
+					<table id="ftable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>Accuracy</th>
+								<th>Precision</th>
+								<th>AUC</th>
+								<th>Recall</th>
+								<th>F1-score</th>
+							</tr>
+						</thead>
+					</table>
+					
+					<br />
+					
+					<h3 class="panel-heading" id="list-item-2" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
 						{% if ifmarco != True %}
-							<th>Precision</th>
-							<th>AUC</th>
-							<th>Recall</th>
-							<th>F1-score</th>
+							ROC
 						{% else %}
-							<th>Marco Precision</th>
-							<th>Marco AUC</th>
-							<th>Marco Recall</th>
-							<th>Marco F1-score</th>
+							Marco ROC
 						{% endif %}
-						<th>Feature_names/Parameter</th>
-						<th class="none">Parameter</th>
-						<th>View</th>
-					</tr>
-				</thead>
-			</table>
-			<button type="button" id="combination" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">Combination
-				</button>
-			<div id="mixrocplotDiv"></div>
-			<div id="mixradarplotDiv"></div>
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				Validation
-			</h3>
-			<div id="barplotDiv"></div>
-			<div id="heatmapDiv"></div>
-			<div id="validrocDiv"></div>
+						
+					</h3>
+					<div id="rocplotDiv" style="margin-right: 0px;"></div>
+					
+					
+					<button type="button" id="combination" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">Combination
+						</button>
+					<div id="mixrocplotDiv"></div>
+					<div id="mixradarplotDiv"></div>
+					<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Test
+					</h3>
+					<div id="barplotDiv"></div>
+					<div id="heatmapDiv"></div>
+					<div id="validrocDiv"></div>
+					
+					<h3 class="panel-heading" id="list-item-3" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Report
+					</h3>
+					<table id="paratable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>Index</th>
+								<th>Feature Select Method</th>
+								<th class="none">Feature Names</th>
+								
+								<th>Accuracy</th>
+								
+								{% if ifmarco != True %}
+									<th>Precision</th>
+									<th>AUC</th>
+									<th>Recall</th>
+									<th>F1-score</th>
+								{% else %}
+									<th>Marco Precision</th>
+									<th>Marco AUC</th>
+									<th>Marco Recall</th>
+									<th>Marco F1-score</th>
+								{% endif %}
+								<th>Feature_names/Parameter</th>
+								<th class="none">Parameter</th>
+								<th>View</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+			
+			
 			<br />
 			<br />
 			<br />
@@ -245,11 +262,11 @@
 			};
 			
 			var bar_layout = {
-				 title: 'Evaluation index of validation set',
+				 title: 'Evaluation index of test set',
 				 barmode: 'stack'
 			}
 			var heatmap_layout = {
-				title: 'Confusion Matrix of validation set',
+				title: 'Confusion Matrix of test set',
 				  annotations: {{heatmap_anno |safe}},
 				  xaxis: {
 				    ticks: '',

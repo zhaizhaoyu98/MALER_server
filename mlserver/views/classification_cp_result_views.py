@@ -788,7 +788,8 @@ def select_class_model(request):
                                                         bool(request.POST.get('logistic_fit_intercept')), \
                                                         request.POST.get('logistic_C'), \
                                                         request.POST.get('logistic_l1_ratio')
-        if penalty == 'None': penalty = None
+        # if penalty == 'none': penalty = None
+        C = float(C)
         if penalty == 'elasticnet':
             l1_ratio = float(l1_ratio)
             select_model = logistic_reg(Penalty=penalty, CC=C, Fit_intercept=fit_intercept, Solver=solver, L1_ratio=l1_ratio)
