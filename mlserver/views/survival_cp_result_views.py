@@ -26,6 +26,7 @@ warnings.filterwarnings("ignore")
 
 def survival_cp_result(request):
     feature_select_method = request.POST.get('feature_select_method')
+    file_upload_type = request.POST.get('file_upload_type')
     print('feature_select_method: ', feature_select_method)
     select_model = request.POST.get('select_model')
     select_child_model = request.POST.get('select_child_model').replace('task_','')
@@ -46,31 +47,66 @@ def survival_cp_result(request):
     if projectid == '': projectid = 'None'
 
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
+        token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
+        if file_upload_type == 'user_data':
+            '''
+            IMPORRT DATA
+            '''
+            obj_file = request.FILES.get('upload_file')
+            f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
+            for line in obj_file.chunks():
+                f.write(line)
+            f.close()
+
+            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
+
+            projectid = 'RC-' + filemd5[:6] + '-' + token
+            newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+            os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+            shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
+            # shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
+            # rename
+            os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, \
+                      STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv")
+            # os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_label.name, \
+            #           STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv")
+            inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0,
+                                    index_col=0).T
+        else:
+            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/survival_example.csv'))
+            filename = 'survival_example.csv'
+            projectid = 'RC-' + filemd5[:6] + '-' + token
+            os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+            newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+            shutil.copy(STATIC_ROOT + '/cache/example/' + filename, newpath)
+            os.rename(newpath + '/' + filename, \
+                      newpath + '/' + "load_data.csv")
+            inputdata = pd.read_csv(STATIC_ROOT + '/cache/example/' + filename, header=0, index_col=0).T
         '''
         IMPORRT DATA
         '''
         # file load
-        upload_file = request.FILES.get('upload_file')
-        f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
-        for line in upload_file.chunks():
-            f.write(line)
-        f.close()
+        # upload_file = request.FILES.get('upload_file')
+        # f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
+        # for line in upload_file.chunks():
+        #     f.write(line)
+        # f.close()
 
-        upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
-        token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
-        projectid = 'SC-' + upload_file_md5[:6] + '-' + token
+        # upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
+        # token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
+        # projectid = 'SC-' + upload_file_md5[:6] + '-' + token
 
-        newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-        os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-        shutil.move(STATIC_ROOT + '/cache/' + upload_file.name, newpath)
+        # newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+        # os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+        # shutil.move(STATIC_ROOT + '/cache/' + upload_file.name, newpath)
         # rename
-        os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, \
-                  STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv")
+        # os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, \
+        #           STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv")
         '''
         projectid='SC-e8ce60-FSS'
         data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'load_breast_cancer.csv', header=0, index_col=0).T
         '''
-        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0, index_col=0).T
+        # inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0, index_col=0).T
         train_set, test_set, blind_set = split_train_test(inputdata, datatype='survival')
 
         x2, y2 = sur_data_process(train_set)

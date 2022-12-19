@@ -39,33 +39,11 @@ def result(request):
     feature_select_method = request.POST.get('feature_select_method')
     print('feature_select_method: ', feature_select_method)
 
-    # select model
-    select_model = request.POST.get('select_model')
-    print(select_model)
-
-
     # select child model
     select_child_model = request.POST.get('select_child_model').replace("task_", "")
     print(select_child_model)
     file_upload_type = request.POST.get('file_upload_type')
-    if file_upload_type == 'user_data':
-        # Feature selection methods
-        print('feature_select_method: ', feature_select_method)
-        '''
-        IMPORRT DATA
-        '''
-        obj_file = request.FILES.get('upload_file')
-        f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
-        for line in obj_file.chunks():
-            f.write(line)
-        f.close()
 
-        filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
-    else:
-        if select_model == 'model_bclass':
-            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'))
-        else:
-            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'))
     '''
     MODULE PARAMETERS
     '''
@@ -88,25 +66,61 @@ def result(request):
         # for line in obj_label.chunks():
         #     f.write(line)
         # f.close()
+        # random token
+        token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
+        if file_upload_type == 'user_data':
+            '''
+            IMPORRT DATA
+            '''
+            obj_file = request.FILES.get('upload_file')
+            f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
+            for line in obj_file.chunks():
+                f.write(line)
+            f.close()
 
+            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
+
+            projectid = prefix_id + filemd5[:6] + '-' + token
+            newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+            os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+            shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
+            # shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
+            # rename
+            os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, \
+                      STATIC_ROOT + '/cache/' + projectid + '/' + "express_data.csv")
+            # os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_label.name, \
+            #           STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv")
+            inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "express_data.csv", header=0,
+                                    index_col=0).T
+        else:
+            if select_model == 'model_bclass':
+                filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'))
+                filename = 'binary_classification_example.csv'
+            else:
+                filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'))
+                filename = 'multiclass_classification_example.csv'
+            projectid = prefix_id + filemd5[:6] + '-' + token
+            os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+            newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+            shutil.copy(STATIC_ROOT + '/cache/example/' + filename, newpath)
+            os.rename(newpath + '/' + filename, \
+                      newpath + '/' + "express_data.csv")
+            inputdata = pd.read_csv(STATIC_ROOT + '/cache/example/' + filename, header=0, index_col=0).T
         # profile load
-        obj_file = request.FILES.get('upload_file')
-        f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
-        for line in obj_file.chunks():
-            f.write(line)
-        f.close()
+        # obj_file = request.FILES.get('upload_file')
+        # f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
+        # for line in obj_file.chunks():
+        #     f.write(line)
+        # f.close()
 
 
         '''
         CALCULATE PROJECTID
         '''
-        # calculate projectid(profile md5 + label md5)
-        # labelmd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_label.name))
-        filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
-        # random token
-        token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
+        # filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
 
-        projectid = prefix_id + filemd5[:6] + '-' + token
+
+
         print(projectid)
         '''
             feature_select_method = 'TopK'
@@ -117,21 +131,13 @@ def result(request):
             data = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'express_data.csv', header=0, index_col=0).T
             label = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'label.csv', header=0, index_col=0)
         '''
-        newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-        os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-        shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
-        # shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
-        # rename
-        os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, \
-                  STATIC_ROOT + '/cache/' + projectid + '/' + "express_data.csv")
-        # os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_label.name, \
-        #           STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv")
+
         # read files
 
         # label = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'label_3columns.csv', header=0, index_col=0)
         # data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'express_data.csv', header=0, index_col=0).T
         # label = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'label.csv', header=0, index_col=0)
-        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "express_data.csv", header=0, index_col=0).T
+
         # label = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv", header=0, index_col=0)
         # line_chart_data = 'null'
         # preprocess
