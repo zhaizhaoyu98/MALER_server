@@ -22,7 +22,6 @@ warnings.filterwarnings("ignore")
 
 
 def survival_oc_result(request):
-    select_model = request.POST.get('select_model')
     sur_models = [FastKernelSurvivalSVM(kernel='linear', random_state=10, max_iter=100),
                   SurvivalTree(random_state=10),
                   ExtraSurvivalTrees(random_state=10, n_jobs=4),
@@ -32,20 +31,26 @@ def survival_oc_result(request):
     sur_names = ['SurvivalSVM', 'SurvivalTree', 'ExtraSurvivalTrees', 'RandomSurvivalForest',
                  'GradientBoostingSurvival']
 
+    select_model = request.POST.get('select_model')
+    file_upload_type = request.POST.get('file_upload_type')
     # Feature selection methods
     feature_select_method = request.POST.get('feature_select_method')
     print('feature_select_method: ', feature_select_method)
-    '''
-    IMPORRT DATA
-    '''
-    # file load
-    upload_file = request.FILES.get('upload_file')
-    f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
-    for line in upload_file.chunks():
-        f.write(line)
-    f.close()
+    if file_upload_type == 'user_data':
+        '''
+            IMPORRT DATA
+            '''
+        # file load
+        upload_file = request.FILES.get('upload_file')
+        f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
+        for line in upload_file.chunks():
+            f.write(line)
+        f.close()
 
-    upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
+        upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
+    else:
+        upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/survival_example.csv'))
+
     projectid = 'SO-' + upload_file_md5[:6] + '-' + feature_select_method
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
         newpath = os.path.join(STATIC_ROOT, 'cache', projectid)

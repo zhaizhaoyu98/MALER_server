@@ -93,7 +93,7 @@
 							<p class="card-img-top" style="text-align:center"><img src='/mlserver_static/img/muliti.png' width="200" height="200"></p>
 						</div>
 						<div class="card-body">
-							<h6 class="card-title" style="text-align:center">Multiple classification</h6>
+							<h6 class="card-title" style="text-align:center">Multiclass classification</h6>
 							<p class="card-title" style="font-size: 16px" >The process of dividing new observations into distinct at least three categories based on the features of a set of input data.</p>
 							<!--<p class="card-text m-0">description</p>...-->
 						</div>
@@ -168,7 +168,48 @@
 							<input type="submit" value="EXAMPLE(ZIP)" /> -->
 						</div>
 						<div id="samp_data" class='row' style="display: none;">
-							<div class="col-6" id="sample_select">
+							<div class="col-12" id="sample_select" display="none">
+								<table border="1" style="border: #000000;background-color: #f8f9fa;">
+									<tr>
+										<th>Example</th>
+										<th>Description</th>
+										<th>Source</th>
+										<th>Download</th>
+									</tr>
+									<tr>
+										<td>Binary Classfication</td>
+										<td>LUAD and LUSC are classified based on gene expression profiles</td>
+										<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
+										<td><a href="download/binary_classification_example.csv">download</a></td>
+									</tr>
+									<tr>
+										<td>Multiple Classfication</td>
+										<td>LUAD, LUSC, KIRP and KIRC are classified based on gene expression profiles</td>
+										<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
+										<td><a href="download/multiclass_classification_example.csv">download</a></td>
+									</tr>
+									<tr>
+										<td>Regression</td>
+										<td>Tumor purity of KIRC is predicted based on gene expression profile</td>
+										<td>
+											<a href="https://xenabrowser.net/">UCSC Xena</a><br />
+											<a href="https://pubmed.ncbi.nlm.nih.gov/26634437/">PMID: 26634437</a>
+										</td>
+										<td><a href="download/regression_example.csv">download</a></td>
+									</tr>
+									<tr>
+										<td>Survival</td>
+										<td>Survival in GBM is predicted based on gene expression profile</td>
+										<td>
+											<a href="https://xenabrowser.net/">UCSC Xena</a>
+											<a href="http://www.cgga.org.cn">CGGA</a>
+										</td>
+										<td><a href="download/survival_example.csv">download</a></td>
+									</tr>
+								</table>
+							</div>
+							
+							<!-- <div class="col-6" id="sample_select" display="none">
 								<label style="font-weight: bold; color: #666">Example Data: </label>
 								<div class="form-check">
 									<label class="form-check-label" for="bin_class">
@@ -217,7 +258,7 @@
 									<a href="http://www.cgga.org.cn">CGGA</a></p>
 								</div>
 								<button id="dl_sample" class="btn btn-info">Download</button>
-							</div>
+							</div> -->
 						</div>
 					</div>
 				</div>
@@ -232,6 +273,7 @@
 						<input name="select_model" id="select_model" style="display: none;" value="model_bclass"/>
 						<!-- <input name="select_mode" id="select_mode" style="display: none;" value=""/> -->
 						<input name="select_child_model" id="select_child_model" style="display: none;" value=""/>
+						<input name="file_upload_type" id="file_upload_type" style="display: none;" value="user_data"/>
 						<div class="row">
 							<h5>Feature Selsect Method</h5>
 							<!-- <input type="radio" name="pick_method" value="selectbest" checked />selectbest -->
@@ -1926,12 +1968,12 @@
 				$(this).removeClass('active');
 			});
 			
-			$('#dl_sample').click(function(e) {
-				e.preventDefault();
-				let samp = $('input[name="samp_data"]:checked').val();
-				window.location.href = 'download/' + samp;
-				console.log(samp)
-			});
+			// $('#dl_sample').click(function(e) {
+			// 	e.preventDefault();
+			// 	let samp = $('input[name="samp_data"]:checked').val();
+			// 	window.location.href = 'download/' + samp;
+			// 	console.log(samp)
+			// });
 
 			$(document).ready(function() {
 				$("#button_submit").hide()
@@ -2037,12 +2079,23 @@
 			})
 			
 			$("#button_submit").click(function () {
-			        if ($("#upload_file").val() == "" && $("#projectid").val() == "") {
-			            alert("Please select a file and upload!");
-			        } else {
-			            $("#form_step23").submit();
-			        }
-			    })
+				if ($("#file_upload_type").val() == 'user_data'){
+					if ($("#upload_file").val() == "" && $("#projectid").val() == "") {
+					    alert("Please select a file and upload!");
+					} else {
+					    $("#form_step23").submit();
+					}
+				} else {
+					 $("#form_step23").submit();
+				}
+			})
+			
+			$("#usr_up").click(function (){
+				$("#file_upload_type").val('user_data')
+			})
+			$("#samp_up").click(function (){
+				$("#file_upload_type").val('example_data')
+			})
 		</script>
 	</body>
 </html>

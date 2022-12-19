@@ -27,52 +27,51 @@ warnings.filterwarnings("ignore")
 title = ["Naive Bayes","SVM","RandomForest","Logistic","KNN","XGBoost","lightGBM",'Adaboost',"DecisionTree","GBDT"]
 
 def result(request):
-    select_model = request.POST.get('select_model')
-    if select_model == 'model_bclass':
-        prefix_id = 'BCO-'
-        ifmarco = False
-    else:
-        prefix_id = 'MCO-'
-        ifmarco = True
-    start_time = time.time()
     # model
     model = [GaussianNB(), SVC(cache_size=5000, probability=False), RFC(n_jobs=4, random_state=10),
              LR(max_iter=5000, n_jobs=4), KNeighborsClassifier(n_jobs=4), XGBClassifier(n_jobs=7, random_state=10),
              LGBMClassifier(importance_type='gain', n_jobs=4), AdaBoostClassifier(),
              DecisionTreeClassifier(random_state=10), GradientBoostingClassifier(random_state=10)]
 
-    # Feature selection methods
+
+    select_model = request.POST.get('select_model')
+    file_upload_type = request.POST.get('file_upload_type')
     feature_select_method = request.POST.get('feature_select_method')
-    print('feature_select_method: ', feature_select_method)
-    '''
-    IMPORRT DATA
-    '''
-    # label load
-    # obj_label = request.FILES.get('upload_label')
-    # print(obj_label.name)
-    # f = open(os.path.join(STATIC_ROOT, 'cache', obj_label.name), 'wb')
-    # for line in obj_label.chunks():
-    #     f.write(line)
-    # f.close()
+    print(file_upload_type)
 
-    # profile load
-    obj_file = request.FILES.get('upload_file')
-    f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
-    for line in obj_file.chunks():
-        f.write(line)
-    f.close()
+    if select_model == 'model_bclass':
+        prefix_id = 'BCO-'
+        ifmarco = False
+    else:
+        prefix_id = 'MCO-'
+        ifmarco = True
+    if file_upload_type == 'user_data':
 
-    '''
-    CALCULATE PROJECTID
-    '''
-    # calculate projectid(profile md5 + label md5)
+        # Feature selection methods
 
-    # labelmd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_label.name))
-    filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
-    # print('labelmd5:', labelmd5)
-    # print('profilemd5:', profilemd5)
+        print('feature_select_method: ', feature_select_method)
+        '''
+        IMPORRT DATA
+        '''
+        obj_file = request.FILES.get('upload_file')
+        f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
+        for line in obj_file.chunks():
+            f.write(line)
+        f.close()
+
+        filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
+    else:
+        if select_model == 'model_bclass':
+            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'))
+        else:
+            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'))
+
+    start_time = time.time()
+
+
     projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
     print(projectid)
+
     '''
     projectid = 'BCO-e5e9da-TopK'
     data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'express_data.csv', header=0, index_col=0).T

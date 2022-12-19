@@ -27,7 +27,6 @@ from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, J
 models_str = ['LinearRegression', 'SVM', 'Ridge', 'Lasso', 'DecisionTree', 'XGBoost',
                   'RandomForest', 'AdaBoost', 'GradientBoost', ]
 def regression_oc_result(request):
-    select_model = request.POST.get('select_model')
     Alphas = [0.01, 0.05, 0.1, 1.0, 2.0, 5.0, 10.0]
     models = [LinearRegression(n_jobs=4), SVR(kernel='linear', max_iter=5000), RidgeCV(alphas=Alphas),
               LassoCV(n_jobs=4, alphas=Alphas),
@@ -36,18 +35,26 @@ def regression_oc_result(request):
               AdaBoostRegressor(random_state=10), GradientBoostingRegressor(random_state=10), ]
     models_str = ['LinearRegression', 'SVM', 'Ridge', 'Lasso', 'DecisionTree', 'XGBoost',
                   'RandomForest', 'AdaBoost', 'GradientBoost', ]
+
+    select_model = request.POST.get('select_model')
     feature_select_method = request.POST.get('feature_select_method')
+    file_upload_type = request.POST.get('file_upload_type')
+
     print('feature_select_method: ', feature_select_method)
-    '''
-    IMPORRT DATA
-    '''
-    # file load
-    upload_file = request.FILES.get('upload_file')
-    f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
-    for line in upload_file.chunks():
-        f.write(line)
-    f.close()
-    upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
+    if file_upload_type == 'user_data':
+        '''
+        IMPORRT DATA
+        '''
+        # file load
+        upload_file = request.FILES.get('upload_file')
+        f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
+        for line in upload_file.chunks():
+            f.write(line)
+        f.close()
+        upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
+    else:
+        upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/regression_example.csv'))
+
     projectid = 'RO-' + upload_file_md5[:6] + '-' + feature_select_method
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
         newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
