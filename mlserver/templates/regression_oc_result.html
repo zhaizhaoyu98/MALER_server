@@ -604,6 +604,19 @@
 			  				  y: 1.08
 			  },
 			};
+			var linechart_layout = {
+				xaxis: {
+				  title: 'Number of features', 
+				  anchor: 'y', 
+				}, 
+				yaxis: {
+				  title: 'R-square', 
+				  anchor: 'x', 
+				}, 
+				margin:{
+					t: 30
+				}
+			}
 			
 			<!--第三步：初始化Datatables-->
 			$(document).ready( function () {
@@ -770,7 +783,7 @@
 					]
 				});
 				
-				Plotly.newPlot('linechartDiv', {{ line_chart_data|safe }});
+				Plotly.newPlot('linechartDiv', {{ line_chart_data|safe }}, linechart_layout);
 				Plotly.newPlot('accboxplotDiv', {{ test_acc_reports_dict|safe }}, rsquare_layout);
 				Plotly.newPlot('maeboxplotDiv', {{ MAE_report_dict|safe }}, mae_layout);
 				Plotly.newPlot('mseboxplotDiv', {{ MSE_report_dict|safe }}, mse_layout);

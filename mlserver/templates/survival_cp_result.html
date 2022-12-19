@@ -213,7 +213,7 @@
 			var report_data = {{ final_reports_dict|safe }};
 			// plotly layout
 			var acc_layout = {
-				title: 'Boxplot of test accuracy'
+				title: 'Boxplot of accuracy'
 			};
 			
 			var vline_layout = {
@@ -235,6 +235,19 @@
 			  },
 			  showlegend: true
 			};
+			var linechart_layout = {
+				xaxis: {
+				  title: 'Number of features', 
+				  anchor: 'y', 
+				}, 
+				yaxis: {
+				  title: 'C-index', 
+				  anchor: 'x', 
+				}, 
+				margin:{
+					t: 30
+				}
+			}
 			<!--第三步：初始化Datatables-->
 			$(document).ready( function () {
 				$('#acctable').DataTable({
@@ -320,7 +333,7 @@
 				});
 				var test_obj = eval('(' + '{{surv_data|safe}}' + ')'); 
 				var valid_obj = eval('(' + '{{vsurv_data|safe}}' + ')'); 
-				Plotly.newPlot('linechartDiv', {{ line_chart_data|safe }});
+				Plotly.newPlot('linechartDiv', {{ line_chart_data|safe }}, linechart_layout);
 				Plotly.newPlot('accboxplotDiv', {{ test_acc_reports_dict|safe }}, acc_layout);
 				Plotly.newPlot('survplotDiv', test_obj.surv_trace, test_obj.surv_layout);
 				Plotly.newPlot('vsurvplotDiv', valid_obj.surv_trace, valid_obj.surv_layout);

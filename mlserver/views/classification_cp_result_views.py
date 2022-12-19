@@ -143,10 +143,18 @@ def result(request):
         # clf_name = select_child_model.upper()
         if feature_select_method == 'TopK':
             cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=1, random_state=10)
-            clf_num = pre_screening(data3, label3, svc, features, cv=cv)
+            clf_num, ms = pre_screening(data3, label3, svc, features, cv=cv)
             test_accs, estimators, mean_accs, predicts, f_names = train_top3(svc, data3, label3, clf_num,
                                                                              train_index, test_index, features)  ##
-
+            line_chart_data = []
+            line_trace = {
+                'mode': 'lines+markers',
+                'name': clf_name,
+                'type': 'scatter',
+                'x': list(range(1, len(ms) + 1)),
+                'y': ms
+            }
+            line_chart_data.append(line_trace)
 
             final_reports, f_describe = customized_report(clf_name, estimators, data3, label3, predicts,
                                                           test_index, f_names, test_accs)
@@ -207,6 +215,7 @@ def result(request):
                 'heatmap_dict': heatmap_dict,
                 'heatmap_anno': heatmap_anno,
                 'valid_roc_traces': valid_roc_traces,
+                'line_chart_data': line_chart_data
                 # 'report': max_reports
             }
         elif feature_select_method == 'FSS' or feature_select_method == 'BSS':
@@ -301,6 +310,7 @@ def result(request):
                 'heatmap_dict': heatmap_dict,
                 'heatmap_anno': heatmap_anno,
                 'valid_roc_traces': valid_roc_traces,
+                'line_chart_data': line_chart_data
                 # 'report': max_reports
             }
 
@@ -351,10 +361,19 @@ def result(request):
         # clf_name = select_child_model.upper()
         if feature_select_method == 'TopK':
             cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=1, random_state=10)
-            clf_num = pre_screening(data3, label3, svc, features, cv=cv)
+            clf_num, ms = pre_screening(data3, label3, svc, features, cv=cv)
             test_accs, estimators, mean_accs, predicts, f_names = train_top3(svc, data3, label3, clf_num,
                                                                              train_index, test_index, features)  ##
 
+            line_chart_data = []
+            line_trace = {
+                'mode': 'lines+markers',
+                'name': clf_name,
+                'type': 'scatter',
+                'x': list(range(1, len(ms) + 1)),
+                'y': ms
+            }
+            line_chart_data.append(line_trace)
 
             maxauc_index = np.array(test_accs).argmax()
             select_str = feature_select_method + clf_name + str(estimators[maxauc_index].get_params())
@@ -433,6 +452,7 @@ def result(request):
                     'heatmap_dict': heatmap_dict,
                     'heatmap_anno': heatmap_anno,
                     'valid_roc_traces': valid_roc_traces,
+                    'line_chart_data': line_chart_data
                 }
 
                 max_reports = pd.concat([cp_cache['reports'], max_reports], axis=0).drop_duplicates(keep='last')
@@ -457,6 +477,7 @@ def result(request):
                 heatmap_dict = cp_cache[select_md5]['heatmap_dict']
                 heatmap_anno = cp_cache[select_md5]['heatmap_anno']
                 valid_roc_traces = cp_cache[select_md5]['valid_roc_traces']
+                line_chart_data = cp_cache[select_md5]['line_chart_data']
         elif feature_select_method == 'FSS' or feature_select_method == 'BSS':
             cv2 = RepeatedStratifiedKFold(n_splits=5, n_repeats=1, random_state=10)
             start = time.perf_counter()
@@ -563,6 +584,7 @@ def result(request):
                     'heatmap_dict': heatmap_dict,
                     'heatmap_anno': heatmap_anno,
                     'valid_roc_traces': valid_roc_traces,
+                    'line_chart_data': line_chart_data
                 }
 
                 # report_describe_roc = {
@@ -593,6 +615,7 @@ def result(request):
                 heatmap_dict = cp_cache[select_md5]['heatmap_dict']
                 heatmap_anno = cp_cache[select_md5]['heatmap_anno']
                 valid_roc_traces = cp_cache[select_md5]['valid_roc_traces']
+                line_chart_data = cp_cache[select_md5]['line_chart_data']
     if select_model == 'model_bclass':
         ifmarco = False
     elif select_model == 'model_mclass':
@@ -610,6 +633,7 @@ def result(request):
         'heatmap_dict': json.dumps(heatmap_dict),
         'heatmap_anno': json.dumps(heatmap_anno),
         'valid_roc_traces': json.dumps(valid_roc_traces),
+        'line_chart_data': json.dumps(line_chart_data),
     })
 
 def show_prev_page(request, projectid_paramd5):
@@ -972,7 +996,7 @@ def pre_screening(data2,label,model,features,cv=2):
     clf = model
     cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,).mean() for i in range(1,21)]
     clf_num = list(pd.DataFrame(cv_scores).iloc[:,0].sort_values(ascending=False).index[:3]+1)
-    return clf_num
+    return clf_num, cv_scores
 
 #top3训练
 def train_estimator(clf,xtrain,ytrain,xtest,ytest):

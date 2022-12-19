@@ -59,7 +59,7 @@
 				padding-bottom: 10px;
 				padding-left: 1rem;
 			}
-			
+			/* 左侧导航颜色 */
 			.list-group-item.active {
 				background-color: #17a2b8;
 				border: 1px solid rgba(0, 0, 0, .125);
@@ -471,6 +471,19 @@
 			  				  y: 1.08
 			  },
 			};
+			var linechart_layout = {
+				xaxis: {
+				  title: 'Number of features', 
+				  anchor: 'y', 
+				}, 
+				yaxis: {
+				  title: 'C-index', 
+				  anchor: 'x', 
+				}, 
+				margin:{
+					t: 30
+				}
+			}
 			<!--第三步：初始化Datatables-->
 			$(document).ready( function () {
 				$('#acctable').DataTable({
@@ -550,7 +563,7 @@
 					]
 				});
 				var test_obj = eval('(' + '{{surv_dict|safe}}' + ')'); 
-				Plotly.newPlot('linechartDiv', {{ line_chart_data|safe }});
+				Plotly.newPlot('linechartDiv', {{ line_chart_data|safe }}, linechart_layout);
 				Plotly.newPlot('accboxplotDiv', {{ test_acc_reports_dict|safe }}, acc_layout);
 				// Plotly.newPlot('survplotDiv', test_obj.SurvivalSVM.surv_trace, test_obj.SurvivalSVM.surv_layout);
 				Plotly.newPlot('testsurvplotDiv', {{subplot_sur|safe}}, testlayout);

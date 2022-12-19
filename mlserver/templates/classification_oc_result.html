@@ -383,6 +383,20 @@
 			var f1_score_data = {{ f1_score_describe_dict|safe }};
 			var final_data = {{ final_reports_dict|safe }};
 			// plotly layout
+			var linechart_layout = {
+				xaxis: {
+				  title: 'Number of features', 
+				  anchor: 'y', 
+				}, 
+				yaxis: {
+				  title: 'Accuracy', 
+				  anchor: 'x', 
+				}, 
+				margin:{
+					t: 30
+				}
+			}
+			
 			var acc_layout = {
 				title: 'Boxplot of accuracy'
 			};
@@ -891,7 +905,7 @@
 						},
 					]
 				});
-				Plotly.newPlot('linechartDiv', {{ line_chart_data|safe }});
+				Plotly.newPlot('linechartDiv', {{ line_chart_data|safe }}, linechart_layout);
 				Plotly.newPlot('accboxplotDiv', {{ test_acc_reports_dict|safe }}, acc_layout);
 				Plotly.newPlot('aucboxplotDiv', {{ df_AUCs_dict|safe }}, auc_layout);
 				Plotly.newPlot('precisionboxplotDiv', {{ precision_reports_dict|safe }}, precision_layout);
