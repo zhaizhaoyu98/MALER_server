@@ -972,63 +972,63 @@ def macro_roc(estimator,xtest,ytest,proba,n_classes):
 #     print(mean_tpr)
     return macro_fpr,macro_tpr,macro_roc_auc,fpr,tpr,roc_auc
 
-def multi_label_get_TopK_ROC_info(estimators, data, label, f_names, test_index, df_AUC, df_AUCs_describe, title=title):
-    mean_tpr, mean_auc = {}, {}
-    mean_FPR = np.linspace(0, 1, 100)
-    mean_TPR_df = pd.DataFrame()
-    auc_mean_std = pd.DataFrame()
+# def multi_label_get_TopK_ROC_info(estimators, data, label, f_names, test_index, df_AUC, df_AUCs_describe, title=title):
+#     mean_tpr, mean_auc = {}, {}
+#     mean_FPR = np.linspace(0, 1, 100)
+#     mean_TPR_df = pd.DataFrame()
+#     auc_mean_std = pd.DataFrame()
+#
+#     for j in range(len(estimators)):  # 6分类器
+#         tprs = []
+#         for i in range(len(estimators[0])):  # 50重复次数
+#             xtest = data[f_names[j][i]].iloc[test_index[i]]
+#             ytest = label[test_index[i]]
+#             y = label_binarize(ytest, classes=np.unique(ytest))
+#             fpr, tpr, roc_auc = macro_roc(estimators[j][i], xtest, y, len(np.unique(label)))
+#             #         macro求均值（插值法）
+#             interp_tpr = np.interp(mean_FPR, fpr, tpr)
+#             interp_tpr[0] = 0.0
+#             tprs.append(interp_tpr)
+#     #对曲线进行插值，因为每个曲线的样本不一样，所以获取到的fpr和tpr也不一样长度，所以需要进行插值
+#     #插值原理，获取所有fpr的值，然后将每个交叉验证的roc都插值成和fpr的值一样多的长度。并不会改变每个roc曲线的形状
+#         mean_tpr[j] = np.mean(tprs, axis=0)
+#         mean_tpr[j][-1] = 1.0
+#         mean_auc[j] = df_AUCs_describe.iloc[0, j]
+#         std_auc = np.std(df_AUC[title[j]])
+#         mean_TPR_df[title[j]] = mean_tpr[j]
+#         auc_mean_std[title[j]] = [mean_auc[j], std_auc]
+#     auc_mean_std.index = ['mean_auc', 'std_auc']
+#     return mean_FPR, mean_TPR_df, auc_mean_std
 
-    for j in range(len(estimators)):  # 6分类器
-        tprs = []
-        for i in range(len(estimators[0])):  # 50重复次数
-            xtest = data[f_names[j][i]].iloc[test_index[i]]
-            ytest = label[test_index[i]]
-            y = label_binarize(ytest, classes=np.unique(ytest))
-            fpr, tpr, roc_auc = macro_roc(estimators[j][i], xtest, y, len(np.unique(label)))
-            #         macro求均值（插值法）
-            interp_tpr = np.interp(mean_FPR, fpr, tpr)
-            interp_tpr[0] = 0.0
-            tprs.append(interp_tpr)
-    #对曲线进行插值，因为每个曲线的样本不一样，所以获取到的fpr和tpr也不一样长度，所以需要进行插值
-    #插值原理，获取所有fpr的值，然后将每个交叉验证的roc都插值成和fpr的值一样多的长度。并不会改变每个roc曲线的形状
-        mean_tpr[j] = np.mean(tprs, axis=0)
-        mean_tpr[j][-1] = 1.0
-        mean_auc[j] = df_AUCs_describe.iloc[0, j]
-        std_auc = np.std(df_AUC[title[j]])
-        mean_TPR_df[title[j]] = mean_tpr[j]
-        auc_mean_std[title[j]] = [mean_auc[j], std_auc]
-    auc_mean_std.index = ['mean_auc', 'std_auc']
-    return mean_FPR, mean_TPR_df, auc_mean_std
-
-def multi_label_get_FSS_BSS_ROC_info(estimators,data,label,test_index,df_AUCs,f_names,df_AUCs_describe,title=title):
-    mean_tpr, mean_auc = {}, {}
-    mean_FPR = np.linspace(0, 1, 100)
-    mean_TPR_df = pd.DataFrame()
-    auc_mean_std = pd.DataFrame()
-
-    for j in range(len(estimators)):
-        fprs, tprs, roc_aucs = [], [], []
-        for i in range(len(estimators[0])):
-            xtest = data[f_names[j]].iloc[test_index[i]]
-            ytest = label[test_index[i]]
-            y = label_binarize(ytest, classes=np.unique(ytest))
-            if j == 1:
-                proba = estimators[j][i].decision_function(xtest)
-            else:
-                proba = estimators[j][i].predict_proba(xtest)
-            fpr, tpr, roc_auc = macro_roc(estimators[j][i], xtest, y, proba, len(np.unique(label)))
-            #         macro求均值（插值法）
-            interp_tpr = np.interp(mean_FPR, fpr, tpr)
-            interp_tpr[0] = 0.0
-            tprs.append(interp_tpr)
-        mean_tpr[j] = np.mean(tprs, axis=0)
-        mean_tpr[j][-1] = 1.0
-        mean_auc[j] = df_AUCs_describe.iloc[0, j]
-        std_auc = np.std(df_AUCs[title[j]])
-        mean_TPR_df[title[j]] = mean_tpr[j]
-        auc_mean_std[title[j]] = [mean_auc[j], std_auc]
-    auc_mean_std.index = ['mean_auc', 'std_auc']
-    return mean_FPR, mean_TPR_df, auc_mean_std
+# def multi_label_get_FSS_BSS_ROC_info(estimators,data,label,test_index,df_AUCs,f_names,df_AUCs_describe,title=title):
+#     mean_tpr, mean_auc = {}, {}
+#     mean_FPR = np.linspace(0, 1, 100)
+#     mean_TPR_df = pd.DataFrame()
+#     auc_mean_std = pd.DataFrame()
+#
+#     for j in range(len(estimators)):
+#         fprs, tprs, roc_aucs = [], [], []
+#         for i in range(len(estimators[0])):
+#             xtest = data[f_names[j]].iloc[test_index[i]]
+#             ytest = label[test_index[i]]
+#             y = label_binarize(ytest, classes=np.unique(ytest))
+#             if j == 1:
+#                 proba = estimators[j][i].decision_function(xtest)
+#             else:
+#                 proba = estimators[j][i].predict_proba(xtest)
+#             fpr, tpr, roc_auc = macro_roc(estimators[j][i], xtest, y, proba, len(np.unique(label)))
+#             #         macro求均值（插值法）
+#             interp_tpr = np.interp(mean_FPR, fpr, tpr)
+#             interp_tpr[0] = 0.0
+#             tprs.append(interp_tpr)
+#         mean_tpr[j] = np.mean(tprs, axis=0)
+#         mean_tpr[j][-1] = 1.0
+#         mean_auc[j] = df_AUCs_describe.iloc[0, j]
+#         std_auc = np.std(df_AUCs[title[j]])
+#         mean_TPR_df[title[j]] = mean_tpr[j]
+#         auc_mean_std[title[j]] = [mean_auc[j], std_auc]
+#     auc_mean_std.index = ['mean_auc', 'std_auc']
+#     return mean_FPR, mean_TPR_df, auc_mean_std
 # #FSS方法
 # def FSS_fun(feature_names,clf,cv,data,label):
 #     feature_names2 = list(feature_names)
@@ -1341,7 +1341,7 @@ def multi_valid_roc_info(estimators,vdata,vlabel,features,classes,title=title):
             proba = estimators[num].decision_function(vdata[features[num]])
         else:
             proba = estimators[num].predict_proba(vdata[features[num]])
-        y = label_binarize(vlabel, classes=np.unique(vdata))
+        y = label_binarize(vlabel, classes=np.unique(vlabel))
         fpr, tpr, roc_auc, cfpr, ctpr, croc_auc = macro_roc(estimators[0], vdata[features[0]], y, proba,
                                                             len(np.unique(vlabel)))
         for i in range(len(cfpr)):
