@@ -77,11 +77,11 @@
 				<div class="col md-3">
 					<div class="card select" id="model_bclass" onclick="model_selectactive(this.id)">
 						<div class="border-bottom" style="padding: 20px">
-							<p class="card-text m-0" style="text-align:center" ><img src='/mlserver_static/img/binary.png' width="200" height="200"></p>
+							<p class="card-img-top" style="text-align:center" ><img src='/mlserver_static/img/binary.png' width="200" height="200"></p>
 						</div>
 						<div class="card-body">
 							<h6 class="card-title" style="text-align:center">Binary classification</h6>
-							
+							<p class="card-title" style="font-size: 16px" >The process of dividing new observations into distinct two categories based on the features of a set of input data.</p>
 							<!--<p class="card-text m-0">description</p>...-->
 						</div>
 					</div>
@@ -90,11 +90,11 @@
 				<div class="col md-3">
 					<div class="card" id="model_mclass" onclick="model_selectactive(this.id)">
 						<div class="border-bottom" style="padding: 20px">
-							<p class="card-text m-0" style="text-align:center"><img src='/mlserver_static/img/muliti.png' width="200" height="200"></p>
+							<p class="card-img-top" style="text-align:center"><img src='/mlserver_static/img/muliti.png' width="200" height="200"></p>
 						</div>
 						<div class="card-body">
 							<h6 class="card-title" style="text-align:center">Multiple classification</h6>
-							
+							<p class="card-title" style="font-size: 16px" >The process of dividing new observations into distinct at least three categories based on the features of a set of input data.</p>
 							<!--<p class="card-text m-0">description</p>...-->
 						</div>
 					</div>
@@ -103,11 +103,11 @@
 				<div class="col md-3">
 					<div class="card" id="model_reg" onclick="model_selectactive(this.id)">
 						<div class="border-bottom" style="padding: 20px">
-							<p class="card-text m-0" style="text-align:center"><img src='/mlserver_static/img/regression.png' width="200" height="200"></p>
+							<p class="card-img-top" style="text-align:center"><img src='/mlserver_static/img/regression.png' width="200" height="200"></p>
 						</div>
 						<div class="card-body">
 							<h6 class="card-title" style="text-align:center">Regression</h6>
-							
+							<p class="card-title" style="font-size: 16px" >The process of exploring the relationships between dependent variables (labels) and a series of  indenpendent variables (features).</p>
 							<!--<p class="card-text m-0">description</p>...-->
 						</div>
 					</div>
@@ -116,11 +116,11 @@
 				<div class="col md-3">
 					<div class="card" id="model_sur" onclick="model_selectactive(this.id)">
 						<div class="border-bottom" style="padding: 20px">
-							<p class="card-text m-0" style="text-align:center"><img src='/mlserver_static/img/survival.png' width="200" height="200"></p>
+							<p class="card-img-top" style="text-align:center"><img src='/mlserver_static/img/survival.png' width="200" height="200"></p>
 						</div>
 						<div class="card-body">
 							<h6 class="card-title" style="text-align:center"> Survival </h6>
-							
+							<p class="card-title" style="font-size: 16px" >The process of establishing the connection between covariates (features) and the time of events (labels) to predict the risk of future events. </p>
 							<!--<p class="card-text m-0">description</p>...-->
 						</div>
 					</div>
@@ -355,8 +355,8 @@
 								</div>
 								<div class="card-body">
 									
-									<p style='font-size: 14px' class="card-text m-0">A linear model with coefficients to minimize the residual sum of squares between the observed targets
-									 and the predicted targets.</p>
+									<p style='font-size: 14px' class="card-text m-0">It establishes a linear relationship between label and features to minimize the residual sum of squares between
+									 the observed targets and the predicted targets.</p>
 									<!--<p class="card-text m-0">description</p>...-->
 								</div>
 							</div>
@@ -635,8 +635,13 @@
 						</div>
 						<div class="col-4">
 							<label for="exampleFormControlSelect1">max_features</label>
-							<input name="randomforest_max_features" type="text" class="form-control" id="randomforest_max_features" onblur='data_check(this)' placeholder=""
-							 value="auto">
+<!-- 							<input name="randomforest_max_features" type="text" class="form-control" id="randomforest_max_features" onblur='data_check(this)' placeholder=""
+							 value="auto"> -->
+							 <select name="randomforest_max_features" class="form-control" id="randomforest_max_features" required="required" onchange="">
+							 	<option value="auto">auto</option>
+							 	<option value="sqrt">sqrt</option>
+							 	<option value="log2">log2</option>
+							</select>
 						</div>
 					</div>
 					<div class="row">
@@ -915,8 +920,13 @@
 						</div>
 						<div class="col">
 							<label for="exampleFormControlSelect1">max_features</label>
-							<input name="decisiontree_max_features" id="decisiontree_max_features" type="text" class="form-control" onblur='data_check(this)' placeholder=""
-							 value="">
+<!-- 							<input name="decisiontree_max_features" id="decisiontree_max_features" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value=""> -->
+							 <select name="decisiontree_max_features" class="form-control" id="decisiontree_max_features" required="required" onchange="">
+							 	<option value="auto">auto</option>
+							 	<option value="sqrt">sqrt</option>
+							 	<option value="log2">log2</option>
+							</select>
 						</div>
 					</div>
 				</div>
@@ -968,8 +978,13 @@
 						</div>
 						<div class="col">
 							<label for="exampleFormControlSelect1">max_features</label>
-							<input name="gbdt_max_features" id="gbdt_max_features" type="text" class="form-control" onblur='data_check(this)' placeholder=""
-							 value="">
+<!-- 							<input name="gbdt_max_features" id="gbdt_max_features" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value=""> -->
+							 <select name="gbdt_max_features" class="form-control" id="gbdt_max_features" required="required" onchange="">
+							 	<option value="auto">auto</option>
+							 	<option value="sqrt">sqrt</option>
+							 	<option value="log2">log2</option>
+							</select>
 						</div>
 						<div class="col">
 							<label for="exampleFormControlSelect1">n_estimators</label>
@@ -1162,8 +1177,13 @@
 						</div>
 						<div class="col-4">
 							<label for="exampleFormControlSelect1">max_features</label>
-							<input name="regdecisiontree_max_features" type="text" class="form-control" id="regdecisiontree_max_features" onblur='data_check(this)' placeholder=""
-							 value="">
+<!-- 							<input name="regdecisiontree_max_features" type="text" class="form-control" id="regdecisiontree_max_features" onblur='data_check(this)' placeholder=""
+							 value=""> -->
+							<select name="regdecisiontree_max_features" class="form-control" id="regdecisiontree_max_features" required="required" onchange="">
+							 	<option value="auto">auto</option>
+							 	<option value="sqrt">sqrt</option>
+							 	<option value="log2">log2</option>
+							</select>
 						</div>
 					</div>
 				</div>
@@ -1260,8 +1280,13 @@
 						</div>
 						<div class="col-4">
 							<label for="exampleFormControlSelect1">max_features</label>
-							<input name="regrandomforest_max_features" type="text" class="form-control" id="regrandomforest_max_features" onblur='data_check(this)' placeholder=""
-							 value="1.0">
+<!-- 							<input name="regrandomforest_max_features" type="text" class="form-control" id="regrandomforest_max_features" onblur='data_check(this)' placeholder=""
+							 value="1.0"> -->
+							<select name="regrandomforest_max_features" class="form-control" id="regrandomforest_max_features" required="required" onchange="">
+							  	<option value="auto">auto</option>
+							  	<option value="sqrt">sqrt</option>
+							  	<option value="log2">log2</option>
+							</select>
 						</div>
 					</div>
 				</div>
@@ -1334,8 +1359,13 @@
 						</div>
 						<div class="col-3">
 							<label for="exampleFormControlSelect1">max_features</label>
-							<input name="gradientboost_max_features" type="text" class="form-control" id="gradientboost_max_features" onblur='data_check(this)' placeholder=""
-							 value="">
+<!-- 							<input name="gradientboost_max_features" type="text" class="form-control" id="gradientboost_max_features" onblur='data_check(this)' placeholder=""
+							 value=""> -->
+							<select name="gradientboost_max_features" class="form-control" id="gradientboost_max_features" required="required" onchange="">
+							   	<option value="auto">auto</option>
+							   	<option value="sqrt">sqrt</option>
+							   	<option value="log2">log2</option>
+							</select>
 						</div>
 					</div>
 				</div>
@@ -1411,7 +1441,12 @@
 						</div>
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">max features</label>
-							<input name="survivaltree_max_features" type="text" class="form-control" id="survivaltree_max_features" onblur='data_check(this)' placeholder="">
+							<!-- <input name="survivaltree_max_features" type="text" class="form-control" id="survivaltree_max_features" onblur='data_check(this)' placeholder=""> -->
+							<select name="survivaltree_max_features" class="form-control" id="survivaltree_max_features" required="required" onchange="">
+								<option value="auto">auto</option>
+								<option value="sqrt">sqrt</option>
+								<option value="log2">log2</option>
+							</select>
 						</div>
 					</div>
 				</div>
@@ -1432,7 +1467,13 @@
 						</div>
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">max features</label>
-							<input name="extrasurvivaltrees_max_features" type="text" class="form-control" id="extrasurvivaltrees_max_features" onblur='data_check(this)' placeholder="" value="sqrt">
+							<!-- <input name="extrasurvivaltrees_max_features" type="text" class="form-control" id="extrasurvivaltrees_max_features" onblur='data_check(this)' placeholder="" value="sqrt"> -->
+							<select name="extrasurvivaltrees_max_features" class="form-control" id="extrasurvivaltrees_max_features" required="required" onchange="">
+							   	<option value="auto">auto</option>
+							   	<option selected value="sqrt">sqrt</option>
+							   	<option value="log2">log2</option>
+							</select>
+						
 						</div>
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">n estimators</label>
@@ -1464,7 +1505,12 @@
 						</div>
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">max features</label>
-							<input name="randomsurvivalforest_max_features" type="text" class="form-control" id="randomsurvivalforest_max_features" onblur='data_check(this)' placeholder="">
+							<!-- <input name="randomsurvivalforest_max_features" type="text" class="form-control" id="randomsurvivalforest_max_features" onblur='data_check(this)' placeholder=""> -->
+							<select name="randomsurvivalforest_max_features" class="form-control" id="randomsurvivalforest_max_features" required="required" onchange="">
+							   	<option value="auto">auto</option>
+							   	<option value="sqrt">sqrt</option>
+							   	<option value="log2">log2</option>
+							</select>
 						</div>
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">n estimators</label>
@@ -1499,7 +1545,12 @@
 						</div>
 						<div class="col-3">
 							<label for="exampleFormControlSelect1">max features</label>
-							<input name="gradientboostingsurvival_max_features" type="text" class="form-control" id="gradientboostingsurvival_max_features" onblur='data_check(this)' placeholder="">
+							<!-- <input name="gradientboostingsurvival_max_features" type="text" class="form-control" id="gradientboostingsurvival_max_features" onblur='data_check(this)' placeholder=""> -->
+							<select name="gradientboostingsurvival_max_features" class="form-control" id="gradientboostingsurvival_max_features" required="required" onchange="">
+							   	<option value="auto">auto</option>
+							   	<option value="sqrt">sqrt</option>
+							   	<option value="log2">log2</option>
+							</select>
 						</div>
 						<div class="col-3">
 							<label for="exampleFormControlSelect1">n estimators</label>
