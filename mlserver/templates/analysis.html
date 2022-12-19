@@ -55,6 +55,10 @@
 			.md-3 {
 				margin-bottom: 15px;
 			}
+			input::placeholder{
+				font-size:10px;  
+				color: #f8f9fa;
+			} 
 		</style>
 		<script>
 			$(document).ready(function(){
@@ -715,8 +719,8 @@
 						</div>
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">degree</label>
-							<input name="svm_degree" type="text" class="form-control" id="svm_degree" onblur='data_check(this)' placeholder=""
-							 disabled="disabled" value="">
+							<input name="svm_degree" type="text" class="form-control" id="svm_degree" onblur='data_check(this)' 
+							placeholder="" disabled="disabled" value="">
 						</div>
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">coef</label>
@@ -725,8 +729,8 @@
 						</div>
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">gamma</label>
-							<input name="svm_gamma" type="text" class="form-control" id="svm_gamma" onblur='data_check(this)' placeholder=""
-							 value="scale">
+							<input name="svm_gamma" type="text" class="form-control" id="svm_gamma" onblur='data_check(this)' 
+							placeholder="scale" value="scale">
 						</div>
 					</div>
 				</div>
@@ -1540,19 +1544,19 @@
 							</select>
 						</div>
 						<div class="col-2">
-							<label for="exampleFormControlSelect1">max depth</label>
+							<label for="exampleFormControlSelect1">max_depth</label>
 							<input name="survivaltree_max_depth" type="text" class="form-control" id="survivaltree_max_depth" onblur='data_check(this)' placeholder="" value="">
 						</div>
 						<div class="col-2">
-							<label for="exampleFormControlSelect1">min samples split</label>
+							<label for="exampleFormControlSelect1">min_samples_split</label>
 							<input name="survivaltree_min_samples_split" type="text" class="form-control" id="survivaltree_min_samples_split" onblur='data_check(this)' placeholder="" value="6">
 						</div>
 						<div class="col-2">
-							<label for="exampleFormControlSelect1">min samples leaf</label>
+							<label for="exampleFormControlSelect1">min_samples_leaf</label>
 							<input name="survivaltree_min_samples_leaf" type="text" class="form-control" id="survivaltree_min_samples_leaf" onblur='data_check(this)' placeholder="" value="3">
 						</div>
 						<div class="col-2">
-							<label for="exampleFormControlSelect1">max features</label>
+							<label for="exampleFormControlSelect1">max_features</label>
 							<!-- <input name="survivaltree_max_features" type="text" class="form-control" id="survivaltree_max_features" onblur='data_check(this)' placeholder=""> -->
 							<select name="survivaltree_max_features" class="form-control" id="survivaltree_max_features" required="required" onchange="">
 								<option value="auto">auto</option>
@@ -1566,19 +1570,19 @@
 					<h5>Parameters of ExtraSurvivalTrees</h5>
 					<div class="row">
 						<div class="col-2">
-							<label for="exampleFormControlSelect1">max depth</label>
-							<input name="extrasurvivaltrees_max_depth" type="text" class="form-control" id="extrasurvivaltrees_max_depth" onblur='data_check(this)' placeholder="111" value="">
+							<label for="exampleFormControlSelect1">max_depth</label>
+							<input name="extrasurvivaltrees_max_depth" type="text" class="form-control" id="extrasurvivaltrees_max_depth" onblur='data_check(this)' placeholder="" value="">
 						</div>
 						<div class="col-3">
-							<label for="exampleFormControlSelect1">min samples split</label>
+							<label for="exampleFormControlSelect1">min_samples_split</label>
 							<input name="extrasurvivaltrees_min_samples_split" type="text" class="form-control" id="extrasurvivaltrees_min_samples_split" onblur='data_check(this)' placeholder="" value="6">
 						</div>
 						<div class="col-3">
-							<label for="exampleFormControlSelect1">min samples leaf</label>
+							<label for="exampleFormControlSelect1">min_samples leaf</label>
 							<input name="extrasurvivaltrees_min_samples_leaf" type="text" class="form-control" id="extrasurvivaltrees_min_samples_leaf" onblur='data_check(this)' placeholder="" value="3">
 						</div>
 						<div class="col-2">
-							<label for="exampleFormControlSelect1">max features</label>
+							<label for="exampleFormControlSelect1">max_features</label>
 							<!-- <input name="extrasurvivaltrees_max_features" type="text" class="form-control" id="extrasurvivaltrees_max_features" onblur='data_check(this)' placeholder="" value="sqrt"> -->
 							<select name="extrasurvivaltrees_max_features" class="form-control" id="extrasurvivaltrees_max_features" required="required" onchange="">
 							   	<option value="auto">auto</option>
@@ -1588,7 +1592,7 @@
 						
 						</div>
 						<div class="col-2">
-							<label for="exampleFormControlSelect1">n estimators</label>
+							<label for="exampleFormControlSelect1">n_estimators</label>
 							<input name="extrasurvivaltrees_n_estimators" type="text" class="form-control" id="extrasurvivaltrees_n_estimators" onblur='data_check(this)' placeholder="" value="100">
 						</div>
 					</div>
@@ -1604,19 +1608,19 @@
 							</select>
 						</div>
 						<div class="col-2">
-							<label for="exampleFormControlSelect1">max depth</label>
+							<label for="exampleFormControlSelect1">max_depth</label>
 							<input name="randomsurvivalforest_max_depth" type="text" class="form-control" id="randomsurvivalforest_max_depth" onblur='data_check(this)' placeholder="" value="">
 						</div>
 						<div class="col-2">
-							<label for="exampleFormControlSelect1">min samples split</label>
+							<label for="exampleFormControlSelect1">min_samples_split</label>
 							<input name="randomsurvivalforest_min_samples_split" type="text" class="form-control" id="randomsurvivalforest_min_samples_split" onblur='data_check(this)' placeholder="" value="6">
 						</div>
 						<div class="col-2">
-							<label for="exampleFormControlSelect1">min samples leaf</label>
+							<label for="exampleFormControlSelect1">min_samples_leaf</label>
 							<input name="randomsurvivalforest_min_samples_leaf" type="text" class="form-control" id="randomsurvivalforest_min_samples_leaf" onblur='data_check(this)' placeholder="" value="3">
 						</div>
 						<div class="col-2">
-							<label for="exampleFormControlSelect1">max features</label>
+							<label for="exampleFormControlSelect1">max_features</label>
 							<!-- <input name="randomsurvivalforest_max_features" type="text" class="form-control" id="randomsurvivalforest_max_features" onblur='data_check(this)' placeholder=""> -->
 							<select name="randomsurvivalforest_max_features" class="form-control" id="randomsurvivalforest_max_features" required="required" onchange="">
 							   	<option value="auto">auto</option>
@@ -1625,7 +1629,7 @@
 							</select>
 						</div>
 						<div class="col-2">
-							<label for="exampleFormControlSelect1">n estimators</label>
+							<label for="exampleFormControlSelect1">n_estimators</label>
 							<input name="randomsurvivalforest_n_estimators" type="text" class="form-control" id="randomsurvivalforest_n_estimators" onblur='data_check(this)' placeholder="" value="100">
 						</div>
 					</div>
@@ -1642,21 +1646,21 @@
 							</select>
 						</div>
 						<div class="col-4">
-							<label for="exampleFormControlSelect1">max depth</label>
+							<label for="exampleFormControlSelect1">max_depth</label>
 							<input name="gradientboostingsurvival_max_depth" type="text" class="form-control" id="gradientboostingsurvival_max_depth" onblur='data_check(this)' placeholder="" value="3">
 						</div>
 						<div class="col-4">
-							<label for="exampleFormControlSelect1">min samples split</label>
+							<label for="exampleFormControlSelect1">min_samples_split</label>
 							<input name="gradientboostingsurvival_min_samples_split" type="text" class="form-control" id="gradientboostingsurvival_min_samples_split" onblur='data_check(this)' placeholder="" value="2">
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-3">
-							<label for="exampleFormControlSelect1">min samples leaf</label>
+							<label for="exampleFormControlSelect1">min_samples_leaf</label>
 							<input name="gradientboostingsurvival_min_samples_leaf" type="text" class="form-control" id="gradientboostingsurvival_min_samples_leaf" onblur='data_check(this)' placeholder="" value="1">
 						</div>
 						<div class="col-3">
-							<label for="exampleFormControlSelect1">max features</label>
+							<label for="exampleFormControlSelect1">max_features</label>
 							<!-- <input name="gradientboostingsurvival_max_features" type="text" class="form-control" id="gradientboostingsurvival_max_features" onblur='data_check(this)' placeholder=""> -->
 							<select name="gradientboostingsurvival_max_features" class="form-control" id="gradientboostingsurvival_max_features" required="required" onchange="">
 							   	<option value="auto">auto</option>
@@ -1665,11 +1669,11 @@
 							</select>
 						</div>
 						<div class="col-3">
-							<label for="exampleFormControlSelect1">n estimators</label>
+							<label for="exampleFormControlSelect1">n_estimators</label>
 							<input name="gradientboostingsurvival_n_estimators" type="text" class="form-control" id="gradientboostingsurvival_n_estimators" onblur='data_check(this)' placeholder="" value="100">
 						</div>
 						<div class="col-3">
-							<label for="exampleFormControlSelect1">learning rate</label>
+							<label for="exampleFormControlSelect1">learning_rate</label>
 							<input name="gradientboostingsurvival_learning_rate" type="text" class="form-control" id="gradientboostingsurvival_learning_rate" onblur='data_check(this)' placeholder="" value="0.1">
 						</div>
 					</div>
@@ -1703,48 +1707,39 @@
 			
 			function svm_select() {
 				var select = document.getElementById("svm_kernel").value;
-				var c = document.getElementById("svm_c");
 				var degree = document.getElementById("svm_degree");
 				var coef = document.getElementById("svm_coef");
 				var gamma = document.getElementById("svm_gamma");
 				switch (select) {
 					
 					case "linear":
-						c.removeAttribute("disabled")
 						degree.setAttribute("disabled", "disabled")
 						coef.setAttribute("disabled", "disabled")
 						gamma.setAttribute("disabled", "disabled")
-						$(":disabled").val("")
-						c.value = 1
+						$(":disabled").val("").attr("placeholder","");
 						break;
 					case "poly":
-						c.removeAttribute("disabled")
 						degree.removeAttribute("disabled")
 						coef.removeAttribute("disabled")
 						gamma.removeAttribute("disabled")
-						$(":disabled").val("")
-						c.value = 1
+						$(":disabled").val("").attr("placeholder","");
 						degree.value = 3
 						coef.value = 0
 						gamma.value = 'scale'
 						break;
 					case "sigmoid":
-						c.removeAttribute("disabled")
 						degree.setAttribute("disabled", "disabled")
 						coef.removeAttribute("disabled")
 						gamma.removeAttribute("disabled")
 						$(":disabled").val("")
-						c.value = 1
 						coef.value = 0
 						gamma.value = 'scale'
 						break;
 					case "rbf":
-						c.removeAttribute("disabled")
 						degree.setAttribute("disabled", "disabled")
 						coef.setAttribute("disabled", "disabled")
 						gamma.removeAttribute("disabled")
 						$(":disabled").val("")
-						c.value = 1
 						gamma.value = 'scale'
 						break;
 					default:
