@@ -3,7 +3,8 @@ from django.urls import path
 from .views import home_views, analysis_views, predict_views, \
     classification_oc_result_views, classification_cp_result_views, \
     survival_oc_result_views, survival_cp_result_views, \
-    regression_oc_result_views, regression_cp_result_views, help_views
+    regression_oc_result_views, regression_cp_result_views, help_views, \
+    download_views
 
 urlpatterns=[
     path('hello_world',home_views.hello_world),
@@ -15,6 +16,7 @@ urlpatterns=[
     path('predict',predict_views.get_predict_page),
     path('predict_result',predict_views.predict_result),
     path('help', help_views.get_help_page),
+    path('download/<str:fname>', download_views.download_sample_data),
     # classification
     # one click result
     path('classification_oc_result', classification_oc_result_views.result),

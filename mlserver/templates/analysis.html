@@ -130,28 +130,96 @@
 			<h4>Step2</h4>
 			<hr />
 			<form action="classification" method="POST" id="form_step23" enctype="multipart/form-data">
-				<div class="col-9"">
-					
-					<div class="row">
-
-						{% csrf_token %}
-						<!-- <div class="custom-file mb-3">
-							  <input type="file" class="custom-file-input" id="customFile" name="filename">
-							  <label class="custom-file-label" for="customFile">Choose Profile</label>
-						</div> -->
-						<h6>File: <input type="file" name="upload_file" /></h6>
-						<!-- <h6>Label: <input type="file" name="upload_label" /></h6> -->
-
-
-						<div class="row">
-							<h5>OR</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							<h6>ProjectID:<input type="text" name="projectid"></h6>
+				<div class="row">
+					<div class="col-3" id="data_up_select">
+						<label style="font-weight: bold; color: #666">Choose data to upload: </label>
+						<div class="form-check">
+							<label class="form-check-label" for="usr_up">
+								<input type="radio" id='usr_up' value="usr_data" name="data_up" checked>
+								Upload Your Own Data
+							</label>
 						</div>
-						<!-- <input type="submit" value="submit" />
-						<input type="submit" value="EXAMPLE(ZIP)" /> -->
+						<div class="form-check">
+							<label class="form-check-label" for="samp_up">
+								<input type="radio" id='samp_up' value="samp_data" name="data_up">
+								Choose Example Data
+							</label>
+									
+						</div>
 					</div>
+					<div class="col-9">
+						
+						<div id="usr_data" class="row">
 					
+							{% csrf_token %}
+							<!-- <div class="custom-file mb-3">
+								  <input type="file" class="custom-file-input" id="customFile" name="filename">
+								  <label class="custom-file-label" for="customFile">Choose Profile</label>
+							</div> -->
+							<h6>File: <input type="file" name="upload_file" /></h6>
+							<!-- <h6>Label: <input type="file" name="upload_label" /></h6> -->
+					
+					
+							<div class="row">
+								<h5>OR</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<h6>ProjectID:<input type="text" name="projectid"></h6>
+							</div>
+							<!-- <input type="submit" value="submit" />
+							<input type="submit" value="EXAMPLE(ZIP)" /> -->
+						</div>
+						<div id="samp_data" class='row' style="display: none;">
+							<div class="col-6" id="sample_select">
+								<label style="font-weight: bold; color: #666">Example Data: </label>
+								<div class="form-check">
+									<label class="form-check-label" for="bin_class">
+										<input type="radio" id='bin_class' value="binary_classification_example.csv" name="samp_data" checked data-target='#bin_descrpt'>
+										Binary Classfication Example
+									</label>
+								</div>
+								<div class="form-check">
+									<label class="form-check-label" for="multi_class">
+										<input type="radio" id='multi_class' value="multiclass_classification_example.csv" name="samp_data" data-target='#multi_descrpt'>
+										Multiclass Classfication Example
+									</label>
+											
+								</div>
+								<div class="form-check">
+									<label class="form-check-label" for="regres">
+										<input type="radio" id='regres' value="regression_example.csv" name="samp_data" data-target='#regr_descrpt'>
+										Regression Example
+									</label>
+								</div>
+								<div class="form-check">
+									<label class="form-check-label" for="survival">
+										<input type="radio" id='survival' value="survival_example.csv" name="samp_data" data-target='#surv_descrpt'>
+										Survival Analysis Example
+									</label>
+											
+								</div>
+							</div>
+							<div class="col-6 tab-content">
+								<div id="bin_descrpt" class="tab-pane active">
+									<p>LUAD and LUSC are classified based on gene expression profiles</p>
+									<p>Source: https://xenabrowser.net/ </p>
+								</div>
+								<div id="multi_descrpt" class="tab-pane">
+									<p>LUAD、LUSC、KIRP and KIRC are classified based on gene expression profiles</p>
+									<p>Source: https://xenabrowser.net/ </p>
+								</div>
+								<div id="regr_descrpt" class="tab-pane">
+									<p>Tumor purity of KIRC is predicted based on gene expression profile</p>
+									<p>Source: https://xenabrowser.net/ </p>
+								</div>
+								<div id="surv_descrpt" class="tab-pane">
+									<p>Survival in GBM is predicted based on gene expression profile</p>
+									<p>Source: https://xenabrowser.net/ </p>
+								</div>
+								<button id="dl_sample" class="btn btn-info">Download</button>
+							</div>
+						</div>
+					</div>
 				</div>
+				
 				
 				<br />
 				<h4>Step3</h4>
@@ -1840,6 +1908,29 @@
 						alert("error");
 				}
 			}
+			$('input[type=radio][name=data_up]').change(function() {
+			    if (this.value == 'samp_data'){
+					$('#usr_data').hide();
+					$('#samp_data').show();
+				}
+				else{
+					$('#usr_data').show();
+					$('#samp_data').hide();
+				}
+			});
+			$('input[name="samp_data"]').click(function () {
+				// console.log(this)
+			    $(this).tab('show');
+				$(this).removeClass('active');
+			});
+			
+			$('#dl_sample').click(function(e) {
+				e.preventDefault();
+				let samp = $('input[name="samp_data"]:checked').val();
+				window.location.href = 'download/' + samp;
+				console.log(samp)
+			});
+
 			$(document).ready(function() {
 				$("#button_submit").hide()
 				$("#cp_model_select").hide()
