@@ -205,3 +205,11 @@ fabric.properties
 !/.idea/
 !/.idea/inspectionProfiles/
 !/.idea/workspace.xml
+!/mlserver/static/cache/example/
+!/mlserver/static/cache/example/binary_classification_example.csv
+
+!/mlserver/static/cache/example/multiclass_classification_example.csv
+
+!/mlserver/static/cache/example/regression_example.csv
+
+!/mlserver/static/cache/example/survival_example.csv
