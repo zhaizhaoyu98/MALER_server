@@ -156,13 +156,13 @@
 								  <input type="file" class="custom-file-input" id="customFile" name="filename">
 								  <label class="custom-file-label" for="customFile">Choose Profile</label>
 							</div> -->
-							<h6>File: <input type="file" name="upload_file" /></h6>
+							<h6>File: <input type="file" id="upload_file" name="upload_file" /></h6>
 							<!-- <h6>Label: <input type="file" name="upload_label" /></h6> -->
 					
 					
 							<div class="row">
 								<h5>OR</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<h6>ProjectID:<input type="text" name="projectid"></h6>
+								<h6>ProjectID:<input type="text" id="projectid" name="projectid"></h6>
 							</div>
 							<!-- <input type="submit" value="submit" />
 							<input type="submit" value="EXAMPLE(ZIP)" /> -->
@@ -1656,7 +1656,7 @@
 				document.getElementById('select_child_model').value = id;
 			}
 			function form_sub() {
-				$("#form_step23").submit()
+				
 			}
 			
 			function svm_select() {
@@ -2036,7 +2036,13 @@
 				$("#button_submit").show();
 			})
 			
-			
+			$("#button_submit").click(function () {
+			        if ($("#upload_file").val() == "" && $("#projectid").val() == "") {
+			            alert("请选择文件后上传！");
+			        } else {
+			            $("#form_step23").submit();
+			        }
+			    })
 		</script>
 	</body>
 </html>
