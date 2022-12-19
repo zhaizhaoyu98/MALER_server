@@ -40,7 +40,7 @@
 			<nav class="nav nav-pills nav-stacked" style="position:fixed" id="help_spy_scroll">
 				<ul data-spy="affix" data-offset-top="0">
 					<li><a href="#top">Top</a></li>
-					<li><a href="#os_compat">Browser and OS Compatibility</a></li>
+					<!-- <li><a href="#os_compat">Browser and OS Compatibility</a></li> -->
 					<li><a href="#gen">Machine Learning Analysis</a></li>
 					<li><a href="#oc">&nbsp; &nbsp; Binary Classification</a></li>
 					<li><a href="#od">&nbsp; &nbsp; Multiclass Classification</a></li>
@@ -101,13 +101,16 @@
 					</tr>
 				</table>
 				<br>
-			<h3 id='os_compat'>Browser and Operating System (OS) Compatibility</h3>
+			<!-- <h3 id='os_compat'>Browser and Operating System (OS) Compatibility</h3> -->
 				<hr>
                 <br>
                 <br>
 			<h3 id='gen'>Machine Learning Analysis</h3>
 				<hr>
                 <p><b>Module selection</b></p>
+				
+				
+				<p style="text-align: center"><img src='/mlserver_static/img/help_analysis.png' width="1300" height="400"></p>
 				<p>
                     MALER provides four modules including binary classification, multi-class classification, regression
                     and survival analysis. Classification is a supervised process that involves predicting the class of
@@ -116,6 +119,7 @@
                 </p>
 				<!-- <img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/gen_tab.png" alt="general tab img"/> -->
 				<p><b>Data submit</b></p>
+				<p style="text-align: center"><img src='/mlserver_static/img/help_submit.png' width="1300" height="300"></p>
 
 				<p>When the module is selected, the user should submit the corresponding data format as following. Sample
                     data was also provided in “Sample Data”.</p>
@@ -192,24 +196,27 @@
 				</p>
 				<p><b>Time dependent AUC: </b> Calculating the areas under the time-dependent ROC curves results in the time-dependent AUC curve, 
 				which is a measure of the discriminative ability of markers at each time point under consideration. </p>
+				<br></br>
             <h3 id='browse'>Feature Selection</h3>
 				<hr>
-            <h3 id='one_click'>One-click Modeling</h3>
+<!--            <h5 id='one_click'>One-click Modeling</h5>
 				<hr>
 				<p>
                     One-click Modeling allows users run multiple models within the same process. The default parameters
                     would be set for each ML model.
-				</p>
+				</p> -->
+				
                 <!-- <img style="width: 100%; padding-left: 10%; padding-right: 10%" src="/organoidb_static/img/help_img/Detailed_information_page.PNG" alt="Detailed information img"/> -->
-            <h3 id='cus_model'>Customized Modeling</h3>
+<!--            <h5 id='cus_model'>Customized Modeling</h5>
 				<hr>
 				<p>
                     Users can customized the machine learning algorithm using different parameters. The Customized
                     modeling will be stored in the server and could be compared with other modelings derived from the
                     same data under the same study ID.
-				</p>
+				</p> -->
                 <!-- <img style="width: 75%; padding-left: 25%;" src="/organoidb_static/img/statistics_table.PNG" alt="Statistics img"/> -->
-            <h3>Univariate Feature Selection</h5>
+				
+            <h5>Univariate Feature Selection</h5>
             	<hr>
             	<p>
             		<b>classfication: f_classif</b>
@@ -221,7 +228,13 @@
             		Pearson's correlation between each feature and the target is caculated using f_regression from scikit-learn 
             		selectKBeset package. The resulting F-statistics and P-values are used for ranking and filtering features.
             	</p>
-            <h3>Optimal Feature Subset Selection</h5>
+				<p>
+					<b>survival analysis: univariate Cox regression</b>
+					Univariate Cox regression analysis was performed by lifeline package to evaluate the correlation between each 
+					feature and survival. And the top 50 features with the lowest P-value were used for follow-up training.
+				</p>
+				<hr>
+            <h5>Optimal Feature Subset Selection</h5>
             	<hr>
             	<p>
             		<b>Top K:</b> Top K method selects the first k features from the ordered feature ranking set after univariate 
@@ -242,8 +255,29 @@
             		This process of deletion and selection is repeated until only one feature is left in the model. Finally, the top k features 
             		in the subset with the best performance are selected as the optimal feature subset.
             	</p>
+				<br></br>
+			
+			<h3 id='one_click'>One-click Modeling</h3>
+				<hr>
+				<p style="text-align: center"><img src='/mlserver_static/img/help_oneclick.png' width="1000" height="450"></p>
+				<p>
+			        One-click Modeling allows users run multiple models within the same process. The default parameters
+			        would be set for each ML model.
+				</p>
+				
+			    <!-- <img style="width: 100%; padding-left: 10%; padding-right: 10%" src="/organoidb_static/img/help_img/Detailed_information_page.PNG" alt="Detailed information img"/> -->
+			<h3 id='cus_model'>Customized Modeling</h3>
+				<hr>
+				<p style="text-align: center"><img src='/mlserver_static/img/help_customized.png' width="1000" height="470"></p>
+				<p>
+			        Users can customized the machine learning algorithm using different parameters. The Customized
+			        modeling will be stored in the server and could be compared with other modelings derived from the
+			        same data under the same study ID.
+				</p>
+				
 			<h3 id='predict'>External Prediction</h3>
                 <hr>
+				<p style="text-align: center"><img src='/mlserver_static/img/home5.png' width="1000" height="380"></p>
 				<p>
                     Users can apply the models downloaded from ML Analysis on external data, and performed the prediction.
                     The confusion matrix will be calculated for the validation set, while predictions will be listed in
@@ -254,7 +288,7 @@
             <h3 id='samp'>Sample Data</h3>
                 <hr>
                 <p>
-                    MALER provides sample data to do the analysis using MALER.
+                    In analysis page, MALER provides sample data to do the analysis using MALER.
 				</p>
 
 			<div class="card-body" style="width: 100%;">
