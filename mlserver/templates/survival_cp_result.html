@@ -60,6 +60,15 @@
 				padding-left: 1rem;
 			}
 			
+			/* 左侧导航颜色 */
+			.list-group-item.active {
+				background-color: #17a2b8;
+				border: 1px solid rgba(0, 0, 0, .125);
+			}
+			#list-example a {
+				padding-left: 15px;
+			}
+			
 			h3 {
 				/* color: cornflowerblue; */
 				color: #17a2b8; margin-bottom: 20px;
@@ -100,7 +109,7 @@
 			// }
 		</script>
 	</head>
-	<body>
+	<body data-spy="scroll" data-target="#list-example" style="padding-top: 0px;">
 		<!-- 导航栏 -->
 		{% include 'public_templates/nav_tem.html' %}
 		
@@ -109,63 +118,79 @@
 		<div class="container col-9">
 			<br />
 			<div class="row">
-				<h2>PROJECTID: {{ projectid }}</h2>
+				<div class='col-2 d-none d-xl-block' style="">
+					<div id="list-example" class="list-group "
+						style="position: fixed; width:250px;height: 500px;margin-left: -50px;padding-left: 0;">
+						<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-2">Accuracy</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-3">Kaplan-Meier curve</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-4">Test</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-5">Report</a>
+					</div>
+				</div>
+				<div class='col-xl-9 col-lg-12'>
+					<div class="row">
+						<h2>PROJECTID: {{ projectid }}</h2>
+					</div>
+					<hr />
+					<form action="" method="">
+						{%  csrf_token %}
+						<input style="display: none;" type="text" id="projectid"  name="projectid" value="{{projectid}}"/>
+					</form>
+					
+					<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Optimal feature subset result
+					</h3>
+					<div id="linechartDiv"></div>
+					
+					<h3 class="panel-heading" id="list-item-2" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Accuracy
+					</h3>
+					<div id="accboxplotDiv"></div>
+					
+					<table id="acctable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>{{sur_model_name}}</th>
+							</tr>
+						</thead>
+					</table>
+					
+					<br />
+					<h3 class="panel-heading" id="list-item-3" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Kaplan-Meier curve
+					</h3>
+					<!-- <div id="survplotDiv"></div> -->
+					<div id="survplotDiv"></div>
+					<br />
+					<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Test
+					</h3>
+					<!-- <div id="survplotDiv"></div> -->
+					<div id="vsurvplotDiv"></div>
+					<div id="vlineplotDiv"></div>
+					<br />
+					<h3 class="panel-heading" id="list-item-5" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Report
+					</h3>
+					<table id="reporttable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>Feature Select Method</th>
+								<th class="none">Feature Names</th>
+								<th>Mean C-index</th>
+								<th>Feature_names/Parameter</th>
+								<th class="none">Parameter</th>
+								<th>View</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
 			</div>
-			<hr />
-			<form action="" method="">
-				{%  csrf_token %}
-				<input style="display: none;" type="text" id="projectid"  name="projectid" value="{{projectid}}"/>
-			</form>
 			
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				line chart
-			</h3>
-			<div id="linechartDiv"></div>
 			
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				Test Accuracy
-			</h3>
-			<div id="accboxplotDiv"></div>
-			
-			<table id="acctable" class="display" style="width: 100%;" lazyload="True">
-				 <thead>
-					<tr>
-						<th></th>
-						<th>{{sur_model_name}}</th>
-					</tr>
-				</thead>
-			</table>
-			
-			<br />
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				Survival
-			</h3>
-			<!-- <div id="survplotDiv"></div> -->
-			<div id="survplotDiv"></div>
-			<br />
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				Validation
-			</h3>
-			<!-- <div id="survplotDiv"></div> -->
-			<div id="vsurvplotDiv"></div>
-			<div id="vlineplotDiv"></div>
-			<br />
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				Final Report
-			</h3>
-			<table id="reporttable" class="display" style="width: 100%;" lazyload="True">
-				 <thead>
-					<tr>
-						<th></th>
-						<th>Feature Select Method</th>
-						<th class="none">Feature Names</th>
-						<th>Mean C-index</th>
-						<th>Feature_names/Parameter</th>
-						<th class="none">Parameter</th>
-						<th>View</th>
-					</tr>
-				</thead>
-			</table>
 			<br />
 			<br />
 			<br />

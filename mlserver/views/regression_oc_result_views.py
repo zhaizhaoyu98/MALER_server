@@ -22,7 +22,7 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import BaggingRegressor
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, JsonEncoder, split_train_test, classification_process
+from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, JsonEncoder, split_train_test, mkradar
 
 models_str = ['LinearRegression', 'SVM', 'Ridge', 'Lasso', 'DecisionTree', 'XGBoost',
                   'RandomForest', 'AdaBoost', 'GradientBoost', ]
@@ -186,8 +186,34 @@ def regression_oc_result(request):
         MAE_report, MSE_report, MAE_report_describe, MSE_report_describe = mae_mse_report(predicts, nor_age4,
                                                                                           test_index,
                                                                                           models_str=models_str)
+
+        MAE_report_describe = np.round(MAE_report_describe.describe().loc[("mean", 'min', 'max', 'std'), :],
+                                     3)
+        MAE_report_describe_ = MAE_report_describe.reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
+        MAE_report_describe_dict = MAE_report_describe_.to_dict('records')
+
+        MSE_report_describe = np.round(MSE_report_describe.describe().loc[("mean", 'min', 'max', 'std'), :],
+                                       3)
+        MSE_report_describe_ = MSE_report_describe.reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
+        MSE_report_describe_dict = MSE_report_describe_.to_dict('records')
+
+
         MAE_report_dict = df2bp(MAE_report)
         MSE_report_dict = df2bp(MSE_report)
+
+        # # radar plot
+        # test_acc_radar = test_acc_describe_.loc[test_acc_describe_['Method'] == 'mean']
+        # test_acc_radar['Method'] = 'R-square'
+        # mae_radar = MAE_report_describe_.loc[MAE_report_describe_['Method'] == 'mean']
+        # mae_radar['Method'] = 'MAE'
+        # mse_radar = MSE_report_describe_.loc[MSE_report_describe_['Method'] == 'mean']
+        # mse_radar['Method'] = 'MSE'
+        # mean_method_model = pd.concat(
+        #     [test_acc_radar, mae_radar, mse_radar]).set_index('Method')
+        # radar_dict = mkradar(mean_method_model)
+        # radar_min = mean_method_model.min().min()
+        # radar_max = mean_method_model.max().max()
+        # radar_range = [radar_min, radar_max]
 
         tmodels = []
         for i in range(len(models)):
@@ -233,11 +259,15 @@ def regression_oc_result(request):
             'test_acc_reports_dict': test_acc_reports_dict,
             'test_acc_describe_dict': test_acc_describe_dict,
             'MAE_report_dict': MAE_report_dict,
+            'MAE_report_describe_dict': MAE_report_describe_dict,
             'MSE_report_dict': MSE_report_dict,
+            'MSE_report_describe_dict': MSE_report_describe_dict,
             'final_reports_dict': final_reports_dict,
             'vregpred_trace': vregpred_trace,
             'vreport_trace': vreport_trace,
             'val_report_dict': val_report_dict,
+            # 'radar_dict': radar_dict,
+            # 'radar_range': radar_range,
         }
 
         with open(STATIC_ROOT + '/cache/' + projectid + '/regression_pickle.pkl',
@@ -264,24 +294,32 @@ def regression_oc_result(request):
         test_acc_reports_dict = reg_pickle['test_acc_reports_dict']
         test_acc_describe_dict = reg_pickle['test_acc_describe_dict']
         MAE_report_dict = reg_pickle['MAE_report_dict']
+        MAE_report_describe_dict = reg_pickle['MAE_report_describe_dict']
         MSE_report_dict = reg_pickle['MSE_report_dict']
+        MSE_report_describe_dict = reg_pickle['MSE_report_describe_dict']
         final_reports_dict = reg_pickle['final_reports_dict']
         vregpred_trace = reg_pickle['vregpred_trace']
         vreport_trace = reg_pickle['vreport_trace']
         val_report_dict = reg_pickle['val_report_dict']
+        # radar_dict = reg_pickle['radar_dict']
+        # radar_range = reg_pickle['radar_range']
 
-        print(vregpred_trace)
+        # print(vregpred_trace)
     return render(request, 'regression_oc_result.html', {
         'projectid': projectid,
         'line_chart_data': json.dumps(line_chart_data),
         'test_acc_reports_dict': json.dumps(test_acc_reports_dict),
         'test_acc_describe_dict': json.dumps(test_acc_describe_dict),
+        'MAE_report_describe_dict': json.dumps(MAE_report_describe_dict),
+        'MSE_report_describe_dict': json.dumps(MSE_report_describe_dict),
         'MAE_report_dict': json.dumps(MAE_report_dict),
         'MSE_report_dict': json.dumps(MSE_report_dict),
         'final_reports_dict': json.dumps(final_reports_dict),
         'vregpred_trace': json.dumps(vregpred_trace,ensure_ascii=False, cls=JsonEncoder),
         'vreport_trace': json.dumps(vreport_trace,ensure_ascii=False, cls=JsonEncoder),
         'val_report_dict': json.dumps(val_report_dict),
+        # 'radar_dict': json.dumps(radar_dict),
+        # 'radar_range': json.dumps(radar_range)
     })
 
 
@@ -493,7 +531,7 @@ def mkvregpredplot(validate_predicts, vaildation_label, models_str=models_str):
             'mode': 'lines',
             # 'name': 'fit line',
             'type': 'scatter',
-            'text': 'fit value: ' + str(np.round(rs[j][0], 3)) + '<br>pvalue: ' + str(np.round(rs[j][1], 3)),
+            'text': 'R: ' + str(np.round(rs[j][0], 3)) + '<br>pvalue: ' + str(np.round(rs[j][1], 3)),
             'x': xl,
             'y': xl,
             'xaxis': 'x' + str(j + 1),

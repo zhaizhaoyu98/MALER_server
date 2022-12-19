@@ -62,6 +62,14 @@
 				padding-left: 1rem;
 			}
 			
+			.list-group-item.active {
+				background-color: #17a2b8;
+				border: 1px solid rgba(0, 0, 0, .125);
+			}
+			#list-example a {
+				padding-left: 15px;
+			}
+			
 			h3 {
 				/* color: cornflowerblue; */
 				color: #17a2b8; margin-bottom: 20px;
@@ -102,7 +110,7 @@
 			// }
 		</script>
 	</head>
-	<body>
+	<body data-spy="scroll" data-target="#list-example" style="padding-top: 0px;">
 		<!-- 导航栏 -->
 		{% include 'public_templates/nav_tem.html' %}
 		
@@ -151,15 +159,9 @@
 								Marco ROC
 							{% endif %}
 						</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-8">
-							{% if ifmarco != True %}
-								Radar
-							{% else %}
-								Marco Radar
-							{% endif %}
-						</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-8">Evaluation metrics radar</a>
 						<a class="list-group-item list-group-item-action" href="#list-item-9">Test</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-10">Final Report</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-10">Report</a>
 						<!-- <a class="list-group-item list-group-item-action" href="#list-item-5">Drug Property Radar Chart</a> -->
 					</div>
 				</div>
@@ -320,14 +322,7 @@
 					</h3>
 					<div id="rocplotDiv" style="margin-right: 0px;"></div>
 					
-					<h3 class="panel-heading" id="list-item-8" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-						{% if ifmarco != True %}
-							Radar
-						{% else %}
-							Marco Radar
-						{% endif %}
-						
-					</h3>
+					<h3 class="panel-heading" id="list-item-8" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">Evaluation metrics radar</h3>
 					<div id="radarplotDiv" style="margin-right: 0px;"></div>
 					
 					<h3 class="panel-heading" id="list-item-9" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
@@ -337,7 +332,7 @@
 					<div id="heatmapDiv"</div>
 					<div id="vrocplotDiv" style="margin-right: 0px;"></div>
 					<h3 class="panel-heading" id="list-item-10" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-						Final Report
+						Report
 					</h3>
 					<table id="finaltable" class="display" style="width: 100%;" lazyload="True">
 						 <thead>
@@ -389,7 +384,7 @@
 			var final_data = {{ final_reports_dict|safe }};
 			// plotly layout
 			var acc_layout = {
-				title: 'Boxplot of test accuracy'
+				title: 'Boxplot of accuracy'
 			};
 			var auc_layout = {
 				title: 'Boxplot of AUC'
@@ -723,7 +718,7 @@
 			var radar_layout = {
 				polar: {
 					radialaxis: {
-				      range: [0	, 1], 
+				      range: {{radar_range|safe}}, 
 				      visible: true
 				    },
 				}, 

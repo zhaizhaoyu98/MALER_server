@@ -60,6 +60,15 @@
 				padding-left: 1rem;
 			}
 			
+			/* 左侧导航颜色 */
+			.list-group-item.active {
+				background-color: #17a2b8;
+				border: 1px solid rgba(0, 0, 0, .125);
+			}
+			#list-example a {
+				padding-left: 15px;
+			}
+			
 			h3 {
 				/* color: cornflowerblue; */
 				color: #17a2b8; margin-bottom: 20px;
@@ -100,7 +109,7 @@
 			// }
 		</script>
 	</head>
-	<body>
+	<body data-spy="scroll" data-target="#list-example" style="padding-top: 0px;">
 		<!-- 导航栏 -->
 		{% include 'public_templates/nav_tem.html' %}
 		
@@ -109,90 +118,148 @@
 		<div class="container col-9">
 			<br />
 			<div class="row">
-				<h2>PROJECTID: {{ projectid }}</h2>
+				<div class='col-2 d-none d-xl-block' style="">
+					<div id="list-example" class="list-group "
+						style="position: fixed; width:250px;height: 500px;margin-left: -50px;padding-left: 0;">
+						<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-2">R-square</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-3">MAE</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-4">MSE</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-5">Test</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-6">Report</a>
+						<!-- <a class="list-group-item list-group-item-action" href="#list-item-5">Drug Property Radar Chart</a> -->
+					</div>
+				</div>
+				<div class='col-xl-9 col-lg-12'>
+					<div class="row">
+						<h2>PROJECTID: {{ projectid }}</h2>
+					</div>
+					<hr />
+					<form action="" method="">
+						{%  csrf_token %}
+						<input style="display: none;" type="text" id="projectid"  name="projectid" value="{{projectid}}"/>
+					</form>
+					
+					<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Optimal feature subset result
+					</h3>
+					<div id="linechartDiv"></div>
+					<br />
+					<h3 class="panel-heading" id="list-item-2" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						R-square
+					</h3>
+					<div id="accboxplotDiv"></div>
+					<table id="acctable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>LinearRegression</th>
+								<th>SVM</th>
+								<th>Ridge</th>
+								<th>Lasso</th>
+								<th>DecisionTree</th>
+								<th>XGBoost</th>
+								<th>RandomForest</th>
+								<th>AdaBoost</th>
+								<th>GradientBoost</th>
+							</tr>
+						</thead>
+					</table>
+					<br />
+					<h3 class="panel-heading" id="list-item-3" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						MAE
+					</h3>
+					<div id="maeboxplotDiv"></div>
+					<table id="maetable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>LinearRegression</th>
+								<th>SVM</th>
+								<th>Ridge</th>
+								<th>Lasso</th>
+								<th>DecisionTree</th>
+								<th>XGBoost</th>
+								<th>RandomForest</th>
+								<th>AdaBoost</th>
+								<th>GradientBoost</th>
+							</tr>
+						</thead>
+					</table>
+					<br />
+					<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						MSE
+					</h3>
+					<div id="mseboxplotDiv"></div>
+					<table id="msetable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>LinearRegression</th>
+								<th>SVM</th>
+								<th>Ridge</th>
+								<th>Lasso</th>
+								<th>DecisionTree</th>
+								<th>XGBoost</th>
+								<th>RandomForest</th>
+								<th>AdaBoost</th>
+								<th>GradientBoost</th>
+							</tr>
+						</thead>
+					</table>
+					
+					<!-- <h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Regression
+					</h3> -->
+					<!-- <div id="survplotDiv"></div> -->
+					<!-- <div id="testsurvplotDiv"></div> -->
+					<br />
+					<h3 class="panel-heading" id="list-item-5" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Test
+					</h3>
+					<!-- <div id="survplotDiv"></div> -->
+					<div id="vlineplotDiv"></div>
+					<div id="vbarplotDiv"></div>
+					<table id="vregtable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>LinearRegression</th>
+								<th>SVM</th>
+								<th>Ridge</th>
+								<th>Lasso</th>
+								<th>DecisionTree</th>
+								<th>XGBoost</th>
+								<th>RandomForest</th>
+								<th>AdaBoost</th>
+								<th>GradientBoost</th>
+							</tr>
+						</thead>
+					</table>
+					<br />
+					<h3 class="panel-heading" id="list-item-6" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Report
+					</h3>
+					<table id="reporttable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>Mean R-square</th>
+								<th>Mean MAE</th>
+								<th>Mean MSE</th>
+								<th class="none">Feature Names</th>
+								<th>Feature_names/Parameter</th>
+								<th class="none">Parameter</th>
+								<th>Model Download</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
 			</div>
-			<hr />
-			<form action="" method="">
-				{%  csrf_token %}
-				<input style="display: none;" type="text" id="projectid"  name="projectid" value="{{projectid}}"/>
-			</form>
 			
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				line chart
-			</h3>
-			<div id="linechartDiv"></div>
 			
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				Test Accuracy
-			</h3>
-			<div id="accboxplotDiv"></div>
-			<div id="maeboxplotDiv"></div>
-			<div id="mseboxplotDiv"></div>
 			
-			<table id="acctable" class="display" style="width: 100%;" lazyload="True">
-				 <thead>
-					<tr>
-						<th></th>
-						<th>LinearRegression</th>
-						<th>SVM</th>
-						<th>Ridge</th>
-						<th>Lasso</th>
-						<th>DecisionTree</th>
-						<th>XGBoost</th>
-						<th>RandomForest</th>
-						<th>AdaBoost</th>
-						<th>GradientBoost</th>
-					</tr>
-				</thead>
-			</table>
 			
-			<br />
-			<!-- <h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				Regression
-			</h3> -->
-			<!-- <div id="survplotDiv"></div> -->
-			<!-- <div id="testsurvplotDiv"></div> -->
-			<br />
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				Validation
-			</h3>
-			<!-- <div id="survplotDiv"></div> -->
-			<div id="vlineplotDiv"></div>
-			<div id="vbarplotDiv"></div>
-			<table id="vregtable" class="display" style="width: 100%;" lazyload="True">
-				 <thead>
-					<tr>
-						<th></th>
-						<th>LinearRegression</th>
-						<th>SVM</th>
-						<th>Ridge</th>
-						<th>Lasso</th>
-						<th>DecisionTree</th>
-						<th>XGBoost</th>
-						<th>RandomForest</th>
-						<th>AdaBoost</th>
-						<th>GradientBoost</th>
-					</tr>
-				</thead>
-			</table>
-			<br />
-			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-				Final Report
-			</h3>
-			<table id="reporttable" class="display" style="width: 100%;" lazyload="True">
-				 <thead>
-					<tr>
-						<th></th>
-						<th>Mean R-square</th>
-						<th>Mean MAE</th>
-						<th>Mean MSE</th>
-						<th class="none">Feature Names</th>
-						<th>Feature_names/Parameter</th>
-						<th class="none">Parameter</th>
-						<th>Model Download</th>
-					</tr>
-				</thead>
-			</table>
 			<br />
 			<br />
 			<br />
@@ -214,8 +281,14 @@
 			var acc_data = {{ test_acc_describe_dict|safe }};
 			var report_data = {{ final_reports_dict|safe }};
 			// plotly layout
-			var acc_layout = {
-				title: 'Boxplot of test accuracy'
+			var rsquare_layout = {
+				title: 'Boxplot of R-square'
+			};
+			var mae_layout = {
+				title: 'Boxplot of MAE'
+			};
+			var mse_layout = {
+				title: 'Boxplot of MSE'
 			};
 			var xtitle = ''
 			var ytitle = ''
@@ -531,10 +604,71 @@
 			  				  y: 1.08
 			  },
 			};
+			
 			<!--第三步：初始化Datatables-->
 			$(document).ready( function () {
 				$('#acctable').DataTable({
 					data: acc_data,
+					searching: false, 
+					paging: false, 
+					info: false,
+					sort: false,
+					// order: [[ 4, "asc" ],[ 1, "desc"]],
+					// "dom": "<'row'<'col-sm-12 col-md-1'B><'col-sm-12 col-md-8'i><'col-sm-12 col-md-3'f>>" +
+					// 	"<'row'<'col-sm-12'tr>>" +
+					// 	"<'row'<'col-sm-12 col-md-5'l><'col-sm-12 col-md-7'p>>",
+					// buttons: [{
+					// 	extend: 'csv',
+					// 	text: "",
+					// 	className: "icon_",
+					// 	}],
+					//使用对象数组，一定要配置columns，告诉 DataTables 每列对应的属性
+					//data 这里是固定不变的，name，position，salary，office 为你数据里对应的属性
+					columns: [
+						{ data: 'Method' },
+						{ data: 'LinearRegression' },
+						{ data: 'SVM' },
+						{ data: 'Ridge' },
+						{ data: 'Lasso' },
+						{ data: 'DecisionTree' },
+						{ data: 'XGBoost' },
+						{ data: 'RandomForest' },
+						{ data: 'AdaBoost' },
+						{ data: 'GradientBoost' },
+					]
+				});
+				$('#maetable').DataTable({
+					data: {{MAE_report_describe_dict|safe}},
+					searching: false, 
+					paging: false, 
+					info: false,
+					sort: false,
+					// order: [[ 4, "asc" ],[ 1, "desc"]],
+					// "dom": "<'row'<'col-sm-12 col-md-1'B><'col-sm-12 col-md-8'i><'col-sm-12 col-md-3'f>>" +
+					// 	"<'row'<'col-sm-12'tr>>" +
+					// 	"<'row'<'col-sm-12 col-md-5'l><'col-sm-12 col-md-7'p>>",
+					// buttons: [{
+					// 	extend: 'csv',
+					// 	text: "",
+					// 	className: "icon_",
+					// 	}],
+					//使用对象数组，一定要配置columns，告诉 DataTables 每列对应的属性
+					//data 这里是固定不变的，name，position，salary，office 为你数据里对应的属性
+					columns: [
+						{ data: 'Method' },
+						{ data: 'LinearRegression' },
+						{ data: 'SVM' },
+						{ data: 'Ridge' },
+						{ data: 'Lasso' },
+						{ data: 'DecisionTree' },
+						{ data: 'XGBoost' },
+						{ data: 'RandomForest' },
+						{ data: 'AdaBoost' },
+						{ data: 'GradientBoost' },
+					]
+				});
+				$('#msetable').DataTable({
+					data: {{MSE_report_describe_dict|safe}},
 					searching: false, 
 					paging: false, 
 					info: false,
@@ -637,12 +771,13 @@
 				});
 				
 				Plotly.newPlot('linechartDiv', {{ line_chart_data|safe }});
-				Plotly.newPlot('accboxplotDiv', {{ test_acc_reports_dict|safe }}, acc_layout);
-				Plotly.newPlot('maeboxplotDiv', {{ MAE_report_dict|safe }}, acc_layout);
-				Plotly.newPlot('mseboxplotDiv', {{ MSE_report_dict|safe }}, acc_layout);
+				Plotly.newPlot('accboxplotDiv', {{ test_acc_reports_dict|safe }}, rsquare_layout);
+				Plotly.newPlot('maeboxplotDiv', {{ MAE_report_dict|safe }}, mae_layout);
+				Plotly.newPlot('mseboxplotDiv', {{ MSE_report_dict|safe }}, mse_layout);
 				// Plotly.newPlot('survplotDiv', test_obj.SurvivalSVM.surv_trace, test_obj.SurvivalSVM.surv_layout);
 				Plotly.newPlot('vlineplotDiv', {{vregpred_trace|safe}}, vlinelayout);
 				Plotly.newPlot('vbarplotDiv', {{vreport_trace|safe}}, vbarplotlayout);
+				
 			// $('#finaltable').on('click', 'button', function(){
 				
 			// 	var formData=new FormData();

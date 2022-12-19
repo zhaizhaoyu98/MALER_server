@@ -178,6 +178,10 @@ def result(request):
             f1_score_radar['Method'] = 'F1-score'
             mean_method_model = pd.concat([test_acc_radar, auc_radar, precision_radar, recall_radar, f1_score_radar]).set_index('Method')
             radar_dict = mkradar(mean_method_model)
+            radar_min = mean_method_model.min().min()
+            radar_max = mean_method_model.max().max()
+            radar_range = [radar_min, radar_max]
+
             # ROC
             mean_FPR, mean_TPR_df, auc_mean_std = get_ROC_info(estimators, data3, label3, f_names, test_index, df_AUCs,
                                                                title=title)
@@ -260,7 +264,8 @@ def result(request):
                                          'vbar_trace': vbar_trace,
                                          'heatmap_data': heatmap_data,
                                          'heatmap_anno': heatmap_anno,
-                                         'valid_roc_traces': valid_roc_traces}
+                                         'valid_roc_traces': valid_roc_traces,
+                                         'radar_range': radar_range}
 
             with open(STATIC_ROOT + '/cache/' + projectid + '/classification_pickle.pkl',
                       'wb') as f:
@@ -388,6 +393,9 @@ def result(request):
             mean_method_model = pd.concat(
                 [test_acc_radar, auc_radar, precision_radar, recall_radar, f1_score_radar]).set_index('Method')
             radar_dict = mkradar(mean_method_model)
+            radar_min = mean_method_model.min().min()
+            radar_max = mean_method_model.max().max()
+            radar_range = [radar_min, radar_max]
             # ROC
             mean_FPR, mean_TPR_df, auc_mean_std = get_ROC_info(estimators, data3, label3, max_features, test_index, df_AUCs,
                                                                title=title)
@@ -468,7 +476,8 @@ def result(request):
                                      'vbar_trace': vbar_trace,
                                      'heatmap_data': heatmap_data,
                                      'heatmap_anno': heatmap_anno,
-                                     'valid_roc_traces': valid_roc_traces}
+                                     'valid_roc_traces': valid_roc_traces,
+                                     'radar_range': radar_range}
 
             with open(STATIC_ROOT + '/cache/' + projectid + '/classification_pickle.pkl',
                       'wb') as f:
@@ -512,12 +521,13 @@ def result(request):
               classification_pickle['line_chart_data'], \
               classification_pickle['radar_dict']
 
-    vbar_trace,heatmap_data,heatmap_anno,valid_roc_traces = classification_pickle['vbar_trace'], \
+    vbar_trace,heatmap_data,heatmap_anno,valid_roc_traces,radar_range = classification_pickle['vbar_trace'], \
                                                             classification_pickle['heatmap_data'], \
                                                             classification_pickle['heatmap_anno'], \
-                                                            classification_pickle['valid_roc_traces']
+                                                            classification_pickle['valid_roc_traces'], \
+                                                            classification_pickle['radar_range']
 
-    return render(request, 'result.html', {
+    return render(request, 'classification_oc_result.html', {
         'projectid': projectid,
         'test_acc_reports_dict': test_acc_reports_dict,
         'test_acc_describe_dict': test_acc_describe_dict,
@@ -534,6 +544,7 @@ def result(request):
         'ifmarco': ifmarco,
         'line_chart_data': line_chart_data,
         'radar_dict': radar_dict,
+        'radar_range': radar_range,
         'vbar_trace': json.dumps(vbar_trace),
         'heatmap_data': json.dumps(heatmap_data),
         'heatmap_anno': json.dumps(heatmap_anno),

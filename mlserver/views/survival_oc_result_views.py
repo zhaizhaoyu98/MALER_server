@@ -147,7 +147,7 @@ def survival_oc_result(request):
 
         max_reports = {'Mean C-index': test_acc,
                        'parameter': parameter,
-                       'feature_names': [str(f) for f in feature_names], }
+                       'feature_names': [str(list(f)) for f in feature_names], }
         max_reports = pd.DataFrame(max_reports, index=sur_names).reset_index().rename(
             columns={'index': 'Method'})
         max_reports_dict = max_reports.to_dict('records')

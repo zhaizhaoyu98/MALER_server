@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>ANALYSIS</title>
+		<title>PREDICT</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		{% include 'public_templates/bootstrap.html' %}
@@ -60,14 +60,6 @@
 				padding-left: 1rem;
 			}
 			
-			.list-group-item.active {
-				background-color: #17a2b8;
-				border: 1px solid rgba(0, 0, 0, .125);
-			}
-			#list-example a {
-				padding-left: 15px;
-			}
-			
 			h3 {
 				/* color: cornflowerblue; */
 				color: #17a2b8; margin-bottom: 20px;
@@ -78,37 +70,14 @@
 		</style>
 		<script>
 			$(document).ready(function(){
-			// 导航栏
-			$("#nav_tools").addClass("active");
-			$("tbody").addClass("bg-white");
-			$("#page_title").text('ANALYSIS');
+				// 导航栏
+				$("#nav_predict").addClass("active");
+				$("tbody").addClass("bg-white");
+				$("#page_title").text('PREDICT');
 			});
-			// function changeUnit(data){
-			// 	var index=data.selectedIndex ; 
-			// 	// var value=data.options[index].getAttribute('value');
-			// 	var feature_selected=data.options[index].text;
-			// 	// units_dict = JSON.parse('{{ units_dict|safe }}')
-			// 	units_dict ={{ units_dict|safe }}
-			// 	selects_id=data.getAttribute('name') //获取name属性，这是单位属性的id
-			// 	console.log(selects_id)
-			// 	for (var key in units_dict){
-			// 		if(feature_selected==key){
-			// 			var options
-			// 			for (var i in units_dict[key]){
-			// 				options+='<option>'+ units_dict[key][i] +'</option>'
-			// 			}
-			// 			// // $('#unit0').append('<option>mg</option>')
-			// 			selected_unit=$('#'+selects_id)
-			// 			selected_unit.children().remove()
-			// 			selected_unit.append(options)
-			// 		}
-			// 	}
-				
-				 
-			// }
 		</script>
 	</head>
-	<body data-spy="scroll" data-target="#list-example" style="padding-top: 0px;">
+	<body>
 		<!-- 导航栏 -->
 		{% include 'public_templates/nav_tem.html' %}
 		
@@ -117,88 +86,69 @@
 		<div class="container col-9">
 			<br />
 			<div class="row">
-				<div class='col-2 d-none d-xl-block' style="">
-					<div id="list-example" class="list-group "
-						style="position: fixed; width:250px;height: 500px;margin-left: -50px;padding-left: 0;">
-						<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-2">Accuracy</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-3">Kaplan-Meier curve</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-4">Test</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-5">Report</a>
-						<!-- <a class="list-group-item list-group-item-action" href="#list-item-5">Drug Property Radar Chart</a> -->
-					</div>
-				</div>
-				<div class='col-xl-9 col-lg-12'>
-					<div class="row">
-						<h2>PROJECTID: {{ projectid }}</h2>
-					</div>
-					<hr />
-					<form action="" method="">
-						{%  csrf_token %}
-						<input style="display: none;" type="text" id="projectid"  name="projectid" value="{{projectid}}"/>
-					</form>
-					
-					<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-						Optimal feature subset result
-					</h3>
-					<div id="linechartDiv"></div>
-					
-					<h3 class="panel-heading" id="list-item-2" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-						Accuracy
-					</h3>
-					<div id="accboxplotDiv"></div>
-					
-					<table id="acctable" class="display" style="width: 100%;" lazyload="True">
-						 <thead>
-							<tr>
-								<th></th>
-								<th>SurvivalSVM</th>
-								<th>SurvivalTree</th>
-								<th>ExtraSurvivalTrees</th>
-								<th>RandomSurvivalForest</th>
-								<th>GradientBoostingSurvival</th>
-							</tr>
-						</thead>
-					</table>
-					
-					<br />
-					<h3 class="panel-heading" id="list-item-3" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-						Kaplan-Meier curve
-					</h3>
-					<!-- <div id="survplotDiv"></div> -->
-					<div id="testsurvplotDiv"></div>
-					<br />
-					<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-						Test
-					</h3>
-					<!-- <div id="survplotDiv"></div> -->
-					<div id="vsurvplotDiv"></div>
-					<div id="vlineplotDiv"></div>
-					<br />
-					<h3 class="panel-heading" id="list-item-5" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-						Report
-					</h3>
-					<table id="reporttable" class="display" style="width: 100%;" lazyload="True">
-						 <thead>
-							<tr>
-								<th></th>
-								<th class="none">Feature Names</th>
-								<th>Mean C-index</th>
-								<th>Feature_names/Parameter</th>
-								<th class="none">Parameter</th>
-								<th>Model Download</th>
-							</tr>
-						</thead>
-					</table>
-				</div>
-				<br />
-				
+				<h2>PROJECTID: {{ projectid }}</h2>
 			</div>
-			<br />
-			<br />
-			<br />
+			<hr />
+			<form action="" method="">
+				{%  csrf_token %}
+				<input style="display: none;" type="text" id="projectid"  name="projectid" value="{{projectid}}"/>
+			</form>
 			
+<!-- 			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+				line chart
+			</h3>
+			<div id="linechartDiv"></div> -->
 			
+<!-- 			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+				Test Accuracy
+			</h3>
+			<div id="accboxplotDiv"></div> -->
+			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+				{{method|safe}}
+			</h3>
+			{% if showtable == True %}
+			
+			<table id="acctable" class="display" style="width: 100%;" lazyload="True">
+				 <thead>
+					<tr>
+						<th>Name</th>
+						<th>Label</th>
+					</tr>
+				</thead>
+			</table>
+			{% else %}
+			<div id="survplotDiv"></div>
+			{% endif %}
+			<br />
+			<!-- <div id="survplotDiv"></div> -->
+			<br />
+			<!-- <h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+				Validation
+			</h3> -->
+			<!-- <div id="survplotDiv"></div> -->
+			<!-- <div id="vsurvplotDiv"></div>
+			<div id="vlineplotDiv"></div> -->
+			<br />
+			<!-- <h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+				Final Report
+			</h3>
+			<table id="reporttable" class="display" style="width: 100%;" lazyload="True">
+				 <thead>
+					<tr>
+						<th></th>
+						<th>Feature Select Method</th>
+						<th class="none">Feature Names</th>
+						<th>Mean C-index</th>
+						<th>Feature_names/Parameter</th>
+						<th class="none">Parameter</th>
+						<th>View</th>
+					</tr>
+				</thead>
+			</table> -->
+			<br />
+			<br />
+			<br />
+			<br />
 			<!-- <div class="row">
 				<div class="col-6">
 					<button type="button" onclick="window.location.href='/mlserver/analysis_oneclick'" class="btn btn-info" style="width: 100%;">One-click Analysis</button>
@@ -213,194 +163,54 @@
 
 		<script>
 			var csrftoken = $("input[name='csrfmiddlewaretoken']").attr('value');
-			var acc_data = {{ test_acc_describe_dict|safe }};
-			var report_data = {{ max_reports_dict|safe }};
+			var acc_data = {{ predict_reports_dict|safe }};
 			// plotly layout
 			var acc_layout = {
-				title: 'Boxplot of accuracy'
+				title: 'Boxplot of test accuracy'
 			};
-			var para_obj = eval('(' + '{{para_dict|safe}}' + ')');
-			var xtitle = 'time <i>t</i>'
-			var ytitle = 'probability of survival <i>&#348;(t)</i>'
-			var testlayout = {
-			  title: '', 
-			  legend:{
-				  itemclick: false,
-				  itemdoubleclick: false
-			  },
-			  height: 1200,
-			  xaxis1: {
-			    title: xtitle, 
-			    anchor: 'y1', 
-			    domain: [0.0, 0.45]
-			  }, 
-			  xaxis2: {
-			    title: xtitle, 
-			    anchor: 'y2', 
-			    domain: [0.55, 1.0]
-			  }, 
-			  xaxis3: {
-			    title: xtitle, 
-			    anchor: 'y3', 
-			    domain: [0.0, 0.45], 
-			  }, 
-			  xaxis4: {
-			    title: xtitle, 
-			    anchor: 'y4', 
-			    domain: [0.55, 1.0]
-			  }, 
-			  xaxis5: {
-			    title: xtitle, 
-			    anchor: 'y5', 
-			    domain: [0, 0.45]
-			  }, 
-			  yaxis1: {
-			    title: ytitle, 
-			    anchor: 'x1', 
-			    domain: [0.75, 1.0]
-			  }, 
-			  yaxis2: {
-			    title: ytitle, 
-			    anchor: 'x2', 
-			    domain: [0.75, 1.0]
-			  }, 
-			  yaxis3: {
-			    title: ytitle, 
-			    anchor: 'x3', 
-			    domain: [0.375, 0.625], 
-			  }, 
-			  yaxis4: {
-			    title: ytitle, 
-			    anchor: 'x4', 
-			    domain: [0.375, 0.625]
-			  },
-			  yaxis5: {
-			    title: ytitle, 
-			    anchor: 'x5', 
-			    domain: [0.0, 0.25]
-			  }, 
-			  annotations: [
-			    {
-			      x: 0.225, 
-			      y: 1.0, 
-			      font: {size: 16}, 
-			      text: 'Survival curves of ' + 'SurvivalSVM' + '<br>logrank test p-value = ' + para_obj.SurvivalSVM, 
-			      xref: 'paper', 
-			      yref: 'paper', 
-			      xanchor: 'center', 
-			      yanchor: 'bottom', 
-			      showarrow: false
-			    }, 
-			    {
-			      x: 0.775, 
-			      y: 1.0, 
-			      font: {size: 16}, 
-			      text: 'Survival curves of ' + 'SurvivalTree' + '<br>logrank test p-value = ' + para_obj.SurvivalTree, 
-			      xref: 'paper', 
-			      yref: 'paper', 
-			      xanchor: 'center', 
-			      yanchor: 'bottom', 
-			      showarrow: false
-			    }, 
-			    {
-			      x: 0.225, 
-			      y: 0.625, 
-			      font: {size: 16}, 
-			      text: 'Survival curves of ' + 'ExtraSurvivalTrees' + '<br>logrank test p-value = ' + para_obj.ExtraSurvivalTrees, 
-			      xref: 'paper', 
-			      yref: 'paper', 
-			      xanchor: 'center', 
-			      yanchor: 'bottom', 
-			      showarrow: false
-			    }, 
-			    {
-			      x: 0.775, 
-			      y: 0.625, 
-			      font: {size: 16}, 
-			      text: 'Survival curves of ' + 'RandomSurvivalForest' + '<br>logrank test p-value = ' + para_obj.RandomSurvivalForest, 
-			      xref: 'paper', 
-			      yref: 'paper', 
-			      xanchor: 'center', 
-			      yanchor: 'bottom', 
-			      showarrow: false
-			    }, 
-			    {
-			      x: 0.225, 
-			      y: 0.25, 
-			      font: {size: 16}, 
-			      text: 'Survival curves of ' + 'GradientBoostingSurvival' + '<br>logrank test p-value = ' + para_obj.GradientBoostingSurvival, 
-			      xref: 'paper', 
-			      yref: 'paper', 
-			      xanchor: 'center', 
-			      yanchor: 'bottom', 
-			      showarrow: false
-			    }
-			  ]
-			};
-			var vpara_obj = eval('(' + '{{vpara_dict|safe}}' + ')');
-			var vsubplotlayout = {
+			var surv_layout = {
 				title: '',
-				legend:{
-				  itemclick: false,
-				  itemdoubleclick: false
+				margin: {
+								  // 'b': 30,
+								  // 'l': 30,
+								  // 'r': 5,
+								  // 't': 75
+								  'b': 30,
+								  'l': 60,
+								  'r': 60,
+								  't': 30
 				},
-				height: 1200,
+				// legend:{
+				//   itemclick: false,
+				//   itemdoubleclick: false
+				// },
+				height: 400,
 				xaxis1: {
-				  title: xtitle, 
+				  title: 'Time in days', 
 				  anchor: 'y1', 
 				  domain: [0.0, 0.45]
 				}, 
 				xaxis2: {
-				  title: xtitle, 
+				  title: 'Time in days', 
 				  anchor: 'y2', 
 				  domain: [0.55, 1.0]
 				}, 
-				xaxis3: {
-				  title: xtitle, 
-				  anchor: 'y3', 
-				  domain: [0.0, 0.45], 
-				}, 
-				xaxis4: {
-				  title: xtitle, 
-				  anchor: 'y4', 
-				  domain: [0.55, 1.0]
-				}, 
-				xaxis5: {
-				  title: xtitle, 
-				  anchor: 'y5', 
-				  domain: [0, 0.45]
-				}, 
 				yaxis1: {
-				  title: ytitle, 
+				  title: 'Survival probability', 
 				  anchor: 'x1', 
-				  domain: [0.75, 1.0]
+				  domain: [0, 1.0]
 				}, 
 				yaxis2: {
-				  title: ytitle, 
+				  title: 'Survival probability', 
 				  anchor: 'x2', 
-				  domain: [0.75, 1.0]
-				}, 
-				yaxis3: {
-				  title: ytitle, 
-				  anchor: 'x3', 
-				  domain: [0.375, 0.625], 
-				}, 
-				yaxis4: {
-				  title: ytitle, 
-				  anchor: 'x4', 
-				  domain: [0.375, 0.625]
+				  domain: [0, 1.0]
 				},
-				yaxis5: {
-				  title: ytitle, 
-				  anchor: 'x5', 
-				  domain: [0.0, 0.25]
-				}, 
 				annotations: [
 				  {
-				    x: 0.225, 
+				    x: 0.25, 
 				    y: 1.0, 
 				    font: {size: 16}, 
-				    text: 'Survival curves of ' + 'SurvivalSVM' + '<br>logrank test p-value = ' + vpara_obj.SurvivalSVM, 
+				    text: '', 
 				    xref: 'paper', 
 				    yref: 'paper', 
 				    xanchor: 'center', 
@@ -408,43 +218,10 @@
 				    showarrow: false
 				  }, 
 				  {
-				    x: 0.775, 
+				    x: 0.75, 
 				    y: 1.0, 
 				    font: {size: 16}, 
-				    text: 'Survival curves of ' + 'SurvivalTree' + '<br>logrank test p-value = ' + vpara_obj.SurvivalTree, 
-				    xref: 'paper', 
-				    yref: 'paper', 
-				    xanchor: 'center', 
-				    yanchor: 'bottom', 
-				    showarrow: false
-				  }, 
-				  {
-				    x: 0.225, 
-				    y: 0.625, 
-				    font: {size: 16}, 
-				    text: 'Survival curves of ' + 'ExtraSurvivalTrees' + '<br>logrank test p-value = ' + vpara_obj.ExtraSurvivalTrees, 
-				    xref: 'paper', 
-				    yref: 'paper', 
-				    xanchor: 'center', 
-				    yanchor: 'bottom', 
-				    showarrow: false
-				  }, 
-				  {
-				    x: 0.775, 
-				    y: 0.625, 
-				    font: {size: 16}, 
-				    text: 'Survival curves of ' + 'RandomSurvivalForest' + '<br>logrank test p-value = ' + vpara_obj.RandomSurvivalForest, 
-				    xref: 'paper', 
-				    yref: 'paper', 
-				    xanchor: 'center', 
-				    yanchor: 'bottom', 
-				    showarrow: false
-				  }, 
-				  {
-				    x: 0.225, 
-				    y: 0.25, 
-				    font: {size: 16}, 
-				    text: 'Survival curves of ' + 'GradientBoostingSurvival' + '<br>logrank test p-value = ' + vpara_obj.GradientBoostingSurvival, 
+				    text: '', 
 				    xref: 'paper', 
 				    yref: 'paper', 
 				    xanchor: 'center', 
@@ -473,6 +250,7 @@
 			};
 			<!--第三步：初始化Datatables-->
 			$(document).ready( function () {
+				{% if showtable == True %}
 				$('#acctable').DataTable({
 					data: acc_data,
 					searching: false, 
@@ -491,9 +269,9 @@
 					//使用对象数组，一定要配置columns，告诉 DataTables 每列对应的属性
 					//data 这里是固定不变的，name，position，salary，office 为你数据里对应的属性
 					columns: [
-						{ data: 'Method' },
+						{ data: 'Name' },
 						{ 
-							data: 'SurvivalSVM' ,
+							data: 'Label' ,
 							
 							// "render": function(data, type, row, meta){
 							//     if(type === 'display'){
@@ -503,59 +281,17 @@
 							//     return data;
 							// }
 						},
-						{ data: 'SurvivalTree' },
-						{ data: 'ExtraSurvivalTrees' },
-						{ data: 'RandomSurvivalForest' },
-						{ data: 'GradientBoostingSurvival' },
+						// { data: 'SurvivalTree' },
+						// { data: 'ExtraSurvivalTrees' },
+						// { data: 'RandomSurvivalForest' },
+						// { data: 'GradientBoostingSurvival' },
 					]
 				});
-				$('#reporttable').DataTable({
-					responsive: {
-					    details: {
-					        type: 'column',
-					        target: 'tr'
-					    }
-					},
-					columnDefs: [ {
-					    className: 'control',
-					    orderable: false,
-					    targets:   3,
-					} ],
-					data: report_data,
-					searching: false, 
-					paging: false, 
-					info: false,
-					sort: false,
-					columns: [
-						{ data: 'Method' },
-						{ data: 'feature_names' },
-						{ data: 'Mean C-index' },
-						{ 
-							data: 'parameter',
-							render: function(data, type, row) {
-								return '';
-							}
-						 },
-						{ data: 'parameter' },
-						{ 
-							data: 'Method' ,
-							"render": function(data, type, row, meta){
-								if(type === 'display'){
-									// data = '<button style="background: url(https://img.icons8.com/sf-regular-filled/48/undefined/download.png);width: 2.5rem;height: 2.5rem;border: none;" value="' + $('#projectid').val() + '_' + data + '" href="result/' + $('#projectid').val() + '_' + data + '"></button>'
-									data = '<a value="' + $('#projectid').val() + '_' + data + '" href="classification_oc_result/' + $('#projectid').val() + '_' + data + '">Download</a>'
-								}
-								return data;
-							},
-						},
-					]
-				});
-				var test_obj = eval('(' + '{{surv_dict|safe}}' + ')'); 
-				Plotly.newPlot('linechartDiv', {{ line_chart_data|safe }});
-				Plotly.newPlot('accboxplotDiv', {{ test_acc_reports_dict|safe }}, acc_layout);
-				// Plotly.newPlot('survplotDiv', test_obj.SurvivalSVM.surv_trace, test_obj.SurvivalSVM.surv_layout);
-				Plotly.newPlot('testsurvplotDiv', {{subplot_sur|safe}}, testlayout);
-				Plotly.newPlot('vsurvplotDiv', {{vsubplot_sur|safe}}, vsubplotlayout);
-				Plotly.newPlot('vlineplotDiv', {{vlinedata|safe}}, vline_layout);
+				{% else %}
+				Plotly.newPlot('survplotDiv', {{surv_plot|safe}}, surv_layout);
+				{% endif %}
+				// Plotly.newPlot('testsurvplotDiv', {{subplot_sur|safe}}, testlayout);
+				// Plotly.newPlot('vsurvplotDiv', {{vsubplot_sur|safe}}, vsubplotlayout);
 			// $('#finaltable').on('click', 'button', function(){
 				
 			// 	var formData=new FormData();

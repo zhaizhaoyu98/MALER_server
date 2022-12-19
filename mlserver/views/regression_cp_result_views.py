@@ -77,11 +77,12 @@ def regression_cp_result(request):
 
         '''
         inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0, index_col=0).T
-        train_set, test_set, blind_set = split_train_test(inputdata, datatype='survival')
+        train_set, test_set, blind_set = split_train_test(inputdata)
 
         nordata4, nor_age4 = regression_preprocess(train_set)
         if len(test_set) > 0:
             validation_data, validation_label = regression_preprocess(test_set)
+        # print('test_set:', test_set)
         # nordata4, vaildation_data, nor_age4, vaildation_label = train_test_split(x_dum, y, random_state=10,
         #                                                                          train_size=0.7)  # 分验证集
         features = selectkbest_top20(nordata4, nor_age4, score_func=f_regression, k=50)
@@ -151,6 +152,7 @@ def regression_cp_result(request):
 
         final_reports = pd.DataFrame(final_reports, index=[reg_model_name]).reset_index().rename(
             columns={'index': 'Method'})
+        final_reports[['Mean R-square', 'MAE', 'MSE']] = np.round(final_reports[['Mean R-square', 'MAE', 'MSE']], 3)
         final_reports_dict = final_reports.to_dict('records')
 
         # validation
@@ -282,6 +284,7 @@ def regression_cp_result(request):
 
             final_reports = pd.DataFrame(final_reports, index=[reg_model_name]).reset_index().rename(
                 columns={'index': 'Method'})
+            final_reports[['Mean R-square', 'MAE', 'MSE']] = np.round(final_reports[['Mean R-square', 'MAE', 'MSE']], 3)
             final_reports['md5'], final_reports['fsm'] = select_md5, feature_select_method
             final_reports_dict = final_reports.to_dict('records')
 
@@ -315,6 +318,7 @@ def regression_cp_result(request):
             }
 
             final_reports = pd.concat([cp_cache['reports'], final_reports], axis=0).drop_duplicates(keep='last')
+            final_reports[['Mean R-square','MAE','MSE']] = np.round(final_reports[['Mean R-square','MAE','MSE']],3)
             final_reports_dict = final_reports.to_dict('records')
             cp_cache[select_md5] = reg_pickle
             cp_cache['reports'] = final_reports

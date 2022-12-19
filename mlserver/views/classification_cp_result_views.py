@@ -598,7 +598,7 @@ def result(request):
     elif select_model == 'model_mclass':
         ifmarco = True
     print('ifmarco:', ifmarco)
-    return render(request, 'cp_result.html', {
+    return render(request, 'classification_cp_result.html', {
         'projectid': projectid,
         'final_reports_dict': final_reports_dict,
         'f_describe_dict': f_describe_dict,
@@ -634,7 +634,7 @@ def show_prev_page(request, projectid_paramd5):
     heatmap_anno = cp_cache[paramd5]['heatmap_anno']
     valid_roc_traces = cp_cache[paramd5]['valid_roc_traces']
     ifmarco = False
-    return render(request, 'cp_result.html', {
+    return render(request, 'classification_cp_result.html', {
         'projectid': projectid,
         'final_reports_dict': final_reports_dict,
         'f_describe_dict': f_describe_dict,

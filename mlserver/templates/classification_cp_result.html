@@ -60,6 +60,15 @@
 				padding-left: 1rem;
 			}
 			
+			/* 左侧导航颜色 */
+			.list-group-item.active {
+				background-color: #17a2b8;
+				border: 1px solid rgba(0, 0, 0, .125);
+			}
+			#list-example a {
+				padding-left: 15px;
+			}
+			
 			h3 {
 				/* color: cornflowerblue; */
 				color: #17a2b8; margin-bottom: 20px;
@@ -100,7 +109,7 @@
 			// }
 		</script>
 	</head>
-	<body>
+	<body data-spy="scroll" data-target="#list-example" style="padding-top: 0px;">
 		<!-- 导航栏 -->
 		{% include 'public_templates/nav_tem.html' %}
 		
