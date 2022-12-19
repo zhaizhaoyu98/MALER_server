@@ -74,7 +74,7 @@ def result(request):
     projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
     print(projectid)
     '''
-    projectid = 'BCO-911c4d-c3ceec-TopK'
+    projectid = 'BCO-e5e9da-TopK'
     data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'express_data.csv', header=0, index_col=0).T
     label = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'label.csv', header=0, index_col=0)
     
@@ -1199,7 +1199,7 @@ def mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=title):
                 'x': list(mean_FPR),
                 'y': list(mean_TPR_df[t])
             }
-        data.append(trace)
+            data.append(trace)
     else:
         for t in title:
             trace = {
