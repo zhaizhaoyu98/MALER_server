@@ -47,7 +47,25 @@ def result(request):
     # select child model
     select_child_model = request.POST.get('select_child_model').replace("task_", "")
     print(select_child_model)
+    file_upload_type = request.POST.get('file_upload_type')
+    if file_upload_type == 'user_data':
+        # Feature selection methods
+        print('feature_select_method: ', feature_select_method)
+        '''
+        IMPORRT DATA
+        '''
+        obj_file = request.FILES.get('upload_file')
+        f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
+        for line in obj_file.chunks():
+            f.write(line)
+        f.close()
 
+        filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
+    else:
+        if select_model == 'model_bclass':
+            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'))
+        else:
+            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'))
     '''
     MODULE PARAMETERS
     '''
