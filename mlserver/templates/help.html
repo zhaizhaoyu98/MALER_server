@@ -27,6 +27,11 @@
 	.nav-stacked>ul a:hover{
 		text-decoration: none;
 	}
+	#intro_table, th, td{
+		border-collapse: collapse;
+		border: 1px solid #ababab;
+		text-align: center;
+	}
 </style>
 <body>
     {% include 'public_templates/nav_tem.html' %}
@@ -55,6 +60,47 @@
 			<h1>Introduction</h1>
 				<p>MALER is a user-friendly and easy-to-use web application that helps biologists apply ML models to
                     biological and biomedical data. This page provides documentation on how to use MALER.</p>
+				<p>MALER provides four types of machine learning analysis, each with multiple model building algorithms, 
+				evaluation methods, as well as feature selection methods for users to choose from to build their custom 
+				machine learning pipeline. Below is a table summary of our features:</p>
+				<table id="intro_table">
+					<tr>
+						<th style="font-weight: bold;"></th>
+						<th>ML algorithms</th>
+						<th>Evaluation</th>
+						<th>Feature Selection</th>
+						<th>Optimal Feature Subset</th>
+					</tr>
+					<tr>
+						<td style="font-weight: bold;">Binary Classification</td>
+						<td rowspan="2">Naive Bayes, SVM, Random Forest, Logistic Regression, KNN, 
+							XGBoost, lightGBM, Adaboost, DecisionTree, GBDT
+						</td>
+						<td rowspan="2">Accuracy, Recall, Precision, F1-score, AUC</td>
+						<td rowspan="2">ANOVA(f_classif from sklearn)</td>
+						<td rowspan="4">Top K, SFS, BSS</td>
+					</tr>
+					<tr>
+						<td style="font-weight: bold;">Multiclass Classification</td>
+					</tr>
+					<tr>
+						<td style="font-weight: bold;">Regression</td>
+						<td>Linear Regression, SVM, Ridge, Lasso, Decision Tree,
+							XGBoost, AdaBoost, Random Forest, Gradient Boosting Regressor
+						</td>
+						<td>R-Squared, MAE, MSE</td>
+						<td>Pearson's correlation (f_regression from sklearn)</td>
+					</tr>
+					<tr>
+						<td style="font-weight: bold;">Survival Analysis</td>
+						<td>SurvivalSVM, SurvivalTree, ExtraSurvivialTrees, RandomSurvivalForest, 
+							GradientBoostingSurivival
+						</td>
+						<td>C-index</td>
+						<td>Univariate Cox regression</td>
+					</tr>
+				</table>
+				<br>
 			<h3 id='os_compat'>Browser and Operating System (OS) Compatibility</h3>
 				<hr>
                 <br>
@@ -68,7 +114,7 @@
                     given data points. Regression is a supervised machine learning technique which is used to predict
                     continuous values. Survival analysis aims to predict time to an event.
                 </p>
-{#				<img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/gen_tab.png" alt="general tab img"/>#}
+				<!-- <img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/gen_tab.png" alt="general tab img"/> -->
 				<p><b>Data submit</b></p>
 
 				<p>When the module is selected, the user should submit the corresponding data format as following. Sample
@@ -76,7 +122,7 @@
                 <p><b>Format of input files</b></p>
 				<p>In general, a feature-by-sample matrix in a csv format is required to initiate the MALER analysis. A
                     sample label file is also suggested to be uploaded so as to evaluate the matrix more comprehensive.</p>
-{#				<img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/general_home.PNG" alt="general overview img"/>#}
+				<!-- <img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/general_home.PNG" alt="general overview img"/> -->
 				<br>
 				<br>
 			<h3 id='oc'>Binary Classification</h3>
@@ -87,27 +133,27 @@
                     ML set must contain “training”, and can also contain “testing”. Sample data of this data type can
                     be downloaded.
                 </p>
-{#				<img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/comp_tab_help.png" alt="organoid compare tab img"/>#}
-{#				<p>In comparison search, you can choose to 1) search by gene or search by organoid. When searching by gene, you will be able to 2) select a comparison type and its related comparison data sets to display. And 3) filter your search by fold change and P-value.</p>#}
-{#				<p>Parameters</p>#}
-{#				<ul>#}
-{#					<p><strong>Search By</strong>: Select to search by gene or search by organoid type.</p>#}
-{#					<p><strong>Options</strong>: Select between human and mouse samples as well as bulk and single-cell samples.</p>#}
-{#					<br>#}
-{#					<p><strong>Select Comparison Type</strong>: Query the selected comparison type.</p>#}
-{#					<p><strong>Select Comparison</strong>: Query the selected comparison. Click <a data-toggle="modal" data-target="#abbrev_modal" href="###">abbrev.</a> for list of comparison abbreviations.</p>#}
-{#					<p><strong>Gene Name / Entrez ID</strong>: Search for expression by gene name or entrez ID, searching by gene name will have an autocomplete feature after entering 2 characters.</p>#}
-{#					<p><strong>Select Organoid</strong>: When <i>Search by organoid</i> is selected, choose an organoid type.</p>#}
-{#					<p><strong>Log<sub>2</sub>FC cutoff</strong>: Results will have fold-change greater than user defined threshold.</p>#}
-{#					<p><strong>P-value cutoff</strong>: Results will have P-values less than user defined threshold.</p>#}
-{#					<br>#}
-{#					<p>Note: Only top 50,000 results sorted by P-value are shown.</p>#}
-{#				</ul>#}
-{#				<p>Results</p>#}
-{#				<ul><p>As show in picture below, in the search results, you can 1) download the table of differentially expressed genes in the comparison. 2) sort the table by clicking on the column headers, e.g. sort by fold change. 3) See more detailed information about the related study by clicking on the Dataset ID link. 4) get a quick view of the expression box plot.</p></ul>#}
-{#				<img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/org_comp_result_help.png" alt="organoid compare result help img"/>#}
-{#				<ul><p>Clicking on 4) boxplot icons will display the expression comparison as shown below.</p></ul>#}
-{#				<img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/org_compare.PNG" alt="organoid compare img"/>#}
+				<!-- <img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/comp_tab_help.png" alt="organoid compare tab img"/>
+				<p>In comparison search, you can choose to 1) search by gene or search by organoid. When searching by gene, you will be able to 2) select a comparison type and its related comparison data sets to display. And 3) filter your search by fold change and P-value.</p>
+				<p>Parameters</p>
+				<ul>
+					<p><strong>Search By</strong>: Select to search by gene or search by organoid type.</p>
+					<p><strong>Options</strong>: Select between human and mouse samples as well as bulk and single-cell samples.</p>
+					<br>
+					<p><strong>Select Comparison Type</strong>: Query the selected comparison type.</p>
+					<p><strong>Select Comparison</strong>: Query the selected comparison. Click <a data-toggle="modal" data-target="#abbrev_modal" href="###">abbrev.</a> for list of comparison abbreviations.</p>
+					<p><strong>Gene Name / Entrez ID</strong>: Search for expression by gene name or entrez ID, searching by gene name will have an autocomplete feature after entering 2 characters.</p>
+					<p><strong>Select Organoid</strong>: When <i>Search by organoid</i> is selected, choose an organoid type.</p>
+					<p><strong>Log<sub>2</sub>FC cutoff</strong>: Results will have fold-change greater than user defined threshold.</p>
+					<p><strong>P-value cutoff</strong>: Results will have P-values less than user defined threshold.</p>
+					<br>
+					<p>Note: Only top 50,000 results sorted by P-value are shown.</p>
+				</ul>
+				<p>Results</p>
+				<ul><p>As show in picture below, in the search results, you can 1) download the table of differentially expressed genes in the comparison. 2) sort the table by clicking on the column headers, e.g. sort by fold change. 3) See more detailed information about the related study by clicking on the Dataset ID link. 4) get a quick view of the expression box plot.</p></ul>
+				<img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/org_comp_result_help.png" alt="organoid compare result help img"/>
+				<ul><p>Clicking on 4) boxplot icons will display the expression comparison as shown below.</p></ul>
+				<img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/org_compare.PNG" alt="organoid compare img"/> -->
 				<br>
 				<br>
 			<h3 id='od'>Multiclass Classification</h3>
@@ -139,18 +185,22 @@
                     “NA” for blind test set. ML set must contain “training”, and can also contain “testing”. Sample data
                     of this data type can be downloaded.
 				</p>
+				<p><b>C-index (concordance index): </b> A commonly used metric in Survival Analysis to evaluate performance of 
+				prediction models. The C-index is the proportion of concordant pairs (two predictions having same relative order 
+				as their true observations) divided by the total number of possible observation pairs. The C-index is widely adopted 
+				in survival model performance evaluation, where the order of predicted survival times is compared to the order of the observations.
+				</p>
+				<p><b>Time dependent AUC: </b> Calculating the areas under the time-dependent ROC curves results in the time-dependent AUC curve, 
+				which is a measure of the discriminative ability of markers at each time point under consideration. </p>
             <h3 id='browse'>Feature Selection</h3>
 				<hr>
-				<p>
-                    Three feature selection methods were provided with the top K as default.
-				</p>
             <h3 id='one_click'>One-click Modeling</h3>
 				<hr>
 				<p>
                     One-click Modeling allows users run multiple models within the same process. The default parameters
                     would be set for each ML model.
 				</p>
-{#                <img style="width: 100%; padding-left: 10%; padding-right: 10%" src="/organoidb_static/img/help_img/Detailed_information_page.PNG" alt="Detailed information img"/>#}
+                <!-- <img style="width: 100%; padding-left: 10%; padding-right: 10%" src="/organoidb_static/img/help_img/Detailed_information_page.PNG" alt="Detailed information img"/> -->
             <h3 id='cus_model'>Customized Modeling</h3>
 				<hr>
 				<p>
@@ -158,15 +208,48 @@
                     modeling will be stored in the server and could be compared with other modelings derived from the
                     same data under the same study ID.
 				</p>
-{#                <img style="width: 75%; padding-left: 25%;" src="/organoidb_static/img/statistics_table.PNG" alt="Statistics img"/>#}
-            <h3 id='predict'>External Prediction</h3>
+                <!-- <img style="width: 75%; padding-left: 25%;" src="/organoidb_static/img/statistics_table.PNG" alt="Statistics img"/> -->
+            <h3>Univariate Feature Selection</h5>
+            	<hr>
+            	<p>
+            		<b>classfication: f_classif</b>
+            		ANOVA is performed using the f_classif function from scikit-learn selectKBest package, and features are 
+            		ranked based on F-statistics.
+            	</p>
+            	<p>
+            		<b>regression: f_regression</b>
+            		Pearson's correlation between each feature and the target is caculated using f_regression from scikit-learn 
+            		selectKBeset package. The resulting F-statistics and P-values are used for ranking and filtering features.
+            	</p>
+            <h3>Optimal Feature Subset Selection</h5>
+            	<hr>
+            	<p>
+            		<b>Top K:</b> Top K method selects the first k features from the ordered feature ranking set after univariate 
+            		feature selection to create the model.
+            	</p>
+            	<p>
+            		<b>SFS (Sequential Forward Selection): </b>Also called Forward Stepwise Selection (FSS). The method starts with an 
+            		empty subset of features and appends feature one at a time. During one step, all the features that have not yet 
+            		been selected are considered for selection, and their evaluation indicator(accuracy) are recorded. At the end of 
+            		the step, the feature that yielded the best score is included in the subset.Then,a new step is started, and the 
+            		remaining features are considered. This is repeated this operation until the subset contains 20 variables. Finally, 
+            		the top k features in the subset with the best performance are selected as the optimal feature subset.
+            	</p>
+            	<p>
+            		<b>BSS (Backward Stepwise Selection): </b>This method starts with all features included in the model and eliminates one at 
+            		a time. For each cycle, all the features that have not been eliminated are considered for selection, the feature that 
+            		yielded the worst score is excluded in the subset. Then, a cycle is started, and the remaining features are considered. 
+            		This process of deletion and selection is repeated until only one feature is left in the model. Finally, the top k features 
+            		in the subset with the best performance are selected as the optimal feature subset.
+            	</p>
+			<h3 id='predict'>External Prediction</h3>
                 <hr>
 				<p>
                     Users can apply the models downloaded from ML Analysis on external data, and performed the prediction.
                     The confusion matrix will be calculated for the validation set, while predictions will be listed in
                     a table for the blind test set.
 				</p>
-{#                <img style="width: 75%; padding-left: 25%;" src="/organoidb_static/img/help_img/Feedback.png" alt="Feedback img"/>#}
+                <!-- <img style="width: 75%; padding-left: 25%;" src="/organoidb_static/img/help_img/Feedback.png" alt="Feedback img"/> -->
 
             <h3 id='samp'>Sample Data</h3>
                 <hr>
