@@ -273,7 +273,7 @@ def result(request):
             }
             line_chart_data.append(trace)
 
-            final_reports, f_describe = customized_report("SVM", res, data3, label3, preds, test_index,
+            final_reports, f_describe = customized_report(clf_name, res, data3, label3, preds, test_index,
                                                           max_features, tests)
             final_reports_dict = df2bp(final_reports)
             f_describe = np.round(f_describe.loc[("mean", 'min', 'max', 'std'), :],
@@ -541,7 +541,7 @@ def result(request):
 
             if select_md5 not in cp_cache.keys():
 
-                final_reports, f_describe = customized_report("SVM", res, data3, label3, preds, test_index,
+                final_reports, f_describe = customized_report(clf_name, res, data3, label3, preds, test_index,
                                                               max_features, tests)
                 final_reports_dict = df2bp(final_reports)
                 f_describe = np.round(f_describe.loc[("mean", 'min', 'max', 'std'), :],
