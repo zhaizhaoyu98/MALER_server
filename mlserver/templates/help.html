@@ -32,6 +32,17 @@
 		border: 1px solid #ababab;
 		text-align: center;
 	}
+	.flex-container {    
+		display: -webkit-flex;   
+		display: flex;    
+		flex-flow: wrap;    
+		justify-content: center;    
+		align-items: center;
+		}
+	.flex-cell {width: 20%;}
+	.line{    height:1px;  background-color:#333; }
+	
+	
 </style>
 <body>
     {% include 'public_templates/nav_tem.html' %}
@@ -57,7 +68,9 @@
 		</div>
 		<div class='col-xl-9 col-lg-9'>
 			<br>
+			</br>
 			<h1>Introduction</h1>
+			<hr>
 				<p>MALER is a user-friendly and easy-to-use web application that helps biologists apply ML models to
                     biological and biomedical data. This page provides documentation on how to use MALER.</p>
 				<p>MALER provides four types of machine learning analysis, each with multiple model building algorithms, 
@@ -101,96 +114,60 @@
 					</tr>
 				</table>
 				<br>
+				</br>
+				
+				
+				
 			<h3 id='os_compat'>Browser and Operating System (OS) Compatibility</h3>
 				<hr>
-				<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bolder;">
+				MALAR is free and open to all users with no login requirement and can be really accessed by a variety of popular web browsers and 
+				operating systems as shown below.
+<!-- 				<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bolder;">
 				What can MALER do?
-				</nav>
-				<div class="row no-gutters" style="border: 1px solid #ababab; border-radius: unset; margin-bottom: 1em;">
-					<div class="col-12" >
-					                        <div class="row no-gutters" >
-					                            <div class="col-4 card-header">Four Analysis Modes</div>
-					                            <div class="col-4 card-header">Feature Selection methods and Optimal Feature Subset Methods</div>
-												<div class="col-4 card-header">One-click Analysis</div>
-					                        </div>
-					                        <div class="row col-12">
-					
-					                        <div class="col-4">
-					                        <p class="card-text" style="text-align:center">
-												binary classification, multiple classification, regression, survival
-												<div><img src='/mlserver_static/img/mlstep1.png' width="300" height="200"></div>
-					                        </p>
-					                        <br>
-					                        <br>
-					<!--                        <img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/general_home.PNG" alt="general overview img">-->
-					                        </div>
-					
-					                        <div class="col-4">
-					                            <p class="card-text" style="text-align:center">
-													TopK, FSS(SFS), BSS
-													<br></br>
-													<p ><img src='/mlserver_static/img/home2.png' width="320" height="180"></p>
-												</p>
-					<!--							<img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/org_spec_home.PNG" alt="organoid specificity img">-->
-					                        </div>
-											<div class="col-4">
-												<p class="card-text" style="text-align:center">
-													run multiple models within the same process
-													<p ><img src='/mlserver_static/img/home3.png' width="320" height="260"></p>
-													<!-- <p ><img src='/mlserver_static/img/home3.png' width="320" height="120"></p> -->
-					
-												</p>
-					<!--							<img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/org_spec_home.PNG" alt="organoid specificity img">-->
-					                        </div>
-					                        </div>
-					                        <div class="row no-gutters">
-					                            <div class="col-4 card-header">Custom Parameters Analysis</div>
-												<div class="col-4 card-header">Build and Download ML Models</div>
-												<div class="col-4 card-header">Make Predictions</div>
-					                        </div>
-					                        <div class="row col-12">
-					                             <div class="col-4">
-					                            <p class="card-text" style="text-align:center">
-													custom parameters analysis
-													<!-- <br></br> -->
-													<p ><img src='/mlserver_static/img/home4.png' width="320" height="240"></p>
-												</p>
-					                            <br>
-					<!--							<img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/org_dev_home.PNG" alt="general overview img">-->
-					
-					                        </div>
-					                        <div class="col-4">
-					                            <p class="card-text" style="text-align:center">
-													download ml models after analysis and training with step by step guidance
-													<p ><img src='/mlserver_static/img/home5.png' width="320" height="150"></p>
-													
-												</p>
-					                            <br>
-					                            <br>
-					                            <br>
-					<!--							<img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/corr_home.PNG" alt="organoid specificity img">-->
-					
-					                        </div>
-											<div class="col-4">
-					                            <p class="card-text" style="text-align:center">
-													<!-- make predictions -->
-													download the model to predict external dataset
-													
-													<p ><img src='/mlserver_static/img/home6.png' width="320" height="200"></p>
-												</p>
-					                            <br>
-					                            <br>
-					                            <br>
-					<!--							<img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/corr_home.PNG" alt="organoid specificity img">-->
-					
-					                        </div>
-					                        </div>
-					
-					
-					                    </div>
-				</div>
+				</nav> -->
+				<br></br>
+
+			<div class="row no-gutters ;"style="margin-bottom: 1em;" >
+			    <div class="flex-cell" style="text-align: center;"><b>OS</b></div>
+			    <div class="flex-cell" style="text-align: center;"><b>Chorme</b></div>
+				<div class="flex-cell" style="text-align: center;"><b>Firefox</b></div>
+				<div class="flex-cell" style="text-align: center;"><b>Edge</b></div>
+				<div class="flex-cell" style="text-align: center;"><b>Safari</b></div>
+			</div>
+			
+			<div class="line"></div>
+			<div class="row no-gutters card-header" style="">
+			    <div class="flex-cell" style="text-align: center;">Linux(Ubuntu-17.04)</div>
+			    <div class="flex-cell" style="text-align: center;">v78.0.3904.108</div>
+				<div class="flex-cell" style="text-align: center;">v52.0.1</div>
+				<div class="flex-cell" style="text-align: center;">n/a</div>
+				<div class="flex-cell" style="text-align: center;">n/a</div>
+			</div>
+			<!-- <hr> -->
+			<div class="row no-gutters card-header" >
+			    <div class="flex-cell" style="text-align: center">MacOS(v10.1)</div>
+			    <div class="flex-cell" style="text-align: center;">v78</div>
+				<div class="flex-cell" style="text-align: center;">v71</div>
+				<div class="flex-cell" style="text-align: center;">n/a</div>
+				<div class="flex-cell" style="text-align: center;">v8</div>
+
+			</div>
+			<!-- <hr> -->
+			<div class="row no-gutters card-header" >
+			    <div class="flex-cell" style="text-align: center;">Windows(v10)</div>
+			    <div class="flex-cell" style="text-align: center;">v78.0.3904.108</div>
+				<div class="flex-cell" style="text-align: center;">v70.0.1</div>
+				<div class="flex-cell" style="text-align: center;">v44.18362.449.0</div>
+				<div class="flex-cell" style="text-align: center;">n/a</div>
+				
+			</div>
+			
+			<div class="line"></div>
+			
+
+				
                 <br>
-                <br>
+                </br>
 			<h3 id='gen'>Machine Learning Analysis</h3>
 				<hr>
                 <p><b>Module selection</b></p>
@@ -358,7 +335,7 @@
 				<p>
 			        Users can customized the machine learning algorithm using different parameters. The Customized
 			        modeling will be stored in the server and could be compared with other modelings derived from the
-			        same data under the same study ID.
+			        same data under the same ProjectID.
 				</p>
 				
 			<h3 id='predict'>External Prediction</h3>
