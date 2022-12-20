@@ -1,6 +1,6 @@
 from django.urls import path
-# from django.conf import settings ##new add
-# from django.conf.urls. static import static ## new add
+from django.conf import settings ##new add
+from django.conf.urls. static import static ## new add
 # from . import views
 from .views import home_views, analysis_views, predict_views, \
     classification_oc_result_views, classification_cp_result_views, \
@@ -39,4 +39,4 @@ urlpatterns=[
     # ajax get combination
     # path('get_model',result_views.get_model),
     path('get_cp_combination', classification_cp_result_views.get_cp_combination),
-]
+] + static (settings.STATIC_URL, document_root = settings.STATIC_ROOT)
