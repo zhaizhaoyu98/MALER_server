@@ -93,9 +93,9 @@ def survival_oc_result(request):
             for each_model in sur_models:
                 start = time.perf_counter()
                 if feature_select_method == 'FSS':
-                    sf, ms = FSS_fun(features, each_model, x3, y2, cv, n_jobs=6)
+                    sf, ms = FSS_fun(features, each_model, x3, y2, cv, n_jobs=4)
                 else:
-                    sf, ms = BSS_fun(features, each_model, x3, y2, cv, n_jobs=6)
+                    sf, ms = BSS_fun(features, each_model, x3, y2, cv, n_jobs=4)
                 selected_feature.append(sf), max_scores.append(ms)
                 end = time.perf_counter()
                 print(round(end - start, 3))

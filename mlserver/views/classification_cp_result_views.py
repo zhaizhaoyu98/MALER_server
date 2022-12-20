@@ -67,7 +67,8 @@ def result(request):
         #     f.write(line)
         # f.close()
         # random token
-        token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
+        # token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
+        token = request.POST.get('random_token')
         if file_upload_type == 'user_data':
             '''
             IMPORRT DATA

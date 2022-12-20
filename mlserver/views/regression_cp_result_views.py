@@ -53,7 +53,8 @@ def regression_cp_result(request):
     if projectid == '': projectid = 'None'
 
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
-        token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
+        # token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
+        token = request.POST.get('random_token')
         if file_upload_type == 'user_data':
             '''
             IMPORRT DATA
@@ -498,6 +499,8 @@ def select_reg_model(request):
             select_model = regression_SVM(Kernel=kernel, CC=C)
         elif kernel == 'poly':
             degree = int(degree)
+            coef0 = float(coef0)
+            C = float(C)
             select_model = regression_SVM(Kernel=kernel ,Degree=degree, Coef0=coef0, CC=C, Gamma=gamma)
         elif kernel == 'rbf':
             select_model = regression_SVM(Kernel=kernel ,CC=C, Gamma=gamma)

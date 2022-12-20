@@ -47,7 +47,8 @@ def survival_cp_result(request):
     if projectid == '': projectid = 'None'
 
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
-        token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
+        # token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
+        token = request.POST.get('random_token')
         if file_upload_type == 'user_data':
             '''
             IMPORRT DATA
@@ -121,9 +122,9 @@ def survival_cp_result(request):
         train_index, test_index = sur_RSKFold(x3, y2)
         if feature_select_method != 'TopK':
             if feature_select_method == 'FSS':
-                sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=6)
+                sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=4)
             else:
-                sf, ms = BSS_fun(features, sur_model, x3, y2, cv, n_jobs=6)
+                sf, ms = BSS_fun(features, sur_model, x3, y2, cv, n_jobs=4)
             max_index = np.array(ms).argmax()
             max_score = max(ms)
             max_features = (sf[:max_index + 1])
@@ -237,9 +238,9 @@ def survival_cp_result(request):
         train_index, test_index = sur_RSKFold(x3, y2)
         if feature_select_method != 'TopK':
             if feature_select_method == 'FSS':
-                sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=6)
+                sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=4)
             else:
-                sf, ms = BSS_fun(features, sur_model, x3, y2, cv, n_jobs=6)
+                sf, ms = BSS_fun(features, sur_model, x3, y2, cv, n_jobs=4)
             max_index = np.array(ms).argmax()
             max_score = max(ms)
             max_features = (sf[:max_index + 1])
