@@ -427,7 +427,7 @@ def result(request):
                 feature_names.append(max_features[i])
 
             final_reports = {'parameter': parameter,
-                             'feature_names': [str(f) for i in feature_names],
+                             'feature_names': [str(i) for i in feature_names],
                              'test_acc': test_acc,
                              'precision': precision,
                              'AUC': AUC,
