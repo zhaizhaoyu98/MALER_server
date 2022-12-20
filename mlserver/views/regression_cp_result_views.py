@@ -386,46 +386,101 @@ def regression_cp_result(request):
     })
 
 def show_prev_page(request, projectid_paramd5):
-    if len(projectid_paramd5.split('_')) == 2:
-        projectid = projectid_paramd5.split('_')[0]
-        paramd5 = projectid_paramd5.split('_')[1]
-        # load pickle
-        with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
-            cp_cache = pickle.load(f)
+    if len(projectid_paramd5.split('-')[2]) != 4:
+        if len(projectid_paramd5.split('_')) == 2:
+            projectid = projectid_paramd5.split('_')[0]
+            paramd5 = projectid_paramd5.split('_')[1]
+            if not os.path.exists(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl'):
+                status = 'Running'
+                return render(request, 'status.html', {
+                    'status': status,
+                    'projectid': projectid,
+                })
+            # load pickle
+            with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+                cp_cache = pickle.load(f)
+        else:
+            projectid = projectid_paramd5
+            if not os.path.exists(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl'):
+                status = 'Running'
+                return render(request, 'status.html', {
+                    'status': status,
+                    'projectid': projectid,
+                })
+            # load pickle
+            with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+                cp_cache = pickle.load(f)
+            paramd5 = cp_cache['reports']['md5'][0]
+        # projectid = projectid_paramd5.split('_')[0]
+        # paramd5 = projectid_paramd5.split('_')[1]
+        # # load pickle
+        # with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+        #     cp_cache = pickle.load(f)
+
+        final_reports_dict = cp_cache['reports'].to_dict('records')
+        reg_model_name = cp_cache[paramd5]['reg_model_name']
+        line_chart_data = cp_cache[paramd5]['line_chart_data']
+        cust_reports_dict = cp_cache[paramd5]['cust_reports_dict']
+        cust_reports_describe_dict = cp_cache[paramd5]['cust_reports_describe_dict']
+        val_report_dict = cp_cache[paramd5]['val_report_dict']
+        vregpred_trace = cp_cache[paramd5]['vregpred_trace']
+        vreport_trace = cp_cache[paramd5]['vreport_trace']
+
+        return render(request, 'regression_cp_result.html', {
+            'projectid': projectid,
+            'reg_model_name': reg_model_name,
+            'line_chart_data': json.dumps(line_chart_data),
+            'cust_reports_dict': json.dumps(cust_reports_dict),
+            'cust_reports_describe_dict': json.dumps(cust_reports_describe_dict),
+            'final_reports_dict': json.dumps(final_reports_dict),
+            'val_report_dict': json.dumps(val_report_dict),
+            'vregpred_trace': json.dumps(vregpred_trace, ensure_ascii=False, cls=JsonEncoder),
+            'vreport_trace': json.dumps(vreport_trace, ensure_ascii=False, cls=JsonEncoder),
+            'change_page': True,
+        })
     else:
         projectid = projectid_paramd5
+        if not os.path.exists(STATIC_ROOT + '/cache/' + projectid + '/regression_pickle.pkl'):
+            status = 'Running'
+            return render(request, 'status.html', {
+                'status': status,
+                'projectid': projectid,
+            })
+        else:
+            with open(STATIC_ROOT + '/cache/' + projectid + '/regression_pickle.pkl', 'rb') as f:
+                reg_pickle = pickle.load(f)
 
-        # load pickle
-        with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
-            cp_cache = pickle.load(f)
-        paramd5 = cp_cache['reports']['md5'][0]
-    # projectid = projectid_paramd5.split('_')[0]
-    # paramd5 = projectid_paramd5.split('_')[1]
-    # # load pickle
-    # with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
-    #     cp_cache = pickle.load(f)
+            line_chart_data = reg_pickle['line_chart_data']
+            test_acc_reports_dict = reg_pickle['test_acc_reports_dict']
+            test_acc_describe_dict = reg_pickle['test_acc_describe_dict']
+            MAE_report_dict = reg_pickle['MAE_report_dict']
+            MAE_report_describe_dict = reg_pickle['MAE_report_describe_dict']
+            MSE_report_dict = reg_pickle['MSE_report_dict']
+            MSE_report_describe_dict = reg_pickle['MSE_report_describe_dict']
+            final_reports_dict = reg_pickle['final_reports_dict']
+            vregpred_trace = reg_pickle['vregpred_trace']
+            vreport_trace = reg_pickle['vreport_trace']
+            val_report_dict = reg_pickle['val_report_dict']
+            # radar_dict = reg_pickle['radar_dict']
+            # radar_range = reg_pickle['radar_range']
 
-    final_reports_dict = cp_cache['reports'].to_dict('records')
-    reg_model_name = cp_cache[paramd5]['reg_model_name']
-    line_chart_data = cp_cache[paramd5]['line_chart_data']
-    cust_reports_dict = cp_cache[paramd5]['cust_reports_dict']
-    cust_reports_describe_dict = cp_cache[paramd5]['cust_reports_describe_dict']
-    val_report_dict = cp_cache[paramd5]['val_report_dict']
-    vregpred_trace = cp_cache[paramd5]['vregpred_trace']
-    vreport_trace = cp_cache[paramd5]['vreport_trace']
-
-    return render(request, 'regression_cp_result.html', {
-        'projectid': projectid,
-        'reg_model_name': reg_model_name,
-        'line_chart_data': json.dumps(line_chart_data),
-        'cust_reports_dict': json.dumps(cust_reports_dict),
-        'cust_reports_describe_dict': json.dumps(cust_reports_describe_dict),
-        'final_reports_dict': json.dumps(final_reports_dict),
-        'val_report_dict': json.dumps(val_report_dict),
-        'vregpred_trace': json.dumps(vregpred_trace, ensure_ascii=False, cls=JsonEncoder),
-        'vreport_trace': json.dumps(vreport_trace, ensure_ascii=False, cls=JsonEncoder),
-        'change_page': True,
-    })
+            # print(vregpred_trace)
+            return render(request, 'regression_oc_result.html', {
+                'projectid': projectid,
+                'line_chart_data': json.dumps(line_chart_data),
+                'test_acc_reports_dict': json.dumps(test_acc_reports_dict),
+                'test_acc_describe_dict': json.dumps(test_acc_describe_dict),
+                'MAE_report_describe_dict': json.dumps(MAE_report_describe_dict),
+                'MSE_report_describe_dict': json.dumps(MSE_report_describe_dict),
+                'MAE_report_dict': json.dumps(MAE_report_dict),
+                'MSE_report_dict': json.dumps(MSE_report_dict),
+                'final_reports_dict': json.dumps(final_reports_dict),
+                'vregpred_trace': json.dumps(vregpred_trace, ensure_ascii=False, cls=JsonEncoder),
+                'vreport_trace': json.dumps(vreport_trace, ensure_ascii=False, cls=JsonEncoder),
+                'val_report_dict': json.dumps(val_report_dict),
+                # 'radar_dict': json.dumps(radar_dict),
+                # 'radar_range': json.dumps(radar_range)
+            })
 '''
 CUSTOMIZED MODELS
 '''

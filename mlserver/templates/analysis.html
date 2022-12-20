@@ -2121,7 +2121,7 @@
 					    
 						alert("Please select a file and upload!");
 					} else {
-						var link = "www.inbirg.com/maler/" + form_action + "/" + projectid;
+						var link = "www.inbirg.com/maler/" + form_action.replace("oc",'cp') + "/" + projectid;
 					    $("#form_step23").submit();
 						// alert(projectid);
 						$("#success_info").show();

@@ -662,53 +662,127 @@ def result(request):
     })
 
 def show_prev_page(request, projectid_paramd5):
-    if len(projectid_paramd5.split('_')) == 2:
-        projectid = projectid_paramd5.split('_')[0]
-        paramd5 = projectid_paramd5.split('_')[1]
-        # load pickle
-        with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
-            cp_cache = pickle.load(f)
+    if len(projectid_paramd5.split('-')[2]) != 4:
+        if len(projectid_paramd5.split('_')) == 2:
+            projectid = projectid_paramd5.split('_')[0]
+            paramd5 = projectid_paramd5.split('_')[1]
+            if not os.path.exists(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl'):
+                status = 'Running'
+                return render(request, 'status.html', {
+                    'status': status,
+                    'projectid': projectid,
+                })
+            # load pickle
+            with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+                cp_cache = pickle.load(f)
+        else:
+            projectid = projectid_paramd5
+            if not os.path.exists(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl'):
+                status = 'Running'
+                return render(request, 'status.html', {
+                    'status': status,
+                    'projectid': projectid,
+                })
+            # load pickle
+            with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+                cp_cache = pickle.load(f)
+            paramd5 = cp_cache['reports']['md5'][0]
+
+        final_reports_dict = df2bp(cp_cache[paramd5]['final_reports'])
+        f_describe_dict = cp_cache[paramd5]['f_describe'].to_dict('records')
+        clf_name = cp_cache['reports'].loc[cp_cache['reports']['md5'] == paramd5]['Method'] \
+            .to_list()[0]
+        roc_traces = mkroc(
+            cp_cache[paramd5]['roc']['mean_FPR'],
+            cp_cache[paramd5]['roc']['mean_TPR_df'],
+            cp_cache[paramd5]['roc']['auc_mean_std'],
+            title=[clf_name]
+        )
+        max_reports_dict = cp_cache['reports'].to_dict('records')
+        bar_dict = cp_cache[paramd5]['bar_dict']
+        heatmap_dict = cp_cache[paramd5]['heatmap_dict']
+        heatmap_anno = cp_cache[paramd5]['heatmap_anno']
+        valid_roc_traces = cp_cache[paramd5]['valid_roc_traces']
+        line_chart_data = cp_cache[paramd5]['line_chart_data']
+        ifmarco = False
+        return render(request, 'classification_cp_result.html', {
+            'projectid': projectid,
+            'final_reports_dict': final_reports_dict,
+            'f_describe_dict': f_describe_dict,
+            'roc_traces': json.dumps(roc_traces),
+            'max_reports_dict': max_reports_dict,
+            'ifmarco': ifmarco,
+            'model_name': clf_name,
+            'bar_dict': bar_dict,
+            'heatmap_dict': json.dumps(heatmap_dict),
+            'heatmap_anno': json.dumps(heatmap_anno),
+            'valid_roc_traces': json.dumps(valid_roc_traces),
+            'line_chart_data':json.dumps(line_chart_data),
+            'change_page': True,
+        })
     else:
         projectid = projectid_paramd5
+        if not os.path.exists(STATIC_ROOT + '/cache/' + projectid + '/classification_pickle.pkl'):
+            status = 'Running'
+            return render(request, 'status.html', {
+                'status': status,
+                'projectid': projectid,
+            })
+        else:
+            with open(STATIC_ROOT + '/cache/' + projectid + '/classification_pickle.pkl', 'rb') as f:
+                classification_pickle = pickle.load(f)
 
-        # load pickle
-        with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
-            cp_cache = pickle.load(f)
-        paramd5 = cp_cache['reports']['md5'][0]
+            test_acc_reports_dict, df_AUCs_dict, precision_reports_dict, \
+            recall_reports_dict, f1_score_reports_dict, roc_traces, ifmarco \
+                = classification_pickle['test_acc_reports_dict'], \
+                  classification_pickle['df_AUCs_dict'], \
+                  classification_pickle['precision_reports_dict'], \
+                  classification_pickle['recall_reports_dict'], \
+                  classification_pickle['f1_score_reports_dict'], \
+                  classification_pickle['roc_traces'], \
+                  classification_pickle['ifmarco']
 
-    final_reports_dict = df2bp(cp_cache[paramd5]['final_reports'])
-    f_describe_dict = cp_cache[paramd5]['f_describe'].to_dict('records')
-    clf_name = cp_cache['reports'].loc[cp_cache['reports']['md5'] == paramd5]['Method'] \
-        .to_list()[0]
-    roc_traces = mkroc(
-        cp_cache[paramd5]['roc']['mean_FPR'],
-        cp_cache[paramd5]['roc']['mean_TPR_df'],
-        cp_cache[paramd5]['roc']['auc_mean_std'],
-        title=[clf_name]
-    )
-    max_reports_dict = cp_cache['reports'].to_dict('records')
-    bar_dict = cp_cache[paramd5]['bar_dict']
-    heatmap_dict = cp_cache[paramd5]['heatmap_dict']
-    heatmap_anno = cp_cache[paramd5]['heatmap_anno']
-    valid_roc_traces = cp_cache[paramd5]['valid_roc_traces']
-    line_chart_data = cp_cache[paramd5]['line_chart_data']
-    ifmarco = False
-    return render(request, 'classification_cp_result.html', {
-        'projectid': projectid,
-        'final_reports_dict': final_reports_dict,
-        'f_describe_dict': f_describe_dict,
-        'roc_traces': json.dumps(roc_traces),
-        'max_reports_dict': max_reports_dict,
-        'ifmarco': ifmarco,
-        'model_name': clf_name,
-        'bar_dict': bar_dict,
-        'heatmap_dict': json.dumps(heatmap_dict),
-        'heatmap_anno': json.dumps(heatmap_anno),
-        'valid_roc_traces': json.dumps(valid_roc_traces),
-        'line_chart_data':json.dumps(line_chart_data),
-        'change_page': True,
-    })
+            test_acc_describe_dict, df_AUCs_describe_dict, precision_describe_dict, \
+            recall_describe_dict, f1_score_describe_dict, final_reports_dict, line_chart_data, radar_dict \
+                = classification_pickle['test_acc_describe_dict'], \
+                  classification_pickle['df_AUCs_describe_dict'], \
+                  classification_pickle['precision_describe_dict'], \
+                  classification_pickle['recall_describe_dict'], \
+                  classification_pickle['f1_score_describe_dict'], \
+                  classification_pickle['final_reports_dict'], \
+                  classification_pickle['line_chart_data'], \
+                  classification_pickle['radar_dict']
 
+            vbar_trace, heatmap_data, heatmap_anno, valid_roc_traces, radar_range = classification_pickle['vbar_trace'], \
+                                                                                    classification_pickle['heatmap_data'], \
+                                                                                    classification_pickle['heatmap_anno'], \
+                                                                                    classification_pickle[
+                                                                                        'valid_roc_traces'], \
+                                                                                    classification_pickle['radar_range']
+
+            return render(request, 'classification_oc_result.html', {
+                'projectid': projectid,
+                'test_acc_reports_dict': test_acc_reports_dict,
+                'test_acc_describe_dict': test_acc_describe_dict,
+                'df_AUCs_dict': df_AUCs_dict,
+                'df_AUCs_describe_dict': df_AUCs_describe_dict,
+                'precision_reports_dict': precision_reports_dict,
+                'precision_describe_dict': precision_describe_dict,
+                'recall_reports_dict': recall_reports_dict,
+                'recall_describe_dict': recall_describe_dict,
+                'f1_score_reports_dict': f1_score_reports_dict,
+                'f1_score_describe_dict': f1_score_describe_dict,
+                'roc_traces': json.dumps(roc_traces),
+                'final_reports_dict': json.dumps(final_reports_dict),
+                'ifmarco': ifmarco,
+                'line_chart_data': line_chart_data,
+                'radar_dict': radar_dict,
+                'radar_range': radar_range,
+                'vbar_trace': json.dumps(vbar_trace),
+                'heatmap_data': json.dumps(heatmap_data),
+                'heatmap_anno': json.dumps(heatmap_anno),
+                'valid_roc_traces': json.dumps(valid_roc_traces),
+            })
 
 # get ajax customize parameters ROC RADAR
 def get_cp_combination(request):

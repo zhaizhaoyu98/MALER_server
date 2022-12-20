@@ -363,46 +363,93 @@ def survival_cp_result(request):
     })
 
 def show_prev_page(request, projectid_paramd5):
-    if len(projectid_paramd5.split('_')) == 2:
-        projectid = projectid_paramd5.split('_')[0]
-        paramd5 = projectid_paramd5.split('_')[1]
-        # load pickle
-        with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
-            cp_cache = pickle.load(f)
+    if len(projectid_paramd5.split('-')[2]) != 4:
+        if len(projectid_paramd5.split('_')) == 2:
+            projectid = projectid_paramd5.split('_')[0]
+            paramd5 = projectid_paramd5.split('_')[1]
+            if not os.path.exists(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl'):
+                status = 'Running'
+                return render(request, 'status.html', {
+                    'status': status,
+                    'projectid': projectid,
+                })
+            # load pickle
+            with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+                cp_cache = pickle.load(f)
+        else:
+            projectid = projectid_paramd5
+            if not os.path.exists(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl'):
+                status = 'Running'
+                return render(request, 'status.html', {
+                    'status': status,
+                    'projectid': projectid,
+                })
+            # load pickle
+            with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+                cp_cache = pickle.load(f)
+            paramd5 = cp_cache['reports']['md5'][0]
+        # projectid = projectid_paramd5.split('_')[0]
+        # paramd5 = projectid_paramd5.split('_')[1]
+        # # load pickle
+        # with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+        #     cp_cache = pickle.load(f)
+
+        final_reports_dict = cp_cache['reports'].to_dict('records')
+        sur_model_name = cp_cache[paramd5]['sur_model_name']
+        line_chart_data = cp_cache[paramd5]['line_chart_data']
+        test_acc_reports_dict = cp_cache[paramd5]['test_acc_reports_dict']
+        test_acc_describe_dict = cp_cache[paramd5]['test_acc_describe_dict']
+        surv_data = cp_cache[paramd5]['surv_data']
+        vsurv_data = cp_cache[paramd5]['vsurv_data']
+        vlinedata = cp_cache[paramd5]['vlinedata']
+
+        return render(request, 'survival_cp_result.html', {
+            'projectid': projectid,
+            'final_reports_dict': json.dumps(final_reports_dict),
+            'sur_model_name': sur_model_name,
+            'line_chart_data': json.dumps(line_chart_data),
+            'test_acc_reports_dict': json.dumps(test_acc_reports_dict),
+            'test_acc_describe_dict': json.dumps(test_acc_describe_dict),
+            'surv_data': json.dumps(surv_data),
+            'vsurv_data': json.dumps(vsurv_data),
+            'vlinedata': json.dumps(vlinedata),
+            'change_page': True,
+        })
     else:
         projectid = projectid_paramd5
+        if not os.path.exists(STATIC_ROOT + '/cache/' + projectid + '/surv_pickle.pkl'):
+            status = 'Running'
+            return render(request, 'status.html', {
+                'status': status,
+                'projectid': projectid,
+            })
+        else:
+            with open(STATIC_ROOT + '/cache/' + projectid + '/surv_pickle.pkl', 'rb') as f:
+                surv_pickle = pickle.load(f)
 
-        # load pickle
-        with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
-            cp_cache = pickle.load(f)
-        paramd5 = cp_cache['reports']['md5'][0]
-    # projectid = projectid_paramd5.split('_')[0]
-    # paramd5 = projectid_paramd5.split('_')[1]
-    # # load pickle
-    # with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
-    #     cp_cache = pickle.load(f)
-
-    final_reports_dict = cp_cache['reports'].to_dict('records')
-    sur_model_name = cp_cache[paramd5]['sur_model_name']
-    line_chart_data = cp_cache[paramd5]['line_chart_data']
-    test_acc_reports_dict = cp_cache[paramd5]['test_acc_reports_dict']
-    test_acc_describe_dict = cp_cache[paramd5]['test_acc_describe_dict']
-    surv_data = cp_cache[paramd5]['surv_data']
-    vsurv_data = cp_cache[paramd5]['vsurv_data']
-    vlinedata = cp_cache[paramd5]['vlinedata']
-
-    return render(request, 'survival_cp_result.html', {
-        'projectid': projectid,
-        'final_reports_dict': json.dumps(final_reports_dict),
-        'sur_model_name': sur_model_name,
-        'line_chart_data': json.dumps(line_chart_data),
-        'test_acc_reports_dict': json.dumps(test_acc_reports_dict),
-        'test_acc_describe_dict': json.dumps(test_acc_describe_dict),
-        'surv_data': json.dumps(surv_data),
-        'vsurv_data': json.dumps(vsurv_data),
-        'vlinedata': json.dumps(vlinedata),
-        'change_page': True,
-    })
+            line_chart_data = surv_pickle['line_chart_data']
+            test_acc_reports_dict = surv_pickle['test_acc_reports_dict']
+            test_acc_describe_dict = surv_pickle['test_acc_describe_dict']
+            max_reports_dict = surv_pickle['max_reports_dict']
+            surv_dict = surv_pickle['surv_dict']
+            subplot_sur = surv_pickle['subplot_sur']
+            para_dict = surv_pickle['para_dict']
+            vsubplot_sur = surv_pickle['vsubplot_sur']
+            vpara_dict = surv_pickle['vpara_dict']
+            vlinedata = surv_pickle['vlinedata']
+            return render(request, 'survival_oc_result.html', {
+                'projectid': projectid,
+                'line_chart_data': json.dumps(line_chart_data),
+                'test_acc_reports_dict': json.dumps(test_acc_reports_dict),
+                'test_acc_describe_dict': json.dumps(test_acc_describe_dict),
+                'max_reports_dict': json.dumps(max_reports_dict),
+                'surv_dict': json.dumps(surv_dict),
+                'subplot_sur': json.dumps(subplot_sur),
+                'para_dict': json.dumps(para_dict),
+                'vsubplot_sur': json.dumps(vsubplot_sur),
+                'vpara_dict': json.dumps(vpara_dict),
+                'vlinedata': json.dumps(vlinedata),
+            })
 
 
 
