@@ -45,42 +45,23 @@ def result(request):
     else:
         prefix_id = 'MCO-'
         ifmarco = True
-    if file_upload_type == 'user_data':
-
-        # Feature selection methods
-
-        print('feature_select_method: ', feature_select_method)
-        '''
-        IMPORRT DATA
-        '''
-        obj_file = request.FILES.get('upload_file')
-        f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
-        for line in obj_file.chunks():
-            f.write(line)
-        f.close()
-
-        filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
-        projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
-        newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-        os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-        shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
-        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, header=0, index_col=0).T
-    else:
-        if select_model == 'model_bclass':
-            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'))
-            projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
-            inputdata = pd.read_csv(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'), header=0, index_col=0).T
-        else:
-            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'))
-            inputdata = pd.read_csv(os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'),
-                                    header=0, index_col=0).T
-            projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
 
     start_time = time.time()
 
-
+    projectid = request.POST.get('projectid')
     print(projectid)
-
+    if file_upload_type == 'example_data':
+        if select_model == 'model_bclass':
+            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'))
+            projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
+            inputdata = pd.read_csv(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'),
+                                    header=0, index_col=0).T
+        else:
+            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'))
+            inputdata = pd.read_csv(
+                os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'),
+                header=0, index_col=0).T
+            projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
     '''
     projectid = 'BCO-e5e9da-TopK'
     data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'express_data.csv', header=0, index_col=0).T
@@ -92,6 +73,27 @@ def result(request):
     '''
     # make project folder in cache
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
+        if file_upload_type == 'user_data':
+
+            # Feature selection methods
+
+            print('feature_select_method: ', feature_select_method)
+            '''
+            IMPORRT DATA
+            '''
+            obj_file = request.FILES.get('upload_file')
+            f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
+            for line in obj_file.chunks():
+                f.write(line)
+            f.close()
+
+            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
+            projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
+            newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+            os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+            shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
+            inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, header=0, index_col=0).T
+
 
         # shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
         # read files

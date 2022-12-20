@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>ANALYSIS</title>
+		<script src="/mlserver_static/cdn/js/spark-md5.min.js"></script>
 		{% include 'public_templates/bootstrap.html' %}
 		<style type="text/css">
 			#home span {
@@ -279,6 +280,7 @@
 						<input name="select_child_model" id="select_child_model" style="display: none;" value=""/>
 						<input name="file_upload_type" id="file_upload_type" style="display: none;" value="user_data"/>
 						<input name="random_token" id="random_token" onclick="randomString()" style="display: none;" value=""/>
+						<input name="file_md5" id="file_md5" style="display: none;" value=""/>
 						<div class="row">
 							<h5>Feature Selsect Method</h5>
 							<!-- <input type="radio" name="pick_method" value="selectbest" checked />selectbest -->
@@ -286,8 +288,8 @@
 						<br />
 						<div class="row">
 							<input type="radio" name="feature_select_method" value="TopK" checked />TopK
-							<input type="radio" name="feature_select_method" value="FSS" />FSS
-							<input type="radio" name="feature_select_method" value="BSS" />BSS
+							<input type="radio" id="feature_select_method" name="feature_select_method" value="FSS" />FSS
+							<input type="radio" id="feature_select_method" name="feature_select_method" value="BSS" />BSS
 						</div>
 					</div>
 					
@@ -1683,6 +1685,10 @@
 			</form>
 			<br />
 			<button type="button" id="button_submit" onclick="form_sub()" class="btn btn-info" style="width: 100%;">Submit</button>
+			<p id="success_info" style="border: 1px solid #b3afb0; padding: 5px;border-radius: 5px;font-size: 14px;">
+				Please access your task status or results via this link<br />
+				 www.inbirg.com/mlserver/
+			</p>
 			<br />
 			<br />
 			<br />
@@ -1691,6 +1697,17 @@
 		<!-- 底部 -->
 		{% include 'public_templates/footer.html' %}
 		<script>
+			document.querySelector('#upload_file').addEventListener('change', e => {
+			  const file = e.target.files[0];
+			  const fileReader = new FileReader()
+			  fileReader.readAsBinaryString(file);
+			  fileReader.onload = e => {
+			    const md5 = SparkMD5.hashBinary(e.target.result);
+			    // alert(md5);
+				$("#file_md5").val(md5)
+			  }
+			});
+			
 			function model_selectactive(id) {
 				$("*[id^=model_]").attr('class','card');
 				document.getElementById(id).className = 'card select';
@@ -1980,6 +1997,8 @@
 				$("#regression_child_model").hide()
 				
 				$("#alphas").hide();
+				
+				$("#success_info").hide();
 				$("#button_oc").click(function() {
 					var temp_action = $("#form_step23").attr("action").replace("_oc_result","")
 					var temp_action = (temp_action + "_oc_result").replace("_cp_result","")
@@ -2078,24 +2097,38 @@
 				var random_token = randomString()
 				$("#random_token").val(random_token)
 				var select_model = $("#select_model").val()
-				var formid = $("#form_step23").attr("action")
-				if (formid == 'classification_oc_result') {
-					if (select_model == 'model_bclass'){
-						prefix = "BCO"
-					}else{
-						prefix = "BCC"
-					}
-					
+				var form_action = $("#form_step23").attr("action")
+				var prefix = (form_action.split("_")[0].slice(0,1) + form_action.split("_")[1].slice(0,1)).toUpperCase()
+				var md5 = $("#file_md5").val()
+				if (select_model == 'model_bclass'){
+					prefix = "B" + prefix
+				}else if (select_model == 'model_mclass'){
+					prefix = "M" + prefix
 				}
+				
+				if($("#upload_file").val() != ""){
+					if(prefix.charAt(prefix.length-1) == 'C') {
+						var projectid = prefix + '-' + md5.slice(0,6) + '-' + $("#random_token").val();
+					} else {
+						var projectid = prefix + '-' + md5.slice(0,6) + '-' + $('input:radio[name="feature_select_method"]:checked').val();
+					}
+					$("#projectid").val(projectid)
+				}
+				
 				if ($("#file_upload_type").val() == 'user_data'){
 					if ($("#upload_file").val() == "" && $("#projectid").val() == "") {
-					    alert(prefix + '-' + $("#random_token").val());
+					    
 						alert("Please select a file and upload!");
 					} else {
 					    $("#form_step23").submit();
+						// alert(projectid);
+						$("#success_info").show();
+						// alert("Please access your task status or results via this link \n"
+						//  + "www.inbirg.com/mlserver/" + form_action + '/' + projectid)
 					}
 				} else {
 					 $("#form_step23").submit();
+					 // alert(projectid);
 				}
 			})
 			
