@@ -362,11 +362,25 @@ def survival_cp_result(request):
     })
 
 def show_prev_page(request, projectid_paramd5):
-    projectid = projectid_paramd5.split('_')[0]
-    paramd5 = projectid_paramd5.split('_')[1]
-    # load pickle
-    with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
-        cp_cache = pickle.load(f)
+    if len(projectid_paramd5.split('_')) == 2:
+        projectid = projectid_paramd5.split('_')[0]
+        paramd5 = projectid_paramd5.split('_')[1]
+        # load pickle
+        with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+            cp_cache = pickle.load(f)
+    else:
+        projectid = projectid_paramd5
+
+        # load pickle
+        with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+            cp_cache = pickle.load(f)
+        paramd5 = cp_cache['reports']['md5'][0]
+    # projectid = projectid_paramd5.split('_')[0]
+    # paramd5 = projectid_paramd5.split('_')[1]
+    # # load pickle
+    # with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+    #     cp_cache = pickle.load(f)
+
     final_reports_dict = cp_cache['reports'].to_dict('records')
     sur_model_name = cp_cache[paramd5]['sur_model_name']
     line_chart_data = cp_cache[paramd5]['line_chart_data']

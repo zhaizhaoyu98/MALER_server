@@ -52,20 +52,28 @@ def regression_oc_result(request):
             f.write(line)
         f.close()
         upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
-    else:
-        upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/regression_example.csv'))
-
-    projectid = 'RO-' + upload_file_md5[:6] + '-' + feature_select_method
-    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
+        projectid = 'RO-' + upload_file_md5[:6] + '-' + feature_select_method
         newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
         os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
         shutil.move(STATIC_ROOT + '/cache/' + upload_file.name, newpath)
+        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, header=0, index_col=0).T
+    else:
+        upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/regression_example.csv'))
+        projectid = 'RO-' + upload_file_md5[:6] + '-' + feature_select_method
+        newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+        os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+        shutil.copy(STATIC_ROOT + 'cache/example/regression_example.csv', newpath)
+        inputdata = pd.read_csv(STATIC_ROOT + 'cache/example/regression_example.csv', header=0, index_col=0).T
+
+
+    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
+
         '''
         feature_select_method='TopK'
         projectid='RO-19f4d5-TopK'
         data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'regression_data.csv', header=0, index_col=0).T
         '''
-        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, header=0, index_col=0).T
+
         train_set, test_set, blind_set = split_train_test(inputdata)
         # data, label = classification_process(train_set)
         nordata4, nor_age4 = regression_preprocess(train_set)

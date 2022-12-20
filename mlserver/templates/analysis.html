@@ -278,6 +278,7 @@
 						<!-- <input name="select_mode" id="select_mode" style="display: none;" value=""/> -->
 						<input name="select_child_model" id="select_child_model" style="display: none;" value=""/>
 						<input name="file_upload_type" id="file_upload_type" style="display: none;" value="user_data"/>
+						<input name="random_token" id="random_token" onclick="randomString()" style="display: none;" value=""/>
 						<div class="row">
 							<h5>Feature Selsect Method</h5>
 							<!-- <input type="radio" name="pick_method" value="selectbest" checked />selectbest -->
@@ -2074,9 +2075,22 @@
 			})
 			
 			$("#button_submit").click(function () {
+				var random_token = randomString()
+				$("#random_token").val(random_token)
+				var select_model = $("#select_model").val()
+				var formid = $("#form_step23").attr("action")
+				if (formid == 'classification_oc_result') {
+					if (select_model == 'model_bclass'){
+						prefix = "BCO"
+					}else{
+						prefix = "BCC"
+					}
+					
+				}
 				if ($("#file_upload_type").val() == 'user_data'){
 					if ($("#upload_file").val() == "" && $("#projectid").val() == "") {
-					    alert("Please select a file and upload!");
+					    alert(prefix + '-' + $("#random_token").val());
+						alert("Please select a file and upload!");
 					} else {
 					    $("#form_step23").submit();
 					}
@@ -2091,6 +2105,17 @@
 			$("#samp_up").click(function (){
 				$("#file_upload_type").val('example_data')
 			})
+			
+			function randomString(){
+			    var expect=6;//期望的字符串长度
+			    var str=Math.random().toString(36).substring(2);
+			    while(str.length<expect){
+			        str=Math.random().toString(36).substring(2)
+			    }
+			    return str.substring(0,expect);
+				// $("#random_token").val(str.substring(0,expect));
+			}
+			
 		</script>
 	</body>
 </html>

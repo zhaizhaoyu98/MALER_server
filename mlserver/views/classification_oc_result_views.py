@@ -60,16 +60,25 @@ def result(request):
         f.close()
 
         filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
+        projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
+        newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+        os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+        shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
+        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, header=0, index_col=0).T
     else:
         if select_model == 'model_bclass':
             filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'))
+            projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
+            inputdata = pd.read_csv(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'), header=0, index_col=0).T
         else:
             filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'))
+            inputdata = pd.read_csv(os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'),
+                                    header=0, index_col=0).T
+            projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
 
     start_time = time.time()
 
 
-    projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
     print(projectid)
 
     '''
@@ -83,15 +92,13 @@ def result(request):
     '''
     # make project folder in cache
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
-        newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-        os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-        shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
+
         # shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
         # read files
 
         # label = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'label_3columns.csv', header=0, index_col=0)
 
-        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, header=0, index_col=0).T
+
         # label = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + obj_label.name, header=0, index_col=0)
 
         # if label.shape[1] == 2:

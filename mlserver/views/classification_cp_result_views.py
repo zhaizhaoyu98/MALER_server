@@ -661,11 +661,20 @@ def result(request):
     })
 
 def show_prev_page(request, projectid_paramd5):
-    projectid = projectid_paramd5.split('_')[0]
-    paramd5 = projectid_paramd5.split('_')[1]
-    # load pickle
-    with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
-        cp_cache = pickle.load(f)
+    if len(projectid_paramd5.split('_')) == 2:
+        projectid = projectid_paramd5.split('_')[0]
+        paramd5 = projectid_paramd5.split('_')[1]
+        # load pickle
+        with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+            cp_cache = pickle.load(f)
+    else:
+        projectid = projectid_paramd5
+
+        # load pickle
+        with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+            cp_cache = pickle.load(f)
+        paramd5 = cp_cache['reports']['md5'][0]
+
     final_reports_dict = df2bp(cp_cache[paramd5]['final_reports'])
     f_describe_dict = cp_cache[paramd5]['f_describe'].to_dict('records')
     clf_name = cp_cache['reports'].loc[cp_cache['reports']['md5'] == paramd5]['Method'] \
@@ -681,6 +690,7 @@ def show_prev_page(request, projectid_paramd5):
     heatmap_dict = cp_cache[paramd5]['heatmap_dict']
     heatmap_anno = cp_cache[paramd5]['heatmap_anno']
     valid_roc_traces = cp_cache[paramd5]['valid_roc_traces']
+    line_chart_data = cp_cache[paramd5]['line_chart_data']
     ifmarco = False
     return render(request, 'classification_cp_result.html', {
         'projectid': projectid,
@@ -694,8 +704,10 @@ def show_prev_page(request, projectid_paramd5):
         'heatmap_dict': json.dumps(heatmap_dict),
         'heatmap_anno': json.dumps(heatmap_anno),
         'valid_roc_traces': json.dumps(valid_roc_traces),
+        'line_chart_data':json.dumps(line_chart_data),
         'change_page': True,
     })
+
 
 # get ajax customize parameters ROC RADAR
 def get_cp_combination(request):

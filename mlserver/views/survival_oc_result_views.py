@@ -48,16 +48,23 @@ def survival_oc_result(request):
         f.close()
 
         upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
-    else:
-        upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/survival_example.csv'))
-
-    projectid = 'SO-' + upload_file_md5[:6] + '-' + feature_select_method
-    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
+        projectid = 'SO-' + upload_file_md5[:6] + '-' + feature_select_method
         newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
         os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
         shutil.move(STATIC_ROOT + '/cache/' + upload_file.name, newpath)
 
         inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, header=0, index_col=0).T
+    else:
+        upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/survival_example.csv'))
+        projectid = 'SO-' + upload_file_md5[:6] + '-' + feature_select_method
+        newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+        os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+        shutil.copy(STATIC_ROOT + 'cache/example/survival_example.csv', newpath)
+        inputdata = pd.read_csv(STATIC_ROOT + 'cache/example/survival_example.csv', header=0, index_col=0).T
+
+
+    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
+
         '''
         projectid='SO-c319b6-TopK'
         feature_select_method = 'TopK'
