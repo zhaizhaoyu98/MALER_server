@@ -21,7 +21,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 
-def survival_oc_result(request):
+def survival_oc_result(request, projectid):
     sur_models = [FastKernelSurvivalSVM(kernel='linear', random_state=10, max_iter=100),
                   SurvivalTree(random_state=10),
                   ExtraSurvivalTrees(random_state=10, n_jobs=4),
@@ -31,46 +31,51 @@ def survival_oc_result(request):
     sur_names = ['SurvivalSVM', 'SurvivalTree', 'ExtraSurvivalTrees', 'RandomSurvivalForest',
                  'GradientBoostingSurvival']
 
-    select_model = request.POST.get('select_model')
-    file_upload_type = request.POST.get('file_upload_type')
+    feature_select_method = projectid.split('-')[2]
+    select_model = 'model_reg'
+    # select_model = request.POST.get('select_model')
+    # file_upload_type = request.POST.get('file_upload_type')
     # Feature selection methods
-    feature_select_method = request.POST.get('feature_select_method')
-    print('feature_select_method: ', feature_select_method)
+    # feature_select_method = request.POST.get('feature_select_method')
+    # print('feature_select_method: ', feature_select_method)
 
-    projectid = request.POST.get('projectid')
+    # projectid = request.POST.get('projectid')
 
-    if file_upload_type == 'example_data':
-        upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/survival_example.csv'))
-        projectid = 'SO-' + upload_file_md5[:6] + '-' + feature_select_method
-
-
-    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
-        if file_upload_type == 'user_data':
-            '''
-                IMPORRT DATA
-                '''
-            # file load
-            upload_file = request.FILES.get('upload_file')
-            f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
-            for line in upload_file.chunks():
-                f.write(line)
-            f.close()
-
-            upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
-            projectid = 'SO-' + upload_file_md5[:6] + '-' + feature_select_method
-            newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-            os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-            shutil.move(STATIC_ROOT + '/cache/' + upload_file.name, newpath)
-
-            inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, header=0,
-                                    index_col=0).T
-        else:
-            newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-            os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-            shutil.copy(STATIC_ROOT + '/cache/example/survival_example.csv', newpath)
-            inputdata = pd.read_csv(STATIC_ROOT + '/cache/example/survival_example.csv', header=0, index_col=0).T
+    # if file_upload_type == 'example_data':
+    #     upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/survival_example.csv'))
+    #     projectid = 'SO-' + upload_file_md5[:6] + '-' + feature_select_method
 
 
+    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'surv_pickle.pkl')):
+        inputdata = pd.read_csv(
+            STATIC_ROOT + '/cache/' + projectid + '/' + 'data.csv',
+            header=0, index_col=0).T
+        # if file_upload_type == 'user_data':
+        #     '''
+        #         IMPORRT DATA
+        #         '''
+        #     # file load
+        #     upload_file = request.FILES.get('upload_file')
+        #     f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
+        #     for line in upload_file.chunks():
+        #         f.write(line)
+        #     f.close()
+        #
+        #     upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
+        #     projectid = 'SO-' + upload_file_md5[:6] + '-' + feature_select_method
+        #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+        #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+        #     shutil.move(STATIC_ROOT + '/cache/' + upload_file.name, newpath)
+        #
+        #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, header=0,
+        #                             index_col=0).T
+        # else:
+        #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+        #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+        #     shutil.copy(STATIC_ROOT + '/cache/example/survival_example.csv', newpath)
+        #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/example/survival_example.csv', header=0, index_col=0).T
+        #
+        #
 
         '''
         projectid='SO-c319b6-TopK'

@@ -440,7 +440,7 @@
 							"render": function(data, type, row, meta){
 								if(type === 'display'){
 									{% if change_page != True %}
-									data = '<a value="' + data + '" href="regression_cp_result/{{projectid}}_' + data + '">view</a>'
+									data = '<a value="' + data + '" href="prev/{{projectid}}_' + data + '">view</a>'
 									{% else %}
 									data = '<a value="' + data + '" href="{{projectid}}_' + data + '">view</a>'
 									{% endif %}

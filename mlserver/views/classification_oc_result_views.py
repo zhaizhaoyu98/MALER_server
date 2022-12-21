@@ -26,42 +26,49 @@ warnings.filterwarnings("ignore")
 
 title = ["Naive Bayes","SVM","RandomForest","Logistic","KNN","XGBoost","lightGBM",'Adaboost',"DecisionTree","GBDT"]
 
-def result(request):
+def result(request, projectid):
     # model
     model = [GaussianNB(), SVC(cache_size=5000, probability=False), RFC(n_jobs=4, random_state=10),
              LR(max_iter=5000, n_jobs=4), KNeighborsClassifier(n_jobs=4), XGBClassifier(n_jobs=7, random_state=10),
              LGBMClassifier(importance_type='gain', n_jobs=4), AdaBoostClassifier(),
              DecisionTreeClassifier(random_state=10), GradientBoostingClassifier(random_state=10)]
 
+    # projectid = request.POST.get('projectid')
 
-    select_model = request.POST.get('select_model')
-    file_upload_type = request.POST.get('file_upload_type')
-    feature_select_method = request.POST.get('feature_select_method')
-    print(file_upload_type)
-
-    if select_model == 'model_bclass':
-        prefix_id = 'BCO-'
+    # select_model = request.POST.get('select_model')
+    # file_upload_type = request.POST.get('file_upload_type')
+    feature_select_method = projectid.split('-')[2]
+    # print(file_upload_type)
+    if projectid.split('-')[0][0] == 'B':
+        select_model = 'model_bclass'
         ifmarco = False
     else:
-        prefix_id = 'MCO-'
+        select_model = 'model_mclass'
         ifmarco = True
+
+    # if select_model == 'model_bclass':
+    #     prefix_id = 'BCO-'
+    #     ifmarco = False
+    # else:
+    #     prefix_id = 'MCO-'
+    #     ifmarco = True
 
     start_time = time.time()
 
-    projectid = request.POST.get('projectid')
+
     print(projectid)
-    if file_upload_type == 'example_data':
-        if select_model == 'model_bclass':
-            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'))
-            projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
-            inputdata = pd.read_csv(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'),
-                                    header=0, index_col=0).T
-        else:
-            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'))
-            inputdata = pd.read_csv(
-                os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'),
-                header=0, index_col=0).T
-            projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
+    # if file_upload_type == 'example_data':
+    #     if select_model == 'model_bclass':
+    #         filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'))
+    #         projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
+    #         inputdata = pd.read_csv(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'),
+    #                                 header=0, index_col=0).T
+    #     else:
+    #         filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'))
+    #         inputdata = pd.read_csv(
+    #             os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'),
+    #             header=0, index_col=0).T
+    #         projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
     '''
     projectid = 'BCO-e5e9da-TopK'
     data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'express_data.csv', header=0, index_col=0).T
@@ -72,28 +79,31 @@ def result(request):
     label = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'multi_label.csv', header=0, index_col=0)
     '''
     # make project folder in cache
-    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
-        if file_upload_type == 'user_data':
-
-            # Feature selection methods
-
-            print('feature_select_method: ', feature_select_method)
-            '''
-            IMPORRT DATA
-            '''
-            obj_file = request.FILES.get('upload_file')
-            f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
-            for line in obj_file.chunks():
-                f.write(line)
-            f.close()
-
-            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
-            projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
-            newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-            os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-            shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
-            inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, header=0, index_col=0).T
-
+    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'classification_pickle.pkl')):
+        inputdata = pd.read_csv(
+            STATIC_ROOT + '/cache/' + projectid + '/' + 'data.csv',
+            header=0, index_col=0).T
+        # if file_upload_type == 'user_data':
+        #
+        #     # Feature selection methods
+        #
+        #     print('feature_select_method: ', feature_select_method)
+        #     '''
+        #     IMPORRT DATA
+        #     '''
+        #     obj_file = request.FILES.get('upload_file')
+        #     f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
+        #     for line in obj_file.chunks():
+        #         f.write(line)
+        #     f.close()
+        #
+        #     filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
+        #     projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
+        #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+        #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+        #     shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
+        #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, header=0, index_col=0).T
+        #
 
         # shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
         # read files
@@ -559,18 +569,7 @@ def result(request):
         'valid_roc_traces': json.dumps(valid_roc_traces),
     })
 
-def download_model(request, projectid_model):
-    projectid = projectid_model.split('_')[0]
-    model = projectid_model.split('_')[1].replace(' ','_')
-    print(projectid,model)
-    file_path = (STATIC_ROOT + '/cache/' + projectid + '/' + model + '.pkl')
-    try:
-        response = StreamingHttpResponse(open(file_path, 'rb'))
-        response['content_type'] = "application/octet-stream"
-        response['Content-Disposition'] = 'attachment; filename=' + projectid + '_' + os.path.basename(file_path)
-        return response
-    except Exception:
-        raise Http404
+
 
 
 # def get_model(request):

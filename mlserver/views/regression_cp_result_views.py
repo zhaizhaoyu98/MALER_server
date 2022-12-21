@@ -35,60 +35,63 @@ from mlserver.views.regression_oc_result_views import mkvregpredplot, mkvreportb
 from mlserver.views.classification_cp_result_views import md5_convert
 from mlserver.views.survival_cp_result_views import surv_para_group
 
-def regression_cp_result(request):
+def regression_cp_result(request, projectid):
     feature_select_method = request.POST.get('feature_select_method')
-    file_upload_type = request.POST.get('file_upload_type')
-    print('feature_select_method: ', feature_select_method)
+    # file_upload_type = request.POST.get('file_upload_type')
+    # print('feature_select_method: ', feature_select_method)
     # print('regsvm_degree: ',request.POST.get('regsvm_degree') == None)
     # print('regsvm_gamma: ', request.POST.get('regsvm_gamma'))
     # reg_model_name = 'LinearRegression'
     # reg_cust_model = LinearRegression()  # 选择模型
 
-    '''
-    reg_cust_model, reg_model_name = select_reg_model(request)
-    '''
-    reg_cust_model, reg_model_name = select_reg_model(request)
+    model_md5 = request.POST.get('model_md5')
+    with open(STATIC_ROOT + '/cache/' + projectid + '/model_pickle.pkl', 'rb') as f:
+        model_set = pickle.load(f)
+    print(model_set)
+    reg_cust_model, reg_model_name = model_set[model_md5]['model'], model_set[model_md5]['model_name']
+    # reg_cust_model, reg_model_name = select_reg_model(request)
     # get project id
-    projectid = request.POST.get('projectid')
-    if projectid == '': projectid = 'None'
+    # projectid = request.POST.get('projectid')
+    # if projectid == '': projectid = 'None'
 
-    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
+    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'cp_cache.pkl')):
+        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
         # token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
-        token = request.POST.get('random_token')
-        if file_upload_type == 'user_data':
-            '''
-            IMPORRT DATA
-            '''
-            obj_file = request.FILES.get('upload_file')
-            f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
-            for line in obj_file.chunks():
-                f.write(line)
-            f.close()
-
-            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
-
-            projectid = 'RC-' + filemd5[:6] + '-' + token
-            newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-            os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-            shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
-            # shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
-            # rename
-            os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, \
-                      STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv")
-            # os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_label.name, \
-            #           STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv")
-            inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0,
-                                    index_col=0).T
-        else:
-            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/regression_example.csv'))
-            filename = 'regression_example.csv'
-            projectid = 'RC-' + filemd5[:6] + '-' + token
-            os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-            newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-            shutil.copy(STATIC_ROOT + '/cache/example/' + filename, newpath)
-            os.rename(newpath + '/' + filename, \
-                      newpath + '/' + "load_data.csv")
-            inputdata = pd.read_csv(STATIC_ROOT + '/cache/example/' + filename, header=0, index_col=0).T
+        # token = request.POST.get('random_token')
+        # if file_upload_type == 'user_data':
+        #     '''
+        #     IMPORRT DATA
+        #     '''
+        #     obj_file = request.FILES.get('upload_file')
+        #     f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
+        #     for line in obj_file.chunks():
+        #         f.write(line)
+        #     f.close()
+        #
+        #     filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
+        #
+        #     projectid = 'RC-' + filemd5[:6] + '-' + token
+        #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+        #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+        #     shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
+        #     # shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
+        #     # rename
+        #     os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, \
+        #               STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv")
+        #     # os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_label.name, \
+        #     #           STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv")
+        #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0,
+        #                             index_col=0).T
+        # else:
+        #     filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/regression_example.csv'))
+        #     filename = 'regression_example.csv'
+        #     projectid = 'RC-' + filemd5[:6] + '-' + token
+        #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+        #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+        #     shutil.copy(STATIC_ROOT + '/cache/example/' + filename, newpath)
+        #     os.rename(newpath + '/' + filename, \
+        #               newpath + '/' + "load_data.csv")
+        #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/example/' + filename, header=0, index_col=0).T
         '''
         IMPORRT DATA
         '''
@@ -238,7 +241,7 @@ def regression_cp_result(request):
         with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
             cp_cache = pickle.load(f)
 
-        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0, index_col=0).T
+        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "data.csv", header=0, index_col=0).T
         train_set, test_set, blind_set = split_train_test(inputdata)
 
         nordata4, nor_age4 = regression_preprocess(train_set)

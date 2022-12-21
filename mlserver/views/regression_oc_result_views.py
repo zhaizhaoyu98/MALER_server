@@ -26,7 +26,7 @@ from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, J
 
 models_str = ['LinearRegression', 'SVM', 'Ridge', 'Lasso', 'DecisionTree', 'XGBoost',
                   'RandomForest', 'AdaBoost', 'GradientBoost', ]
-def regression_oc_result(request):
+def regression_oc_result(request, projectid):
     Alphas = [0.01, 0.05, 0.1, 1.0, 2.0, 5.0, 10.0]
     models = [LinearRegression(n_jobs=4), SVR(kernel='linear', max_iter=5000), RidgeCV(alphas=Alphas),
               LassoCV(n_jobs=4, alphas=Alphas),
@@ -36,42 +36,46 @@ def regression_oc_result(request):
     models_str = ['LinearRegression', 'SVM', 'Ridge', 'Lasso', 'DecisionTree', 'XGBoost',
                   'RandomForest', 'AdaBoost', 'GradientBoost', ]
 
-    select_model = request.POST.get('select_model')
+    # select_model = request.POST.get('select_model')
+    select_model = 'model_reg'
     feature_select_method = request.POST.get('feature_select_method')
-    file_upload_type = request.POST.get('file_upload_type')
+    # file_upload_type = request.POST.get('file_upload_type')
 
     print('feature_select_method: ', feature_select_method)
 
     projectid = request.POST.get('projectid')
 
-    if file_upload_type == 'example_data':
-        upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/regression_example.csv'))
-        projectid = 'RO-' + upload_file_md5[:6] + '-' + feature_select_method
+    # if file_upload_type == 'example_data':
+    #     upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/regression_example.csv'))
+    #     projectid = 'RO-' + upload_file_md5[:6] + '-' + feature_select_method
 
 
-    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
-        if file_upload_type == 'user_data':
-            '''
-            IMPORRT DATA
-            '''
-            # file load
-            upload_file = request.FILES.get('upload_file')
-            f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
-            for line in upload_file.chunks():
-                f.write(line)
-            f.close()
-            upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
-            projectid = 'RO-' + upload_file_md5[:6] + '-' + feature_select_method
-            newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-            os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-            shutil.move(STATIC_ROOT + '/cache/' + upload_file.name, newpath)
-            inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, header=0,
-                                    index_col=0).T
-        else:
-            newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-            os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-            shutil.copy(STATIC_ROOT + '/cache/example/regression_example.csv', newpath)
-            inputdata = pd.read_csv(STATIC_ROOT + '/cache/example/regression_example.csv', header=0, index_col=0).T
+    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'regression_pickle.pkl')):
+        inputdata = pd.read_csv(
+            STATIC_ROOT + '/cache/' + projectid + '/' + 'data.csv',
+            header=0, index_col=0).T
+        # if file_upload_type == 'user_data':
+        #     '''
+        #     IMPORRT DATA
+        #     '''
+        #     # file load
+        #     upload_file = request.FILES.get('upload_file')
+        #     f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
+        #     for line in upload_file.chunks():
+        #         f.write(line)
+        #     f.close()
+        #     upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
+        #     projectid = 'RO-' + upload_file_md5[:6] + '-' + feature_select_method
+        #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+        #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+        #     shutil.move(STATIC_ROOT + '/cache/' + upload_file.name, newpath)
+        #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, header=0,
+        #                             index_col=0).T
+        # else:
+        #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+        #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+        #     shutil.copy(STATIC_ROOT + '/cache/example/regression_example.csv', newpath)
+        #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/example/regression_example.csv', header=0, index_col=0).T
 
 
         '''

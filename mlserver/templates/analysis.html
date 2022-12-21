@@ -134,7 +134,7 @@
 			<br />
 			<h4>Step2</h4>
 			<hr />
-			<form action="classification" method="POST" id="form_step23" enctype="multipart/form-data">
+			<form action="preview" method="POST" id="form_step23" enctype="multipart/form-data">
 				<div class="row">
 					<div class="col-3" id="data_up_select">
 						<label style="font-weight: bold; color: #666">Choose data to upload: </label>
@@ -289,6 +289,7 @@
 						<input name="file_upload_type" id="file_upload_type" style="display: none;" value="user_data"/>
 						<input name="random_token" id="random_token" onclick="randomString()" style="display: none;" value=""/>
 						<input name="file_md5" id="file_md5" style="display: none;" value=""/>
+						<input name="strategy" id="strategy" style="display: none;" value=""/>
 						<div class="row">
 							<h5>Feature Selsect Method</h5>
 							<!-- <input type="radio" name="pick_method" value="selectbest" checked />selectbest -->
@@ -598,7 +599,7 @@
 							<div class="card" id="task_gradientboost" onclick="cp_model_selectactive(this.id)">
 								<div class="border-bottom" style="padding: 20px">
 									<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
-									<h5 class="card-title"> GradientBoost <h5>
+									<h5 class="card-title"> GradientBoost </h5>
 								</div>
 								<div class="card-body">
 									
@@ -2009,9 +2010,10 @@
 				
 				$("#success_info").hide();
 				$("#button_oc").click(function() {
-					var temp_action = $("#form_step23").attr("action").replace("_oc_result","")
-					var temp_action = (temp_action + "_oc_result").replace("_cp_result","")
-					$("#form_step23").attr("action",temp_action)
+					// var temp_action = $("#form_step23").attr("action").replace("_oc_result","")
+					// var temp_action = (temp_action + "_oc_result").replace("_cp_result","")
+					// $("#form_step23").attr("action",temp_action)
+					$("#strategy").val("O");
 					$(this).attr("style", "width: 100%;");
 					$("#button_cp").attr("style", "width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;");
 					$("#cp_model_select").hide()
@@ -2020,9 +2022,10 @@
 				})
 
 				$("#button_cp").click(function() {
-					var temp_action = $("#form_step23").attr("action").replace("_cp_result","")
-					var temp_action = (temp_action + "_cp_result").replace("_oc_result","")
-					$("#form_step23").attr("action",temp_action)
+					// var temp_action = $("#form_step23").attr("action").replace("_cp_result","")
+					// var temp_action = (temp_action + "_cp_result").replace("_oc_result","")
+					// $("#form_step23").attr("action",temp_action)
+					$("#strategy").val("C");
 					$(this).attr("style", "width: 100%;");
 					$("#button_oc").attr("style", "width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;");
 					$("#button_submit").hide();
@@ -2037,9 +2040,9 @@
 					$("#regression_child_model").hide()
 					$("#survival_child_model").hide()
 					
-					var temp_action = $("#form_step23").attr("action")
-					var temp_action = ("classification_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
-					$("#form_step23").attr("action",temp_action)
+					// var temp_action = $("#form_step23").attr("action")
+					// var temp_action = ("classification_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
+					// $("#form_step23").attr("action",temp_action)
 					// $("#select_child_model").val("task_naivebayes")
 					$("*[id^=task_]").attr('class','card');
 					// document.getElementById('task_naivebayes').className = 'card select';
@@ -2052,9 +2055,9 @@
 					$("#regression_child_model").hide()
 					$("#survival_child_model").hide()
 					
-					var temp_action = $("#form_step23").attr("action")
-					var temp_action = ("classification_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
-					$("#form_step23").attr("action",temp_action)
+					// var temp_action = $("#form_step23").attr("action")
+					// var temp_action = ("classification_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
+					// $("#form_step23").attr("action",temp_action)
 					// $("#select_child_model").val("task_naivebayes")
 					$("*[id^=task_]").attr('class','card');
 					// document.getElementById('task_naivebayes').className = 'card select';
@@ -2067,9 +2070,9 @@
 					$("#classification_child_model").hide()
 					$("#survival_child_model").hide()
 					
-					var temp_action = $("#form_step23").attr("action")
-					var temp_action = ("regression_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
-					$("#form_step23").attr("action",temp_action)
+					// var temp_action = $("#form_step23").attr("action")
+					// var temp_action = ("regression_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
+					// $("#form_step23").attr("action",temp_action)
 					// $("#select_child_model").val("task_linearregression")
 					$("*[id^=task_]").attr('class','card');
 					$("*[id^=detail_]").hide();
@@ -2082,9 +2085,9 @@
 					$("#classification_child_model").hide()
 					$("#regression_child_model").hide()
 					
-					var temp_action = $("#form_step23").attr("action")
-					var temp_action = ("survival_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
-					$("#form_step23").attr("action",temp_action)
+					// var temp_action = $("#form_step23").attr("action")
+					// var temp_action = ("survival_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
+					// $("#form_step23").attr("action",temp_action)
 					// $("#select_child_model").val("task_survivalsvm")
 					$("*[id^=task_]").attr('class','card');
 					$("*[id^=detail_]").hide();
@@ -2106,14 +2109,23 @@
 				var random_token = randomString()
 				$("#random_token").val(random_token)
 				var select_model = $("#select_model").val()
-				var form_action = $("#form_step23").attr("action")
-				var prefix = (form_action.split("_")[0].slice(0,1) + form_action.split("_")[1].slice(0,1)).toUpperCase()
-				var md5 = $("#file_md5").val()
-				if (select_model == 'model_bclass'){
-					prefix = "B" + prefix
-				}else if (select_model == 'model_mclass'){
-					prefix = "M" + prefix
+				// var form_action = $("#form_step23").attr("action")
+				if(select_model == "model_bclass"){
+					prefix = "BC" + $("#strategy").val();
+				} else if (select_model == "model_mclass"){
+					prefix = "MC" + $("#strategy").val();
+				} else if (select_model == "model_reg"){
+					prefix = "R" + $("#strategy").val();
+				} else {
+					prefix = "S" + $("#strategy").val();
 				}
+				// var prefix = (form_action.split("_")[0].slice(0,1) + form_action.split("_")[1].slice(0,1)).toUpperCase()
+				var md5 = $("#file_md5").val()
+				// if (select_model == 'model_bclass'){
+				// 	prefix = "B" + prefix
+				// }else if (select_model == 'model_mclass'){
+				// 	prefix = "M" + prefix
+				// }
 				
 				if($("#upload_file").val() != ""){
 					if(prefix.charAt(prefix.length-1) == 'C') {
@@ -2129,14 +2141,14 @@
 					    
 						alert("Please select a file and upload!");
 					} else {
-						var link = "www.inbirg.com/maler/" + form_action.replace("oc",'cp') + "/" + projectid;
+						// var link = "www.inbirg.com/maler/" + form_action.replace("oc",'cp') + "/" + projectid;
 					    $("#form_step23").submit();
 						// alert(projectid);
-						$("#success_info").show();
+						// $("#success_info").show();
 						// var proj_link = document.getElementById("#proj_link");
 						// console.log(proj_link)
 						// alert(link);
-						$("#success_info").text("Please access your task status or results via this link: " + link);
+						// $("#success_info").text("Please access your task status or results via this link: " + link);
 						// alert("Please access your task status or results via this link \n"
 						//  + "www.inbirg.com/mlserver/" + form_action + '/' + projectid)
 					}

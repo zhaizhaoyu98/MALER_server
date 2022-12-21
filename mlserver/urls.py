@@ -6,7 +6,7 @@ from .views import home_views, analysis_views, predict_views, \
     classification_oc_result_views, classification_cp_result_views, \
     survival_oc_result_views, survival_cp_result_views, \
     regression_oc_result_views, regression_cp_result_views, help_views, \
-    download_views
+    download_views, preview_views
 
 urlpatterns=[
     path('hello_world',home_views.hello_world),
@@ -19,22 +19,25 @@ urlpatterns=[
     path('predict_result',predict_views.predict_result),
     path('help', help_views.get_help_page),
     path('download/<str:fname>', download_views.download_sample_data),
+    path('preview', preview_views.preview_result),
+    # model download
+    path('model_download/<str:projectid_model>', download_views.download_model),
     # classification
     # one click result
-    path('classification_oc_result', classification_oc_result_views.result),
-    path('classification_oc_result/<str:projectid_model>', classification_oc_result_views.download_model),
+    path('classification_oc_result/<str:projectid>', classification_oc_result_views.result),
+
     # custom parameter result
-    path('classification_cp_result', classification_cp_result_views.result),
-    path('classification_cp_result/<str:projectid_paramd5>', classification_cp_result_views.show_prev_page),
+    path('classification_cp_result/<str:projectid>', classification_cp_result_views.result),
+    path('classification_cp_result/prev/<str:projectid_paramd5>', classification_cp_result_views.show_prev_page),
 
     # regression
-    path('regression_oc_result', regression_oc_result_views.regression_oc_result),
-    path('regression_cp_result', regression_cp_result_views.regression_cp_result),
-    path('regression_cp_result/<str:projectid_paramd5>', regression_cp_result_views.show_prev_page),
+    path('regression_oc_result/<str:projectid>', regression_oc_result_views.regression_oc_result),
+    path('regression_cp_result/<str:projectid>', regression_cp_result_views.regression_cp_result),
+    path('regression_cp_result/prev/<str:projectid_paramd5>', regression_cp_result_views.show_prev_page),
     # survival
-    path('survival_oc_result', survival_oc_result_views.survival_oc_result),
-    path('survival_cp_result', survival_cp_result_views.survival_cp_result),
-    path('survival_cp_result/<str:projectid_paramd5>', survival_cp_result_views.show_prev_page),
+    path('survival_oc_result/<str:projectid>', survival_oc_result_views.survival_oc_result),
+    path('survival_cp_result/<str:projectid>', survival_cp_result_views.survival_cp_result),
+    path('survival_cp_result/prev/<str:projectid_paramd5>', survival_cp_result_views.show_prev_page),
 
     # ajax get combination
     # path('get_model',result_views.get_model),

@@ -174,8 +174,7 @@
 					<div id="rocplotDiv" style="margin-right: 0px;"></div>
 					
 					
-					<button type="button" id="combination" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">Combination
-						</button>
+					
 					<div id="mixrocplotDiv"></div>
 					<div id="mixradarplotDiv"></div>
 					<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
@@ -215,6 +214,8 @@
 							</tr>
 						</thead>
 					</table>
+					<button type="button" id="combination" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">Combination
+						</button>
 				</div>
 			</div>
 			
@@ -393,7 +394,7 @@
 								if(type === 'display'){
 									// data = '<button style="background: url(https://img.icons8.com/sf-regular-filled/48/undefined/download.png);width: 2.5rem;height: 2.5rem;border: none;" value="' + $('#projectid').val() + '_' + data + '" href="result/' + $('#projectid').val() + '_' + data + '"></button>'
 									{% if change_page != True %}
-									data = '<a value="' + data + '" href="classification_cp_result/{{projectid}}_' + data + '">view</a>'
+									data = '<a value="' + data + '" href="prev/{{projectid}}_' + data + '">view</a>'
 									{% else %}
 									data = '<a value="' + data + '" href="{{projectid}}_' + data + '">view</a>'
 									{% endif %}

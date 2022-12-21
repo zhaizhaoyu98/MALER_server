@@ -27,22 +27,30 @@ warnings.filterwarnings("ignore")
 
 title = ["Naive Bayes","SVM","RandomForest","Logistic","KNN","XGBoost","lightGBM",'Adaboost',"DecisionTree","GBDT"]
 
-def result(request):
-    select_model = request.POST.get('select_model')
-    if select_model == 'model_bclass':
-        prefix_id = 'BCC-'
-        ifmarco = False
-    else:
-        prefix_id = 'MCC-'
-        ifmarco = True
+def result(request, projectid):
+    # select_model = request.POST.get('select_model')
+    # if select_model == 'model_bclass':
+    #     prefix_id = 'BCC-'
+    #     ifmarco = False
+    # else:
+    #     prefix_id = 'MCC-'
+    #     ifmarco = True
     # Feature selection methods
     feature_select_method = request.POST.get('feature_select_method')
     print('feature_select_method: ', feature_select_method)
+    model_md5 = request.POST.get('model_md5')
+    with open(STATIC_ROOT + '/cache/' + projectid + '/model_pickle.pkl', 'rb') as f:
+        model_set = pickle.load(f)
 
+    if projectid.split('-')[0][0] == 'B':
+        ifmarco = False
+    else:
+        ifmarco = True
+    svc, clf_name = model_set[model_md5]['model'], model_set[model_md5]['model_name']
     # select child model
-    select_child_model = request.POST.get('select_child_model').replace("task_", "")
-    print(select_child_model)
-    file_upload_type = request.POST.get('file_upload_type')
+    # select_child_model = request.POST.get('select_child_model').replace("task_", "")
+    # print(select_child_model)
+    # file_upload_type = request.POST.get('file_upload_type')
 
     '''
     MODULE PARAMETERS
@@ -50,12 +58,13 @@ def result(request):
     # if select_child_model == 'svm':
     #     svc = get_svc_model(request)
 
-    svc, clf_name = select_class_model(request)
+    # svc, clf_name = select_class_model(request)
     # get project id
-    projectid = request.POST.get('projectid')
-    if projectid == '': projectid='None'
+    # projectid = request.POST.get('projectid')
+    # if projectid == '': projectid='None'
 
-    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
+    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'cp_cache.pkl')):
+        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
         '''
         IMPORT DATA
         '''
@@ -68,45 +77,45 @@ def result(request):
         # f.close()
         # random token
         # token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
-        token = request.POST.get('random_token')
-        if file_upload_type == 'user_data':
-            '''
-            IMPORRT DATA
-            '''
-            obj_file = request.FILES.get('upload_file')
-            f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
-            for line in obj_file.chunks():
-                f.write(line)
-            f.close()
-
-            filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
-
-            projectid = prefix_id + filemd5[:6] + '-' + token
-            newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-            os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-            shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
-            # shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
-            # rename
-            os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, \
-                      STATIC_ROOT + '/cache/' + projectid + '/' + "express_data.csv")
-            # os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_label.name, \
-            #           STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv")
-            inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "express_data.csv", header=0,
-                                    index_col=0).T
-        else:
-            if select_model == 'model_bclass':
-                filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'))
-                filename = 'binary_classification_example.csv'
-            else:
-                filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'))
-                filename = 'multiclass_classification_example.csv'
-            projectid = prefix_id + filemd5[:6] + '-' + token
-            os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-            newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-            shutil.copy(STATIC_ROOT + '/cache/example/' + filename, newpath)
-            os.rename(newpath + '/' + filename, \
-                      newpath + '/' + "express_data.csv")
-            inputdata = pd.read_csv(STATIC_ROOT + '/cache/example/' + filename, header=0, index_col=0).T
+        # token = request.POST.get('random_token')
+        # if file_upload_type == 'user_data':
+        #     '''
+        #     IMPORRT DATA
+        #     '''
+        #     obj_file = request.FILES.get('upload_file')
+        #     f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
+        #     for line in obj_file.chunks():
+        #         f.write(line)
+        #     f.close()
+        #
+        #     filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
+        #
+        #     projectid = prefix_id + filemd5[:6] + '-' + token
+        #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+        #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+        #     shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
+        #     # shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
+        #     # rename
+        #     os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, \
+        #               STATIC_ROOT + '/cache/' + projectid + '/' + "express_data.csv")
+        #     # os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_label.name, \
+        #     #           STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv")
+        #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "express_data.csv", header=0,
+        #                             index_col=0).T
+        # else:
+        #     if select_model == 'model_bclass':
+        #         filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'))
+        #         filename = 'binary_classification_example.csv'
+        #     else:
+        #         filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'))
+        #         filename = 'multiclass_classification_example.csv'
+        #     projectid = prefix_id + filemd5[:6] + '-' + token
+        #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+        #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
+        #     shutil.copy(STATIC_ROOT + '/cache/example/' + filename, newpath)
+        #     os.rename(newpath + '/' + filename, \
+        #               newpath + '/' + "express_data.csv")
+        #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/example/' + filename, header=0, index_col=0).T
         # profile load
         # obj_file = request.FILES.get('upload_file')
         # f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
@@ -362,7 +371,7 @@ def result(request):
             pickle.dump(cp_cache, f)
 
     else:
-        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "express_data.csv", header=0, index_col=0).T
+        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "data.csv", header=0, index_col=0).T
         # label = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv", header=0, index_col=0)
         # line_chart_data = 'null'
         # preprocess
@@ -385,6 +394,7 @@ def result(request):
         train_index, test_index = RSKFold(data3, label3)  # 十次五折交叉验证
         # clf_name = select_child_model.upper()
         if feature_select_method == 'TopK':
+            print(1111111111111111111111111)
             cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=1, random_state=10)
             clf_num, ms = pre_screening(data3, label3, svc, features, cv=cv)
             test_accs, estimators, mean_accs, predicts, f_names = train_top3(svc, data3, label3, clf_num,
@@ -641,11 +651,7 @@ def result(request):
                 heatmap_anno = cp_cache[select_md5]['heatmap_anno']
                 valid_roc_traces = cp_cache[select_md5]['valid_roc_traces']
                 line_chart_data = cp_cache[select_md5]['line_chart_data']
-    if select_model == 'model_bclass':
-        ifmarco = False
-    elif select_model == 'model_mclass':
-        ifmarco = True
-    print('ifmarco:', ifmarco)
+
     return render(request, 'classification_cp_result.html', {
         'projectid': projectid,
         'final_reports_dict': final_reports_dict,
