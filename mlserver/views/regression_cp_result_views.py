@@ -750,24 +750,24 @@ def train_top3(clf, data, label, clf_num, train_index, test_index, feature_names
     f_names = f_names[topk]
     return test_accs, estimators, mean_accs, predicts, f_names
 
-def FSS_fun(feature_names, clf, data, label, cv, n_jobs=4):
+def FSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
     feature_names2 = list(feature_names)
     selected_feature = []
     max_scores = []
-    features_num = min([len(feature_names), 20])
+    features_num = min([len(feature_names),20])#判断特征数目是否大于20
     for i in range(features_num):
         cv_scores = []
         for feature in feature_names2:
             train_feature = [feature] + selected_feature
-            data1 = pd.DataFrame(data.loc[:, train_feature])
-            cv_score = cross_val_score(clf, data1, label, cv=cv, n_jobs=n_jobs, error_score='raise').mean()
+            data1 = pd.DataFrame(data.loc[:,train_feature])
+            cv_score = cross_val_score(clf,data1,label,cv=cv,n_jobs=n_jobs,error_score='raise').mean()
             cv_scores.append(cv_score)
         max_index = np.array(cv_scores).argmax()
         max_score = max(cv_scores)
         max_scores.append(max_score)
         selected_feature.append(feature_names2[max_index])
         feature_names2.remove(feature_names2[max_index])
-    return selected_feature, max_scores
+    return selected_feature,max_scores
 
 
 def BSS_fun(feature_names, clf, data, label, cv, n_jobs=4):

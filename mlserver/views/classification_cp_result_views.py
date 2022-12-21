@@ -886,7 +886,7 @@ def select_class_model(request):
     elif select_child_model == 'svm':
         select_model_name = 'SVM'
         kernel, c, degree, coef, gamma = request.POST.get('svm_kernel'), \
-                                         int(request.POST.get('svm_c')), \
+                                         float(request.POST.get('svm_c')), \
                                          request.POST.get('svm_degree'), \
                                          request.POST.get('svm_coef'), \
                                          request.POST.get('svm_gamma')
@@ -1272,16 +1272,17 @@ def get_ROC_info(clf_name,estimator,data,label,test_index,f_names,reports,predic
     auc_mean_std.index = ['mean_auc', 'std_auc']
     return mean_FPR, mean_TPR_df, auc_mean_std
 
-def FSS_fun(feature_names,clf,data,label,cv):
+def FSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
     feature_names2 = list(feature_names)
     selected_feature = []
     max_scores = []
-    for i in range(20):
+    features_num = min([len(feature_names),20])#判断特征数目是否大于20
+    for i in range(features_num):
         cv_scores = []
         for feature in feature_names2:
             train_feature = [feature] + selected_feature
             data1 = pd.DataFrame(data.loc[:,train_feature])
-            cv_score = cross_val_score(clf,data1,label,cv=cv,n_jobs=4).mean()
+            cv_score = cross_val_score(clf,data1,label,cv=cv,n_jobs=n_jobs,error_score='raise').mean()
             cv_scores.append(cv_score)
         max_index = np.array(cv_scores).argmax()
         max_score = max(cv_scores)
@@ -1289,24 +1290,26 @@ def FSS_fun(feature_names,clf,data,label,cv):
         selected_feature.append(feature_names2[max_index])
         feature_names2.remove(feature_names2[max_index])
     return selected_feature,max_scores
-def BSS_fun(feature_names,clf,data,label,cv):
+def BSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
     feature_names2 = list(feature_names)
     selected_feature = []
     max_scores = []
-    for i in range(49):
+    max_scores.append(cross_val_score(clf,data,label,cv=cv,n_jobs=n_jobs).mean())#计算全部特征下的训练结果
+    features_num = min([len(feature_names),50])#判断特征数目是否大于50
+    for i in range(features_num-1):
         cv_scores = []
         for feature in feature_names2:
             train_feature = feature_names2[:] #切片，独立于原列表
             train_feature.remove(feature)
             data1 = pd.DataFrame(data.loc[:,train_feature])
-            cv_score = cross_val_score(clf,data1,label,cv=cv,n_jobs=4).mean()
+            cv_score = cross_val_score(clf,data1,label,cv=cv,n_jobs=n_jobs).mean()
             cv_scores.append(cv_score)
         max_index = np.array(cv_scores).argmax()
         max_score = max(cv_scores)
         max_scores.append(max_score)
         selected_feature.append(feature_names2[max_index])
         del feature_names2[max_index]
-    selected_feature.append(feature_names2[0])  ###
+    selected_feature.append(feature_names2[0])
     selected_feature.reverse() #反向排序
     max_scores.reverse()
     return selected_feature,max_scores
@@ -1368,13 +1371,13 @@ def get_svc_model(request):
     degree = request.POST.get('svm_degree')
     coef = request.POST.get('svm_coef')
     if kernel == 'linear' or kernel == 'rbf':
-        c = int(c)
+        c = float(c)
         svc = svm(kernels=kernel, c=c, max_iters=500)
     elif kernel == 'poly':
-        c, degree, coef = int(c),int(degree),int(coef)
+        c, degree, coef = int(c),int(degree),float(coef)
         svc = svm(kernels=kernel, c=c, max_iters=500, coef=coef, degrees=degree)
     elif kernel == 'sigmoid':
-        c, coef = int(c),int(coef)
+        c, coef = float(c),float(coef)
         svc = svm(kernels=kernel, c=c, max_iters=500, coef=coef)
     return svc
 

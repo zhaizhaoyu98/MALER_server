@@ -495,7 +495,7 @@ def select_sur_model(request):
         select_model_name = 'SurvivalSVM'
         kernel, optimizer, alpha, degree, gamma, coef0 = request.POST.get('survivalsvm_kernel'), \
                                                         request.POST.get('survivalsvm_optimizer'), \
-                                                        int(request.POST.get('survivalsvm_alpha')), \
+                                                        float(request.POST.get('survivalsvm_alpha')), \
                                                         request.POST.get('survivalsvm_degree'), \
                                                         request.POST.get('survivalsvm_gamma'), \
                                                         request.POST.get('survivalsvm_coef0')
@@ -504,13 +504,13 @@ def select_sur_model(request):
         elif kernel == 'ploy':
             if gamma == '': gamma = None
             degree = int(degree)
-            coef0 = int(coef0)
+            coef0 = float(coef0)
             select_model = Survival_svm(Kernel=kernel, Alpha=alpha, Degree=degree, Gamma=gamma, Coef0=coef0)
         elif kernel == 'rbf':
             if gamma == '': gamma = None
             select_model = Survival_svm(Kernel=kernel, Alpha=alpha, Gamma=gamma)
         elif kernel == 'sigmoid':
-            coef0 = int(coef0)
+            coef0 = float(coef0)
             select_model = Survival_svm(Kernel=kernel, Alpha=alpha, Coef0=coef0)
         else:
             select_model = Survival_svm(Kernel=kernel, Alpha=alpha)
