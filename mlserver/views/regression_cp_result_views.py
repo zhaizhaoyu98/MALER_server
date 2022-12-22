@@ -156,7 +156,8 @@ def regression_cp_result(request, projectid):
                                                                                   clf_num, train_index, test_index,
                                                                                   features)
 
-            max_features = list(nordata4.iloc[:, clf_num].columns)
+            # max_features = list(nordata4.iloc[:, clf_num].columns)
+            max_features = res
         line_chart_data = []
         line_trace = {
             'mode': 'lines+markers',
@@ -278,8 +279,8 @@ def regression_cp_result(request, projectid):
                                                                   clf_num, train_index, test_index,
                                                                   features)
 
-            max_features = list(nordata4.iloc[:, clf_num].columns)
-
+            # max_features = list(nordata4.iloc[:, clf_num].columns)
+            max_features = res
         tmodels = copy.deepcopy(reg_cust_model)
         tmodels.fit(nordata4[max_features], nor_age4)
         paras = reg_cust_model.get_params()
