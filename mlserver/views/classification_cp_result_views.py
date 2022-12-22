@@ -281,7 +281,7 @@ def result(request, projectid):
                 'mode': 'lines+markers',
                 'name': clf_name,
                 'type': 'scatter',
-                'x': list(range(1, 21)),
+                'x': list(range(1, len(max_scores) + 1)),
                 'y': max_scores
             }
             line_chart_data.append(trace)
@@ -544,7 +544,7 @@ def result(request, projectid):
                 'mode': 'lines+markers',
                 'name': clf_name,
                 'type': 'scatter',
-                'x': list(range(1, 21)),
+                'x': list(range(1, len(max_scores)+1)),
                 'y': max_scores
             }
             line_chart_data.append(trace)
@@ -905,10 +905,10 @@ def select_class_model(request):
         if kernel == 'linear':
             select_model = svm(kernels=kernel, c=c)
         elif kernel == 'poly':
-            degree, coef = int(degree), int(coef)
+            degree, coef = int(degree), float(coef)
             select_model = svm(kernels=kernel, degrees=degree, c=c, coef=coef, Gamma=gamma)
         elif kernel == 'sigmoid':
-            coef = int(coef)
+            coef = float(coef)
             select_model = svm(kernels=kernel, c=c, coef=coef, Gamma=gamma)
         else:
             select_model = svm(kernels=kernel, c=c, Gamma=gamma)
@@ -975,11 +975,11 @@ def select_class_model(request):
         reg_alpha, reg_lambda = float(request.POST.get('xgboost_learning_rate')), \
                                 int(request.POST.get('xgboost_n_estimators')), \
                                 int(request.POST.get('xgboost_min_child_weight')), \
-                                int(request.POST.get('xgboost_subsample')), \
-                                int(request.POST.get('xgboost_colsample_bytree')), \
-                                int(request.POST.get('xgboost_Gamma')), \
-                                int(request.POST.get('xgboost_reg_alpha')), \
-                                int(request.POST.get('xgboost_reg_lambda'))
+                                float(request.POST.get('xgboost_subsample')), \
+                                float(request.POST.get('xgboost_colsample_bytree')), \
+                                float(request.POST.get('xgboost_Gamma')), \
+                                float(request.POST.get('xgboost_reg_alpha')), \
+                                float(request.POST.get('xgboost_reg_lambda'))
         select_model = xgboost(Learning_rate=learning_rate,N_estimators=n_estimators,Min_child_weight=min_child_weight,
                                Subsample=subsample,Colsample_bytree=colsample_bytree,Gamma=Gamma,Reg_alpha=reg_alpha,
                                Reg_lambda=reg_lambda)
@@ -1117,7 +1117,9 @@ def pre_screening(data2,label,model,features,cv=2):
     data2 = data2[feature_names].to_numpy()
     #ifs方法得到前三分类器选择的特征数
     clf = model
-    cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,).mean() for i in range(1,21)]
+    # cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,).mean() for i in range(1,21)]
+    features_num = min([len(features), 20])
+    cv_scores = [cross_val_score(clf, data2[:, :i], label, cv=cv, n_jobs=4).mean() for i in range(1, features_num + 1)]
     clf_num = list(pd.DataFrame(cv_scores).iloc[:,0].sort_values(ascending=False).index[:3]+1)
     return clf_num, cv_scores
 
@@ -1166,7 +1168,7 @@ def customized_report(clf_name,estimator,data,label,predict,test_index,f_names,t
             if clf_name=="SVM" :
                 proba = estimator[i].decision_function(xtest)
                 y = label_binarize(ytest, classes=np.unique(ytest))
-                fpr,tpr,Auc = macro_roc(estimator[i],xtest,y,proba,len(np.unique(label)))
+                fpr,tpr,Auc,a,b,c = macro_roc(estimator[i],xtest,y,proba,len(np.unique(label)))
             else:
                 proba = estimator[i].predict_proba(xtest)
                 Auc = roc_auc_score(ytest,proba,multi_class="ovr",average="macro")

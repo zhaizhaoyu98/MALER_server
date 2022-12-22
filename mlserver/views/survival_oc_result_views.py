@@ -384,7 +384,9 @@ def pre_screening(data2,label,model,features):
     data2 = data2[feature_names].to_numpy()
     #ifs方法得到前三分类器选择的特征数
     clf = copy.deepcopy(model)
-    cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,n_jobs=4).mean() for i in range(1,21)]
+    # cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,n_jobs=4).mean() for i in range(1,21)]
+    features_num = min([len(features), 20])
+    cv_scores = [cross_val_score(clf, data2[:, :i], label, cv=cv, n_jobs=4).mean() for i in range(1, features_num + 1)]
     clf_num = list(pd.DataFrame(cv_scores).iloc[:,0].sort_values(ascending=False).index[:3]+1)
     return clf_num, cv_scores
 

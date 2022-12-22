@@ -1249,7 +1249,7 @@ def mklinechart(max_scores,title):
     line_chart_data = []
     for f in range(len(max_scores)):
         if len(np.argwhere(np.isnan(max_scores[f]))) == 1:
-            xnum = list(range(1, 21))
+            xnum = list(range(1, len(max_scores)+1))
             xnum.pop(np.argwhere(np.isnan(max_scores[f]))[0][0])
             ynum = max_scores[f]
             ynum.pop(np.argwhere(np.isnan(max_scores[f]))[0][0])
@@ -1265,7 +1265,7 @@ def mklinechart(max_scores,title):
                 'mode': 'lines+markers',
                 'name': title[f],
                 'type': 'scatter',
-                'x': list(range(1, 21)),
+                'x': list(range(1, len(max_scores[f])+1)),
                 'y': max_scores[f]
             }
         line_chart_data.append(trace)

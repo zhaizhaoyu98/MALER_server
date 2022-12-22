@@ -707,7 +707,7 @@ def RegressionKFold(data, label, n=10, k=5):
 
 def pre_screening(data2, label, model, features):
     # 第一步筛选
-    cv = KFold(n_splits=10, shuffle=True, random_state=10)
+    cv = RepeatedKFold(n_splits=5, n_repeats=1, random_state=10)
     feature_names = features
     data2 = data2[feature_names].to_numpy()
     # ifs方法得到前三分类器选择的特征数
@@ -716,6 +716,16 @@ def pre_screening(data2, label, model, features):
     cv_scores = [cross_val_score(clf, data2[:, :i], label, cv=cv, n_jobs=4).mean() for i in range(1, features_num + 1)]
     clf_num = list(pd.DataFrame(cv_scores).iloc[:, 0].sort_values(ascending=False).index[:3] + 1)
     return clf_num, cv_scores
+
+# def pre_screening(data2,label,model,features,cv):
+#     #第一步筛选
+#     feature_names = features
+#     data2 = data2[feature_names].to_numpy()
+#     #ifs方法得到前三分类器选择的特征数
+#     clf = copy.deepcopy(model)
+#     cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,).mean() for i in range(1,21)]
+#     clf_num = list(pd.DataFrame(cv_scores).iloc[:,0].sort_values(ascending=False).index[:3]+1)
+#     return clf_num,cv_scores
 
 
 # top3训练
