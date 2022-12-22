@@ -822,7 +822,7 @@ def df2bp(df):
     for col in df.columns:
         trace = {
             'type': 'box',
-            'name': col,
+            'name': col.replace('test_accuracy', 'accuracy'),
             'y': df[col].to_list(),
             'xaxis': 'x' + str(i + 1),
             'yaxis': 'y' + str(i + 1)

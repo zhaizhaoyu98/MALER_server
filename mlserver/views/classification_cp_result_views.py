@@ -202,23 +202,26 @@ def result(request, projectid):
                                                                final_reports, predicts)
             roc_traces = mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=[clf_name])
 
+            tmodels = copy.deepcopy(svc)
+            tmodels.fit(data3[f_names], label3)
+
             # 最优分类器表格展示
             parameter, train_acc, test_acc, best_esti = [], [], [], []
             precision, AUC, recall, f1_score = [], [], [], []
             feature_names = []
 
-            maxauc_index = np.array(test_accs).argmax()
-            best_esti.append(estimators[maxauc_index])
-            parameter.append(str(estimators[maxauc_index].get_params()))
+            # maxauc_index = np.array(test_accs).argmax()
+            best_esti.append(tmodels)
+            parameter.append(str(tmodels.get_params()))
 
-            test_acc.append(final_reports["test_accuracy"][maxauc_index])
-            precision.append(final_reports["precision"][maxauc_index])
-            recall.append(final_reports["recall"][maxauc_index])
-            f1_score.append(final_reports["f1-score"][maxauc_index])
-            AUC.append(final_reports["AUC"][maxauc_index])
-            feature_names.append(str(list(f_names)))
+            test_acc.append(final_reports["test_accuracy"].mean())
+            precision.append(final_reports["precision"].mean())
+            recall.append(final_reports["recall"].mean())
+            f1_score.append(final_reports["f1-score"].mean())
+            AUC.append(final_reports["AUC"].mean())
+            feature_names.append(list(f_names))
             max_reports = {'parameter': parameter,
-                           'feature_names': feature_names,
+                           'feature_names': [str(f) for f in feature_names],
                            'test_acc': test_acc,
                            'precision': precision,
                            'AUC': AUC,
@@ -295,23 +298,26 @@ def result(request, projectid):
                                                                final_reports, preds)
             roc_traces = mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=[clf_name])
 
+            tmodels = copy.deepcopy(svc)
+            tmodels.fit(data3[max_features], label3)
+
             # 最优分类器表格展示
             parameter, train_acc, test_acc, best_esti = [], [], [], []
             precision, AUC, recall, f1_score = [], [], [], []
             feature_names = []
 
-            maxauc_index = np.array(tests).argmax()
-            best_esti.append(res[maxauc_index])
-            parameter.append(str(res[maxauc_index].get_params()))
+            # maxauc_index = np.array(tests).argmax()
+            best_esti.append(tmodels)
+            parameter.append(str(tmodels.get_params()))
 
-            test_acc.append(final_reports["test_accuracy"][maxauc_index])
-            precision.append(final_reports["precision"][maxauc_index])
-            recall.append(final_reports["recall"][maxauc_index])
-            f1_score.append(final_reports["f1-score"][maxauc_index])
-            AUC.append(final_reports["AUC"][maxauc_index])
-            feature_names.append(str(list(max_features)))
+            test_acc.append(final_reports["test_accuracy"].mean())
+            precision.append(final_reports["precision"].mean())
+            recall.append(final_reports["recall"].mean())
+            f1_score.append(final_reports["f1-score"].mean())
+            AUC.append(final_reports["AUC"].mean())
+            feature_names.append(list(max_features))
             max_reports = {'parameter': parameter,
-                           'feature_names': feature_names,
+                           'feature_names': [str(f) for f in feature_names],
                            'test_acc': test_acc,
                            'precision': precision,
                            'AUC': AUC,
