@@ -1,9 +1,13 @@
+import json
+
 from django.shortcuts import render
 
 import os, shutil, pickle
+import numpy as np
+import pandas as pd
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5
+from mlserver.views.classification_oc_result_views import get_file_md5, split_train_test, JsonEncoder
 from mlserver.views.classification_cp_result_views import select_class_model, md5_convert
 from mlserver.views.regression_cp_result_views import select_reg_model
 from mlserver.views.survival_cp_result_views import select_sur_model
@@ -114,11 +118,73 @@ def preview_result(request):
     else:
         form_action_s = '_cp_result'
     form_action = form_action_p + form_action_s
-    status = 'preview'
+    status = 'Preview'
+
+    ''' preview '''
+    inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
+    # sample table display
+    if form_action_p == 'survival':
+        train_set, test_set, blind_set = split_train_test(inputdata, datatype='survival')
+        hist_data = data_hist(inputdata, datatype='survival')
+    else:
+        train_set, test_set, blind_set = split_train_test(inputdata)
+        hist_data = data_hist(inputdata)
+    display_samples = pd.DataFrame({'Train': train_set.shape, 'Test': test_set.shape, 'Blind': blind_set.shape},
+                                   index=['Samples', 'Features'])
+    display_samples_dict = display_samples.reset_index().rename(columns={'index': 'class'}).to_dict('records')
+
+    # histogram
+    hist_trace = [{
+        'x': hist_data,
+        'type': "histogram",
+        'opacity': 0.5
+    }]
+    # data short view
+    inputdata_display = inputdata.T.head(50).reset_index().rename(columns={'index': 'features'})
+    inputdata_columns, title_str = mkcol(inputdata_display)
+    inputdata_display = inputdata_display.to_dict("records")
+    # save preview pickle
+    preview_pickle = {
+        'status': status,
+        'display_samples_dict': display_samples_dict,
+        'hist_trace': hist_trace,
+        'inputdata_display': inputdata_display,
+        'inputdata_columns': inputdata_columns,
+        'title_str': title_str,
+    }
+    with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'wb') as f:
+        pickle.dump(preview_pickle, f)
     return render(request, 'status.html', {
         'projectid': projectid,
         'form_action': form_action,
         'status': status,
         'feature_select_method': feature_select_method,
         'model_md5': model_md5,
+        'display_samples_dict':json.dumps(display_samples_dict),
+        'hist_trace': json.dumps(hist_trace, ensure_ascii=False, cls=JsonEncoder),
+        'inputdata_display': json.dumps(inputdata_display),
+        'inputdata_columns': json.dumps(inputdata_columns),
+        'title_str': title_str,
     })
+
+def data_hist(data, datatype='other'):
+    num = (1, 2)[datatype == 'survival']  # datatype == 'survival'时选第三列，否则为第二列
+    if 'training' in np.unique(data.iloc[:, num]):
+        data2 = data.drop(columns=data.columns[:num + 1])
+    else:
+        data2 = data.drop(columns=data.columns[:num])
+    data2 = (data2).apply(pd.to_numeric, errors='ignore')
+    drop_X_train = data2.select_dtypes(include=['object'])
+    data3 = data2.loc[:, ~data2.columns.isin(drop_X_train.columns)]
+    data_all = np.round(np.array(data3).reshape(-1), 2)
+    return data_all
+
+def mkcol(data):
+    col_data, title_str = [], ''
+    for col in data.columns:
+        subcol = {
+            'data': col
+        }
+        col_data.append(subcol)
+        title_str = title_str + '<th>' + col + '</th>'
+    return col_data, title_str
