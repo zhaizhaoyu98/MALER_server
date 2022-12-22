@@ -485,10 +485,10 @@ def Survival_randomforest(N_estimators=100,Max_depth=None,Min_samples_split=6,Mi
     return sur_randomforest
 
 def Survival_gradientboosting(Loss='coxph',Learning_rate=0.1,N_estimators=100,Min_samples_split=2,
-                              Min_samples_leaf=1,Max_depth=3,Max_features=None):
+                              Min_samples_leaf=1,Max_depth=3,Max_features=None,Subsample=1.0):
     sur_gb = GradientBoostingSurvivalAnalysis(loss=Loss,learning_rate=Learning_rate,n_estimators=N_estimators,
                                               min_samples_split=Min_samples_split,min_samples_leaf=Min_samples_leaf,
-                                             max_depth=Max_depth,max_features=Max_features)
+                                             max_depth=Max_depth,max_features=Max_features,subsample=Subsample)
     return sur_gb
 
 
@@ -555,17 +555,18 @@ def select_sur_model(request):
                                              N_estimators=n_estimators)
     else:
         select_model_name = 'GradientBoostingSurvival'
-        loss, max_depth, min_samples_split, min_samples_leaf, max_features, n_estimators, learning_rate = \
+        loss, max_depth, min_samples_split, min_samples_leaf, max_features, n_estimators, learning_rate ,subsample= \
             request.POST.get('gradientboostingsurvival_loss'), request.POST.get('gradientboostingsurvival_max_depth'), \
             request.POST.get('gradientboostingsurvival_min_samples_split'), request.POST.get('gradientboostingsurvival_min_samples_leaf'), \
             request.POST.get('gradientboostingsurvival_max_features'), int(request.POST.get('gradientboostingsurvival_n_estimators')), \
-            np.float(request.POST.get('gradientboostingsurvival_learning_rate'))
-        print(loss, max_depth, min_samples_split, min_samples_leaf, max_features, n_estimators, learning_rate)
+            np.float(request.POST.get('gradientboostingsurvival_learning_rate')), \
+            np.float(request.POST.get('gradientboostingsurvival_subsample'))
+        print(loss, max_depth, min_samples_split, min_samples_leaf, max_features, n_estimators, learning_rate,subsample)
         max_depth, min_samples_split, min_samples_leaf, max_features = \
             surv_para_group(max_depth, min_samples_split, min_samples_leaf, max_features)
-        select_model = Survival_gradientboosting(Loss=loss, Max_depth=max_depth, Min_samples_split=min_samples_split,
+        select_model = Survival_gradientboosting(Loss='coxph', Max_depth=max_depth, Min_samples_split=min_samples_split,
                                                  Min_samples_leaf=min_samples_leaf, Max_features=max_features,
-                                                 N_estimators=n_estimators, Learning_rate=learning_rate)
+                                                 N_estimators=n_estimators, Learning_rate=learning_rate,Subsample=subsample)
     return select_model, select_model_name
 
 

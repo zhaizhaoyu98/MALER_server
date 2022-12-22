@@ -1649,14 +1649,14 @@
 				<div id="detail_gradientboostingsurvival">
 					<h5>Parameters of GradientBoostingSurvival</h5>
 					<div class="row">
-						<div class="col-4">
+<!-- 						<div class="col-4">
 							<label for="exampleFormControlSelect1">loss</label>
 							<select name="gradientboostingsurvival_loss" class="form-control" id="gradientboostingsurvival_loss" required="required" onchange="">
 								<option value="coxph">coxph</option>
 								<option value="squared">squared</option>
 								<option value="ipcwls">ipcwls</option>
 							</select>
-						</div>
+						</div> -->
 						<div class="col-4">
 							<label for="exampleFormControlSelect1">max_depth</label>
 							<input name="gradientboostingsurvival_max_depth" type="text" class="form-control" id="gradientboostingsurvival_max_depth" onblur='data_check(this)' placeholder="" value="3">
@@ -1664,6 +1664,10 @@
 						<div class="col-4">
 							<label for="exampleFormControlSelect1">min_samples_split</label>
 							<input name="gradientboostingsurvival_min_samples_split" type="text" class="form-control" id="gradientboostingsurvival_min_samples_split" onblur='data_check(this)' placeholder="" value="2">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">subsample</label>
+							<input name="gradientboostingsurvival_subsample" type="text" class="form-control" id="gradientboostingsurvival_min_samples_split" onblur='data_check(this)' placeholder="" value="1.0">
 						</div>
 					</div>
 					<div class="row">
