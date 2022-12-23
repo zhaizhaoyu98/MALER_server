@@ -146,6 +146,7 @@ def preview_result(request):
     inputdata_display = inputdata_display.to_dict("records")
     # save preview pickle
     preview_pickle = {
+        'feature_select_method': feature_select_method,
         'form_action': form_action,
         'status': status,
         'display_samples_dict': display_samples_dict,

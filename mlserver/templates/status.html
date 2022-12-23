@@ -94,9 +94,9 @@
 		<!-- 导航栏 -->
 		{% include 'public_templates/nav_tem.html' %}
 		
-		
+		<div id="loading">loading...</div>
 		<!-- 主体内容 -->
-		<div class="container col-9">
+		<div class="container col-9" id="main" style="display: none;">
 			<br />
 			<div class="row">
 				<div class='col-2 d-none d-xl-block' style="">
@@ -114,7 +114,7 @@
 						<hr />
 						<div class="col">
 							<div class="row">
-								<h2>STATUS: {{ status|safe }}</h2>
+								<h2 id="status">STATUS: {{ status|safe }}</h2>
 							</div>
 						</div>
 						<div class="col-12">
@@ -137,7 +137,10 @@
 									<h3 class="panel-heading" id="list-item-9" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
 										Visualization of Data Distribution
 									</h3>
-									<div id="histplotDiv" style="margin-right: 0px;"></div>
+									<div style="display: flex;">
+										<div id="histplotDiv" style="margin: auto;text-align:center;width: 900px;"></div>
+									</div>
+									
 								</div>
 								
 							</div>
@@ -147,7 +150,7 @@
 							<div class="row">
 								<div class="col">
 									<h3 class="panel-heading" id="list-item-9" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-										Preview of Data
+										Preview of Data(top 50 rows)
 									</h3>
 									<table id="inputdata_display" class="display" style="width: 100%;" lazyload="True">
 										 <thead>
@@ -171,7 +174,18 @@
 					<br />
 					{% if status == 'Preview' %}
 					<button type="button" id="button_submit" onclick="" class="btn btn-info" style="width: 100%;">Analysis</button>
+					{% else %}
+					<div id="link">
+						<h5><p><b>Please check the analysis status via this link:</b></p></h5>
+						<h5><p><b><a id="link1" href="">www.inbirg.com/maler/{{form_action}}/{{projectid}}</a></b></p></h5>
+						
+					</div>
 					{% endif %}
+					<div id="link">
+						<h5><p><b>Please check the analysis status via this link:</b></p></h5>
+						<h5><p><b><a id="link2" href=""></a></b></p></h5>
+						
+					</div>
 					<br />
 					<br />
 					
@@ -192,11 +206,30 @@
 				}
 			}
 			$(document).ready(function() {
-				$("#data_display_cols")[0].innerHTML = '{{title_str|safe}}'
 				
+				$("#data_display_cols")[0].innerHTML = '{{title_str|safe}}'
+				$("#link").hide();
 				$("#button_submit").click(function () {
+					$("#status").innerHTML = 'STATUS: Running'
+					$("#button_submit").hide();
+					$("#link").show();
 					$("#status_form").submit();
 				});
+				
+				var sublink = '{{form_action|safe}}';
+				console.log(sublink.split('_')[1] == 'cp')
+				if (sublink.split('_')[1] == 'cp') {
+					sublink = sublink + '/prev/' + '{{projectid}}'
+				} else {
+					sublink = sublink + '/' + '{{projectid}}'
+				};
+				console.log(sublink)
+				
+				$("#link1").attr('href', sublink);
+				$("#link2").attr('href', sublink);
+				
+				$("#link1").text('www.inbirg.com/maler/' + sublink);
+				$("#link2").text('www.inbirg.com/maler/' + sublink);
 			});
 			
 			$('#data_stat').DataTable({
@@ -252,8 +285,20 @@
 				//data 这里是固定不变的，name，position，salary，office 为你数据里对应的属性
 				columns: {{inputdata_columns|safe}}
 			});
+			var hist_layout = {
+				plot_bgcolor: '#f8f9fa',
+				paper_bgcolor: '#f8f9fa',
+				margin: {
+				  'b': 30,
+				  'l': 60,
+				  'r': 60,
+				  't': 30
+				},
+			}
 			$('#inputdata_display').wrapAll("<div style='overflow-x:auto;width:100%;overflow-y:auto;height:500px'>");
-			Plotly.newPlot('histplotDiv', {{ hist_trace|safe }});
+			Plotly.react('histplotDiv', {{ hist_trace|safe }},hist_layout);
+			$("#loading").hide();
+			$("#main").attr('style','');
 		</script>
 	</body>
 </html>

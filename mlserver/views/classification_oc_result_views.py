@@ -80,6 +80,33 @@ def result(request, projectid):
     '''
     # make project folder in cache
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'classification_pickle.pkl')):
+        with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'rb') as f:
+            preview_pickle = pickle.load(f)
+        if preview_pickle['status'] == 'Preview':
+            preview_pickle['status'] = 'Running'
+            with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'wb') as f:
+                pickle.dump(preview_pickle, f)
+        else:
+            status = 'Running'
+            form_action = preview_pickle['form_action']
+            display_samples_dict = preview_pickle['display_samples_dict']
+            hist_trace = preview_pickle['hist_trace']
+            inputdata_display = preview_pickle['inputdata_display']
+            inputdata_columns = preview_pickle['inputdata_columns']
+            title_str = preview_pickle['title_str']
+            return render(request, 'status.html', {
+                'projectid': projectid,
+                'form_action': form_action,
+                'status': status,
+                'feature_select_method': feature_select_method,
+                # 'model_md5': model_md5,
+                'display_samples_dict': json.dumps(display_samples_dict),
+                'hist_trace': json.dumps(hist_trace, ensure_ascii=False, cls=JsonEncoder),
+                'inputdata_display': json.dumps(inputdata_display),
+                'inputdata_columns': json.dumps(inputdata_columns),
+                'title_str': title_str,
+            })
+
         inputdata = pd.read_csv(
             STATIC_ROOT + '/cache/' + projectid + '/' + 'data.csv',
             header=0, index_col=0).T
@@ -539,11 +566,11 @@ def result(request, projectid):
               classification_pickle['line_chart_data'], \
               classification_pickle['radar_dict']
 
-    vbar_trace,heatmap_data,heatmap_anno,valid_roc_traces,radar_range = classification_pickle['vbar_trace'], \
-                                                            classification_pickle['heatmap_data'], \
-                                                            classification_pickle['heatmap_anno'], \
-                                                            classification_pickle['valid_roc_traces'], \
-                                                            classification_pickle['radar_range']
+        vbar_trace,heatmap_data,heatmap_anno,valid_roc_traces,radar_range = classification_pickle['vbar_trace'], \
+                                                                classification_pickle['heatmap_data'], \
+                                                                classification_pickle['heatmap_anno'], \
+                                                                classification_pickle['valid_roc_traces'], \
+                                                                classification_pickle['radar_range']
 
     return render(request, 'classification_oc_result.html', {
         'projectid': projectid,

@@ -15,7 +15,7 @@ from sksurv.metrics import cumulative_dynamic_auc
 from lifelines.statistics import logrank_test
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, split_train_test
+from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, split_train_test, JsonEncoder
 from mlserver.views.classification_cp_result_views import md5_convert, surv_para_group
 from mlserver.views.survival_oc_result_views import sur_data_process, cox_selection, \
     sur_RSKFold, FSS_fun, train_estimator, mk_surv_data,mk_surv_layout, time_dependent_auc, \
@@ -386,10 +386,60 @@ def show_prev_page(request, projectid_paramd5):
             projectid = projectid_paramd5
             if not os.path.exists(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl'):
                 status = 'Running'
+                # return render(request, 'status.html', {
+                #     'status': status,
+                #     'projectid': projectid,
+                # })
+                with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'rb') as f:
+                    preview_pickle = pickle.load(f)
+                feature_select_method = preview_pickle['feature_select_method']
+                form_action = preview_pickle['form_action']
+                display_samples_dict = preview_pickle['display_samples_dict']
+                hist_trace = preview_pickle['hist_trace']
+                inputdata_display = preview_pickle['inputdata_display']
+                inputdata_columns = preview_pickle['inputdata_columns']
+                title_str = preview_pickle['title_str']
                 return render(request, 'status.html', {
-                    'status': status,
                     'projectid': projectid,
+                    'form_action': form_action,
+                    'status': status,
+                    'feature_select_method': feature_select_method,
+                    # 'model_md5': model_md5,
+                    'display_samples_dict': json.dumps(display_samples_dict),
+                    'hist_trace': json.dumps(hist_trace, ensure_ascii=False, cls=JsonEncoder),
+                    'inputdata_display': json.dumps(inputdata_display),
+                    'inputdata_columns': json.dumps(inputdata_columns),
+                    'title_str': title_str,
                 })
+            else:
+                with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+                    cp_cache = pickle.load(f)
+
+                with open(STATIC_ROOT + '/cache/' + projectid + '/model_pickle.pkl', 'rb') as f:
+                    model_pickle = pickle.load(f)
+                status = 'Running'
+                if len(model_pickle.keys()) > cp_cache['reports'].shape[0]:
+                    with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'rb') as f:
+                        preview_pickle = pickle.load(f)
+                    feature_select_method = preview_pickle['feature_select_method']
+                    form_action = preview_pickle['form_action']
+                    display_samples_dict = preview_pickle['display_samples_dict']
+                    hist_trace = preview_pickle['hist_trace']
+                    inputdata_display = preview_pickle['inputdata_display']
+                    inputdata_columns = preview_pickle['inputdata_columns']
+                    title_str = preview_pickle['title_str']
+                    return render(request, 'status.html', {
+                        'projectid': projectid,
+                        'form_action': form_action,
+                        'status': status,
+                        'feature_select_method': feature_select_method,
+                        # 'model_md5': model_md5,
+                        'display_samples_dict': json.dumps(display_samples_dict),
+                        'hist_trace': json.dumps(hist_trace, ensure_ascii=False, cls=JsonEncoder),
+                        'inputdata_display': json.dumps(inputdata_display),
+                        'inputdata_columns': json.dumps(inputdata_columns),
+                        'title_str': title_str,
+                    })
             # load pickle
             with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
                 cp_cache = pickle.load(f)
