@@ -895,13 +895,13 @@ def naivebayes(name,Alpha=1.0):
     return naivebayes_model[name]
 
 def kneighbors(Weight='uniform',N_neighbors=5,P=2,Agorithm='auto',Metric='minkowski',Leaf_size=30):
-    knn = KNeighborsClassifier(n_jobs=4,weights=Weight,n_neighbors=N_neighbors,p=P,algorithm=Agorithm,
+    knn = KNeighborsClassifier(n_jobs=1,weights=Weight,n_neighbors=N_neighbors,p=P,algorithm=Agorithm,
                               metric=Metric,leaf_size=Leaf_size)
     return knn
 
 def logistic_reg(Penalty='l2',CC=1.0,Fit_intercept=True,Solver='lbfgs',L1_ratio=0.5):
     lr = LR(random_state=10,penalty=Penalty,C=CC,fit_intercept=Fit_intercept,solver=Solver,
-            n_jobs=4,max_iter=1000,l1_ratio=L1_ratio)
+            n_jobs=1,max_iter=1000,l1_ratio=L1_ratio)
     return lr
 
 def decisiontree(Criterion='gini',Splitter='best',Max_depth=None,Min_samples_split=2,Min_samples_leaf=1,Max_features=None):
@@ -910,7 +910,7 @@ def decisiontree(Criterion='gini',Splitter='best',Max_depth=None,Min_samples_spl
     return dt
 
 def randomforest(Criterion='gini',Max_depth=None,Min_samples_split=2,Min_samples_leaf=1,Max_features='auto',N_estimators=100):
-    rf = RFC(random_state=10,criterion=Criterion,max_depth=Max_depth,n_jobs=4,max_features=Max_features,
+    rf = RFC(random_state=10,criterion=Criterion,max_depth=Max_depth,n_jobs=1,max_features=Max_features,
              min_samples_split=Min_samples_split,min_samples_leaf=Min_samples_leaf,n_estimators=N_estimators)
     return rf
 
@@ -918,14 +918,14 @@ def xgboost(Learning_rate=0.3,N_estimators=100,Min_child_weight=1,Subsample=1,Co
                    Gamma=0,Reg_alpha=1,Reg_lambda=1):
     xgb = XGBClassifier(learning_rate=Learning_rate,n_estimators=N_estimators,min_child_weight=Min_child_weight,
                         subsample=Subsample,colsample_bytree=Colsample_bytree,gamma=Gamma,reg_alpha=Reg_alpha,
-                        reg_lambda=Reg_lambda,n_jobs=4,random_state=10)
+                        reg_lambda=Reg_lambda,n_jobs=1,random_state=10)
     return xgb
 
 def lightgbm(Boosting_type='gbdt',N_estimators=100,Min_child_samples=20,Reg_alpha=0,Reg_lambda=0,Subsample=1,
              Colsample_bytree=1,Num_leaves=31,Max_bin=255,Learning_rate=0.1):
     lgbm = LGBMClassifier(boosting_type=Boosting_type,n_estimators=N_estimators,min_child_samples=Min_child_samples,
                       reg_alpha=Reg_alpha,reg_lambda=Reg_lambda,subsample=Subsample,colsample_bytree=Colsample_bytree,
-                      num_leaves=Num_leaves,max_bin=Max_bin,random_state=10,n_jobs=4,learning_rate=Learning_rate)
+                      num_leaves=Num_leaves,max_bin=Max_bin,random_state=10,n_jobs=1,learning_rate=Learning_rate)
     return lgbm
 
 def adaboost(N_estimators=50, Learning_rate=1.0,Algorithm='SAMME.R',Max_depth=1):
@@ -1173,7 +1173,7 @@ def pre_screening(data2,label,model,features,cv=2):
     clf = model
     # cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,).mean() for i in range(1,21)]
     features_num = min([len(features), 20])
-    cv_scores = [cross_val_score(clf, data2[:, :i], label, cv=cv, n_jobs=4).mean() for i in range(1, features_num + 1)]
+    cv_scores = [cross_val_score(clf, data2[:, :i], label, cv=cv, n_jobs=1).mean() for i in range(1, features_num + 1)]
     clf_num = list(pd.DataFrame(cv_scores).iloc[:,0].sort_values(ascending=False).index[:3]+1)
     return clf_num, cv_scores
 
@@ -1340,7 +1340,7 @@ def get_ROC_info(clf_name,estimator,data,label,test_index,f_names,reports,predic
     auc_mean_std.index = ['mean_auc', 'std_auc']
     return mean_FPR, mean_TPR_df, auc_mean_std
 
-def FSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
+def FSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
     feature_names2 = list(feature_names)
     selected_feature = []
     max_scores = []
@@ -1358,7 +1358,7 @@ def FSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
         selected_feature.append(feature_names2[max_index])
         feature_names2.remove(feature_names2[max_index])
     return selected_feature,max_scores
-def BSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
+def BSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
     feature_names2 = list(feature_names)
     selected_feature = []
     max_scores = []

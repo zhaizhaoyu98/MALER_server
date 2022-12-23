@@ -28,10 +28,10 @@ models_str = ['LinearRegression', 'SVM', 'Ridge', 'Lasso', 'DecisionTree', 'XGBo
                   'RandomForest', 'AdaBoost', 'GradientBoost', ]
 def regression_oc_result(request, projectid):
     Alphas = [0.01, 0.05, 0.1, 1.0, 2.0, 5.0, 10.0]
-    models = [LinearRegression(n_jobs=4), SVR(kernel='linear', max_iter=5000), RidgeCV(alphas=Alphas),
-              LassoCV(n_jobs=4, alphas=Alphas),
-              DecisionTreeRegressor(random_state=10), XGBRegressor(n_jobs=4),
-              RandomForestRegressor(n_jobs=4, random_state=10),
+    models = [LinearRegression(n_jobs=1), SVR(kernel='linear', max_iter=5000), RidgeCV(alphas=Alphas),
+              LassoCV(n_jobs=1, alphas=Alphas),
+              DecisionTreeRegressor(random_state=10), XGBRegressor(n_jobs=1),
+              RandomForestRegressor(n_jobs=1, random_state=10),
               AdaBoostRegressor(random_state=10), GradientBoostingRegressor(random_state=10), ]
     models_str = ['LinearRegression', 'SVM', 'Ridge', 'Lasso', 'DecisionTree', 'XGBoost',
                   'RandomForest', 'AdaBoost', 'GradientBoost', ]
@@ -139,7 +139,7 @@ def regression_oc_result(request, projectid):
             line_chart_data = []
             for f in range(len(cv_scores)):
                 if len(np.argwhere(np.isnan(cv_scores[f]))) == 1:
-                    xnum = list(range(1, 21))
+                    xnum = list(range(1, len(cv_scores[f])))
                     xnum.pop(np.argwhere(np.isnan(cv_scores[f]))[0][0])
                     ynum = cv_scores[f]
                     ynum.pop(np.argwhere(np.isnan(cv_scores[f]))[0][0])
@@ -155,7 +155,7 @@ def regression_oc_result(request, projectid):
                         'mode': 'lines+markers',
                         'name': models_str[f],
                         'type': 'scatter',
-                        'x': list(range(1, 21)),
+                        'x': list(range(1, len(cv_scores[f]))),
                         'y': cv_scores[f]
                     }
                 line_chart_data.append(trace)
@@ -183,7 +183,7 @@ def regression_oc_result(request, projectid):
             line_chart_data = []
             for f in range(len(max_scores)):
                 if len(np.argwhere(np.isnan(max_scores[f]))) == 1:
-                    xnum = list(range(1, 21))
+                    xnum = list(range(1, len(max_scores[f])))
                     xnum.pop(np.argwhere(np.isnan(max_scores[f]))[0][0])
                     ynum = max_scores[f]
                     ynum.pop(np.argwhere(np.isnan(max_scores[f]))[0][0])
@@ -199,7 +199,7 @@ def regression_oc_result(request, projectid):
                         'mode': 'lines+markers',
                         'name': models_str[f],
                         'type': 'scatter',
-                        'x': list(range(1, 21)),
+                        'x': list(range(1, len(max_scores[f]))),
                         'y': max_scores[f]
                     }
                 line_chart_data.append(trace)
@@ -413,7 +413,7 @@ def pre_screening(data2,label,model,features,cv):
     clf = copy.deepcopy(model)
     # cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,).mean() for i in range(1,21)]
     features_num = min([len(features), 20])
-    cv_scores = [cross_val_score(clf, data2[:, :i], label, cv=cv, n_jobs=4).mean() for i in range(1, features_num + 1)]
+    cv_scores = [cross_val_score(clf, data2[:, :i], label, cv=cv, n_jobs=1).mean() for i in range(1, features_num + 1)]
     clf_num = list(pd.DataFrame(cv_scores).iloc[:,0].sort_values(ascending=False).index[:3]+1)
     return clf_num,cv_scores
 
@@ -452,7 +452,7 @@ def train_estimator(clf,xtrain,ytrain,xtest,ytest):
     return res,test_acc,predict
 
 
-def FSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
+def FSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
     feature_names2 = list(feature_names)
     selected_feature = []
     max_scores = []
@@ -472,7 +472,7 @@ def FSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
     return selected_feature,max_scores
 
 
-def BSS_fun(feature_names, clf, data, label, cv, n_jobs=4):
+def BSS_fun(feature_names, clf, data, label, cv, n_jobs=1):
     feature_names2 = list(feature_names)
     selected_feature = []
     max_scores = []

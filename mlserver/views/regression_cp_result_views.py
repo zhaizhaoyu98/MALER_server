@@ -136,9 +136,9 @@ def regression_cp_result(request, projectid):
         # fss,bss
         if feature_select_method == 'FSS' or feature_select_method == 'BSS':
             if feature_select_method == 'BSS':
-                sf, ms = BSS_fun(features, reg_cust_model, nordata4, nor_age4, cv, n_jobs=6)
+                sf, ms = BSS_fun(features, reg_cust_model, nordata4, nor_age4, cv, n_jobs=1)
             else:
-                sf, ms = FSS_fun(features, reg_cust_model, nordata4, nor_age4, cv, n_jobs=6)
+                sf, ms = FSS_fun(features, reg_cust_model, nordata4, nor_age4, cv, n_jobs=1)
             max_index = np.array(ms).argmax()
             # max_index = ms.index(np.nanmax(ms))
             max_score = max(ms)
@@ -260,7 +260,7 @@ def regression_cp_result(request, projectid):
 
         # fss,bss
         if feature_select_method != 'TopK':
-            sf, ms = BSS_fun(features, reg_cust_model, nordata4, nor_age4, cv, n_jobs=6)
+            sf, ms = BSS_fun(features, reg_cust_model, nordata4, nor_age4, cv, n_jobs=1)
             max_index = np.array(ms).argmax()
             # max_index = ms.index(np.nanmax(ms))
             max_score = max(ms)
@@ -539,7 +539,7 @@ def show_prev_page(request, projectid_paramd5):
 CUSTOMIZED MODELS
 '''
 def regression_linear(Fit_intercept=True,Positive=False):
-    lr = LinearRegression(n_jobs=4,fit_intercept=Fit_intercept,positive=Positive)
+    lr = LinearRegression(n_jobs=1,fit_intercept=Fit_intercept,positive=Positive)
     return lr
 
 def regression_SVM(Kernel='rbf',Degree=3,Coef0=0,CC=1,Gamma='scale'):
@@ -552,7 +552,7 @@ def regression_ridge(Alphas=[0.1, 1.0, 10.0],Fit_intercept=True,Positive=False,G
 
 def regression_lasso(Eps=0.001,N_alphas=100,Alphas=None,Fit_intercept=False,Selection='cyclic',Positive=False):
     lasso = LassoCV(eps=Eps,n_alphas=N_alphas,alphas=Alphas,fit_intercept=Fit_intercept,
-                    selection=Selection,n_jobs=4,random_state=10,positive=Positive)
+                    selection=Selection,n_jobs=1,random_state=10,positive=Positive)
     return lasso
 
 def regression_dtree(Criterion='squared_error',Splitter='best',Max_depth=None,Min_samples_split=2,Min_samples_leaf=1,Max_features=None):
@@ -569,7 +569,7 @@ def regression_xgboost(Max_depth = 6,Learning_rate=0.3,N_estimators=100,Booster=
 
 def regression_randomforest(N_estimators = 100,Criterion='squared_error',Max_depth=None,Min_samples_split=2,
                             Min_samples_leaf=1,Max_features=1.0):
-    reg_rf = RandomForestRegressor(n_jobs=4,random_state=10,n_estimators = N_estimators,criterion=Criterion,max_depth=Max_depth,
+    reg_rf = RandomForestRegressor(n_jobs=1,random_state=10,n_estimators = N_estimators,criterion=Criterion,max_depth=Max_depth,
                                   min_samples_split=Min_samples_split,min_samples_leaf=Min_samples_leaf,max_features=Max_features)
     return reg_rf
 
@@ -763,7 +763,7 @@ def pre_screening(data2, label, model, features):
     # ifs方法得到前三分类器选择的特征数
     clf = copy.deepcopy(model)
     features_num = min([len(features), 20])
-    cv_scores = [cross_val_score(clf, data2[:, :i], label, cv=cv, n_jobs=4).mean() for i in range(1, features_num + 1)]
+    cv_scores = [cross_val_score(clf, data2[:, :i], label, cv=cv, n_jobs=1).mean() for i in range(1, features_num + 1)]
     clf_num = list(pd.DataFrame(cv_scores).iloc[:, 0].sort_values(ascending=False).index[:3] + 1)
     return clf_num, cv_scores
 
@@ -814,7 +814,7 @@ def train_top3(clf, data, label, clf_num, train_index, test_index, feature_names
     f_names = f_names[topk]
     return test_accs, estimators, mean_accs, predicts, f_names
 
-def FSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
+def FSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
     feature_names2 = list(feature_names)
     selected_feature = []
     max_scores = []
@@ -834,7 +834,7 @@ def FSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
     return selected_feature,max_scores
 
 
-def BSS_fun(feature_names, clf, data, label, cv, n_jobs=4):
+def BSS_fun(feature_names, clf, data, label, cv, n_jobs=1):
     feature_names2 = list(feature_names)
     selected_feature = []
     max_scores = []

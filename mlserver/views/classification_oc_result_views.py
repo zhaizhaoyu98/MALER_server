@@ -28,9 +28,9 @@ title = ["Naive Bayes","SVM","RandomForest","Logistic","KNN","XGBoost","lightGBM
 
 def result(request, projectid):
     # model
-    model = [GaussianNB(), SVC(cache_size=5000, probability=False), RFC(n_jobs=4, random_state=10),
-             LR(max_iter=5000, n_jobs=4), KNeighborsClassifier(n_jobs=4), XGBClassifier(n_jobs=7, random_state=10),
-             LGBMClassifier(importance_type='gain', n_jobs=4), AdaBoostClassifier(),
+    model = [GaussianNB(), SVC(cache_size=5000, probability=False), RFC(n_jobs=1, random_state=10),
+             LR(max_iter=5000, n_jobs=1), KNeighborsClassifier(n_jobs=1), XGBClassifier(n_jobs=1, random_state=10),
+             LGBMClassifier(importance_type='gain', n_jobs=1), AdaBoostClassifier(),
              DecisionTreeClassifier(random_state=10), GradientBoostingClassifier(random_state=10)]
 
     # projectid = request.POST.get('projectid')
@@ -661,7 +661,7 @@ def pre_screening(data2,label,model,features):
     #ifs方法得到前三分类器选择的特征数
     clf = copy.deepcopy(model)
     features_num = min([len(features),20])
-    cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,n_jobs=4).mean() for i in range(1,features_num+1)]
+    cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,n_jobs=1).mean() for i in range(1,features_num+1)]
     clf_num = list(pd.DataFrame(cv_scores).iloc[:,0].sort_values(ascending=False).index[:3]+1)
     return clf_num,cv_scores
 
@@ -734,7 +734,7 @@ def train_top3(clf,data,label,clf_num,train_index,test_index,feature_names):
     f_names = f_names[topk]
     return test_accs,estimators,mean_accs,predicts,f_names
 
-def defalut_ml(xtrain,ytrain,xtest,ytest,njobs = 8):
+def defalut_ml(xtrain,ytrain,xtest,ytest,njobs = 1):
     tests = []
     trains = []
     estimators = []
@@ -1104,7 +1104,7 @@ def macro_roc(estimator,xtest,ytest,proba,n_classes):
 #     max_scores.reverse()
 #     return selected_feature,max_scores
 
-def FSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
+def FSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
     feature_names2 = list(feature_names)
     selected_feature = []
     max_scores = []
@@ -1123,7 +1123,7 @@ def FSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
         feature_names2.remove(feature_names2[max_index])
     return selected_feature,max_scores
 
-def BSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
+def BSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
     feature_names2 = list(feature_names)
     selected_feature = []
     max_scores = []

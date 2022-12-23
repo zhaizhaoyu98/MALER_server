@@ -24,9 +24,9 @@ warnings.filterwarnings("ignore")
 def survival_oc_result(request, projectid):
     sur_models = [FastKernelSurvivalSVM(kernel='linear', random_state=10, max_iter=100),
                   SurvivalTree(random_state=10),
-                  ExtraSurvivalTrees(random_state=10, n_jobs=4),
+                  ExtraSurvivalTrees(random_state=10, n_jobs=1),
                   RandomSurvivalForest(min_samples_split=10, min_samples_leaf=15, max_features='sqrt', random_state=10,
-                                       n_jobs=4),
+                                       n_jobs=1),
                   GradientBoostingSurvivalAnalysis(random_state=10)]
     sur_names = ['SurvivalSVM', 'SurvivalTree', 'ExtraSurvivalTrees', 'RandomSurvivalForest',
                  'GradientBoostingSurvival']
@@ -124,9 +124,9 @@ def survival_oc_result(request, projectid):
             for each_model in sur_models:
                 start = time.perf_counter()
                 if feature_select_method == 'FSS':
-                    sf, ms = FSS_fun(features, each_model, x3, y2, cv, n_jobs=4)
+                    sf, ms = FSS_fun(features, each_model, x3, y2, cv, n_jobs=1)
                 else:
-                    sf, ms = BSS_fun(features, each_model, x3, y2, cv, n_jobs=4)
+                    sf, ms = BSS_fun(features, each_model, x3, y2, cv, n_jobs=1)
                 selected_feature.append(sf), max_scores.append(ms)
                 end = time.perf_counter()
                 print(round(end - start, 3))
@@ -353,7 +353,7 @@ def sur_RSKFold (data,label,n=10,k=5):
         test_index.append(test)
     return train_index, test_index
 
-def FSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
+def FSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
     feature_names2 = list(feature_names)
     selected_feature = []
     max_scores = []
@@ -371,7 +371,7 @@ def FSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
         selected_feature.append(feature_names2[max_index])
         feature_names2.remove(feature_names2[max_index])
     return selected_feature,max_scores
-def BSS_fun(feature_names,clf,data,label,cv,n_jobs=4):
+def BSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
     feature_names2 = list(feature_names)
     selected_feature = []
     max_scores = []
@@ -412,7 +412,7 @@ def pre_screening(data2,label,model,features):
     clf = copy.deepcopy(model)
     # cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,n_jobs=4).mean() for i in range(1,21)]
     features_num = min([len(features), 20])
-    cv_scores = [cross_val_score(clf, data2[:, :i], label, cv=cv, n_jobs=4).mean() for i in range(1, features_num + 1)]
+    cv_scores = [cross_val_score(clf, data2[:, :i], label, cv=cv, n_jobs=1).mean() for i in range(1, features_num + 1)]
     clf_num = list(pd.DataFrame(cv_scores).iloc[:,0].sort_values(ascending=False).index[:3]+1)
     return clf_num, cv_scores
 

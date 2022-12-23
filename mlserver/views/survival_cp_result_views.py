@@ -128,9 +128,9 @@ def survival_cp_result(request, projectid):
         train_index, test_index = sur_RSKFold(x3, y2)
         if feature_select_method != 'TopK':
             if feature_select_method == 'FSS':
-                sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=4)
+                sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=1)
             else:
-                sf, ms = BSS_fun(features, sur_model, x3, y2, cv, n_jobs=4)
+                sf, ms = BSS_fun(features, sur_model, x3, y2, cv, n_jobs=1)
             max_index = np.array(ms).argmax()
             max_score = max(ms)
             max_features = (sf[:max_index + 1])
@@ -244,9 +244,9 @@ def survival_cp_result(request, projectid):
         train_index, test_index = sur_RSKFold(x3, y2)
         if feature_select_method != 'TopK':
             if feature_select_method == 'FSS':
-                sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=4)
+                sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=1)
             else:
-                sf, ms = BSS_fun(features, sur_model, x3, y2, cv, n_jobs=4)
+                sf, ms = BSS_fun(features, sur_model, x3, y2, cv, n_jobs=1)
             max_index = np.array(ms).argmax()
             max_score = max(ms)
             max_features = (sf[:max_index + 1])
@@ -525,13 +525,13 @@ def Survival_tree(Splitter='best',Max_depth=None,Min_samples_split=6,Min_samples
 def Survival_extratrees(N_estimators=100,Max_depth=None,Min_samples_split=6,Min_samples_leaf=3,Max_features='sqrt'):
     sur_extratrees = ExtraSurvivalTrees(n_estimators=N_estimators,max_depth=Max_depth,min_samples_split=Min_samples_split,
                                        min_samples_leaf=Min_samples_leaf,max_features=Max_features,
-                                       n_jobs=4,random_state=10)
+                                       n_jobs=1,random_state=10)
     return sur_extratrees
 
 def Survival_randomforest(N_estimators=100,Max_depth=None,Min_samples_split=6,Min_samples_leaf=3,Max_features=None):
     sur_randomforest = RandomSurvivalForest(n_estimators=N_estimators,max_depth=Max_depth,min_samples_split=Min_samples_split,
                                        min_samples_leaf=Min_samples_leaf,max_features=Max_features,
-                                       n_jobs=4,random_state=10)
+                                       n_jobs=1,random_state=10)
     return sur_randomforest
 
 def Survival_gradientboosting(Loss='coxph',Learning_rate=0.1,N_estimators=100,Min_samples_split=2,
