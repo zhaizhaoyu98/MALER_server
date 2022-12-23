@@ -141,10 +141,12 @@ def preview_result(request):
     }]
     # data short view
     inputdata_display = inputdata.T.head(50).reset_index().rename(columns={'index': 'features'})
+    inputdata_display.columns = [i.replace('.','-') for i in inputdata_display.columns]
     inputdata_columns, title_str = mkcol(inputdata_display)
     inputdata_display = inputdata_display.to_dict("records")
     # save preview pickle
     preview_pickle = {
+        'form_action': form_action,
         'status': status,
         'display_samples_dict': display_samples_dict,
         'hist_trace': hist_trace,
