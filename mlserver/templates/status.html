@@ -210,10 +210,13 @@
 				$("#data_display_cols")[0].innerHTML = '{{title_str|safe}}'
 				$("#link").hide();
 				$("#button_submit").click(function () {
+					window.location.replace(sublink);
 					$("#status").innerHTML = 'STATUS: Running'
 					$("#button_submit").hide();
 					$("#link").show();
 					$("#status_form").submit();
+					console.log(sublink);
+					
 				});
 				
 				var sublink = '{{form_action|safe}}';
@@ -223,7 +226,7 @@
 				} else {
 					sublink = sublink + '/' + '{{projectid}}'
 				};
-				console.log(sublink)
+				
 				
 				$("#link1").attr('href', sublink);
 				$("#link2").attr('href', sublink);
