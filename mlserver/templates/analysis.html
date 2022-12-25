@@ -76,9 +76,10 @@
 		<!-- 主体 -->
 		<div class="container col-9">
 			<br />
-			<h4>Step1</h4>
+			<h4>Step1: Please select an analysis mode.</h4>
 			<hr />
 			<div class="row row-cols-1 row-cols-md-3">
+				
 				<div class="col md-3">
 					<div class="card select" id="model_bclass" onclick="model_selectactive(this.id)">
 						<div class="border-bottom" style="padding: 20px">
@@ -132,7 +133,7 @@
 				</div>
 			</div>
 			<br />
-			<h4>Step2</h4>
+			<h4>Step2: Please upload the files.</h4>
 			<hr />
 			<form action="preview" method="POST" id="form_step23" enctype="multipart/form-data">
 				<div class="row">
@@ -175,7 +176,7 @@
 							<br />
 							<br />
 							<div>
-							<p><b> File: </b>  Please upload a csv file with features in rows and sample in columns and no larger than 200MB. Please refer to the sample file for the exact format of the file.</p>
+							<p><b> File: </b>  Please upload a csv file with features in rows and samples in columns and no larger than 200MB. Please refer to the sample file for the exact format of the file.</p>
 							<p><b> ProjectID: </b>  A unique identifier for each task, which can be used to access the results of analyzed tasks.</p>
 							</div>
 						</div>
@@ -278,7 +279,7 @@
 				
 				
 				<br />
-				<h4>Step3</h4>
+				<h4>Step3: Please select a feature selection method.</h4>
 				<hr>
 				<div class="col-9">
 					<div>
@@ -291,7 +292,8 @@
 						<input name="file_md5" id="file_md5" style="display: none;" value=""/>
 						<input name="strategy" id="strategy" style="display: none;" value=""/>
 						<div class="row">
-							<h5>Feature Selsect Method</h5>
+							<!-- <h5>Feature Selsect Method</h5> -->
+							<label style="font-weight: bold; color: #666">Feature Selsection Methods: </label>
 							<!-- <input type="radio" name="pick_method" value="selectbest" checked />selectbest -->
 						</div>
 						<br />
@@ -306,7 +308,8 @@
 			
 			
 			<br />
-			<h4>Step4</h4>
+			<br>
+			<h4>Step4: Please choose a processing method.</h4>
 			<hr>
 			<div class="row">
 				<div class="col-6">
@@ -314,8 +317,8 @@
 						Analysis</button>
 				</div>
 				<div class="col-6">
-					<button type="button" id="button_cp" onclick="" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">Customize
-						Parameters Analysis</button>
+					<button type="button" id="button_cp" onclick="" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">Customized 
+						Analysis</button>
 				</div>
 			</div>
 			<br />
