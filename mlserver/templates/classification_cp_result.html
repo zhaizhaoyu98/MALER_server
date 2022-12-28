@@ -122,7 +122,7 @@
 					<div id="list-example" class="list-group "
 						style="position: fixed; width:250px;height: 500px;margin-left: -50px;padding-left: 0;">
 						<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-2">Evaluation metrics</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-2">Evaluation indices</a>
 						<a class="list-group-item list-group-item-action" href="#list-item-3">ROC</a>
 						<a class="list-group-item list-group-item-action" href="#list-item-4">Test</a>
 						<a class="list-group-item list-group-item-action" href="#list-item-5">Report</a>
@@ -287,21 +287,23 @@
 			};
 			
 			var bar_layout = {
-				 title: 'Evaluation index of test set',
+				 title: 'Evaluation indices ',
 				 barmode: 'stack'
 			}
 			var heatmap_layout = {
-				title: 'Confusion Matrix of test set',
+				title: 'Confusion Matrix ',
 				  annotations: {{heatmap_anno |safe}},
 				  xaxis: {
 				    ticks: '',
-				    side: 'top'
+					title: 'Predicted label', 
+				    side: 'bottom'
 				  },
 				  yaxis: {
 				    ticks: '',
 				    ticksuffix: ' ',
 				    width: 700,
 				    height: 700,
+					title: 'True label', 
 				    autosize: false
 				  }
 				

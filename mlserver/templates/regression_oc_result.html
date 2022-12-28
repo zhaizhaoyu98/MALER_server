@@ -290,8 +290,22 @@
 			var mse_layout = {
 				title: 'Boxplot of MSE'
 			};
-			var xtitle = ''
-			var ytitle = ''
+			// var xtitle = 'True value'
+			var xtitle = {
+				text: 'True value',
+				font: {
+					size: 10
+				},
+				standoff: 0
+			};
+			var ytitle = {
+				text: 'Predicted value',
+				font: {
+					size: 10
+				},
+				standoff: 0
+			};
+			// var ytitle = 'Predicted value'
 			var vlinelayout = {
 			  title: '', 
 			  margin: {
@@ -310,11 +324,11 @@
 				  yanchor: 'right',
 				  valign: 'middle',
 				  x: 0.4,
-				  y: 1.08,
+				  y: 1.02,
 				  itemclick: false,
 				  itemdoubleclick: false
 			  },
-			  height: 1000,
+			  height: 1200,
 			  xaxis1: {
 			    title: xtitle, 
 			    anchor: 'y1', 
@@ -409,7 +423,7 @@
 			    {
 			      x: 0.15, 
 			      y: 1.0, 
-			      font: {size: 16}, 
+			      font: {size: 13}, 
 			      text: 'LinearRegression', 
 			      xref: 'paper', 
 			      yref: 'paper', 
@@ -420,7 +434,7 @@
 			    {
 			      x: 0.5, 
 			      y: 1.0, 
-			      font: {size: 16}, 
+			      font: {size: 13}, 
 			      text: 'SVM', 
 			      xref: 'paper', 
 			      yref: 'paper', 
@@ -431,7 +445,7 @@
 			    {
 			      x: 0.85, 
 			      y: 1, 
-			      font: {size: 16}, 
+			      font: {size: 13}, 
 			      text: 'Ridge', 
 			      xref: 'paper', 
 			      yref: 'paper', 
@@ -442,7 +456,7 @@
 			    {
 			      x: 0.15, 
 			      y: 0.65, 
-			      font: {size: 16}, 
+			      font: {size: 13}, 
 			      text: 'Lasso', 
 			      xref: 'paper', 
 			      yref: 'paper', 
@@ -453,7 +467,7 @@
 			    {
 			      x: 0.5, 
 			      y: 0.65, 
-			      font: {size: 16}, 
+			      font: {size: 13}, 
 			      text: 'DecisionTree', 
 			      xref: 'paper', 
 			      yref: 'paper', 
@@ -464,7 +478,7 @@
 			    {
 			      x: 0.85, 
 			      y: 0.65, 
-			      font: {size: 16}, 
+			      font: {size: 13}, 
 			      text: 'XGBoost', 
 			      xref: 'paper', 
 			      yref: 'paper', 
@@ -475,7 +489,7 @@
 			    {
 			      x: 0.15, 
 			      y: 0.285, 
-			      font: {size: 16}, 
+			      font: {size: 13}, 
 			      text: 'RandomForest', 
 			      xref: 'paper', 
 			      yref: 'paper', 
@@ -486,7 +500,7 @@
 				{
 				  x: 0.5, 
 				  y: 0.285, 
-				  font: {size: 16}, 
+				  font: {size: 13}, 
 				  text: 'AdaBoost', 
 				  xref: 'paper', 
 				  yref: 'paper', 
@@ -497,7 +511,7 @@
 				{
 				  x: 0.85, 
 				  y: 0.285, 
-				  font: {size: 16}, 
+				  font: {size: 13}, 
 				  text: 'GradientBoost', 
 				  xref: 'paper', 
 				  yref: 'paper', 

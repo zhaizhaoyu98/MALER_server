@@ -159,7 +159,7 @@
 								Marco ROC
 							{% endif %}
 						</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-8">Evaluation metrics radar</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-8">Evaluation indices radar</a>
 						<a class="list-group-item list-group-item-action" href="#list-item-9">Test</a>
 						<a class="list-group-item list-group-item-action" href="#list-item-10">Report</a>
 						<!-- <a class="list-group-item list-group-item-action" href="#list-item-5">Drug Property Radar Chart</a> -->
@@ -322,7 +322,7 @@
 					</h3>
 					<div id="rocplotDiv" style="margin-right: 0px;"></div>
 					
-					<h3 class="panel-heading" id="list-item-8" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">Evaluation metrics radar</h3>
+					<h3 class="panel-heading" id="list-item-8" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">Evaluation indices radar</h3>
 					<div id="radarplotDiv" style="margin-right: 0px;"></div>
 					
 					<h3 class="panel-heading" id="list-item-9" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
@@ -346,10 +346,10 @@
 									<th>Mean Recall</th>
 									<th>Mean F1-score</th>
 								{% else %}
-									<th>Marco Mean Precision</th>
-									<th>Marco Mean AUC</th>
-									<th>Marco Mean Recall</th>
-									<th>Marco Mean F1-score</th>
+									<th>Mean Marco  Precision</th>
+									<th>Mean Marco  AUC</th>
+									<th>Mean Marco  Recall</th>
+									<th>Mean Marco  F1-score</th>
 								{% endif %}
 								<th>Feature_names/Parameter</th>
 								<th class="none">Parameter</th>
@@ -439,18 +439,22 @@
 			"Logistic","KNN","XGBoost","lightGBM",'Adaboost',
 			"DecisionTree","GBDT"]
 			var multi_annotations = [];
-			for(var i=0;i<model.length;i++){
-				var subtitle = {
-					text: model[i],
-					 showarrow: false,
-					 x: 0.5,
-					 xref: "x"+(i+1)+" domain",
-					 y: 1.15,
-					 yref: "y"+(i+1)+" domain"
-				};
-			    inside_num.push(subtitle) 
-				multi_annotations.push(subtitle) 
-			}
+			var hist_layout = {
+				title: 'Evaluation indices',
+				}
+				for(var i=0;i<model.length;i++){
+					var subtitle = {
+						text: model[i],
+						 showarrow: false,
+						 x: 0.5,
+						 xref: "x"+(i+1)+" domain",
+						 y: 1.15,
+						 yref: "y"+(i+1)+" domain"
+					};
+				    inside_num.push(subtitle) 
+					multi_annotations.push(subtitle) 
+			};
+			
 			
 			var heatmap_layout = {
 				title: 'Confusion Matrix',
@@ -579,7 +583,7 @@
 			}
 			
 			var multi_roc_layout = {
-				title: 'Confusion Matrix',
+				title: 'ROC',
 				margin: {
 				  // 'b': 30,
 				  // 'l': 30,
@@ -914,7 +918,7 @@
 				Plotly.newPlot('rocplotDiv', {{roc_traces|safe}}, roc_layout);
 				Plotly.newPlot('radarplotDiv', {{radar_dict|safe}}, radar_layout);
 			
-				Plotly.newPlot('vbarplotDiv', {{vbar_trace|safe}});
+				Plotly.newPlot('vbarplotDiv', {{vbar_trace|safe}},hist_layout);
 				Plotly.newPlot('heatmapDiv', {{heatmap_data|safe}}, heatmap_layout);
 				{% if ifmarco != True %}
 				Plotly.newPlot('vrocplotDiv', {{valid_roc_traces|safe}}, roc_layout);

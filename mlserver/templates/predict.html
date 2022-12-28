@@ -94,7 +94,7 @@
 							<p class=class="card-img-top" style="text-align:center"><img src='/mlserver_static/img/muliti.png' width="200" height="200"></p>
 						</div>
 						<div class="card-body">
-							<h6 class="card-title" style="text-align:center">Multiclass classfication</h6>
+							<h6 class="card-title" style="text-align:center">Multiple classfication</h6>
 							<p class="card-title" style="font-size: 16px" >The process of dividing new observations into distinct at least three categories based on the features of a set of input data.</p>
 							<!--<p class="card-text m-0">description</p> -->
 							<!--<p class="card-text m-0">description</p> -->
@@ -143,8 +143,8 @@
 						      <input type="file" class="custom-file-input" id="customFile" name="filename">
 						      <label class="custom-file-label" for="customFile">Choose Profile</label>
 						</div> -->
-						<h6>Model: <input type="file" name="upload_model" /></h6>
-						<h6>File: <input type="file" name="upload_file" /></h6>
+						<h6>Model: <input type="file" name="upload_model" id="upload_model" /></h6>
+						<h6>File: <input type="file" name="upload_file" id="upload_file" /></h6>
 						<!-- <h6>Label: <input type="file" name="upload_label" /></h6> -->
 						
 						<!-- <input type="submit" value="submit" />
@@ -201,7 +201,7 @@
 		{% include 'public_templates/footer.html' %}
 		<script>
 			function form_sub() {
-				$("#form_data").submit()
+				// $("#form_data").submit()
 			}
 			
 			$(document).ready(function() {
@@ -306,8 +306,16 @@
 						$("#button_submit").show()
 						// document.getElementById('task_survivalsvm').className = 'card select';
 					})
+
 				})
-				
+					$("#button_submit").click(function () {
+						if ($("#upload_file").val() == "" || $("#upload_model").val() == "") {
+							alert("Please select a file and upload!");
+						} else {
+							$("#form_data").submit();
+						}
+					})
+
 				// $("*[id^=task_]").click(function() {
 				// 	$("*[id^=detail_]").hide();
 				// 	var a = $(this).attr('id')

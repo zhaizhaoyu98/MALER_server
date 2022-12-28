@@ -121,7 +121,7 @@
 					<div id="list-example" class="list-group "
 						style="position: fixed; width:250px;height: 500px;margin-left: -50px;padding-left: 0;">
 						<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-2">Accuracy</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-2">C-index</a>
 						<a class="list-group-item list-group-item-action" href="#list-item-3">Kaplan-Meier curve</a>
 						<a class="list-group-item list-group-item-action" href="#list-item-4">Test</a>
 						<a class="list-group-item list-group-item-action" href="#list-item-5">Report</a>
@@ -144,7 +144,7 @@
 					<div id="linechartDiv"></div>
 					
 					<h3 class="panel-heading" id="list-item-2" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-						Accuracy
+						C-index
 					</h3>
 					<div id="accboxplotDiv"></div>
 					
@@ -217,7 +217,7 @@
 			var report_data = {{ max_reports_dict|safe }};
 			// plotly layout
 			var acc_layout = {
-				title: 'Boxplot of accuracy'
+				title: 'Boxplot of C-index'
 			};
 			var para_obj = eval('(' + '{{para_dict|safe}}' + ')');
 			var xtitle = 'time <i>t</i>'

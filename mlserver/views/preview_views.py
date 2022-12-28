@@ -176,10 +176,13 @@ def data_hist(data, datatype='other'):
         data2 = data.drop(columns=data.columns[:num + 1])
     else:
         data2 = data.drop(columns=data.columns[:num])
-    data2 = (data2).apply(pd.to_numeric, errors='ignore')
+    data2 = data2.T
+    data2 = data2.apply(pd.to_numeric,errors='ignore')
+    data2 = data2.T
+    # data2 = (data2).apply(pd.to_numeric, errors='ignore')
     drop_X_train = data2.select_dtypes(include=['object'])
     data3 = data2.loc[:, ~data2.columns.isin(drop_X_train.columns)]
-    data_all = np.round(np.array(data3).reshape(-1), 2)
+    data_all = np.round(np.array(data3).ravel())
     return data_all
 
 def mkcol(data):
