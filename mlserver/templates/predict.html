@@ -73,6 +73,7 @@
 			<br />
 			<h4>Step1: Please select an analysis mode.</h4>
 			<hr />
+			
 			<div class="row row-cols-1 row-cols-md-3">
 				<div class="col md-3">
 					<div class="card" id="model_bclass" onclick="">
@@ -94,7 +95,7 @@
 							<p class=class="card-img-top" style="text-align:center"><img src='/mlserver_static/img/muliti.png' width="200" height="200"></p>
 						</div>
 						<div class="card-body">
-							<h6 class="card-title" style="text-align:center">Multiple classfication</h6>
+							<h6 class="card-title" style="text-align:center">Multiclass classfication</h6>
 							<p class="card-title" style="font-size: 16px" >The process of dividing new observations into distinct at least three categories based on the features of a set of input data.</p>
 							<!--<p class="card-text m-0">description</p> -->
 							<!--<p class="card-text m-0">description</p> -->
@@ -133,10 +134,32 @@
 			<br />
 			<h4>Step2: Please upload the files.</h4>
 			<hr />
+			<form action="predict_result" method="POST" id="form_data" enctype="multipart/form-data">
+				<div class="row">
+					<input name="file_upload_type" id="file_upload_type" style="display: none;" value="user_data"/>
+					<div class="col-3" id="data_up_select">
+						<label style="font-weight: bold; color: #666">Choose data to upload: </label>
+						<div class="form-check">
+							<label class="form-check-label" for="usr_up">
+								<input type="radio" id='usr_up' value="usr_data" name="data_up" checked>
+								Upload Your Own Data
+							</label>
+						</div>
+						<div class="form-check">
+							<label class="form-check-label" for="samp_up">
+								<input type="radio" id='samp_up' value="samp_data" name="data_up">
+								Choose Example Data
+							</label>
+									
+						</div>
+					</div>
+			
+			
+			<div class="col-9">
 			<div class="col-9" style="vertical-align: middle;">
 				<form action="predict_result" method="POST" enctype="multipart/form-data" id="form_data">
-					<div class="row">
-					
+					<!-- <div class="row"> -->
+					<div id="pred_usr_data" class="row">
 						{% csrf_token %}
 						<input name="select_model" id="select_model" style="display: none;" value=""/>
 						<!-- <div class="custom-file mb-3">
@@ -145,22 +168,60 @@
 						</div> -->
 						<h6>Model: <input type="file" name="upload_model" id="upload_model" /></h6>
 						<h6>File: <input type="file" name="upload_file" id="upload_file" /></h6>
-						<!-- <h6>Label: <input type="file" name="upload_label" /></h6> -->
-						
-						<!-- <input type="submit" value="submit" />
-						<input type="submit" value="EXAMPLE(ZIP)" /> -->
+					<br></br>
+					<p><b> Model: </b> Please upload the pickle file model downloaded from ML Analysis </p>
+					<p><b> File: </b>  Please upload a csv file with features in rows and samples in columns and no larger than 200MB.</p>
 					</div>
-					<!-- <h5>OR</h5>
-					<div class="row">
-						
-						<h6>ProjectID:<input type="text"></h6>
-					</div> -->
+
 				</form>
+
 			</div>
-			<p></p>
-			<p><b> Model: </b> Please upload the pickle file model downloaded from ML Analysis </p>
-			<p><b> File: </b>  Please upload a csv file with features in rows and samples in columns and no larger than 200MB.</p>
 			
+			
+			<div id="pred_samp_data" class='row' style="display: none;">
+				<div class="col-12" id="sample_select" display="none">
+					<h6>Model: <input type="file" name="upload_model2" id="upload_model2" /> Please upload the pickle file model downloaded from ML Analysis.</h6> 
+					<p />
+					<table border="1" style="border: #000000;background-color: #f8f9fa;">
+						<tr>
+							<th>Example</th>
+							<th>Description</th>
+							<th>Source</th>
+							<th>Download</th>
+						</tr>
+						<tr>
+							<td>Binary Classfication</td>
+							<td>LUAD and LUSC are classified based on gene expression profiles</td>
+							<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
+							<td><a href="download/binary_pred.csv">download</a></td>
+						</tr>
+						<tr>
+							<td>Multiclass Classfication</td>
+							<td>LUAD, LUSC, KIRP and KIRC are classified based on gene expression profiles</td>
+							<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
+							<td><a href="download/multi_pred.csv">download</a></td>
+						</tr>
+						<tr>
+							<td>Regression</td>
+							<td>Tumor purity of KIRC is predicted based on gene expression profile</td>
+							<td>
+								<a href="https://xenabrowser.net/">UCSC Xena</a><br />
+							</td>
+							<td><a href="download/reg_pred.csv">download</a></td>
+						</tr>
+						<tr>
+							<td>Survival</td>
+							<td>Survival in GBM is predicted based on gene expression profile</td>
+							<td>
+								<a href="http://www.cgga.org.cn">CGGA</a>
+							</td>
+							<td><a href="download/survival_pred.csv">download</a></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		</div>	
 			<hr />
 			<button type="button" id="button_submit" onclick="form_sub()" class="btn btn-info" style="width: 100%;">Submit</button>
 			
@@ -309,13 +370,52 @@
 
 				})
 					$("#button_submit").click(function () {
-						if ($("#upload_file").val() == "" || $("#upload_model").val() == "") {
-							alert("Please select a file and upload!");
-						} else {
-							$("#form_data").submit();
+						// if ($("#upload_file").val() == "" || $("#upload_model").val() == "") {
+						// 	alert("Please select a file and upload!");
+						// } else {
+						// 	$("#form_data").submit();
+						// }
+						if ($("#file_upload_type").val() == 'user_data'){
+							if ($("#upload_file").val() == "" && $("#upload_model").val() == "") {
+								alert("Please select a file and upload!");
+							} else {
+							    $("#form_data").submit();
+							}
+						} else if ($("#upload_model2").val() == ""){
+							alert("Please select a model and upload!");
+							
+						}else{
+							 $("#form_data").submit();
 						}
+						
+						
 					})
 
+					
+					
+				$('input[type=radio][name=data_up]').change(function() {
+				    if (this.value == 'samp_data'){
+						$('#pred_usr_data').hide();
+						$('#pred_samp_data').show();
+					}
+					else{
+						$('#pred_usr_data').show();
+						$('#pred_samp_data').hide();
+					}
+				});
+				$('input[name="samp_data"]').click(function () {
+					// console.log(this)
+				    $(this).tab('show');
+					$(this).removeClass('active');
+				});
+				
+				$("#usr_up").click(function (){
+					$("#file_upload_type").val('user_data')
+				})
+				$("#samp_up").click(function (){
+					$("#file_upload_type").val('example_data')
+				})
+				
 				// $("*[id^=task_]").click(function() {
 				// 	$("*[id^=detail_]").hide();
 				// 	var a = $(this).attr('id')
@@ -325,8 +425,17 @@
 				// 	$("#button_submit").show();
 				// })
 				
+		{% if messages %}
+		window.onload=function(){
+							{% for msg in messages %}
+								alert('{{msg.message}}');
+							{% endfor  %}
+		}
+		{%  endif %}
 				
 			</script>
 		</script>
+		
 	</body>
+	
 </html>
