@@ -60,6 +60,35 @@
 				font-size:10px;  
 				color: #f8f9fa;
 			} 
+			
+			table
+			{
+			border-collapse: collapse;
+			margin: 1px,1px,1px,1px;
+			text-align: center;
+			}
+			table td, table th
+			{
+			border: 2px solid #cad9ea;
+			color: #666;
+			height: 40px;
+			}
+			table thead th
+			{
+			background-color: #17a2b8;
+			width: auto;
+			height: 50px;
+			color: white;
+			}
+			table tr:nth-child(odd)
+			{
+			background: #fff;
+			}
+			table tr:nth-child(even)
+			{
+			background: #f0f1f2;
+			}
+			
 		</style>
 		<script>
 			$(document).ready(function(){
@@ -182,13 +211,16 @@
 						</div>
 						<div id="samp_data" class='row' style="display: none;">
 							<div class="col-12" id="sample_select" display="none">
-								<table border="1" style="border: #000000;background-color: #f8f9fa;">
+								<!-- <table border="1" style="border: #000000;background-color: #f8f9fa;"> -->
+								<table width="100%" class="" border="1" style="border: #000000;background-color: #f8f9fa;text-align: center;">
+									<thead>
 									<tr>
 										<th>Example</th>
 										<th>Description</th>
 										<th>Source</th>
-										<th>Download</th>
+										<th>Download data</th>
 									</tr>
+									</thead>
 									<tr>
 										<td>Binary Classfication</td>
 										<td>LUAD and LUSC are classified based on gene expression profiles</td>
@@ -197,7 +229,7 @@
 									</tr>
 									<tr>
 										<td>Multiclass Classfication</td>
-										<td>LUAD, LUSC, KIRP and KIRC are classified based on gene expression profiles</td>
+										<td>LUAD, LUSC and KIRC are classified based on gene expression profiles</td>
 										<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
 										<td><a href="download/multiclass_classification_example.csv">download</a></td>
 									</tr>
@@ -214,7 +246,7 @@
 										<td>Survival</td>
 										<td>Survival in GBM is predicted based on gene expression profile</td>
 										<td>
-											<a href="https://xenabrowser.net/">UCSC Xena</a>
+											<a href="https://xenabrowser.net/">UCSC Xena</a><br />
 											<a href="http://www.cgga.org.cn">CGGA</a>
 										</td>
 										<td><a href="download/survival_example.csv">download</a></td>
@@ -2182,6 +2214,13 @@
 				// $("#random_token").val(str.substring(0,expect));
 			}
 			
+			{% if messages %}
+			window.onload=function(){
+								{% for msg in messages %}
+									alert('{{msg.message}}');
+								{% endfor  %}
+			}
+			{%  endif %}
 		</script>
 	</body>
 </html>

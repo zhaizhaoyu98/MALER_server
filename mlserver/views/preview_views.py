@@ -11,6 +11,8 @@ from mlserver.views.classification_oc_result_views import get_file_md5, split_tr
 from mlserver.views.classification_cp_result_views import select_class_model, md5_convert
 from mlserver.views.regression_cp_result_views import select_reg_model
 from mlserver.views.survival_cp_result_views import select_sur_model
+from django.contrib import messages
+
 def preview_result(request):
     projectid = request.POST.get('projectid')
     feature_select_method = request.POST.get('feature_select_method')
@@ -122,6 +124,27 @@ def preview_result(request):
 
     ''' preview '''
     inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
+    #
+    print(np.unique(inputdata.iloc[:, 0]))
+    if select_model == 'model_bclass' and inputdata.iloc[:, 0].nunique(dropna=True) != 2:
+        title = 'Selected analysis mode is inconsistent with the input data type!'
+        messages.success(request, title)
+        return render(request, "analysis.html")
+
+    if select_model == 'model_mclass' and (50 < inputdata.iloc[:, 0].nunique(dropna=True) or inputdata.iloc[:, 0].nunique(dropna=True) <= 2):
+        title = 'The number of categories is greater than 50 or less than 2!'
+        messages.success(request, title)
+        return render(request, "analysis.html")
+
+    if select_model == 'model_reg' and (pd.to_numeric(inputdata.iloc[:, 0],errors='ignore')).unique().dtype != np.dtype('float64'):
+        title = 'Selected analysis mode is inconsistent with the input data type!'
+        messages.success(request, title)
+        return render(request, "analysis.html")
+    if select_model == 'model_sur' and inputdata.columns[0].lower()  != 'status':
+        title = 'Selected analysis mode is inconsistent with the input data type!'
+        messages.success(request, title)
+        return render(request, "analysis.html")
+
     # sample table display
     if form_action_p == 'survival':
         train_set, test_set, blind_set = split_train_test(inputdata, datatype='survival')

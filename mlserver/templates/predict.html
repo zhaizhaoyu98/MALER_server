@@ -55,6 +55,37 @@
 			.md-3 {
 				margin-bottom: 15px;
 			}
+			
+			table
+			{
+			border-collapse: collapse;
+			margin: 1px,1px,1px,1px;
+			text-align: center;
+			}
+			table td, table th
+			{
+			border: 2px solid #cad9ea;
+			color: #666;
+			height: 25px;
+			}
+			table thead th
+			{
+			background-color: #17a2b8;
+			width: auto;
+			height: 50px;
+			color: white;
+			}
+			table tr:nth-child(odd)
+			{
+			background: #fff;
+			}
+			table tr:nth-child(even)
+			{
+			background: #f0f1f2;
+			}
+			
+			
+			
 		</style>
 		<script>
 			$(document).ready(function(){
@@ -182,32 +213,39 @@
 				<div class="col-12" id="sample_select" display="none">
 					<h6>Model: <input type="file" name="upload_model2" id="upload_model2" /> Please upload the pickle file model downloaded from ML Analysis.</h6> 
 					<p />
-					<table border="1" style="border: #000000;background-color: #f8f9fa;">
+					<!-- <table border="1" style="border: #000000;background-color: #f8f9fa;text-align: center;"> -->
+					<table width="90%" class="" border="1" style="border: #000000;background-color: #f8f9fa;text-align: center;">
+						<thead>
 						<tr>
-							<th>Example</th>
-							<th>Description</th>
-							<th>Source</th>
-							<th>Download</th>
+							<th> Example </th>
+							<th> Description </th>
+							<th> Source </th>
+							<th> Download data</th>
+							<th> Download model </th>
 						</tr>
+						</thead>
 						<tr>
 							<td>Binary Classfication</td>
 							<td>LUAD and LUSC are classified based on gene expression profiles</td>
 							<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
 							<td><a href="download/binary_pred.csv">download</a></td>
+							<td><a href="download/Binary_RandomForest.pkl">RandomForest</a></td>
 						</tr>
 						<tr>
 							<td>Multiclass Classfication</td>
-							<td>LUAD, LUSC, KIRP and KIRC are classified based on gene expression profiles</td>
+							<td>LUAD, LUSC and KIRC are classified based on gene expression profiles</td>
 							<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
 							<td><a href="download/multi_pred.csv">download</a></td>
+							<td><a href="download/Multiclass_XGBoost.pkl">XGBoost</a></td>
 						</tr>
 						<tr>
 							<td>Regression</td>
-							<td>Tumor purity of KIRC is predicted based on gene expression profile</td>
+							<td width="400px">Tumor purity of KIRC is predicted based on gene expression profile</td>
 							<td>
 								<a href="https://xenabrowser.net/">UCSC Xena</a><br />
 							</td>
 							<td><a href="download/reg_pred.csv">download</a></td>
+							<td><a href="download/Regression_Lasso.pkl">Lasso</a></td>
 						</tr>
 						<tr>
 							<td>Survival</td>
@@ -215,7 +253,8 @@
 							<td>
 								<a href="http://www.cgga.org.cn">CGGA</a>
 							</td>
-							<td><a href="download/survival_pred.csv">download</a></td>
+							<td><a href="download/survival_pred.csv">&nbsp;download&nbsp;</a></td>
+							<td><a href="download/Survival_ExtraSurvivalTrees.pkl">ExtraSurvivalTrees</a></td>
 						</tr>
 					</table>
 				</div>

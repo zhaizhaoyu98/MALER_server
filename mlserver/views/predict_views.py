@@ -32,7 +32,7 @@ def predict_result(request):
         elif select_model == 'model_mclass':
             example_name = 'multi_pred.csv'
         elif select_model == 'model_reg':
-            example_name = 'reg_pred.csv.csv'
+            example_name = 'reg_pred.csv'
         else:
             example_name = 'survival_pred.csv'
 
@@ -53,6 +53,8 @@ def predict_result(request):
             shutil.move(STATIC_ROOT + '/cache/' + obj_model.name, newpath)
             os.rename(os.path.join(STATIC_ROOT, 'cache', projectid, example_name),  \
                       os.path.join(STATIC_ROOT, 'cache', projectid, 'data.csv'))
+            os.rename(os.path.join(STATIC_ROOT, 'cache', projectid, obj_model.name), \
+                      os.path.join(STATIC_ROOT, 'cache', projectid, 'pickle.pkl'))
     else:
         obj_model = request.FILES.get('upload_model')
         print(obj_model.name)
@@ -80,6 +82,9 @@ def predict_result(request):
 
             os.rename(os.path.join(STATIC_ROOT, 'cache', projectid, obj_file.name), \
                       os.path.join(STATIC_ROOT, 'cache', projectid, 'data.csv'))
+            os.rename(os.path.join(STATIC_ROOT, 'cache', projectid, obj_model.name), \
+                      os.path.join(STATIC_ROOT, 'cache', projectid, 'pickle.pkl'))
+
 
 
 
@@ -106,7 +111,7 @@ def predict_result(request):
             model_pickle = pickle.load(f)
     '''
 
-    with open(STATIC_ROOT + '/cache/' + projectid + '/' + obj_model.name, 'rb') as f:
+    with open(STATIC_ROOT + '/cache/' + projectid + '/' + 'pickle.pkl', 'rb') as f:
         model_pickle = pickle.load(f)
 #model
     method, model_name, model, feature_names = \
@@ -171,7 +176,7 @@ def predict_result(request):
             'surv_plot': json.dumps(surv_plot),
         })
     else:
-        title = 'Data type error!'
+        title = 'Selected analysis mode is inconsistent with the input model!'
         messages.success(request,title)
         return render(request, "predict.html")
 
@@ -180,6 +185,9 @@ def sur_pred_plot(model, blind_set, feature_names):
     data = blind_set[list(feature_names)]
     surv = model.predict_survival_function(data)
     surv2 = model.predict_cumulative_hazard_function(data)
+    # print(surv2[0].y)
+    # print(surv2[1].y)
+    print(surv2)
     tarce_data = []
     for i in range(len(surv)):
         trace1 = surv_trace_struct(surv[i].x, surv[i].y, 1, data.index[i])
