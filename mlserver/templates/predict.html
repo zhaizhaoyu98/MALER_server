@@ -214,7 +214,7 @@
 					<h6>Model: <input type="file" name="upload_model2" id="upload_model2" /> Please upload the pickle file model downloaded from ML Analysis.</h6> 
 					<p />
 					<!-- <table border="1" style="border: #000000;background-color: #f8f9fa;text-align: center;"> -->
-					<table width="90%" class="" border="1" style="border: #000000;background-color: #f8f9fa;text-align: center;">
+					<table width="90%" class="" >
 						<thead>
 						<tr>
 							<th> Example </th>
@@ -253,17 +253,19 @@
 							<td>
 								<a href="http://www.cgga.org.cn">CGGA</a>
 							</td>
-							<td><a href="download/survival_pred.csv">&nbsp;download&nbsp;</a></td>
+							<td><a href="download/survival_pred.csv">download</a></td>
 							<td><a href="download/Survival_ExtraSurvivalTrees.pkl">ExtraSurvivalTrees</a></td>
 						</tr>
 					</table>
 				</div>
 			</div>
 		</div>
-		</div>	
-			<hr />
-			<button type="button" id="button_submit" onclick="form_sub()" class="btn btn-info" style="width: 100%;">Submit</button>
-			
+	</div>
+		<hr />
+		<p />
+		<button type="button" id="button_submit" onclick="form_sub()" class="btn btn-info" style="width: 100%;">Submit</button>
+		<br />
+		<br />
 			<!-- <br />
 			<h4>Step3</h4>
 			<hr >
@@ -436,10 +438,12 @@
 				    if (this.value == 'samp_data'){
 						$('#pred_usr_data').hide();
 						$('#pred_samp_data').show();
+						
 					}
 					else{
 						$('#pred_usr_data').show();
 						$('#pred_samp_data').hide();
+						
 					}
 				});
 				$('input[name="samp_data"]').click(function () {
@@ -474,7 +478,6 @@
 				
 			</script>
 		</script>
-		
 	</body>
 	
 </html>
