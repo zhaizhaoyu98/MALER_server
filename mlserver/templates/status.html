@@ -84,9 +84,18 @@
 		<script>
 			$(document).ready(function(){
 			// 导航栏
-			$("#nav_tools").addClass("active");
-			$("tbody").addClass("bg-white");
-			$("#page_title").text('ANALYSIS');
+
+			var id = '{{projectid}}'
+			if (id.substring(0,4) == "PRED") {
+				$("#nav_predict").addClass("active");
+				$("tbody").addClass("bg-white");
+				$("#page_title").text('PREDICT');
+			} else{
+				$("#nav_tools").addClass("active");
+				$("tbody").addClass("bg-white");
+				$("#page_title").text('ANALYSIS');
+			}
+			
 			});
 		</script>
 	</head>
@@ -99,9 +108,9 @@
 		<div class="container col-9" id="main" style="display: none;">
 			<br />
 			<div class="row">
-				<div class='col-2 d-none d-xl-block' style="">
+				<div class="col-2 d-none d-xl-block" style="">
 				</div>
-				<div class='col-xl-9 col-lg-12'>
+				<div class="col-xl-9 col-lg-12">
 					
 					<form action="{{form_action}}/{{ projectid }}" id="status_form" method="POST" >
 						{% csrf_token %}
@@ -125,12 +134,20 @@
 									</h3>
 									<table id="data_stat" class="display" style="width: 100%;" lazyload="True">
 										 <thead>
+											{% if projectid|slice:':4' != 'PRED' %}
 											<tr>
 												<th>Class</th>
 												<th>Train</th>
 												<th>Test</th>
 												<th>Blind</th>
 											</tr>
+											{% else %}
+											<tr>
+												<th>Class</th>
+												<th>Blind</th>
+												<th>Validation</th>
+											</tr>
+											{% endif %}
 										</thead>
 									</table>
 									<br />
@@ -169,11 +186,12 @@
 						<input name="projectid" id="projectid" style="display: none;" value="{{ projectid }}"/>
 						<input name="feature_select_method" id="feature_select_method" style="display: none;" value="{{ feature_select_method }}"/>
 						<input name="model_md5" id="model_md5" style="display: none;" value="{{ model_md5 }}"/>
-					</form>
+					
 					<br />
 					<br />
 					{% if status == 'Preview' %}
 					<button type="button" id="button_submit" onclick="" class="btn btn-info" style="width: 100%;">Analysis</button>
+					</form>
 					{% else %}
 					<div id="link">
 						<h5><p><b>Please check the analysis status via this link:</b></p></h5>
@@ -235,31 +253,39 @@
 				$("#link2").text('www.inbirg.com/maler/' + sublink);
 			});
 			
-			$('#data_stat').DataTable({
-				data: {{display_samples_dict|safe}},
-				searching: false, 
-				paging: false, 
-				info: false,
-				sort: false,
+			var id = '{{ projectid|safe }}';
+			if (id.substring(0,4) == 'PRED'){
+				$('#data_stat').DataTable({
+					data: {{display_samples_dict|safe}},
+					searching: false, 
+					paging: false, 
+					info: false,
+					sort: false,
+					columns: [
+						{ 'data': 'class' },
+						{ 'data': 'Blind' },
+						{ 'data': 'Validation'},],
+					}); 
+				} else {
+				$('#data_stat').DataTable({
+					data: {{display_samples_dict|safe}},
+					searching: false, 
+					paging: false, 
+					info: false,
+					sort: false,
+					columns: [
+						{ 'data': 'class' },
+						{ 'data': 'Train'},
+						{ 'data': 'Test' },
+						{ 'data': 'Blind' },
+					],
+				});
+			}
+
 				
-				// order: [[ 4, "asc" ],[ 1, "desc"]],
-				// "dom": "<'row'<'col-sm-12 col-md-1'B><'col-sm-12 col-md-8'i><'col-sm-12 col-md-3'f>>" +
-				// 	"<'row'<'col-sm-12'tr>>" +
-				// 	"<'row'<'col-sm-12 col-md-5'l><'col-sm-12 col-md-7'p>>",
-				// buttons: [{
-				// 	extend: 'csv',
-				// 	text: "",
-				// 	className: "icon_",
-				// 	}],
-				//使用对象数组，一定要配置columns，告诉 DataTables 每列对应的属性
-				//data 这里是固定不变的，name，position，salary，office 为你数据里对应的属性
-				columns: [
-					{ 'data': 'class' },
-					{ 'data': 'Train'},
-					{ 'data': 'Test' },
-					{ 'data': 'Blind' },
-				]
-			});
+
+
+			
 			$('#inputdata_display').DataTable({
 				data: {{inputdata_display|safe}},
 				searching: false, 

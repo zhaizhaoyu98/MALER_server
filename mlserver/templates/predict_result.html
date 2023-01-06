@@ -111,8 +111,8 @@
 			<table id="acctable" class="display" style="width: 100%;" lazyload="True">
 				 <thead>
 					<tr>
-						<th>Name</th>
-						<th>Label</th>
+						<th>Samples</th>
+						<th>Predicted results</th>
 					</tr>
 				</thead>
 			</table>
@@ -184,7 +184,7 @@
 				//   itemclick: false,
 				//   itemdoubleclick: false
 				// },
-				height: 400,
+				height: 500,
 				xaxis1: {
 				  title: 'Time in days', 
 				  anchor: 'y1', 
@@ -198,12 +198,12 @@
 				yaxis1: {
 				  title: 'Survival probability', 
 				  anchor: 'x1', 
-				  domain: [0, 1.0]
+				  domain: [0.1, 1.0]
 				}, 
 				yaxis2: {
 				  title: 'Cumulative hazard', 
 				  anchor: 'x2', 
-				  domain: [0, 1.0]
+				  domain: [0.1, 1.0]
 				},
 				annotations: [
 				  {

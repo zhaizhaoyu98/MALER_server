@@ -165,7 +165,7 @@
 			<br />
 			<h4>Step2: Please upload the files.</h4>
 			<hr />
-			<form action="predict_result" method="POST" id="form_data" enctype="multipart/form-data">
+			<form action="predict_preview" method="POST" id="form_data" enctype="multipart/form-data">
 				<div class="row">
 					<input name="file_upload_type" id="file_upload_type" style="display: none;" value="user_data"/>
 					<div class="col-3" id="data_up_select">
@@ -188,7 +188,7 @@
 			
 			<div class="col-9">
 			<div class="col-9" style="vertical-align: middle;">
-				<form action="predict_result" method="POST" enctype="multipart/form-data" id="form_data">
+				<form action="predict_preview" method="POST" enctype="multipart/form-data" id="form_data">
 					<!-- <div class="row"> -->
 					<div id="pred_usr_data" class="row">
 						{% csrf_token %}
@@ -198,7 +198,7 @@
 						      <label class="custom-file-label" for="customFile">Choose Profile</label>
 						</div> -->
 						<h6>Model: <input type="file" name="upload_model" id="upload_model" /></h6>
-						<h6>File: <input type="file" name="upload_file" id="upload_file" /></h6>
+						<h6>File: <input type="file" name="upload_file" id="upload_file" accept=".csv" /></h6>
 					<br></br>
 					<p><b> Model: </b> Please upload the pickle file model downloaded from ML Analysis </p>
 					<p><b> File: </b>  Please upload a csv file with features in rows and samples in columns and no larger than 200MB.</p>
@@ -211,7 +211,7 @@
 			
 			<div id="pred_samp_data" class='row' style="display: none;">
 				<div class="col-12" id="sample_select" display="none">
-					<h6>Model: <input type="file" name="upload_model2" id="upload_model2" /> Please upload the pickle file model downloaded from ML Analysis.</h6> 
+					<!-- <h6>Model: <input type="file" name="upload_model2" id="upload_model2" /> Please upload the pickle file model downloaded from ML Analysis.</h6> -->
 					<p />
 					<!-- <table border="1" style="border: #000000;background-color: #f8f9fa;text-align: center;"> -->
 					<table width="90%" class="" >
@@ -240,7 +240,7 @@
 						</tr>
 						<tr>
 							<td>Regression</td>
-							<td width="400px">Tumor purity of KIRC is predicted based on gene expression profile</td>
+							<td width="400px">Tumor purity of KIRC is predicted based on gene expression profiles</td>
 							<td>
 								<a href="https://xenabrowser.net/">UCSC Xena</a><br />
 							</td>
@@ -249,7 +249,7 @@
 						</tr>
 						<tr>
 							<td>Survival</td>
-							<td>Survival in GBM is predicted based on gene expression profile</td>
+							<td>Survival in GBM is predicted based on gene expression profiles</td>
 							<td>
 								<a href="http://www.cgga.org.cn">CGGA</a>
 							</td>
@@ -417,19 +417,16 @@
 						// 	$("#form_data").submit();
 						// }
 						if ($("#file_upload_type").val() == 'user_data'){
-							if ($("#upload_file").val() == "" && $("#upload_model").val() == "") {
+							if ($("#upload_file").val() == "" || $("#upload_model").val() == "") {
 								alert("Please select a file and upload!");
-							} else {
+							} else if ($("#upload_model").val().split(".")[1] != "pkl"){
+								alert("Please select a pickle file and upload!");
+							}else {
 							    $("#form_data").submit();
 							}
-						} else if ($("#upload_model2").val() == ""){
-							alert("Please select a model and upload!");
-							
-						}else{
+						} else{
 							 $("#form_data").submit();
 						}
-						
-						
 					})
 
 					
@@ -470,6 +467,7 @@
 				
 		{% if messages %}
 		window.onload=function(){
+			// location.reload(true)
 							{% for msg in messages %}
 								alert('{{msg.message}}');
 							{% endfor  %}

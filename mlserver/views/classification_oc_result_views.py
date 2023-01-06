@@ -110,6 +110,7 @@ def result(request, projectid):
         inputdata = pd.read_csv(
             STATIC_ROOT + '/cache/' + projectid + '/' + 'data.csv',
             header=0, index_col=0).T
+
         # if file_upload_type == 'user_data':
         #
         #     # Feature selection methods

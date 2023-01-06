@@ -13,8 +13,10 @@ from mlserver.views.regression_cp_result_views import select_reg_model
 from mlserver.views.survival_cp_result_views import select_sur_model
 from django.contrib import messages
 
+
 def preview_result(request):
     projectid = request.POST.get('projectid')
+    print(projectid)
     feature_select_method = request.POST.get('feature_select_method')
     file_upload_type = request.POST.get('file_upload_type')
     select_model = request.POST.get('select_model')
@@ -38,9 +40,10 @@ def preview_result(request):
             prefix, example_name = 'S', 'survival_example.csv'
             if strategy == 'C':
                 model, model_name = select_sur_model(request)
-
-        prefix = prefix + strategy
+        if strategy != None:
+            prefix = prefix + strategy
         upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/', example_name))
+
         if strategy == 'O':
             projectid = prefix + '-' + upload_file_md5[:6] + '-' + feature_select_method
         else:
@@ -124,8 +127,8 @@ def preview_result(request):
 
     ''' preview '''
     inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
-    #
-    print(np.unique(inputdata.iloc[:, 0]))
+
+    ''' check '''
     if select_model == 'model_bclass' and inputdata.iloc[:, 0].nunique(dropna=True) != 2:
         title = 'Selected analysis mode is inconsistent with the input data type!'
         messages.success(request, title)
@@ -140,7 +143,7 @@ def preview_result(request):
         title = 'Selected analysis mode is inconsistent with the input data type!'
         messages.success(request, title)
         return render(request, "analysis.html")
-    if select_model == 'model_sur' and inputdata.columns[0].lower()  != 'status':
+    if select_model == 'model_sur' and inputdata.columns[0].lower()!= 'status':
         title = 'Selected analysis mode is inconsistent with the input data type!'
         messages.success(request, title)
         return render(request, "analysis.html")
@@ -195,7 +198,7 @@ def preview_result(request):
 
 def data_hist(data, datatype='other'):
     num = (1, 2)[datatype == 'survival']  # datatype == 'survival'时选第三列，否则为第二列
-    if 'training' in np.unique(data.iloc[:, num]):
+    if 'training' in data.iloc[:, num].unique():
         data2 = data.drop(columns=data.columns[:num + 1])
     else:
         data2 = data.drop(columns=data.columns[:num])

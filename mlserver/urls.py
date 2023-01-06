@@ -6,7 +6,8 @@ from .views import home_views, analysis_views, predict_views, \
     classification_oc_result_views, classification_cp_result_views, \
     survival_oc_result_views, survival_cp_result_views, \
     regression_oc_result_views, regression_cp_result_views, help_views, \
-    download_views, preview_views
+    download_views, preview_views, predict_result
+
 
 urlpatterns=[
     path('hello_world',home_views.hello_world),
@@ -14,9 +15,13 @@ urlpatterns=[
 
     # path('analysis_oneclick',analysis_views.analysis_oneclick),
     # path('analysis_perpara',analysis_views.analysis_perpara),
-    path('analysis',analysis_views.get_analysis_page),
-    path('predict',predict_views.get_predict_page),
-    path('predict_result',predict_views.predict_result),
+    path('analysis', analysis_views.get_analysis_page),
+    path('predict', predict_views.get_predict_page),
+
+
+    path('predict_preview',predict_views.predict_preview),
+    path('predict_result/<str:projectid>', predict_result.predict_results),
+
     path('help', help_views.get_help_page),
     path('download/<str:fname>', download_views.download_sample_data),
     path('preview', preview_views.preview_result),

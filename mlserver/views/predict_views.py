@@ -6,22 +6,22 @@ import os, shutil, pickle
 import numpy as np
 import pandas as pd
 
-
+from mlserver.views.classification_oc_result_views import JsonEncoder
 from ML_WebServer.settings import STATIC_ROOT
 from mlserver.views.classification_oc_result_views import get_file_md5
 from django.contrib import messages
-from mlserver.views.preview_views import data_hist,mkcol
+from mlserver.views.preview_views import data_hist, mkcol
 def get_predict_page(request):
     # generate random numbers
     if request.method == 'GET':
-        return render(request,'predict.html')
+        return render(request, 'predict.html')
     elif request.method == 'POST':
-
         return render(request, 'predict.html')
 
-def predict_result(request):
+def predict_preview(request):
     select_model = request.POST.get('select_model')
     file_upload_type = request.POST.get('file_upload_type')
+    print('select_model:',select_model)
     '''
     IMPORT DATA
     '''
@@ -29,35 +29,40 @@ def predict_result(request):
     if file_upload_type == 'example_data':
         if select_model == 'model_bclass':
             example_name = 'binary_pred.csv'
+            example_model_name = 'Binary_RandomForest.pkl'
         elif select_model == 'model_mclass':
             example_name = 'multi_pred.csv'
+            example_model_name = 'Multiclass_XGBoost.pkl'
         elif select_model == 'model_reg':
             example_name = 'reg_pred.csv'
+            example_model_name = 'Regression_Lasso.pkl'
         else:
             example_name = 'survival_pred.csv'
+            example_model_name = 'Survival_ExtraSurvivalTrees.pkl'
 
-        obj_model = request.FILES.get('upload_model2')
-        print(obj_model.name)
-        f = open(os.path.join(STATIC_ROOT, 'cache', obj_model.name), 'wb')
-        for line in obj_model.chunks():
-            f.write(line)
-        f.close()
+        # obj_model = request.FILES.get('upload_model2')
+        #
+        # f = open(os.path.join(STATIC_ROOT, 'cache', obj_model.name), 'wb')
+        # for line in obj_model.chunks():
+        #     f.write(line)
+        # f.close()
         filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/', example_name))
-        modelmd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_model.name))
+        # modelmd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_model.name))
+        modelmd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/', example_model_name))
         projectid = 'PRED' + '-' + select_model.replace('model_', '').upper() + '-' + modelmd5[:6] + '-' + filemd5[:6]
         # blind_set = pd.read_csv(STATIC_ROOT + '/cache/' + 'example/' + example_name, header=0, index_col=0).T
         if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
             os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-            shutil.copy(STATIC_ROOT + '/cache/example/' + example_name, os.path.join(STATIC_ROOT, 'cache', projectid))
             newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-            shutil.move(STATIC_ROOT + '/cache/' + obj_model.name, newpath)
+            shutil.copy(STATIC_ROOT + '/cache/example/' + example_name, newpath)
+            shutil.copy(STATIC_ROOT + '/cache/example/' + example_model_name, newpath)
             os.rename(os.path.join(STATIC_ROOT, 'cache', projectid, example_name),  \
                       os.path.join(STATIC_ROOT, 'cache', projectid, 'data.csv'))
-            os.rename(os.path.join(STATIC_ROOT, 'cache', projectid, obj_model.name), \
+            os.rename(os.path.join(STATIC_ROOT, 'cache', projectid, example_model_name), \
                       os.path.join(STATIC_ROOT, 'cache', projectid, 'pickle.pkl'))
     else:
         obj_model = request.FILES.get('upload_model')
-        print(obj_model.name)
+        print('obj_model:', obj_model)
         f = open(os.path.join(STATIC_ROOT, 'cache', obj_model.name), 'wb')
         for line in obj_model.chunks():
             f.write(line)
@@ -110,84 +115,178 @@ def predict_result(request):
         with open(r'E:\/CodeProject/WebServer/ML_WebServer/mlserver/static/cache/SO-c319b6-TopK/SurvivalTree.pkl', 'rb') as f:
             model_pickle = pickle.load(f)
     '''
-
+    status = 'Preview'
     with open(STATIC_ROOT + '/cache/' + projectid + '/' + 'pickle.pkl', 'rb') as f:
         model_pickle = pickle.load(f)
+    f.close()
 #model
     method, model_name, model, feature_names = \
         model_pickle['method'], model_pickle['name'], model_pickle['model'], model_pickle['feature_names']
-    blind_set = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
-    if select_model == method:
-        if select_model == 'model_bclass' or select_model == 'model_mclass':
 
-            classes = model_pickle['classes']
+    inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
 
-            # blind_set = blind_set[5:20]  # 模拟的blind数据
-            predict_reports = {}
-            mapping = dict(zip(classes.values(), classes.keys()))  # 键值对翻转
-            try:
-                predict_reports[model_name] = model.predict(blind_set[feature_names])
-            except:
-                title = 'feature names: ' + ", " .join(feature_names) + ' are not involved in the inputdata!'
-                messages.success(request, title)
-                return render(request, "predict.html")
-
-            predict_reports = pd.DataFrame(predict_reports, index=blind_set.index).applymap(lambda x: mapping[x])
-            predict_reports_dict = predict_reports.reset_index().rename(columns={'index': 'Name', model_name: 'Label'}).to_dict('records')
-            showtable = True
-            method = 'Classification'
-            surv_plot = None
-        elif select_model == 'model_reg':
-            # blind_set = blind_set[5:20]  # 模拟的blind数据
-
-            predict_reports = {}
-            try:
-                predict_reports[model_name] = model.predict(blind_set[feature_names])
-            except:
-                title = 'feature names: ' + ", ".join(feature_names) + ' are not involved in the inputdata!'
-                messages.success(request, title)
-                return render(request, "predict.html")
-            predict_reports = pd.DataFrame(predict_reports, index=blind_set.index)
-            predict_reports_dict = predict_reports.reset_index().rename(columns={'index': 'Name', model_name: 'Label'}).to_dict('records')
-            showtable = True
-            method = 'Regression'
-            surv_plot = None
-        else:
-            # blind_set = blind_set[5:20]  # 模拟的blind数据
-            try:
-                if model_name != 'SurvivalSVM':
-                    surv_plot = sur_pred_plot(model, blind_set, feature_names)
-                else:
-                    surv_plot = None
-                    print('The svm model does not support the prediction function')
-            except:
-                title = 'feature names: ' + ", ".join(feature_names) + ' are not involved in the inputdata!'
-                messages.success(request, title)
-                return render(request, "predict.html")
-            showtable = False
-            predict_reports_dict = None
-            method = 'Survival'
-        shutil.rmtree(os.path.join(STATIC_ROOT, 'cache', projectid))
-        return render(request, 'predict_result.html', {
-            'projectid': projectid,
-            'method': method,
-            'showtable': showtable,
-            'predict_reports_dict': json.dumps(predict_reports_dict),
-            'surv_plot': json.dumps(surv_plot),
-        })
-    else:
+    # sample table display
+    if select_model != method:
         title = 'Selected analysis mode is inconsistent with the input model!'
-        messages.success(request,title)
+        messages.success(request, title)
         return render(request, "predict.html")
+
+    if select_model == 'model_sur':
+        blind_set,validation_set = pred_val_split(inputdata, datatype='survival')
+        hist_data = data_hist(inputdata, datatype='survival')
+    else:
+        blind_set,validation_set = pred_val_split(inputdata)
+        hist_data = data_hist(inputdata)
+    display_samples = pd.DataFrame({'Validation': validation_set.shape, 'Blind': blind_set.shape},
+                                   index=['Samples', 'Features'])
+    display_samples_dict = display_samples.reset_index().rename(columns={'index': 'class'}).to_dict('records')
+
+    # histogram
+    hist_trace = [{
+        'x': hist_data,
+        'type': "histogram",
+        'opacity': 0.5
+    }]
+    # data short view
+    inputdata_display = inputdata.T.head(50).reset_index().rename(columns={'index': 'features'})
+    inputdata_display.columns = [i.replace('.', '-') for i in inputdata_display.columns]
+    inputdata_columns, title_str = mkcol(inputdata_display)
+    inputdata_display = inputdata_display.to_dict("records")
+    form_action = 'predict_result'
+    preview_pickle = {
+        'display_samples_dict': display_samples_dict,
+        'hist_trace': hist_trace,
+        'inputdata_display': inputdata_display,
+        'inputdata_columns': inputdata_columns,
+        'title_str': title_str,
+        'status': status,
+        'form_action': form_action,
+    }
+    with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'wb') as f:
+        pickle.dump(preview_pickle, f)
+    return render(request, 'status.html', {
+        'projectid': projectid,
+        # 'model_md5': model_md5,
+        'form_action': form_action,
+        'display_samples_dict': json.dumps(display_samples_dict),
+        'hist_trace': json.dumps(hist_trace, ensure_ascii=False, cls=JsonEncoder),
+        'inputdata_display': json.dumps(inputdata_display),
+        'inputdata_columns': json.dumps(inputdata_columns),
+        'title_str': title_str,
+        'status': status,
+    })
+
+
+'''def predict_result(request,projectid):
+    #predict
+    select_model = request.POST.get('select_model')
+    # projectid = request.POST.get('projectid')
+    print(select_model)
+    print(projectid)
+    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'pickle.pkl')):
+        with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'rb') as f:
+            preview_pickle = pickle.load(f)
+        if preview_pickle['status'] == 'Preview':
+            preview_pickle['status'] = 'Running'
+            with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'wb') as f:
+                pickle.dump(preview_pickle, f)
+        else:
+            status = 'Running'
+            form_action = preview_pickle['form_action']
+            display_samples_dict = preview_pickle['display_samples_dict']
+            hist_trace = preview_pickle['hist_trace']
+            inputdata_display = preview_pickle['inputdata_display']
+            inputdata_columns = preview_pickle['inputdata_columns']
+            title_str = preview_pickle['title_str']
+            return render(request, 'status.html', {
+                'projectid': projectid,
+                # 'model_md5': model_md5,
+                'form_action': form_action,
+                'display_samples_dict': json.dumps(display_samples_dict),
+                'hist_trace': json.dumps(hist_trace, ensure_ascii=False, cls=JsonEncoder),
+                'inputdata_display': json.dumps(inputdata_display),
+                'inputdata_columns': json.dumps(inputdata_columns),
+                'title_str': title_str,
+                'status': status,
+            })
+
+    with open(STATIC_ROOT + '/cache/' + projectid + '/' + 'pickle.pkl', 'rb') as f:
+        model_pickle = pickle.load(f)
+    # model
+    method, model_name, model, feature_names = \
+        model_pickle['method'], model_pickle['name'], model_pickle['model'], model_pickle['feature_names']
+
+    inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
+
+    if select_model == 'model_sur':
+        blind_set, validation_set = pred_val_split(inputdata, datatype='survival')
+    else:
+        blind_set, validation_set = pred_val_split(inputdata)
+
+    if select_model == 'model_bclass' or select_model == 'model_mclass':
+        classes = model_pickle['classes']
+        # blind_set = blind_set[5:20]  # 模拟的blind数据
+        predict_reports = {}
+        mapping = dict(zip(classes.values(), classes.keys()))  # 键值对翻转
+        try:
+            predict_reports[model_name] = model.predict(blind_set[feature_names])
+        except:
+            title = 'feature names: ' + ", " .join(feature_names) + ' are not involved in the inputdata!'
+            messages.success(request, title)
+            return render(request, "predict.html")
+
+        predict_reports = pd.DataFrame(predict_reports, index=blind_set.index).applymap(lambda x: mapping[x])
+        predict_reports_dict = predict_reports.reset_index().rename(columns={'index': 'Name', model_name: 'Label'}).to_dict('records')
+        showtable = True
+        method = 'Classification'
+        surv_plot = None
+    elif select_model == 'model_reg':
+        # blind_set = blind_set[5:20]  # 模拟的blind数据
+
+        predict_reports = {}
+        try:
+            predict_reports[model_name] = model.predict(blind_set[feature_names])
+        except:
+            title = 'feature names: ' + ", ".join(feature_names) + ' are not involved in the inputdata!'
+            messages.success(request, title)
+            return render(request, "predict.html")
+        predict_reports = pd.DataFrame(predict_reports, index=blind_set.index)
+        predict_reports_dict = predict_reports.reset_index().rename(columns={'index': 'Name', model_name: 'Label'}).to_dict('records')
+        showtable = True
+        method = 'Regression'
+        surv_plot = None
+    else:
+        # blind_set = blind_set[5:20]  # 模拟的blind数据
+        try:
+            if model_name != 'SurvivalSVM':
+                surv_plot = sur_pred_plot(model, blind_set, feature_names)
+            else:
+                surv_plot = None
+                print('The svm model does not support the prediction function')
+        except:
+            title = 'feature names: ' + ", ".join(feature_names) + ' are not involved in the inputdata!'
+            messages.success(request, title)
+            return render(request, "predict.html")
+        showtable = False
+        predict_reports_dict = None
+        method = 'Survival'
+
+    shutil.rmtree(os.path.join(STATIC_ROOT, 'cache', projectid))
+    return render(request, 'predict_result.html', {
+        'projectid': projectid,
+        'method': method,
+        'showtable': showtable,
+        'predict_reports_dict': json.dumps(predict_reports_dict),
+        'surv_plot': json.dumps(surv_plot),
+    })
+'''
+
 
 
 def sur_pred_plot(model, blind_set, feature_names):
     data = blind_set[list(feature_names)]
     surv = model.predict_survival_function(data)
     surv2 = model.predict_cumulative_hazard_function(data)
-    # print(surv2[0].y)
-    # print(surv2[1].y)
-    print(surv2)
     tarce_data = []
     for i in range(len(surv)):
         trace1 = surv_trace_struct(surv[i].x, surv[i].y, 1, data.index[i])
@@ -225,3 +324,22 @@ def make_surv_text(x, y):
         str = string %(x[i], np.round(y[i], 3))
         text.append(str)
     return text
+def pred_val_split(data,datatype='other'):
+    blind_set,val_set = pd.DataFrame(),pd.DataFrame()
+    if datatype != 'survival':
+        if data.columns[0] == 'label':
+            blind_set = data[data.iloc[:,:1].isna().T.any()]
+            if len(blind_set)>0:
+                blind_set = blind_set.drop(labels=blind_set.columns[0], axis=1)
+            val_set = data[~data.index.isin(blind_set.index)]
+        else:
+            blind_set = data
+    else:
+        if data.columns[0] == 'Status' and data.columns[1] == 'time':
+            blind_set = data[data.iloc[:,:2].isna().T.any()]
+            if len(blind_set)>0:
+                blind_set = blind_set.drop(labels=blind_set.columns[:2], axis=1)
+            val_set = data[~data.index.isin(blind_set.index)]
+        else:
+            blind_set = data
+    return blind_set,val_set
