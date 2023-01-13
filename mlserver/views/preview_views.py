@@ -126,7 +126,7 @@ def preview_result(request):
     status = 'Preview'
 
     ''' preview '''
-    inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
+    inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0, sep=r'/|,|\t').T
 
     ''' check '''
     if select_model == 'model_bclass' and inputdata.iloc[:, 0].nunique(dropna=True) != 2:
@@ -183,6 +183,7 @@ def preview_result(request):
     }
     with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'wb') as f:
         pickle.dump(preview_pickle, f)
+
     return render(request, 'status.html', {
         'projectid': projectid,
         'form_action': form_action,

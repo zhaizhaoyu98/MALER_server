@@ -191,14 +191,17 @@
 								  <input type="file" class="custom-file-input" id="customFile" name="filename">
 								  <label class="custom-file-label" for="customFile">Choose Profile</label>
 							</div> -->
-							<h6>File:&nbsp;<input type="file" id="upload_file" name="upload_file" /></h6>
+							<h6 style="position: absolute;top: 10px;">File:&nbsp;</h6>
+							<input type="file" id="upload_file" name="upload_file" style="display: none;" accept=".csv" />
+							<button id="upfile" type="button" class="btn btn-info" style="position: absolute;left: 40px;">Upload</button>
 							<!-- <h6>Label: <input type="file" name="upload_label" /></h6> -->
 					
 					
 							<div class="row">
-								<h5>OR</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<h6>ProjectID:&nbsp;<input type="text" id="projectid" name="projectid"></h6>
+								<h5 style="position: absolute;left: 360px;">OR</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<h6 style="position: absolute;left: 560px;">ProjectID:&nbsp;<input type="text" id="projectid" name="projectid"></h6>
 							</div>
+							<div class="showFileName"style="position: absolute;left: 130px;top: 10px;"></div>
 							<!-- <input type="submit" value="submit" />
 							<input type="submit" value="EXAMPLE(ZIP)" /> -->
 							<br />
@@ -209,9 +212,26 @@
 							<p><b> ProjectID: </b>  A unique identifier for each task, which can be used to access the results of analyzed tasks.</p>
 							</div>
 						</div>
+						
+						
+						<script type="text/javascript">
+							$("#upfile").click(function () {
+							    $("#upload_file").click();
+							});
+							var myfile = document.getElementById('upload_file');
+							myfile.addEventListener('change',function() {
+								// location.reload();
+								$(".showFileName").html(myfile.files[0].name);
+							});
+							
+						</script>
+						
+						
+						
 						<div id="samp_data" class='row' style="display: none;">
 							<div class="col-12" id="sample_select" display="none">
 								<!-- <table border="1" style="border: #000000;background-color: #f8f9fa;"> -->
+								<b>Please click the 'Submit' button to make predictions on the sample data.</b>
 								<table width="100%" class="" border="1" style="border: #000000;background-color: #f8f9fa;text-align: center;">
 									<thead>
 									<tr>
@@ -252,6 +272,9 @@
 										<td><a href="download/survival_example.csv">download</a></td>
 									</tr>
 								</table>
+								<br>
+								
+								<br>
 							</div>
 							
 							<!-- <div class="col-6" id="sample_select" display="none">
@@ -2179,6 +2202,7 @@
 					if ($("#upload_file").val() == "" && $("#projectid").val() == "") {
 					    
 						alert("Please select a file and upload!");
+						location.reload();
 					} else {
 						// var link = "www.inbirg.com/maler/" + form_action.replace("oc",'cp') + "/" + projectid;
 					    $("#form_step23").submit();

@@ -1474,7 +1474,7 @@ def mkbar(validate_report):
     return data
 
 def mkheatmap(validation_label, validate_predict, classes):
-    cm = confusion_matrix(validation_label, validate_predict).tolist()
+    cm = confusion_matrix(validation_label, validate_predict,).tolist()
     data = [{
         'z': cm,
         'x': list(classes),

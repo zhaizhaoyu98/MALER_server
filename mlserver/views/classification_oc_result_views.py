@@ -636,7 +636,7 @@ def split_train_test(data,datatype='other'):
     return train_set,test_set,blind_set
 
 def classification_process(data):
-    data = data.apply(pd.to_numeric,errors='ignore')#转成数值型
+    data = data.apply(pd.to_numeric,errors='ignore') #转成数值型
     x=data.iloc[:,data.columns!=data.columns[0]]
     if np.any(x.isnull()) == True:
         x=x.fillna(x.mean())  #填充缺失值

@@ -123,9 +123,10 @@ def predict_preview(request):
     method, model_name, model, feature_names = \
         model_pickle['method'], model_pickle['name'], model_pickle['model'], model_pickle['feature_names']
 
-    inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
+    inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0, sep=r'/|,|\t').T
 
     # sample table display
+    print('method:', method)
     if select_model != method:
         title = 'Selected analysis mode is inconsistent with the input model!'
         messages.success(request, title)
@@ -140,7 +141,6 @@ def predict_preview(request):
     display_samples = pd.DataFrame({'Validation': validation_set.shape, 'Blind': blind_set.shape},
                                    index=['Samples', 'Features'])
     display_samples_dict = display_samples.reset_index().rename(columns={'index': 'class'}).to_dict('records')
-
     # histogram
     hist_trace = [{
         'x': hist_data,
@@ -325,9 +325,9 @@ def make_surv_text(x, y):
         text.append(str)
     return text
 def pred_val_split(data,datatype='other'):
-    blind_set,val_set = pd.DataFrame(),pd.DataFrame()
+    blind_set, val_set = pd.DataFrame(),pd.DataFrame()
     if datatype != 'survival':
-        if data.columns[0] == 'label':
+        if data.columns[0].lower() == 'label':
             blind_set = data[data.iloc[:,:1].isna().T.any()]
             if len(blind_set)>0:
                 blind_set = blind_set.drop(labels=blind_set.columns[0], axis=1)
@@ -342,4 +342,5 @@ def pred_val_split(data,datatype='other'):
             val_set = data[~data.index.isin(blind_set.index)]
         else:
             blind_set = data
+    blind_set = blind_set.apply(pd.to_numeric, errors='ignore')
     return blind_set,val_set

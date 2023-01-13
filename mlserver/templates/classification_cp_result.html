@@ -174,15 +174,25 @@
 					<div id="rocplotDiv" style="margin-right: 0px;"></div>
 					
 					
+					<div class="row">
+						<div class="col" style="padding-right: 0px;"><div id="mixrocplotDiv"></div></div>
+						<div class="col" style="padding-left: 0px;"><div id="mixradarplotDiv"></div></div>
+						
+					</div>
+						
 					
-					<div id="mixrocplotDiv"></div>
-					<div id="mixradarplotDiv"></div>
+					
+					
 					<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
 						Test
 					</h3>
 					<div id="barplotDiv"></div>
-					<div id="heatmapDiv"></div>
-					<div id="validrocDiv"></div>
+					<div class="row">
+					<div class="col" style="padding-right: 0px ;"><div id="heatmapDiv"></div></div>
+					<div class="col" style="padding-left: 0px ;"><div id="validrocDiv"></div></div>
+					</div>
+					
+					
 					
 					<h3 class="panel-heading" id="list-item-5" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
 						Report
@@ -276,14 +286,43 @@
 				    title: 'TPR', 
 				    autorange: true
 				  }, 
-				  height: 800, 
+				  height:550,
 				  legend: {
 				    x: 1,
 				    y: 0.1, 
 				    xanchor: 'right', 
 				    orientation: 'v'
 				  }, 
-				  titlefont: {size: 22}
+				  titlefont: {size: 18}
+			};
+			var roc_layout2 = {
+				title: 'ROC', 
+				  margin: {
+				  				  'b': 60,
+				  				  'l': 150,
+				  				  'r': 150,
+				  				  't': 60
+				  },
+				  xaxis: {
+				    type: 'linear', 
+				    range: [0, 1], 
+				    title: 'FPR', 
+				    autorange: true
+				  }, 
+				  yaxis: {
+				    type: 'linear', 
+				    range: [-0.05555555555555555, 1.0555555555555556], 
+				    title: 'TPR', 
+				    autorange: true
+				  }, 
+				  height:650,
+				  legend: {
+				    x: 1,
+				    y: 0.1, 
+				    xanchor: 'right', 
+				    orientation: 'v'
+				  }, 
+				  titlefont: {size: 18}
 			};
 			
 			var bar_layout = {
@@ -298,6 +337,7 @@
 					title: 'Predicted label', 
 				    side: 'bottom'
 				  },
+				  height:550,
 				  yaxis: {
 				    ticks: '',
 				    ticksuffix: ' ',
@@ -305,8 +345,8 @@
 				    height: 700,
 					title: 'True label', 
 				    autosize: false
-				  }
-				
+				  },
+				titlefont: {size: 18}
 			}
 			
 			var radar_layout = {
@@ -316,6 +356,7 @@
 				      visible: true
 				    },
 				}, 
+				height:550,
 				showlegend: true
 			}
 			<!--第三步：初始化Datatables-->
@@ -407,8 +448,8 @@
 					]
 				});
 				Plotly.newPlot('linechartDiv', {{ line_chart_data|safe }}, linechart_layout);
-				Plotly.newPlot('rocplotDiv', {{roc_traces|safe}}, roc_layout);
-				Plotly.newPlot('rocplotDiv', {{roc_traces|safe}}, roc_layout);
+				Plotly.newPlot('rocplotDiv', {{roc_traces|safe}}, roc_layout2);
+				Plotly.newPlot('rocplotDiv', {{roc_traces|safe}}, roc_layout2);
 				Plotly.newPlot('accboxplotDiv', {{ final_reports_dict|safe }}, acc_layout);
 				Plotly.newPlot('barplotDiv', {{ bar_dict|safe }}, bar_layout);
 				Plotly.newPlot('heatmapDiv', {{ heatmap_dict |safe}}, heatmap_layout);

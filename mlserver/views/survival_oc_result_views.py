@@ -32,7 +32,7 @@ def survival_oc_result(request, projectid):
                  'GradientBoostingSurvival']
 
     feature_select_method = projectid.split('-')[2]
-    select_model = 'model_reg'
+    select_model = 'model_sur'
     # select_model = request.POST.get('select_model')
     # file_upload_type = request.POST.get('file_upload_type')
     # Feature selection methods
@@ -48,7 +48,8 @@ def survival_oc_result(request, projectid):
 
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'surv_pickle.pkl')):
         with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'rb') as f:
-            preview_pickle = pickle.load(f)
+            preview_pickle = pickle._load(f)
+        # breakpoint()
         if preview_pickle['status'] == 'Preview':
             preview_pickle['status'] = 'Running'
             with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'wb') as f:
@@ -266,7 +267,8 @@ def survival_oc_result(request, projectid):
                 'method': select_model,
                 'name': t,
                 'model': model,
-                'feature_names': feature_names[i]
+                'feature_names': feature_names[i],
+                'ytrain': y2
             }
             with open(STATIC_ROOT + '/cache/' + projectid + '/' + t + '.pkl', 'wb') as f:
                 pickle.dump(model_pickle, f)

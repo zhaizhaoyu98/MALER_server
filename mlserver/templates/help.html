@@ -42,22 +42,58 @@
 	.flex-cell {width: 20%;}
 	.line{    height:1px;  background-color:#333; }
 	
+	table
+	{
+	border-collapse: collapse;
+	margin: 1px,1px,1px,1px;
+	text-align: center;
+	}
+	table td, table th
+	{
+	border: 2px solid #cad9ea;
+	color: #666;
+	height: 25px;
+	}
+	table thead th
+	{
+	background-color: #17a2b8;
+	width: 35px;
+	/* min-width: 150px; */
+	height: 30px;
+	color: white;
+	}
+/* 	table tr:nth-child(odd)
+	{
+	background: #fff;
+	}
+	table tr:nth-child(even)
+	{
+	background: #f0f1f2;
+	} */
+	
+/* 	.textver {
+	    font-weight: bold;
+	    position: absolute;
+	    margin: 5px;
+	} */
+	.abc{ border:2px solid #17a2b8; width:300px;margin-top: 100px;margin-left: 30px;border-radius: 25px 25px 25px 25px;}
 	
 </style>
 <body>
     {% include 'public_templates/nav_tem.html' %}
+	
 	<div class="container row col-xl-10 col-lg-10 col-12">
-		<div class="col-xl-3 col-lg-3" id='spy_nav_div'>
-			<nav class="nav nav-pills nav-stacked" style="position:fixed" id="help_spy_scroll">
-				<ul data-spy="affix" data-offset-top="0">
-					<li><a href="#top">Top</a></li>
+		<div class="col-xl-3 col-lg-3 " id='spy_nav_div'>
+			<nav class="nav nav-pills nav-stacked" style="position:fixed;border-color: #000000;border: 1px;" id="help_spy_scroll" >
+				<ul data-spy="affix" data-offset-top="0" class="abc">
+					<li><a href="#top">Introduction</a></li>
 					<li><a href="#os_compat">Browser and OS Compatibility</a></li>
 					<li><a href="#gen">Machine Learning Analysis</a></li>
 					<li><a href="#oc">&nbsp; &nbsp; Binary Classification</a></li>
 					<li><a href="#od">&nbsp; &nbsp; Multiclass Classification</a></li>
 					<li><a href="#os">&nbsp; &nbsp; Regression</a></li>
 					<li><a href="#ts">&nbsp; &nbsp; Survival Analysis</a></li>
-					<li><a href="#browse">Feature Selection</a></li>
+					<li><a href="#browse">Feature Selection Methods</a></li>
                     <li><a href="#one_click">One-click Modeling</a></li>
 					<li><a href="#cus_model">Customized Modeling</a></li>
                     <li><a href="#predict">External Prediction</a></li>
@@ -76,7 +112,8 @@
 				<p>MALER provides four types of machine learning analysis, each with multiple model building algorithms, 
 				evaluation methods, as well as feature selection methods for users to choose from to build their custom 
 				machine learning pipeline. Below is a table summary of our features:</p>
-				<table id="intro_table">
+				<table id="intro_table" width="100%">
+					<thead>
 					<tr>
 						<th style="font-weight: bold;"></th>
 						<th>ML algorithms</th>
@@ -84,6 +121,7 @@
 						<th>Feature Selection</th>
 						<th>Optimal Feature Subset</th>
 					</tr>
+					</thead>
 					<tr>
 						<td style="font-weight: bold;">Binary Classification</td>
 						<td rowspan="2">Naive Bayes, SVM, Random Forest, Logistic Regression, KNN, 
@@ -114,7 +152,7 @@
 					</tr>
 				</table>
 				<br>
-				</br>
+				<br>
 				
 				
 				
@@ -184,16 +222,22 @@
                 </p>
 				<!-- <img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/gen_tab.png" alt="general tab img"/> -->
 				<p><b>Data submit</b></p>
-				<p style="text-align: center"><img src='/mlserver_static/img/help_submit.png' width="1300" height="400"></p>
+				<p style="text-align: center"><img src='/mlserver_static/img/help_submit.png' width="1300" height="520"></p>
 
-				<p>When the module is selected, the user should submit the corresponding data format as following. Sample
-                    data was also provided in “Sample Data”.</p>
+				<p>When the module is selected, the user should submit the corresponding data format as following. Example
+                    data was also provided in “Example Data”.</p>
                 <p><b>Format of input files</b></p>
 				<p>In general, a feature-by-sample matrix in a csv format is required to initiate the MALER analysis. A
                     sample label file is also suggested to be uploaded so as to evaluate the matrix more comprehensive.</p>
 				<!-- <img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/general_home.PNG" alt="general overview img"/> -->
 				<br>
+				<p><b>Preview</b></p>
+				<p style="text-align: center"><img src='/mlserver_static/img/help_preview.png' width="1300" height="1150"></p>
+				<p>In the preview page, users can view the information and distribution about the uploaded data.
+					After checking the data, click the 'Analysis' button to analyze the input data.
+				</p>
 				<br>
+				
 			<h3 id='oc'>Binary Classification</h3>
 				<hr>
 				<p>
@@ -239,7 +283,7 @@
 				<hr>
 				<p>
                     In this module, the sample name, label of samples and ML set are sequentially provided in the first
-                    4 rows of input file. The label of samples should be continuous/real values as outcome for regression,
+                    3 rows of input file. The label of samples should be continuous/real values as outcome for regression,
                     or “NA” for blind test set. ML set must contain “training”, and can also contain “testing”. Sample
                     data of this data type can be downloaded.
 				</p>
@@ -324,7 +368,7 @@
 			
 			<h3 id='one_click'>One-click Modeling</h3>
 				<hr>
-				<p style="text-align: center"><img src='/mlserver_static/img/help_oneclick.png' width="1000" height="450"></p>
+				<p style="text-align: center"><img src='/mlserver_static/img/help_oneclick.png' width="1000" height="500"></p>
 				<p>
 			        One-click Modeling allows users run multiple models within the same process. The default parameters
 			        would be set for each ML model.
@@ -333,15 +377,16 @@
 			    <!-- <img style="width: 100%; padding-left: 10%; padding-right: 10%" src="/organoidb_static/img/help_img/Detailed_information_page.PNG" alt="Detailed information img"/> -->
 			<h3 id='cus_model'>Customized Modeling</h3>
 				<hr>
-				<p style="text-align: center"><img src='/mlserver_static/img/help_customized.png' width="1000" height="470"></p>
+				<p style="text-align: center"><img src='/mlserver_static/img/help_customized.png' width="1000" height="520"></p>
 				<p>
 			        Users can customized the machine learning algorithm using different parameters. The Customized
 			        modeling will be stored in the server and could be compared with other modelings derived from the
 			        same data under the same ProjectID.
 				</p>
 				<p style="text-align: center"><img src='/mlserver_static/img/help_customized2.png' width="1050" height="450"></p>
+				<p style="text-align: center"><img src='/mlserver_static/img/help_customized3.png' width="1050" height="450"></p>
 				<p>
-					Users can also submit tasks using the same project ID to compare the performance of tasks with different parameters. 
+					Users can also submit tasks using the same project ID to compare the performance of tasks with different parameters or different models. 
 					The results page of the previous task can be returned by clicking the 'view' button, and the 'combine' button can 
 					combine the performance metrics of all tasks.
 				</p>
@@ -350,7 +395,9 @@
 				
 			<h3 id='predict'>External Prediction</h3>
                 <hr>
-				<p style="text-align: center"><img src='/mlserver_static/img/home5.png' width="900" height="400"></p>
+				<!-- <p style="text-align: center"><img src='/mlserver_static/img/home5.png' width="900" height="400"></p> -->
+				<p style="text-align: center"><img src='/mlserver_static/img/help_pred1.png' width="1050" height="800"></p>
+				<p style="text-align: center"><img src='/mlserver_static/img/help_pred2.png' width="1050" height="600"></p>
 				<p>
                     Users can apply the models downloaded from ML Analysis on external data, and performed the prediction.
                     The confusion matrix will be calculated for the validation set, while predictions will be listed in

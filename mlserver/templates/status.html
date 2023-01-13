@@ -245,15 +245,14 @@
 					sublink = sublink + '/' + '{{projectid}}'
 				};
 				
-				
 				$("#link1").attr('href', sublink);
 				$("#link2").attr('href', sublink);
 				
 				$("#link1").text('www.inbirg.com/maler/' + sublink);
 				$("#link2").text('www.inbirg.com/maler/' + sublink);
 			});
-			
 			var id = '{{ projectid|safe }}';
+			// document.write(id)
 			if (id.substring(0,4) == 'PRED'){
 				$('#data_stat').DataTable({
 					data: {{display_samples_dict|safe}},

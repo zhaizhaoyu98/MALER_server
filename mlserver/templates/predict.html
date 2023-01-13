@@ -84,7 +84,11 @@
 			background: #f0f1f2;
 			}
 			
-			
+			.textver {
+			    font-weight: bold;
+			    position: absolute;
+			    margin: 5px;
+			}
 			
 		</style>
 		<script>
@@ -163,7 +167,7 @@
 				</div>
 			</div>
 			<br />
-			<h4>Step2: Please upload the files.</h4>
+			<h4>Step2: Please upload the files and models.</h4>
 			<hr />
 			<form action="predict_preview" method="POST" id="form_data" enctype="multipart/form-data">
 				<div class="row">
@@ -197,23 +201,66 @@
 						      <input type="file" class="custom-file-input" id="customFile" name="filename">
 						      <label class="custom-file-label" for="customFile">Choose Profile</label>
 						</div> -->
-						<h6>Model: <input type="file" name="upload_model" id="upload_model" /></h6>
-						<h6>File: <input type="file" name="upload_file" id="upload_file" accept=".csv" /></h6>
-					<br></br>
-					<p><b> Model: </b> Please upload the pickle file model downloaded from ML Analysis </p>
-					<p><b> File: </b>  Please upload a csv file with features in rows and samples in columns and no larger than 200MB.</p>
+
+						<h6 style="position: absolute;top: 10px;">Model:</h6> 
+						<input type="file" name="upload_model" id="upload_model" style="display: none;" />
+						<button id="upmodel" type="button" class="btn btn-info" style="position: absolute;left: 60px;">Upload</button>
+						<!-- <div class="showModelName"style="position: absolute;left: 150px;top: 10px;"></div> -->
+						<p id="showModelName" style="position: absolute;left: 150px;top: 10px;">
+						
+						<h6 style="position: absolute;margin: 10px;left: 450px;">File:</h6> 
+						<input type="file" name="upload_file" id="upload_file" accept=".csv" style="display: none;" value="12345"/>
+						<button id="upfile" type="button" class="btn btn-info" style="position: absolute;left: 500px;">Upload</button>
+						<div class="showFileName"style="position: absolute;left: 590px;top: 10px;"></div>
+						
+
+						<p style="position: absolute;top: 70px;"><b> Model: </b> Please upload the pickle file model downloaded from ML Analysis. </p>
+						<p style="position: absolute;top: 110px;"><b> File: </b>  Please upload a csv file with features in rows and samples in columns and no larger than 200MB.</p>
+						<br/>
+						<br/>
+						<br/>
+						<br/>
+						<br/>
+						
 					</div>
-
 				</form>
+						<br/>
+					</div>
+					
 
-			</div>
+			<!-- </div> -->
+
+			<script type="text/javascript">
+				$("#upmodel").click(function () {
+					// $("#upload_model").show()
+				    $("#upload_model").click();
+				});
+				$("#upfile").click(function () {
+					// $("#upload_model").show()
+				    $("#upload_file").click();
+				});
+				var mymodel = document.getElementById('upload_model');
+				mymodel.addEventListener('change',function() {
+					// $(".showModelName").html(mymodel.files[0].name);
+					document.getElementById("showModelName").innerHTML = mymodel.files[0].name;
+					mymodel&&mymodel.reset();
+				});
+				var myfile = document.getElementById('upload_file');
+				myfile.addEventListener('change',function() {
+					// location.reload();
+					$(".showFileName").html(myfile.files[0].name);
+				});
+				
+				
+			</script>
 			
 			
 			<div id="pred_samp_data" class='row' style="display: none;">
 				<div class="col-12" id="sample_select" display="none">
 					<!-- <h6>Model: <input type="file" name="upload_model2" id="upload_model2" /> Please upload the pickle file model downloaded from ML Analysis.</h6> -->
-					<p />
+					<!-- <p /> -->
 					<!-- <table border="1" style="border: #000000;background-color: #f8f9fa;text-align: center;"> -->
+					<b>Please click the 'Submit' button to make predictions on the sample data.</b>
 					<table width="90%" class="" >
 						<thead>
 						<tr>
@@ -257,6 +304,9 @@
 							<td><a href="download/Survival_ExtraSurvivalTrees.pkl">ExtraSurvivalTrees</a></td>
 						</tr>
 					</table>
+					<br/>
+					
+					<br/>
 				</div>
 			</div>
 		</div>
@@ -418,15 +468,17 @@
 						// }
 						if ($("#file_upload_type").val() == 'user_data'){
 							if ($("#upload_file").val() == "" || $("#upload_model").val() == "") {
-								alert("Please select a file and upload!");
+								alert("Please select a file and a model to upload!");
+								location.reload();
 							} else if ($("#upload_model").val().split(".")[1] != "pkl"){
-								alert("Please select a pickle file and upload!");
+								alert("Please select a pickle file and upload in the Model module !");
 							}else {
 							    $("#form_data").submit();
 							}
 						} else{
 							 $("#form_data").submit();
 						}
+						
 					})
 
 					
