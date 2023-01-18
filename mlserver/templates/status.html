@@ -238,18 +238,21 @@
 				});
 				
 				var sublink = '{{form_action|safe}}';
-				console.log(sublink.split('_')[1] == 'cp')
+				console.log(sublink);
+				// console.log(sublink.split('_')[1] == 'cp')
+				var sublink2 =''
 				if (sublink.split('_')[1] == 'cp') {
-					sublink = sublink + '/prev/' + '{{projectid}}'
+					sublink2 = sublink + '/prev/' + '{{projectid}}'
 				} else {
-					sublink = sublink + '/' + '{{projectid}}'
+					sublink2 = sublink + '/' + '{{projectid}}'
 				};
+				// console.log(sublink);
+				$("#link1").attr('href', sublink2);
+				$("#link2").attr('href', sublink2);
 				
-				$("#link1").attr('href', sublink);
-				$("#link2").attr('href', sublink);
-				
-				$("#link1").text('www.inbirg.com/maler/' + sublink);
-				$("#link2").text('www.inbirg.com/maler/' + sublink);
+				$("#link1").text('www.inbirg.com/maler/' + sublink2);
+				$("#link2").text('www.inbirg.com/maler/' + sublink2);
+				// console.log($('#link1'))
 			});
 			var id = '{{ projectid|safe }}';
 			// document.write(id)

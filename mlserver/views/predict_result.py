@@ -19,36 +19,36 @@ from mlserver.views.regression_cp_result_views import reg_cust_val, mkvregpredpl
 from mlserver.views.survival_oc_result_views import sur_data_process, mk_surv_data, time_dependent_auc, mk_auc_line, mk_surv_layout
 def predict_results(request, projectid):
     # predict
-    if request.method == "POST":
-        select_model = 'model_' + projectid.split('-')[1].lower()
-        # if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'apickle.pkl')):
-        #     with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'rb') as f:
-        #         preview_pickle = pickle.load(f)
-        #     if preview_pickle['status'] == 'Preview':
-        #         print(preview_pickle['status'])
-        #         preview_pickle['status'] = 'Running'
-        #         with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'wb') as f:
-        #             pickle.dump(preview_pickle, f)
-        #     else:
-        #         status = 'Running'
-        #         print(preview_pickle['status'])
-        #         form_action = preview_pickle['form_action']
-        #         display_samples_dict = preview_pickle['display_samples_dict']
-        #         hist_trace = preview_pickle['hist_trace']
-        #         inputdata_display = preview_pickle['inputdata_display']
-        #         inputdata_columns = preview_pickle['inputdata_columns']
-        #         title_str = preview_pickle['title_str']
-        #         return render(request, 'status.html', {
-        #             'projectid': projectid,
-        #             # 'model_md5': model_md5,
-        #             'form_action': form_action,
-        #             'display_samples_dict': json.dumps(display_samples_dict),
-        #             'hist_trace': json.dumps(hist_trace, ensure_ascii=False, cls=JsonEncoder),
-        #             'inputdata_display': json.dumps(inputdata_display),
-        #             'inputdata_columns': json.dumps(inputdata_columns),
-        #             'title_str': title_str,
-        #             'status': status,
-        #         })
+    # if request.method == "POST":
+    select_model = 'model_' + projectid.split('-')[1].lower()
+    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'predict_pickle.pkl')):
+        with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'rb') as f:
+            preview_pickle = pickle.load(f)
+        if preview_pickle['status'] == 'Preview':
+            print(preview_pickle['status'])
+            preview_pickle['status'] = 'Running'
+            with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'wb') as f:
+                pickle.dump(preview_pickle, f)
+        else:
+            status = 'Running'
+            print(preview_pickle['status'])
+            form_action = preview_pickle['form_action']
+            display_samples_dict = preview_pickle['display_samples_dict']
+            hist_trace = preview_pickle['hist_trace']
+            inputdata_display = preview_pickle['inputdata_display']
+            inputdata_columns = preview_pickle['inputdata_columns']
+            title_str = preview_pickle['title_str']
+            return render(request, 'status.html', {
+                'projectid': projectid,
+                # 'model_md5': model_md5,
+                'form_action': form_action,
+                'display_samples_dict': json.dumps(display_samples_dict),
+                'hist_trace': json.dumps(hist_trace, ensure_ascii=False, cls=JsonEncoder),
+                'inputdata_display': json.dumps(inputdata_display),
+                'inputdata_columns': json.dumps(inputdata_columns),
+                'title_str': title_str,
+                'status': status,
+            })
         with open(STATIC_ROOT + '/cache/' + projectid + '/' + 'pickle.pkl', 'rb') as f:
             model_pickle = pickle.load(f)
         # model
@@ -69,14 +69,13 @@ def predict_results(request, projectid):
                 predict_reports = {}
                 mapping = dict(zip(classes.values(), classes.keys()))  # 键值对翻转
                 # print(blind_set[feature_names])
-                print(blind_set[feature_names].dtypes)
-                # try:
-                #     predict_reports[model_name] = model.predict(blind_set[feature_names])
-                # except:
-                #     title = 'feature names: ' + ", ".join(feature_names) + ' are not involved in the inputdata!'
-                #     messages.success(request, title)
-                #     return HttpResponseRedirect("/maler/predict")
-                predict_reports[model_name] = model.predict(blind_set[feature_names])
+                try:
+                    predict_reports[model_name] = model.predict(blind_set[feature_names])
+                except:
+                    title = 'feature names: ' + ", ".join(feature_names) + ' are not involved in the inputdata!'
+                    messages.success(request, title)
+                    return HttpResponseRedirect("/maler/predict")
+                # predict_reports[model_name] = model.predict(blind_set[feature_names])
 
                 predict_reports = pd.DataFrame(predict_reports, index=blind_set.index).applymap(lambda x: mapping[x])
                 predict_reports_dict = predict_reports.reset_index().rename(
@@ -131,6 +130,12 @@ def predict_results(request, projectid):
                 classes = model_pickle['classes']
                 mapping = dict(zip(classes.values(), classes.keys()))  # 键值对翻转
                 validation_data, validation_label = classification_process(validation_set)
+                try:
+                    validation_reports[model_name] = model.predict(validation_data[feature_names])
+                except:
+                    title = 'feature names: ' + ", ".join(feature_names) + ' are not involved in the inputdata!'
+                    messages.success(request, title)
+                    return HttpResponseRedirect("/maler/predict")
                 validation_reports[model_name] = model.predict(validation_data[feature_names])
                 validation_reports = pd.DataFrame(validation_reports, index=validation_data.index).applymap(
                     lambda x: mapping[x])
@@ -160,7 +165,12 @@ def predict_results(request, projectid):
             elif select_model == 'model_reg':
                 method = 'Regression'
                 validation_data, validation_label = regression_preprocess(validation_set)
-                validation_reports[model_name] = model.predict(validation_data[feature_names])
+                try:
+                    validation_reports[model_name] = model.predict(validation_data[feature_names])
+                except:
+                    title = 'feature names: ' + ", ".join(feature_names) + ' are not involved in the inputdata!'
+                    messages.success(request, title)
+                    return HttpResponseRedirect("/maler/predict")
                 validation_reports = pd.concat(
                     [pd.DataFrame(validation_reports, index=validation_data.index), pd.DataFrame(validation_label, index=validation_data.index)], axis=1)
                 validation_reports_dict = validation_reports.reset_index().rename(
@@ -189,7 +199,12 @@ def predict_results(request, projectid):
                 name = model_pickle['name']
                 ytrain = model_pickle['ytrain']
                 validation_data, validation_label = sur_data_process(validation_set)
-                data_median = model.predict(pd.DataFrame(inputdata[feature_names].median()).T)[0]
+                try:
+                    data_median = model.predict(pd.DataFrame(inputdata[feature_names].median()).T)[0]
+                except:
+                    title = 'feature names: ' + ", ".join(feature_names) + ' are not involved in the inputdata!'
+                    messages.success(request, title)
+                    return HttpResponseRedirect("/maler/predict")
                 vsurv_trace, vresultp = mk_surv_data(name, validation_data[feature_names], validation_label,
                                                      model, data_median)
                 vsurv_layout = mk_surv_layout(name, vresultp)
@@ -207,9 +222,19 @@ def predict_results(request, projectid):
                     'vsurv_data': vsurv_data,
                     'vlinedata': vlinedata,
                 }
-                print('val_describe_roc:', val_describe_roc)
+        predict_pickle = {
+            'projectid': projectid,
+            'method': method,
+            'showtable': showtable,
+            'predict_reports_dict': predict_reports_dict,
+            'surv_plot': surv_plot,
+            'validation_reports_dict': validation_reports_dict,
+            'val_describe_roc': val_describe_roc,
+        }
 
-
+        with open(STATIC_ROOT + '/cache/' + projectid + '/predict_pickle.pkl',
+                  'wb') as f:
+            pickle.dump(predict_pickle, f)
 
         return render(request, 'predict_result.html', {
             'projectid': projectid,
@@ -221,5 +246,52 @@ def predict_results(request, projectid):
             'val_describe_roc': json.dumps(val_describe_roc, ensure_ascii=False, cls=JsonEncoder),
         })
     else:
-        return render(request, 'predict.html')
-
+        with open(STATIC_ROOT + '/cache/' + projectid + '/predict_pickle.pkl', 'rb') as f:
+            predict_pickle = pickle.load(f)
+        projectid, method, showtable, predict_reports_dict, surv_plot, validation_reports_dict, val_describe_roc \
+            = predict_pickle['projectid'], \
+              predict_pickle['method'], \
+              predict_pickle['showtable'], \
+              predict_pickle['predict_reports_dict'], \
+              predict_pickle['surv_plot'], \
+              predict_pickle['validation_reports_dict'], \
+              predict_pickle['val_describe_roc']
+        return render(request, 'predict_result.html', {
+            'projectid': projectid,
+            'method': method,
+            'showtable': showtable,
+            'predict_reports_dict': json.dumps(predict_reports_dict),
+            'surv_plot': json.dumps(surv_plot),
+            'validation_reports_dict': json.dumps(validation_reports_dict),
+            'val_describe_roc': json.dumps(val_describe_roc, ensure_ascii=False, cls=JsonEncoder),
+        })
+    # else:
+    #     print('get!!!')
+        # if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'predict_pickle.pkl')):
+        #     with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'rb') as f:
+        #         preview_pickle = pickle.load(f)
+        #     if preview_pickle['status'] == 'Preview':
+        #         print(preview_pickle['status'])
+        #         preview_pickle['status'] = 'Running'
+        #         with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'wb') as f:
+        #             pickle.dump(preview_pickle, f)
+        #     else:
+        #         status = 'Running'
+        #         print(preview_pickle['status'])
+        #         form_action = preview_pickle['form_action']
+        #         display_samples_dict = preview_pickle['display_samples_dict']
+        #         hist_trace = preview_pickle['hist_trace']
+        #         inputdata_display = preview_pickle['inputdata_display']
+        #         inputdata_columns = preview_pickle['inputdata_columns']
+        #         title_str = preview_pickle['title_str']
+        #         return render(request, 'status.html', {
+        #             'projectid': projectid,
+        #             # 'model_md5': model_md5,
+        #             'form_action': form_action,
+        #             'display_samples_dict': json.dumps(display_samples_dict),
+        #             'hist_trace': json.dumps(hist_trace, ensure_ascii=False, cls=JsonEncoder),
+        #             'inputdata_display': json.dumps(inputdata_display),
+        #             'inputdata_columns': json.dumps(inputdata_columns),
+        #             'title_str': title_str,
+        #             'status': status,
+        #         })
