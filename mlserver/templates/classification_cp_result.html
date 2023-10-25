@@ -134,7 +134,7 @@
 					</div>
 					<hr />
 					<form action="" method="" id="form_data">
-						{%  csrf_token %}
+						<!-- {%  csrf_token %} -->
 						<input style="display: none;" type="text" id="projectid"  name="projectid" value="{{projectid}}"/>
 					</form>
 					
@@ -248,7 +248,7 @@
 		{% include 'public_templates/footer.html' %}
 
 		<script>
-			var csrftoken = $("input[name='csrfmiddlewaretoken']").attr('value');
+			// var csrftoken = $("input[name='csrfmiddlewaretoken']").attr('value'); ################20231025
 
 			var f_data = {{ f_describe_dict|safe }};
 			
@@ -495,7 +495,7 @@
 			   $.ajax({
 				url:'/maler/get_cp_combination',
 				type:"POST",
-				headers: {"X-CSRFToken": csrftoken},
+				// headers: {"X-CSRFToken": csrftoken},  ###################################20231025
 				data:formData,
 				processData:false,
 				contentType:false,
