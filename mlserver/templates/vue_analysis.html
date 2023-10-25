@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Analysis</title>
+		<script src="/mlserver_static/cdn/js/spark-md5.min.js"></script>
+		{% include 'public_templates/bootstrap.html' %}
+		<style type="text/css">
+			#home span {
+				background-color: aliceblue;
+			}
+		
+			.btn.btn-outline-danger {
+				height: 38px;
+				/* margin-top: 30px; */
+			}
+		
+			#one_class_test_form .form-row {
+				margin: 0;
+				padding: 0;
+				height: 40px;
+			}
+		
+			/* table tbody {
+				font-size: 5px;
+			} */
+			table * {
+				font-size: 15px;
+			}
+		
+			.card {
+				cursor: pointer;
+				height: 100%;
+			}
+		
+			.f_white {
+				color: black;
+			}
+		
+			.hidden {
+				display: none;
+			}
+		
+			.card:hover {
+				border: 2px solid #17a2b8;
+			}
+		
+			.select {
+				border: 2px solid #17a2b8;
+			}
+		
+			.select .card-body {
+				background-color: #99c3c7;
+			}
+		
+			.md-3 {
+				margin-bottom: 15px;
+			}
+			input::placeholder{
+				font-size:10px;  
+				color: #f8f9fa;
+			} 
+			
+			table
+			{
+			border-collapse: collapse;
+			margin: 1px,1px,1px,1px;
+			text-align: center;
+			}
+			table td, table th
+			{
+			border: 2px solid #cad9ea;
+			color: #666;
+			height: 40px;
+			}
+			table thead th
+			{
+			background-color: #17a2b8;
+			width: auto;
+			height: 50px;
+			color: white;
+			}
+			table tr:nth-child(odd)
+			{
+			background: #fff;
+			}
+			table tr:nth-child(even)
+			{
+			background: #f0f1f2;
+			}
+			
+			/* el card */
+			@import url("//unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css");
+			.text {
+				font-size: 14px;
+			  }
+					
+			.item {
+				margin-bottom: 18px;
+			  }
+
+			.clearfix:before,
+			.clearfix:after {
+				display: table;
+				content: "";
+			  }
+			.clearfix:after {
+				clear: both
+			  }
+
+			.box-card {
+				width: 350px;
+				/* height: 450px; */
+				cursor: pointer;
+			  }
+			.el-card:hover {
+			box-shadow: 0 1px 6px rgba(255, 255, 255, 0.932);
+			border: 2px solid #17a2b8;
+			/* transition: all 0.2s ease-in-out; */
+			}
+			.select .el-card__body {
+				background-color: #99c3c7;
+			}
+		</style>
+		<script>
+				$(document).ready(function(){
+					// 导航栏
+					$("#nav_tools").addClass("active");
+					$("tbody").addClass("bg-white");
+					$("#page_title").text('ANALYSIS');
+				});
+		</script>
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.13/lib/theme-chalk/index.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"></script>
+		<!-- 引入组件库 -->
+		<script src="https://unpkg.com/element-ui@2.15.13/lib/index.js"></script>
+		<script src="https://cdn.bootcdn.net/ajax/libs/axios/1.3.6/axios.min.js"></script>
+		<script src="https://unpkg.com/element-ui@2.15.13/lib/locale/lang/en.js"></script>
+	</head>
+
+<body>
+	{% include 'public_templates/nav_tem.html' %}
+		<div  class="container col-9"  style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
+			<br />
+			<h5>Step1: Please select an analysis mode.</h5>
+			<el-divider></el-divider>
+			
+			
+			<div>
+			<!--span v-for="card in cards" :key="item">	
+			123
+			</span-->
+			{{cards}}
+				
+			</div>
+			
+			
+			
+<!-- 		<div class="row row-cols-1 row-cols-md-3">
+			<div class="col md-3">
+				<el-card id="model_bclass" class="box-card" v-bind:class="focus1234 == index {select: isActive}" shadow = "hover" @click.native = "clickcard(v='model_bclass')">
+				  <div slot="header" class="clearfix">
+							<p class="card-img-top" style="text-align:center" ><img src='/mlserver_static/img/binary.png' width="200" height="200" class="image"></p>
+				  </div>
+				  <div class="text item">
+					<h6 class="card-title" style="text-align:center">Binary classification</h6>
+					<p class="card-title" style="font-size: 16px" >The process of dividing new observations into distinct two categories based on the features of a set of input data.</p>
+				  </div>
+				</div>
+			
+
+			<div class="col md-3">
+				<el-card id="model_mclass" class="box-card" v-bind:class="{select: isActive}"shadow = "hover" @click.native = "clickcard(this.id)">
+				  <div slot="header" class="clearfix">
+							<p class="card-img-top" style="text-align:center" ><img src='/mlserver_static/img/muliti.png' width="200" height="200" class="image"></p>
+				  </div>
+				  <div class="text item">
+					<h6 class="card-title" style="text-align:center">Multiclass classification</h6>
+					<p class="card-title" style="font-size: 16px" >The process of dividing new observations into distinct at least three categories based on the features of a set of input data.</p>
+					</div>
+				</el-card>
+			</div>
+			
+			<div class="col md-3">
+				<el-card id="model_reg" class="box-card" v-bind:class="{select: isActive}" shadow = "hover" @click.native = "clickcard(this.id)">
+				  <div slot="header" class="clearfix">
+							<p class="card-img-top" style="text-align:center" ><img src='/mlserver_static/img/regression.png' width="200" height="200" class="image"></p>
+				  </div>
+				  <div class="text item">
+					<h6 class="card-title" style="text-align:center">Regression</h6>
+					<p class="card-title" style="font-size: 16px" >The process of exploring the relationships between dependent variables (labels) and a series of  indenpendent variables (features).</p>
+				  </div>
+				</el-card>
+			</div>
+			
+			<div class="col md-3">
+				<el-card id="model_sur" class="box-card" v-bind:class="{select: isActive}" shadow = "hover" @click.native = "clickcard(this.id)">
+				  <div slot="header" class="clearfix">
+							<p class="card-img-top" style="text-align:center" ><img src='/mlserver_static/img/survival.png' width="200" height="200" class="image"></p>
+				  </div>
+				  <div class="text item">
+					<h6 class="card-title" style="text-align:center">Survival</h6>
+					<p class="card-title" style="font-size: 16px" >The process of establishing the connection between covariates and the time of events to predict the risk of future events.</p>
+				  </div>
+				</el-card>
+			</div>
+		</div> -->
+		
+		<br />
+		<el-divider></el-divider>
+		<h5>Step2: Please upload the files.</h5>
+		<br />
+		
+		<!-- <el-tab-pane label="Analysis" name="submitTab"> -->
+		<form action="preview" method="POST" id="form_step23" enctype="multipart/form-data">
+			<div class="row">
+				<div class="col-3" id="data_up_select">
+					<label style="font-weight: bold; color: #666;font-size: 20px;">Choose data to upload: </label>
+					<div class="form-check">
+						<label class="form-check-label" for="usr_up">
+							<input type="radio" id='usr_up' value="usr_data" name="data_up" checked>
+							Upload Your Own Data
+						</label>
+					</div>
+					<div class="form-check">
+						<label class="form-check-label" for="samp_up">
+							<input type="radio" id='samp_up' value="samp_data" name="data_up">
+							Choose Example Data
+						</label>
+								
+					</div>
+				</div>
+				<div class="col-9">
+					
+					<div id="usr_data" class="row">
+				
+						{% csrf_token %}
+						<!-- <div class="custom-file mb-3">
+							  <input type="file" class="custom-file-input" id="customFile" name="filename">
+							  <label class="custom-file-label" for="customFile">Choose Profile</label>
+						</div> -->
+						<h6 style="position: absolute;top: 10px;">File:&nbsp;</h6>
+						<input type="file" id="upload_file" name="upload_file" style="display: none;" accept=".csv" />
+						<button id="upfile" type="button" class="btn btn-info" style="position: absolute;left: 40px;">Upload</button>
+						<!-- <h6>Label: <input type="file" name="upload_label" /></h6> -->
+				
+				
+						<div class="row">
+							<h5 style="position: absolute;left: 360px;">OR</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<h6 style="position: absolute;left: 560px;">ProjectID:&nbsp;<input type="text" id="projectid" name="projectid"></h6>
+						</div>
+						<div class="showFileName"style="position: absolute;left: 130px;top: 10px;"></div>
+						<!-- <input type="submit" value="submit" />
+						<input type="submit" value="EXAMPLE(ZIP)" /> -->
+						<br />
+						<br />
+						<br />
+						<div>
+						<p><b> File: </b>  Please upload a csv file with features in rows and samples in columns and no larger than 200MB. Please refer to the sample file for the exact format of the file.</p>
+						<p><b> ProjectID: </b>  A unique identifier for each task, which can be used to access the results of analyzed tasks.</p>
+						</div>
+					</div>
+					
+					
+					<script type="text/javascript">
+						$("#upfile").click(function () {
+						    $("#upload_file").click();
+						});
+						var myfile = document.getElementById('upload_file');
+						myfile.addEventListener('change',function() {
+							// location.reload();
+							$(".showFileName").html(myfile.files[0].name);
+						});
+						
+					</script>
+					
+					
+					
+					<div id="samp_data" class='row' style="display: none;">
+						<div class="col-12" id="sample_select" display="none">
+							<!-- <table border="1" style="border: #000000;background-color: #f8f9fa;"> -->
+							<b>Please click the 'Submit' button to make predictions on the sample data.</b>
+							<table width="100%" class="" border="1" style="border: #000000;background-color: #f8f9fa;text-align: center;">
+								<thead>
+								<tr>
+									<th>Example</th>
+									<th>Description</th>
+									<th>Source</th>
+									<th>Download data</th>
+								</tr>
+								</thead>
+								<tr>
+									<td>Binary Classfication</td>
+									<td>LUAD and LUSC are classified based on gene expression profiles</td>
+									<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
+									<td><a href="download/binary_classification_example.csv">download</a></td>
+								</tr>
+								<tr>
+									<td>Multiclass Classfication</td>
+									<td>LUAD, LUSC and KIRC are classified based on gene expression profiles</td>
+									<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
+									<td><a href="download/multiclass_classification_example.csv">download</a></td>
+								</tr>
+								<tr>
+									<td>Regression</td>
+									<td>Tumor purity of KIRC is predicted based on gene expression profiles</td>
+									<td>
+										<a href="https://xenabrowser.net/">UCSC Xena</a><br />
+										<a href="https://pubmed.ncbi.nlm.nih.gov/26634437/">PMID: 26634437</a>
+									</td>
+									<td><a href="download/regression_example.csv">download</a></td>
+								</tr>
+								<tr>
+									<td>Survival</td>
+									<td>Survival in GBM is predicted based on gene expression profiles</td>
+									<td>
+										<a href="https://xenabrowser.net/">UCSC Xena</a><br />
+										<a href="http://www.cgga.org.cn">CGGA</a>
+									</td>
+									<td><a href="download/survival_example.csv">download</a></td>
+								</tr>
+							</table>
+							<br>
+							
+							<br>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+			
+			
+			<br />
+			<h4>Step3: Please select a feature selection method.</h4>
+			<hr>
+			<div class="col-9">
+				<div>
+					{% csrf_token %}
+					<input name="select_model" id="select_model" style="display: none;" value="model_bclass"/>
+					<!-- <input name="select_mode" id="select_mode" style="display: none;" value=""/> -->
+					<input name="select_child_model" id="select_child_model" style="display: none;" value=""/>
+					<input name="file_upload_type" id="file_upload_type" style="display: none;" value="user_data"/>
+					<input name="random_token" id="random_token" onclick="randomString()" style="display: none;" value=""/>
+					<input name="file_md5" id="file_md5" style="display: none;" value=""/>
+					<input name="strategy" id="strategy" style="display: none;" value=""/>
+					<!-- <input name="fsm" id="fsm" style="display: none;" value=""/> -->
+					<!-- 新增特征筛选方法 anova mrmr-->
+					<div class="row">
+					<label style="font-weight: bold; color: #666;font-size: 20px;">Feature Selsection Methods: </label>
+					</div>
+					
+					<div class="row">
+						<input type="radio" id="fsm" name="fsm" value="A" checked />&nbsp;ANOVA&nbsp;
+						<input type="radio" id="fsm" name="fsm" value="M" />&nbsp;MRMR&nbsp;
+					</div>
+					<br />
+					<div class="row">
+						<label style="font-weight: bold; color: #666;font-size: 20px;">Optimal Feature Subset Search Methods: </label>
+					</div>
+					
+					<div class="row">
+						<input type="radio" name="feature_select_method" value="TopK" checked />&nbsp;TopK&nbsp;
+						<input type="radio" name="feature_select_method" value="FSS" />&nbsp;FSS&nbsp;
+						<input type="radio" name="feature_select_method" value="BSS" />&nbsp;BSS&nbsp;
+					</div>
+				</div>
+				
+			</div>
+		
+		
+		<br />
+		<br>
+			
+			
+			
+			
+			
+		</div>
+
+			
+		<br />
+		
+		</div>
+		
+	<script>
+	new Vue({
+		el: "#card",
+		data: {
+			isActive : false,
+			cards: [
+			      'model_bclass',
+			      'model_mclass',
+			      'model_reg',
+				  'model_sur',
+			    ]
+			focus_click: cardname,
+		},
+		computed:{},
+		
+		mounted() {
+			
+		},
+		methods:{
+			clickcard(id) {
+				
+				// this.isActive = !this.isActive;
+				// document.getElementById(id).class = 'box-card select';
+				// document.getElementById('select_model').value = id;
+			}
+			
+				
+			
+		}
+		
+	})
+	</script>
+
+
+
+
+</body>
+</html>
+
+
+

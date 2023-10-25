@@ -119,6 +119,7 @@ def predict_preview(request):
     with open(STATIC_ROOT + '/cache/' + projectid + '/' + 'pickle.pkl', 'rb') as f:
         model_pickle = pickle.load(f)
     f.close()
+    print(projectid)
 #model
     method, model_name, model, feature_names = \
         model_pickle['method'], model_pickle['name'], model_pickle['model'], model_pickle['feature_names']
@@ -326,8 +327,12 @@ def make_surv_text(x, y):
     return text
 def pred_val_split(data,datatype='other'):
     blind_set, val_set = pd.DataFrame(),pd.DataFrame()
+    data = data.apply(pd.to_numeric, errors='ignore')
     if datatype != 'survival':
-        if data.columns[0].lower() == 'label':
+        # if data.columns[0].lower() == 'label':
+        # 类别数，是否为数字判断是否存在label列
+        # if len(np.unique(data.iloc[:,0])) < 30 and (not (np.issubdtype(data.iloc[0,0],np.integer) or np.issubdtype(data.iloc[0,0],np.floating))):
+        if len(np.unique(data.iloc[:, 0])) < 30 and (isinstance(data.iloc[0,0],str)):
             blind_set = data[data.iloc[:,:1].isna().T.any()]
             if len(blind_set)>0:
                 blind_set = blind_set.drop(labels=blind_set.columns[0], axis=1)

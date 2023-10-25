@@ -160,7 +160,9 @@
 							{% endif %}
 						</a>
 						<a class="list-group-item list-group-item-action" href="#list-item-8">Evaluation indices radar</a>
+						{% if ifval == True %}
 						<a class="list-group-item list-group-item-action" href="#list-item-9">Test</a>
+						{% endif %}
 						<a class="list-group-item list-group-item-action" href="#list-item-10">Report</a>
 						<!-- <a class="list-group-item list-group-item-action" href="#list-item-5">Drug Property Radar Chart</a> -->
 					</div>
@@ -325,12 +327,14 @@
 					<h3 class="panel-heading" id="list-item-8" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">Evaluation indices radar</h3>
 					<div id="radarplotDiv" style="margin-right: 0px;"></div>
 					
+					{% if  ifval == True %}
 					<h3 class="panel-heading" id="list-item-9" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
 						Test
 					</h3>
 					<div id="vbarplotDiv"</div>
 					<div id="heatmapDiv"</div>
 					<div id="vrocplotDiv" style="margin-right: 0px;"></div>
+					{% endif %}
 					<h3 class="panel-heading" id="list-item-10" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
 						Report
 					</h3>
@@ -357,6 +361,7 @@
 							</tr>
 						</thead>
 					</table>
+					
 					<br />
 				</div>
 			</div>
@@ -375,6 +380,7 @@
 		{% include 'public_templates/footer.html' %}
 
 		<script>
+
 			var csrftoken = $("input[name='csrfmiddlewaretoken']").attr('value');
 			var acc_data = {{ test_acc_describe_dict|safe }};
 			var auc_data = {{ df_AUCs_describe_dict|safe }};

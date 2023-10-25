@@ -21,6 +21,8 @@ from sklearn.tree import DecisionTreeClassifier
 from lightgbm import LGBMClassifier
 from xgboost import XGBClassifier
 from ML_WebServer.settings import STATIC_ROOT
+# from mlserver.views.featureselection_method import mrmr_fs,FSS_fun,BSS_fun,train_estimator,train_top3,selectkbest_top20,pre_screening
+from mlserver.views.featureselection_method import mrmr_fs
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -28,17 +30,19 @@ title = ["Naive Bayes","SVM","RandomForest","Logistic","KNN","XGBoost","lightGBM
 
 def result(request, projectid):
     # model
-    model = [GaussianNB(), SVC(cache_size=5000, probability=False), RFC(n_jobs=1, random_state=10),
-             LR(max_iter=5000, n_jobs=1), KNeighborsClassifier(n_jobs=1), XGBClassifier(n_jobs=1, random_state=10),
-             LGBMClassifier(importance_type='gain', n_jobs=1), AdaBoostClassifier(),
+    njobs = 1  #本地设置并行任务数
+    model = [GaussianNB(), SVC(cache_size=5000, probability=False), RFC(n_jobs=njobs, random_state=10),
+             LR(max_iter=4000, n_jobs=njobs), KNeighborsClassifier(n_jobs=njobs), XGBClassifier(n_jobs=njobs, random_state=10),
+             LGBMClassifier(importance_type='gain', n_jobs=njobs), AdaBoostClassifier(),
              DecisionTreeClassifier(random_state=10), GradientBoostingClassifier(random_state=10)]
 
     # projectid = request.POST.get('projectid')
 
     # select_model = request.POST.get('select_model')
     # file_upload_type = request.POST.get('file_upload_type')
-    feature_select_method = projectid.split('-')[2]
+    # feature_select_method = projectid.split('-')[2]
     # print(file_upload_type)
+    feature_select_method = request.POST.get('feature_select_method')
     if projectid.split('-')[0][0] == 'B':
         select_model = 'model_bclass'
         ifmarco = False
@@ -107,64 +111,33 @@ def result(request, projectid):
                 'title_str': title_str,
             })
 
+        fsm = request.POST.get("fsm")
+        form_action = request.POST.get("form_action")
+
         inputdata = pd.read_csv(
             STATIC_ROOT + '/cache/' + projectid + '/' + 'data.csv',
             header=0, index_col=0).T
 
-        # if file_upload_type == 'user_data':
-        #
-        #     # Feature selection methods
-        #
-        #     print('feature_select_method: ', feature_select_method)
-        #     '''
-        #     IMPORRT DATA
-        #     '''
-        #     obj_file = request.FILES.get('upload_file')
-        #     f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
-        #     for line in obj_file.chunks():
-        #         f.write(line)
-        #     f.close()
-        #
-        #     filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
-        #     projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
-        #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-        #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-        #     shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
-        #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, header=0, index_col=0).T
-        #
-
-        # shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
-        # read files
-
-        # label = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'label_3columns.csv', header=0, index_col=0)
-
-
-        # label = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + obj_label.name, header=0, index_col=0)
-
-        # if label.shape[1] == 2:
-        #     blind_label, train_label, validation_label, blind_data, train_data, validation_data = label_data_split(
-        #         label, data)
-        #     label = train_label.iloc[:, 0]
-        #     data = train_data.iloc[:, ]
-        #     print(label.shape)
-
-        # label = np.array(label).ravel()
-        # label2, classes = label_pre(label)
-        # label_num = len(np.unique(label2))
         train_set, test_set, blind_set = split_train_test(inputdata)
         data, label = classification_process(train_set)
-
         label3, classes = label_pre(label)
+
+        validation_data = []   #预先定义
         if len(test_set) > 0:
+            ifval = True
             validation_data, validation_label = classification_process(test_set)
             validation_label, ll = label_pre(validation_label)
-
-        if feature_select_method == 'TopK':
+        else:
+            ifval = False
+        if fsm == 'A':
             features = selectkbest_top20(data, label3, k=50)
-            data3 = data.loc[:, features]
-            # data3, validation_data, label3, validation_label = train_test_split(data2, label2,
-            #                                                                               random_state=10,
-            #                                                                               train_size=0.9)
+        elif fsm == 'M':
+            features = mrmr_fs(data,label3,form_action)
+
+        data3 = data.loc[:, features]
+        if feature_select_method == 'TopK':
+            # features = selectkbest_top20(data, label3, k=100)  #修改为100
+
             train_index, test_index = RSKFold(data3, label3)  # 十次五折交叉验证
             cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=1, random_state=10)
 
@@ -242,7 +215,7 @@ def result(request, projectid):
             parameter, train_acc, test_acc, best_esti = [], [], [], []
             precision, AUC, recall, f1_score = [], [], [], []
             feature_names = []
-
+            cv
             for i in range(len(title)):
                 best_esti.append(tmodels[i])
                 parameter.append(str(tmodels[i].get_params()))
@@ -268,29 +241,32 @@ def result(request, projectid):
                 columns={'index': 'Method', 'f1-score': 'f1score'}).to_dict('records')
 
             # validation
-            if select_model == 'model_bclass':
-                validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label, feature_names, ifmarco)
-                valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info(title, best_esti,
-                                                                                       validation_data,
-                                                                                       validation_label,
-                                                                                       feature_names,
-                                                                                       ifmarco)
-                valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=title)
-            else:
-                validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label,feature_names, ifmarco)
-                valid_roc_traces = multi_valid_roc_info(best_esti,validation_data,validation_label,feature_names,classes,title=title)
-
-
-
-            vbar_trace = mkvbartrace(validate_reports)
-
+            # ifval = True  #判断是否存在validation data
             heatmap_data, heatmap_anno = [], []
-            num = 0
-            for array in validate_predicts:
-                h_data, h_anno = mkheatmap(validation_label, array, classes, num+1)
-                heatmap_data.append(h_data[0])
-                [heatmap_anno.append(h) for h in h_anno]
-                num += 1
+            vbar_trace, valid_roc_traces = [],[]
+            if len(validation_data) != 0:
+                if select_model == 'model_bclass':
+                    validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label, feature_names, ifmarco)
+                    valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info(title, best_esti,
+                                                                                           validation_data,
+                                                                                           validation_label,
+                                                                                           feature_names,
+                                                                                           ifmarco)
+                    valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=title)
+                else:
+                    validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label,feature_names, ifmarco)
+                    valid_roc_traces = multi_valid_roc_info(best_esti,validation_data,validation_label,feature_names,classes,title=title)
+
+                vbar_trace = mkvbartrace(validate_reports)
+
+                num = 0
+                for array in validate_predicts:
+                    h_data, h_anno = mkheatmap(validation_label, array, classes, num+1)
+                    heatmap_data.append(h_data[0])
+                    [heatmap_anno.append(h) for h in h_anno]
+                    num += 1
+            # else:
+            #     ifval = False
 
             classification_pickle = {'test_acc_reports_dict': test_acc_reports_dict,
                                          'test_acc_describe_dict': test_acc_describe_dict,
@@ -311,7 +287,8 @@ def result(request, projectid):
                                          'heatmap_data': heatmap_data,
                                          'heatmap_anno': heatmap_anno,
                                          'valid_roc_traces': valid_roc_traces,
-                                         'radar_range': radar_range}
+                                         'radar_range': radar_range,
+                                         'ifval': ifval}
 
             with open(STATIC_ROOT + '/cache/' + projectid + '/classification_pickle.pkl',
                       'wb') as f:
@@ -331,22 +308,19 @@ def result(request, projectid):
             '''
             DETERMINE BINARY OR MULTIPLE CLASSIFICATION
             '''
-            feature_names = selectkbest_top20(data, label3, k=50)
-            data3 = data.loc[:, feature_names]
+            # feature_names = selectkbest_top20(data, label3, k=100)
+            # data3 = data.loc[:, feature_names]
             cv = RepeatedStratifiedKFold(n_splits=5, n_repeats=1, random_state=10)
 
-            # data3, validation_data, label3, validation_label = train_test_split(data2, label2,
-            #                                                                               random_state=10,
-            #                                                                               train_size=0.9)
             train_index, test_index = RSKFold(data3, label3)
             # 所有分类器
             selected_feature, max_scores = [], []
             for each_model in model:
                 start = time.perf_counter()
                 if feature_select_method == 'FSS':
-                    sf, ms = FSS_fun(feature_names, each_model,data3,label3,cv)
+                    sf, ms = FSS_fun(features, each_model,data3,label3,cv,n_jobs=4) #本地并行提高运行速度
                 else:
-                    sf, ms = BSS_fun(feature_names, each_model, data3, label3, cv)
+                    sf, ms = BSS_fun(features, each_model, data3, label3, cv,n_jobs=4)
                 selected_feature.append(sf), max_scores.append(ms)
                 end = time.perf_counter()
                 print(round(end - start, 3))
@@ -474,35 +448,43 @@ def result(request, projectid):
                              'recall': recall,
                              'f1-score': f1_score}
             final_reports = pd.DataFrame(final_reports, index=title)
+            print(final_reports)
+
             final_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']] = np.round(
                 final_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']], 3)
             final_reports_dict = final_reports.reset_index().rename(
                 columns={'index': 'Method', 'f1-score': 'f1score'}).to_dict('records')
 
             # validation
-            if select_model == 'model_bclass':
-                validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label,
-                                                                      feature_names, ifmarco)
-                valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info(title, best_esti,
-                                                                                       validation_data,
-                                                                                       validation_label,
-                                                                                       feature_names,ifmarco)
-                valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=title)
-            else:
-                validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label,
-                                                                      feature_names, ifmarco)
-                valid_roc_traces = multi_valid_roc_info(best_esti, validation_data, validation_label, feature_names,
-                                                        classes, title=title)
-
-            vbar_trace = mkvbartrace(validate_reports)
-
+            # ifval = True  # 判断是否存在validation data
             heatmap_data, heatmap_anno = [], []
-            num = 0
-            for array in validate_predicts:
-                h_data, h_anno = mkheatmap(validation_label, array, classes, num + 1)
-                heatmap_data.append(h_data[0])
-                [heatmap_anno.append(h) for h in h_anno]
-                num += 1
+            vbar_trace, valid_roc_traces = [], []
+            if len(validation_data) != 0:
+                if select_model == 'model_bclass':
+                    validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label,
+                                                                          feature_names, ifmarco)
+                    valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info(title, best_esti,
+                                                                                           validation_data,
+                                                                                           validation_label,
+                                                                                           feature_names,ifmarco)
+                    valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=title)
+                else:
+                    validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label,
+                                                                          feature_names, ifmarco)
+                    valid_roc_traces = multi_valid_roc_info(best_esti, validation_data, validation_label, feature_names,
+                                                            classes, title=title)
+
+                vbar_trace = mkvbartrace(validate_reports)
+
+                heatmap_data, heatmap_anno = [], []
+                num = 0
+                for array in validate_predicts:
+                    h_data, h_anno = mkheatmap(validation_label, array, classes, num + 1)
+                    heatmap_data.append(h_data[0])
+                    [heatmap_anno.append(h) for h in h_anno]
+                    num += 1
+            # else:
+            #     ifval = False
 
             classification_pickle = {'test_acc_reports_dict': test_acc_reports_dict,
                                      'test_acc_describe_dict': test_acc_describe_dict,
@@ -523,7 +505,8 @@ def result(request, projectid):
                                      'heatmap_data': heatmap_data,
                                      'heatmap_anno': heatmap_anno,
                                      'valid_roc_traces': valid_roc_traces,
-                                     'radar_range': radar_range}
+                                     'radar_range': radar_range,
+                                     'ifval': ifval}
 
             with open(STATIC_ROOT + '/cache/' + projectid + '/classification_pickle.pkl',
                       'wb') as f:
@@ -547,14 +530,15 @@ def result(request, projectid):
             classification_pickle = pickle.load(f)
 
         test_acc_reports_dict, df_AUCs_dict, precision_reports_dict, \
-        recall_reports_dict, f1_score_reports_dict, roc_traces, ifmarco \
+        recall_reports_dict, f1_score_reports_dict, roc_traces, ifmarco, ifval\
             = classification_pickle['test_acc_reports_dict'],\
               classification_pickle['df_AUCs_dict'],\
               classification_pickle['precision_reports_dict'],\
               classification_pickle['recall_reports_dict'],\
               classification_pickle['f1_score_reports_dict'],\
               classification_pickle['roc_traces'], \
-              classification_pickle['ifmarco']
+              classification_pickle['ifmarco'], \
+              classification_pickle['ifval'],
 
         test_acc_describe_dict, df_AUCs_describe_dict, precision_describe_dict, \
         recall_describe_dict, f1_score_describe_dict, final_reports_dict, line_chart_data, radar_dict \
@@ -595,6 +579,7 @@ def result(request, projectid):
         'heatmap_data': json.dumps(heatmap_data),
         'heatmap_anno': json.dumps(heatmap_anno),
         'valid_roc_traces': json.dumps(valid_roc_traces),
+        'ifval': ifval,
     })
 
 
@@ -668,7 +653,7 @@ def pre_screening(data2,label,model,features):
 
 def multi_label_pre_screening(data2,label,model):
     #第一步筛选
-    feature_names = selectkbest_top20(data2,label,k=20,score_func=f_classif)
+    feature_names = selectkbest_top20(data2,label,k=100,score_func=f_classif)
     data2 = data2[feature_names].to_numpy()
     #ifs方法得到前三分类器选择的特征数
     clf = model
@@ -1129,7 +1114,7 @@ def BSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
     selected_feature = []
     max_scores = []
     max_scores.append(cross_val_score(clf,data,label,cv=cv,n_jobs=n_jobs).mean())#计算全部特征下的训练结果
-    features_num = min([len(feature_names),50])#判断特征数目是否大于50
+    features_num = min([len(feature_names),100])#判断特征数目是否大于50
     for i in range(features_num-1):
         cv_scores = []
         for feature in feature_names2:

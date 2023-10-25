@@ -88,7 +88,10 @@
 			{
 			background: #f0f1f2;
 			}
-			
+			h4{
+				font-family: arial;
+				font-weight: bold;
+			}
 		</style>
 		<script>
 			$(document).ready(function(){
@@ -98,7 +101,10 @@
 				$("#page_title").text('ANALYSIS');
 			});
 		</script>
+
 	</head>
+	
+	
 	<body>
 		<!-- 导航栏 -->
 		{% include 'public_templates/nav_tem.html' %}
@@ -167,7 +173,7 @@
 			<form action="preview" method="POST" id="form_step23" enctype="multipart/form-data">
 				<div class="row">
 					<div class="col-3" id="data_up_select">
-						<label style="font-weight: bold; color: #666">Choose data to upload: </label>
+						<label style="font-weight: bold; color: #666;font-size: 20px;">Choose data to upload: </label>
 						<div class="form-check">
 							<label class="form-check-label" for="usr_up">
 								<input type="radio" id='usr_up' value="usr_data" name="data_up" checked>
@@ -346,16 +352,25 @@
 						<input name="random_token" id="random_token" onclick="randomString()" style="display: none;" value=""/>
 						<input name="file_md5" id="file_md5" style="display: none;" value=""/>
 						<input name="strategy" id="strategy" style="display: none;" value=""/>
+						<!-- <input name="fsm" id="fsm" style="display: none;" value=""/> -->
+						<!-- 新增特征筛选方法 anova mrmr-->
 						<div class="row">
-							<!-- <h5>Feature Selsect Method</h5> -->
-							<label style="font-weight: bold; color: #666">Feature Selsection Methods: </label>
-							<!-- <input type="radio" name="pick_method" value="selectbest" checked />selectbest -->
+						<label style="font-weight: bold; color: #666;font-size: 20px;">Feature Selsection Methods: </label>
+						</div>
+						
+						<div class="row">
+							<input type="radio" id="fsm" name="fsm" value="A" checked />&nbsp;ANOVA&nbsp;
+							<input type="radio" id="fsm" name="fsm" value="M" />&nbsp;MRMR&nbsp;
 						</div>
 						<br />
 						<div class="row">
+							<label style="font-weight: bold; color: #666;font-size: 20px;">Optimal Feature Subset Search Methods: </label>
+						</div>
+						
+						<div class="row">
 							<input type="radio" name="feature_select_method" value="TopK" checked />&nbsp;TopK&nbsp;
-							<input type="radio" id="feature_select_method" name="feature_select_method" value="FSS" />&nbsp;FSS&nbsp;
-							<input type="radio" id="feature_select_method" name="feature_select_method" value="BSS" />&nbsp;BSS&nbsp;
+							<input type="radio" name="feature_select_method" value="FSS" />&nbsp;FSS&nbsp;
+							<input type="radio" name="feature_select_method" value="BSS" />&nbsp;BSS&nbsp;
 						</div>
 					</div>
 					
@@ -1782,6 +1797,7 @@
 			
 			function model_selectactive(id) {
 				$("*[id^=model_]").attr('class','card');
+				console.log($("*[id^=model_]").attr('class','card');)
 				document.getElementById(id).className = 'card select';
 				document.getElementById('select_model').value = id;
 			}
@@ -2171,6 +2187,17 @@
 				var random_token = randomString()
 				$("#random_token").val(random_token)
 				var select_model = $("#select_model").val()
+				
+				//获取fsm radio中的name值 两种方法
+				// var radios = document.getElementsByName("fsm")
+				// for(var i=0;i<radios.length;i++){
+				// 	if(radios[i].checked){
+				// 		var fsm = radios[i].value;
+				// 	}
+				// }
+				
+				var fsm = ($("input[name='fsm']:checked").val())
+
 				// var form_action = $("#form_step23").attr("action")
 				if(select_model == "model_bclass"){
 					prefix = "BC" + $("#strategy").val();
@@ -2191,11 +2218,12 @@
 				
 				if($("#upload_file").val() != ""){
 					if(prefix.charAt(prefix.length-1) == 'C') {
-						var projectid = prefix + '-' + md5.slice(0,6) + '-' + $("#random_token").val();
+						var projectid = prefix + '-' + fsm + '-' + md5.slice(0,6) + '-' + $("#random_token").val();
 					} else {
-						var projectid = prefix + '-' + md5.slice(0,6) + '-' + $('input:radio[name="feature_select_method"]:checked').val();
+						var projectid = prefix + '-' + fsm + '-' + md5.slice(0,6) + '-' + $('input:radio[name="feature_select_method"]:checked').val();
 					}
 					$("#projectid").val(projectid)
+					// alert(projectid);
 				}
 				
 				if ($("#file_upload_type").val() == 'user_data'){
@@ -2245,6 +2273,10 @@
 								{% endfor  %}
 			}
 			{%  endif %}
+			
+			
+			
+			
 		</script>
 	</body>
 </html>

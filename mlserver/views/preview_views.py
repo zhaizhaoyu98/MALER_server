@@ -18,11 +18,15 @@ def preview_result(request):
     projectid = request.POST.get('projectid')
     print(projectid)
     feature_select_method = request.POST.get('feature_select_method')
+    fsm = request.POST.get('fsm')
     file_upload_type = request.POST.get('file_upload_type')
     select_model = request.POST.get('select_model')
     strategy = request.POST.get('strategy')
     model_md5 = None
+    print('fsm: ', fsm)
     print(projectid,file_upload_type, strategy)
+
+
     if file_upload_type == 'example_data':
         if select_model == 'model_bclass':
             prefix, example_name = 'BC', 'binary_classification_example.csv'
@@ -45,10 +49,13 @@ def preview_result(request):
         upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/', example_name))
 
         if strategy == 'O':
-            projectid = prefix + '-' + upload_file_md5[:6] + '-' + feature_select_method
+            projectid = prefix + '-' + fsm + '-' + upload_file_md5[:6] + '-' + feature_select_method
         else:
             token = request.POST.get('random_token')
-            projectid = prefix + '-' + upload_file_md5[:6] + '-' + token
+            projectid = prefix + '-' + fsm + '-' + upload_file_md5[:6] + '-' + token
+
+        print(projectid)
+
 
 
         if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
@@ -190,11 +197,12 @@ def preview_result(request):
         'status': status,
         'feature_select_method': feature_select_method,
         'model_md5': model_md5,
-        'display_samples_dict':json.dumps(display_samples_dict),
+        'display_samples_dict': json.dumps(display_samples_dict),
         'hist_trace': json.dumps(hist_trace, ensure_ascii=False, cls=JsonEncoder),
         'inputdata_display': json.dumps(inputdata_display),
         'inputdata_columns': json.dumps(inputdata_columns),
         'title_str': title_str,
+        'fsm': fsm,
     })
 
 def data_hist(data, datatype='other'):

@@ -22,6 +22,7 @@ from lightgbm import LGBMClassifier
 from xgboost import XGBClassifier
 from ML_WebServer.settings import STATIC_ROOT
 from mlserver.views.classification_oc_result_views import df2bp, mkroc, mkradar, JsonEncoder
+from mlserver.views.featureselection_method import mrmr_fs,FSS_fun,BSS_fun,train_estimator,train_top3,selectkbest_top20,pre_screening
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -35,10 +36,11 @@ def result(request, projectid):
     # else:
     #     prefix_id = 'MCC-'
     #     ifmarco = True
+
     # Feature selection methods
     feature_select_method = request.POST.get('feature_select_method')
-    print('feature_select_method: ', feature_select_method)
     model_md5 = request.POST.get('model_md5')
+
     with open(STATIC_ROOT + '/cache/' + projectid + '/model_pickle.pkl', 'rb') as f:
         model_set = pickle.load(f)
 
@@ -161,20 +163,21 @@ def result(request, projectid):
             validation_data, validation_label = classification_process(test_set)
             validation_label, ll = label_pre(validation_label)
 
-        features = selectkbest_top20(data, label3, k=50)
+        fsm = request.POST.get("fsm")
+        form_action = request.POST.get("form_action")
+
+        if fsm == 'A':
+            features = selectkbest_top20(data, label3, k=50)
+            Fsm = 'ANOVA'
+        elif fsm == 'M':
+            features = mrmr_fs(data, label3, form_action)
+            Fsm = 'MRMR'
         data3 = data.loc[:, features]
-        # data3, validation_data, label3, validation_label = train_test_split(data2, label2,
-        #                                                                     random_state=10,
-        #                                                                     train_size=0.9)
+
         train_index, test_index = RSKFold(data3, label3)  # 十次五折交叉验证
 
-        # features = selectkbest_top20(data, label2, k=50)
-        # data2 = data.loc[:, features]
-        # 拆分验证集
-        # data3, validation_data, label3, validation_label = train_test_split(data2, label2, random_state=10,
-        #                                                                     train_size=0.9)
-        # train_index, test_index = RSKFold(data3, label3)  # 十次五折交叉验证
-        # clf_name = select_child_model.upper()
+
+
         if feature_select_method == 'TopK':
             cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=1, random_state=10)
             clf_num, ms = pre_screening(data3, label3, svc, features, cv=cv)
@@ -226,7 +229,8 @@ def result(request, projectid):
                            'precision': precision,
                            'AUC': AUC,
                            'recall': recall,
-                           'f1-score': f1_score}
+                           'f1-score': f1_score,
+                           'Fsm': Fsm}
             max_reports = pd.DataFrame(max_reports, index=[clf_name])
             max_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']] = np.round(
                 max_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']], 3)
@@ -256,13 +260,13 @@ def result(request, projectid):
                 # 'report': max_reports
             }
         elif feature_select_method == 'FSS' or feature_select_method == 'BSS':
-            print("run BSS")
+            print("run FSS or BSS")
             cv2 = RepeatedStratifiedKFold(n_splits=5, n_repeats=1, random_state=10)
             start = time.perf_counter()
             if feature_select_method == 'FSS':
-                selected_feature, max_scores = FSS_fun(features, svc, data3, label3, cv2)
+                selected_feature, max_scores = FSS_fun(features, svc, data3, label3, cv2,n_jobs=4) #njobs修改
             else:
-                selected_feature, max_scores = BSS_fun(features, svc, data3, label3, cv2)
+                selected_feature, max_scores = BSS_fun(features, svc, data3, label3, cv2,n_jobs=4) #njobs修改
             # 得到最值
             max_index = max_scores.index(np.nanmax(max_scores))
             max_score = max(max_scores)
@@ -322,7 +326,8 @@ def result(request, projectid):
                            'precision': precision,
                            'AUC': AUC,
                            'recall': recall,
-                           'f1-score': f1_score}
+                           'f1-score': f1_score,
+                           'Fsm': Fsm}
             max_reports = pd.DataFrame(max_reports, index=[clf_name])
             max_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']] = np.round(
                 max_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']], 3)
@@ -362,11 +367,15 @@ def result(request, projectid):
             # }
 
         # make cache
+        #md5码信息，用于区别不同任务
         cp_cache = {}
-        para_str = feature_select_method + max_reports['Method'][0] + str(max_reports['parameter'][0])
+        para_str = feature_select_method + max_reports['Method'][0] + str(max_reports['parameter'][0]) + max_reports['Fsm'][0]
         para_md5 = md5_convert(para_str)[:6]
         # add parameter md5 and feature select method
         max_reports['md5'],max_reports['fsm'] = para_md5, feature_select_method
+        # max_reports['Fsm'] = Fsm
+
+
         max_reports_dict = max_reports.to_dict('records')
 
         cp_cache[para_md5] = report_describe_roc
@@ -375,6 +384,15 @@ def result(request, projectid):
         with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl',
                   'wb') as f:
             pickle.dump(cp_cache, f)
+
+        #保存单个模型信息
+        model_info = {}
+
+        model_info['name'], model_info['model'], model_info['feature_names'] = clf_name, tmodels, max_features
+        model_info['classes'] = classes
+        with open(STATIC_ROOT + '/cache/' + projectid + '/' + para_md5 + '.pkl',
+                  'wb') as f:
+            pickle.dump(model_info, f)
 
     else:
         inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "data.csv", header=0, index_col=0).T
@@ -392,7 +410,15 @@ def result(request, projectid):
             validation_data, validation_label = classification_process(test_set)
             validation_label, ll = label_pre(validation_label)
 
-        features = selectkbest_top20(data, label3, k=50)
+        # ANOVA方法
+        fsm = request.POST.get("fsm")
+        form_action = request.POST.get("fsm")
+        if fsm == 'A':
+            features = selectkbest_top20(data, label3, k=50)
+            Fsm = 'ANOVA'
+        elif fsm == 'M':
+            features = mrmr_fs(data,label3,form_action)
+            Fsm = 'MRMR'
         data3 = data.loc[:, features]
         # 拆分验证集
         # data3, validation_data, label3, validation_label = train_test_split(data2, label2, random_state=10,
@@ -460,14 +486,16 @@ def result(request, projectid):
                                'precision': precision,
                                'AUC': AUC,
                                'recall': recall,
-                               'f1-score': f1_score}
+                               'f1-score': f1_score,
+                               'Fsm': Fsm}
                 max_reports = pd.DataFrame(max_reports, index=[clf_name])
                 max_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']] = np.round(
                     max_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']], 3)
                 max_reports = max_reports.reset_index().rename(
                     columns={'index': 'Method', 'f1-score': 'f1score'})
 
-                para_str = feature_select_method + max_reports['Method'][0] + str(max_reports['parameter'][0])
+                para_str = feature_select_method + max_reports['Method'][0] + str(max_reports['parameter'][0]) + max_reports['Fsm'][0]
+                print('parastr: ',para_str)
                 para_md5 = md5_convert(para_str)[:6]
                 print(para_md5)
                 # add parameter md5 and feature select method
@@ -595,14 +623,15 @@ def result(request, projectid):
                                'precision': precision,
                                'AUC': AUC,
                                'recall': recall,
-                               'f1-score': f1_score}
+                               'f1-score': f1_score,
+                               'Fsm': Fsm}
                 max_reports = pd.DataFrame(max_reports, index=[clf_name])
                 max_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']] = np.round(
                     max_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']], 3)
                 max_reports = max_reports.reset_index().rename(
                     columns={'index': 'Method', 'f1-score': 'f1score'})
 
-                para_str = feature_select_method + max_reports['Method'][0] + str(max_reports['parameter'][0])
+                para_str = feature_select_method + max_reports['Method'][0] + str(max_reports['parameter'][0]) + max_reports['Fsm'][0]
                 para_md5 = md5_convert(para_str)[:6]
                 print(para_md5)
                 # add parameter md5 and feature select method
@@ -646,6 +675,14 @@ def result(request, projectid):
                 with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl',
                           'wb') as f:
                     pickle.dump(cp_cache, f)
+                # 保存单个模型信息
+                model_info = {}
+                model_info['name'], model_info['model'], model_info['feature_names'] = clf_name, tmodels, max_features
+                model_info['classes'] = classes
+                with open(STATIC_ROOT + '/cache/' + projectid + '/' + para_md5 + '.pkl',
+                          'wb') as f:
+                    pickle.dump(model_info, f)
+
             else:
                 final_reports_dict = df2bp(cp_cache[select_md5]['final_reports'])
                 f_describe_dict = cp_cache[select_md5]['f_describe'].to_dict('records')
@@ -661,6 +698,7 @@ def result(request, projectid):
                 heatmap_anno = cp_cache[select_md5]['heatmap_anno']
                 valid_roc_traces = cp_cache[select_md5]['valid_roc_traces']
                 line_chart_data = cp_cache[select_md5]['line_chart_data']
+
 
     return render(request, 'classification_cp_result.html', {
         'projectid': projectid,
@@ -1139,14 +1177,14 @@ def label_pre(ml_label):
     classes = dict(zip(ml_label3,np.unique(ml_label2)))
     return ml_label2,classes
 
-def selectkbest_top20(data,label,k=20,score_func=f_classif):
-    selector = SelectKBest(score_func=score_func, k='all').fit(data,label)
-    df_scores = pd.DataFrame(selector.scores_)
-    df_columns = pd.DataFrame(data.columns)
-    df_feature_scores = pd.concat([df_columns, df_scores], axis=1)
-    df_feature_scores.columns = ['Feature', 'Score']
-    feature_names=df_feature_scores.sort_values(by='Score', ascending=False)[:k]['Feature']
-    return feature_names
+# def selectkbest_top20(data,label,k=20,score_func=f_classif):
+#     selector = SelectKBest(score_func=score_func, k='all').fit(data,label)
+#     df_scores = pd.DataFrame(selector.scores_)
+#     df_columns = pd.DataFrame(data.columns)
+#     df_feature_scores = pd.concat([df_columns, df_scores], axis=1)
+#     df_feature_scores.columns = ['Feature', 'Score']
+#     feature_names=df_feature_scores.sort_values(by='Score', ascending=False)[:k]['Feature']
+#     return feature_names
 
 #n次k折数据拆分
 def RSKFold (data,label,n=10,k=5):
@@ -1165,49 +1203,49 @@ def RSKFold (data,label,n=10,k=5):
 #               probability=False,max_iter=max_iters,C=c,coef0=coef)
 #     return clf
 #初筛
-def pre_screening(data2,label,model,features,cv=2):
-    #第一步筛选
-    feature_names = features
-    data2 = data2[feature_names].to_numpy()
-    #ifs方法得到前三分类器选择的特征数
-    clf = model
-    # cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,).mean() for i in range(1,21)]
-    features_num = min([len(features), 20])
-    cv_scores = [cross_val_score(clf, data2[:, :i], label, cv=cv, n_jobs=1).mean() for i in range(1, features_num + 1)]
-    clf_num = list(pd.DataFrame(cv_scores).iloc[:,0].sort_values(ascending=False).index[:3]+1)
-    return clf_num, cv_scores
+# def pre_screening(data2,label,model,features,cv=2):
+#     #第一步筛选
+#     feature_names = features
+#     data2 = data2[feature_names].to_numpy()
+#     #ifs方法得到前三分类器选择的特征数
+#     clf = model
+#     # cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,).mean() for i in range(1,21)]
+#     features_num = min([len(features), 20])
+#     cv_scores = [cross_val_score(clf, data2[:, :i], label, cv=cv, n_jobs=1).mean() for i in range(1, features_num + 1)]
+#     clf_num = list(pd.DataFrame(cv_scores).iloc[:,0].sort_values(ascending=False).index[:3]+1)
+#     return clf_num, cv_scores
 
 #top3训练
-def train_estimator(clf,xtrain,ytrain,xtest,ytest):
-    clf = copy.deepcopy(clf)
-    res = clf.fit(xtrain,ytrain)
-    predict = res.predict(xtest)
-    test_acc = accuracy_score(ytest,predict,normalize=True,)
-    return res,test_acc,predict
-
-def train_top3(clf,data,label,clf_num,train_index,test_index,feature_names):
-    test_accs,estimators,predicts,f_names = {},{},{},{}
-    mean_accs = []
-    for j in range(len(clf_num)):    #top3分类器
-        preds,tests,res,f_name = [],[],[],[]
-        for i in range(len(train_index)):
-            xtrain,ytrain = data.iloc[train_index[i],:],label[train_index[i]]
-            xtest,ytest = data.iloc[test_index[i],:],label[test_index[i]]
-            xtrain,xtest = xtrain.loc[:,feature_names[:clf_num[j]]],xtest.loc[:,feature_names[:clf_num[j]]]
-            estimator,test_acc,predict = train_estimator(clf,xtrain,ytrain,xtest,ytest)
-            tests.append(test_acc),res.append(estimator),preds.append(predict)
-        mean_accs.append(np.mean(tests))
-        test_accs[clf_num[j]] = tests
-        estimators[clf_num[j]] = res
-        predicts[clf_num[j]] = preds
-        f_names[clf_num[j]] = feature_names[:clf_num[j]]
-    #选择得分最高的topk
-    topk = clf_num[mean_accs.index(max(mean_accs))]
-    test_accs = test_accs[topk]
-    estimators = estimators[topk]
-    predicts = predicts[topk]
-    f_names = f_names[topk]
-    return test_accs,estimators,mean_accs,predicts,f_names
+# def train_estimator(clf,xtrain,ytrain,xtest,ytest):
+#     clf = copy.deepcopy(clf)
+#     res = clf.fit(xtrain,ytrain)
+#     predict = res.predict(xtest)
+#     test_acc = accuracy_score(ytest,predict,normalize=True,)
+#     return res,test_acc,predict
+#
+# def train_top3(clf,data,label,clf_num,train_index,test_index,feature_names):
+#     test_accs,estimators,predicts,f_names = {},{},{},{}
+#     mean_accs = []
+#     for j in range(len(clf_num)):    #top3分类器
+#         preds,tests,res,f_name = [],[],[],[]
+#         for i in range(len(train_index)):
+#             xtrain,ytrain = data.iloc[train_index[i],:],label[train_index[i]]
+#             xtest,ytest = data.iloc[test_index[i],:],label[test_index[i]]
+#             xtrain,xtest = xtrain.loc[:,feature_names[:clf_num[j]]],xtest.loc[:,feature_names[:clf_num[j]]]
+#             estimator,test_acc,predict = train_estimator(clf,xtrain,ytrain,xtest,ytest)
+#             tests.append(test_acc),res.append(estimator),preds.append(predict)
+#         mean_accs.append(np.mean(tests))
+#         test_accs[clf_num[j]] = tests
+#         estimators[clf_num[j]] = res
+#         predicts[clf_num[j]] = preds
+#         f_names[clf_num[j]] = feature_names[:clf_num[j]]
+#     #选择得分最高的topk
+#     topk = clf_num[mean_accs.index(max(mean_accs))]
+#     test_accs = test_accs[topk]
+#     estimators = estimators[topk]
+#     predicts = predicts[topk]
+#     f_names = f_names[topk]
+#     return test_accs,estimators,mean_accs,predicts,f_names
 
 def customized_report(clf_name,estimator,data,label,predict,test_index,f_names,test_accs):
     from sklearn.preprocessing import label_binarize
@@ -1340,47 +1378,47 @@ def get_ROC_info(clf_name,estimator,data,label,test_index,f_names,reports,predic
     auc_mean_std.index = ['mean_auc', 'std_auc']
     return mean_FPR, mean_TPR_df, auc_mean_std
 
-def FSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
-    feature_names2 = list(feature_names)
-    selected_feature = []
-    max_scores = []
-    features_num = min([len(feature_names),20])#判断特征数目是否大于20
-    for i in range(features_num):
-        cv_scores = []
-        for feature in feature_names2:
-            train_feature = [feature] + selected_feature
-            data1 = pd.DataFrame(data.loc[:,train_feature])
-            cv_score = cross_val_score(clf,data1,label,cv=cv,n_jobs=n_jobs,error_score='raise').mean()
-            cv_scores.append(cv_score)
-        max_index = np.array(cv_scores).argmax()
-        max_score = max(cv_scores)
-        max_scores.append(max_score)
-        selected_feature.append(feature_names2[max_index])
-        feature_names2.remove(feature_names2[max_index])
-    return selected_feature,max_scores
-def BSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
-    feature_names2 = list(feature_names)
-    selected_feature = []
-    max_scores = []
-    max_scores.append(cross_val_score(clf,data,label,cv=cv,n_jobs=n_jobs).mean())#计算全部特征下的训练结果
-    features_num = min([len(feature_names),50])#判断特征数目是否大于50
-    for i in range(features_num-1):
-        cv_scores = []
-        for feature in feature_names2:
-            train_feature = feature_names2[:] #切片，独立于原列表
-            train_feature.remove(feature)
-            data1 = pd.DataFrame(data.loc[:,train_feature])
-            cv_score = cross_val_score(clf,data1,label,cv=cv,n_jobs=n_jobs).mean()
-            cv_scores.append(cv_score)
-        max_index = np.array(cv_scores).argmax()
-        max_score = max(cv_scores)
-        max_scores.append(max_score)
-        selected_feature.append(feature_names2[max_index])
-        del feature_names2[max_index]
-    selected_feature.append(feature_names2[0])
-    selected_feature.reverse() #反向排序
-    max_scores.reverse()
-    return selected_feature,max_scores
+# def FSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
+#     feature_names2 = list(feature_names)
+#     selected_feature = []
+#     max_scores = []
+#     features_num = min([len(feature_names),20])#判断特征数目是否大于20
+#     for i in range(features_num):
+#         cv_scores = []
+#         for feature in feature_names2:
+#             train_feature = [feature] + selected_feature
+#             data1 = pd.DataFrame(data.loc[:,train_feature])
+#             cv_score = cross_val_score(clf,data1,label,cv=cv,n_jobs=n_jobs,error_score='raise').mean()
+#             cv_scores.append(cv_score)
+#         max_index = np.array(cv_scores).argmax()
+#         max_score = max(cv_scores)
+#         max_scores.append(max_score)
+#         selected_feature.append(feature_names2[max_index])
+#         feature_names2.remove(feature_names2[max_index])
+#     return selected_feature,max_scores
+# def BSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
+#     feature_names2 = list(feature_names)
+#     selected_feature = []
+#     max_scores = []
+#     max_scores.append(cross_val_score(clf,data,label,cv=cv,n_jobs=n_jobs).mean())#计算全部特征下的训练结果
+#     features_num = min([len(feature_names),50])#判断特征数目是否大于50
+#     for i in range(features_num-1):
+#         cv_scores = []
+#         for feature in feature_names2:
+#             train_feature = feature_names2[:] #切片，独立于原列表
+#             train_feature.remove(feature)
+#             data1 = pd.DataFrame(data.loc[:,train_feature])
+#             cv_score = cross_val_score(clf,data1,label,cv=cv,n_jobs=n_jobs).mean()
+#             cv_scores.append(cv_score)
+#         max_index = np.array(cv_scores).argmax()
+#         max_score = max(cv_scores)
+#         max_scores.append(max_score)
+#         selected_feature.append(feature_names2[max_index])
+#         del feature_names2[max_index]
+#     selected_feature.append(feature_names2[0])
+#     selected_feature.reverse() #反向排序
+#     max_scores.reverse()
+#     return selected_feature,max_scores
 
 def pre_valid(estimator,vdata,vlabel,max_features):
     validate_predict = estimator.predict(vdata[max_features])

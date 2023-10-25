@@ -34,6 +34,8 @@ from mlserver.views.classification_oc_result_views import get_file_md5, split_tr
 from mlserver.views.regression_oc_result_views import mkvregpredplot, mkvreportbarplot, JsonEncoder
 from mlserver.views.classification_cp_result_views import md5_convert
 from mlserver.views.survival_cp_result_views import surv_para_group
+# from mlserver.views.featureselection_method import mrmr_fs,FSS_fun,BSS_fun,train_estimator,train_top3,selectkbest_top20,pre_screening
+from mlserver.views.featureselection_method import mrmr_fs
 
 def regression_cp_result(request, projectid):
     feature_select_method = request.POST.get('feature_select_method')
@@ -53,9 +55,10 @@ def regression_cp_result(request, projectid):
     # get project id
     # projectid = request.POST.get('projectid')
     # if projectid == '': projectid = 'None'
-
+    fsm = request.POST.get('fsm')
+    form_action = request.POST.get('form_action')
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'cp_cache.pkl')):
-        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
+
         # token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
         # token = request.POST.get('random_token')
         # if file_upload_type == 'user_data':
@@ -117,15 +120,25 @@ def regression_cp_result(request, projectid):
 
         '''
         # inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0, index_col=0).T
+        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
         train_set, test_set, blind_set = split_train_test(inputdata)
+
+
 
         nordata4, nor_age4 = regression_preprocess(train_set)
         if len(test_set) > 0:
             validation_data, validation_label = regression_preprocess(test_set)
-        # print('test_set:', test_set)
-        # nordata4, vaildation_data, nor_age4, vaildation_label = train_test_split(x_dum, y, random_state=10,
-        #                                                                          train_size=0.7)  # 分验证集
-        features = selectkbest_top20(nordata4, nor_age4, score_func=f_regression, k=50)
+            ifval = True
+        else:
+            ifval = False
+        if fsm == 'A':
+            features = selectkbest_top20(nordata4, nor_age4, k=50)
+            Fsm = 'ANOVA'
+        elif fsm == 'M':
+            features = mrmr_fs(nordata4, nor_age4,form_action,k=50)
+            Fsm = 'MRMR'
+
+        # features = selectkbest_top20(nordata4, nor_age4, score_func=f_regression, k=50)
         nordata4 = nordata4[features]
 
         train_index, test_index = RegressionKFold(nordata4, nor_age4)
@@ -189,7 +202,8 @@ def regression_cp_result(request, projectid):
                          'feature_names': feature_names,
                          'Mean R-square': cust_reports.mean()[0],
                          'MAE': cust_reports.mean()[1],
-                         'MSE': cust_reports.mean()[2], }
+                         'MSE': cust_reports.mean()[2],
+                         'Fsm': Fsm}
 
         final_reports = pd.DataFrame(final_reports, index=[reg_model_name]).reset_index().rename(
             columns={'index': 'Method'})
@@ -222,11 +236,13 @@ def regression_cp_result(request, projectid):
             'final_reports_dict': final_reports_dict,
             'val_report_dict': val_report_dict,
             'vregpred_trace': vregpred_trace,
-            'vreport_trace':vreport_trace
+            'vreport_trace': vreport_trace,
+            'ifval': ifval,
+            'Fsm': Fsm
         }
         # make cache
         cp_cache = {}
-        para_str = feature_select_method + final_reports['Method'][0] + str(final_reports['parameter'][0])
+        para_str = feature_select_method + final_reports['Method'][0] + str(final_reports['parameter'][0]) + final_reports['Fsm'][0]
         para_md5 = md5_convert(para_str)[:6]
         # add parameter md5 and feature select method
         final_reports['md5'], final_reports['fsm'] = para_md5, feature_select_method
@@ -238,6 +254,13 @@ def regression_cp_result(request, projectid):
         with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl',
                   'wb') as f:
             pickle.dump(cp_cache, f)
+        #保存单个模型信息
+        model_info = {}
+        model_info['name'], model_info['model'], model_info['feature_names'] = reg_model_name, tmodels, max_features
+        print(model_info)
+        with open(STATIC_ROOT + '/cache/' + projectid + '/' + para_md5 + '.pkl','wb') as f:
+            pickle.dump(model_info, f)
+
     else:
         with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
             cp_cache = pickle.load(f)
@@ -246,11 +269,21 @@ def regression_cp_result(request, projectid):
         train_set, test_set, blind_set = split_train_test(inputdata)
 
         nordata4, nor_age4 = regression_preprocess(train_set)
-        if len(test_set) > 0:
-            validation_data, validation_label = regression_preprocess(test_set)
         # nordata4, vaildation_data, nor_age4, vaildation_label = train_test_split(x_dum, y, random_state=10,
         #                                                                          train_size=0.7)  # 分验证集
-        features = selectkbest_top20(nordata4, nor_age4, score_func=f_regression, k=50)
+
+        if len(test_set) > 0:
+            validation_data, validation_label = regression_preprocess(test_set)
+            ifval = True
+        else:
+            ifval = False
+        if fsm == 'A':
+            features = selectkbest_top20(nordata4, nor_age4, k=50)
+            Fsm = 'ANOVA'
+        elif fsm == 'M':
+            features = mrmr_fs(nordata4, nor_age4,form_action,k=50)
+            Fsm = 'MRMR'
+        # features = selectkbest_top20(nordata4, nor_age4, score_func=f_regression, k=50)
         nordata4 = nordata4[features]
 
         train_index, test_index = RegressionKFold(nordata4, nor_age4)
@@ -260,7 +293,10 @@ def regression_cp_result(request, projectid):
 
         # fss,bss
         if feature_select_method != 'TopK':
-            sf, ms = BSS_fun(features, reg_cust_model, nordata4, nor_age4, cv, n_jobs=1)
+            if feature_select_method == 'FSS':
+                sf, ms = FSS_fun(features, reg_cust_model, nordata4, nor_age4, cv, n_jobs=1)
+            elif feature_select_method == 'BSS':
+                sf, ms = BSS_fun(features, reg_cust_model, nordata4, nor_age4, cv, n_jobs=1)
             max_index = np.array(ms).argmax()
             # max_index = ms.index(np.nanmax(ms))
             max_score = max(ms)
@@ -286,7 +322,7 @@ def regression_cp_result(request, projectid):
         paras = reg_cust_model.get_params()
         if reg_model_name == 'Ridge' or reg_model_name == 'Lasso':
             paras['alphas'] = tmodels.alpha_
-        select_str = feature_select_method + reg_model_name + str(paras)
+        select_str = feature_select_method + reg_model_name + str(paras) + Fsm
         select_md5 = md5_convert(select_str)[:6]
 
 
@@ -321,7 +357,8 @@ def regression_cp_result(request, projectid):
                              'feature_names': feature_names,
                              'Mean R-square': cust_reports.mean()[0],
                              'MAE': cust_reports.mean()[1],
-                             'MSE': cust_reports.mean()[2], }
+                             'MSE': cust_reports.mean()[2],
+                             'Fsm': Fsm}
 
             final_reports = pd.DataFrame(final_reports, index=[reg_model_name]).reset_index().rename(
                 columns={'index': 'Method'})
@@ -355,7 +392,9 @@ def regression_cp_result(request, projectid):
                 'final_reports_dict': final_reports_dict,
                 'val_report_dict': val_report_dict,
                 'vregpred_trace': vregpred_trace,
-                'vreport_trace': vreport_trace
+                'vreport_trace': vreport_trace,
+                'ifval': ifval,
+                'Fsm': Fsm
             }
 
             final_reports = pd.concat([cp_cache['reports'], final_reports], axis=0).drop_duplicates(keep='last')
@@ -367,6 +406,12 @@ def regression_cp_result(request, projectid):
             with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl',
                       'wb') as f:
                 pickle.dump(cp_cache, f)
+            # 保存单个模型信息
+            model_info = {}
+            print('mame:',reg_model_name,' model:::',tmodels)
+            model_info['name'], model_info['model'], model_info['feature_names'] = reg_model_name, tmodels, max_features
+            with open(STATIC_ROOT + '/cache/' + projectid + '/' + select_md5 + '.pkl', 'wb') as f:
+                pickle.dump(model_info, f)
         else:
             final_reports_dict = cp_cache['reports'].to_dict('records')
             reg_model_name = cp_cache[select_md5]['reg_model_name']
@@ -376,6 +421,7 @@ def regression_cp_result(request, projectid):
             val_report_dict = cp_cache[select_md5]['val_report_dict']
             vregpred_trace = cp_cache[select_md5]['vregpred_trace']
             vreport_trace = cp_cache[select_md5]['vreport_trace']
+
 
     return render(request, 'regression_cp_result.html', {
         'projectid': projectid,
@@ -387,6 +433,7 @@ def regression_cp_result(request, projectid):
         'val_report_dict': json.dumps(val_report_dict),
         'vregpred_trace': json.dumps(vregpred_trace,ensure_ascii=False, cls=JsonEncoder),
         'vreport_trace': json.dumps(vreport_trace,ensure_ascii=False, cls=JsonEncoder),
+        'ifval': ifval,
     })
 
 def show_prev_page(request, projectid_paramd5):

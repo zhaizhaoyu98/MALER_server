@@ -7,10 +7,14 @@ def get_analysis_page(request):
     if request.method == 'GET':
         return render(request,'analysis.html')
     elif request.method == 'POST':
-
         return render(request, 'analysis.html')
 
 
+def get_vue_analysis_page(request):
+    if request.method == 'GET':
+        return render(request,'vue_analysis.html')
+    elif request.method == 'POST':
+        return render(request, 'vue_analysis.html')
 
 
 #

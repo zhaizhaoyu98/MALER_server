@@ -16,6 +16,8 @@ urlpatterns=[
     # path('analysis_oneclick',analysis_views.analysis_oneclick),
     # path('analysis_perpara',analysis_views.analysis_perpara),
     path('analysis', analysis_views.get_analysis_page),
+    path('vue_analysis', analysis_views.get_vue_analysis_page), ####vue
+
     path('predict', predict_views.get_predict_page),
 
 

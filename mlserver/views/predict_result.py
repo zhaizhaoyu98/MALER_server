@@ -72,7 +72,9 @@ def predict_results(request, projectid):
                 try:
                     predict_reports[model_name] = model.predict(blind_set[feature_names])
                 except:
-                    title = 'feature names: ' + ", ".join(feature_names) + ' are not involved in the inputdata!'
+                    bli_id = blind_set.columns.to_list()
+                    diff_feature_names = set(list(map(str, feature_names))) - set(map(str,bli_id))
+                    title = 'feature names: ' + " , ".join(map(str, diff_feature_names)) + ' are not involved in the inputdata!'
                     messages.success(request, title)
                     return HttpResponseRedirect("/maler/predict")
                 # predict_reports[model_name] = model.predict(blind_set[feature_names])
@@ -89,7 +91,9 @@ def predict_results(request, projectid):
                 try:
                     predict_reports[model_name] = model.predict(blind_set[feature_names])
                 except:
-                    title = 'feature names: ' + ", ".join(feature_names) + ' are not involved in the inputdata!'
+                    bli_id = blind_set.columns.to_list()
+                    diff_feature_names = set(list(map(str, feature_names))) - set(map(str,bli_id))
+                    title = 'feature names: ' + " , ".join(map(str, diff_feature_names)) + ' are not involved in the inputdata!'
                     messages.success(request, title)
                     # return render(request, "predict.html")
                     return HttpResponseRedirect("/maler/predict")
@@ -101,7 +105,6 @@ def predict_results(request, projectid):
                 method = 'Regression'
                 surv_plot = None
             else:
-                # blind_set = blind_set[5:20]  # 模拟的blind数据
                 try:
                     if model_name != 'SurvivalSVM':
                         surv_plot = sur_pred_plot(model, blind_set, feature_names)
@@ -109,7 +112,9 @@ def predict_results(request, projectid):
                         surv_plot = None
                         print('The svm model does not support the prediction function')
                 except:
-                    title = 'feature names: ' + ", ".join(feature_names) + ' are not involved in the inputdata!'
+                    bli_id = blind_set.columns.to_list()
+                    diff_feature_names = set(list(map(str, feature_names))) - set(map(str,bli_id))
+                    title = 'feature names: ' + " , ".join(map(str, diff_feature_names)) + ' are not involved in the inputdata!'
                     messages.success(request, title)
                     # return render(request, "predict.html")
                     return HttpResponseRedirect("/maler/predict")
@@ -133,7 +138,11 @@ def predict_results(request, projectid):
                 try:
                     validation_reports[model_name] = model.predict(validation_data[feature_names])
                 except:
-                    title = 'feature names: ' + ", ".join(feature_names) + ' are not involved in the inputdata!'
+                    # title = 'feature names: ' + ", ".join(feature_names) + ' are not involved in the inputdata!'
+                    val_id = validation_data.columns.to_list()
+                    diff_feature_names = set(list(map(str,feature_names))) - set(map(str,val_id))
+                    title = 'feature names: ' + " , ".join(map(str,diff_feature_names)) + ' are not involved in the inputdata!'
+
                     messages.success(request, title)
                     return HttpResponseRedirect("/maler/predict")
                 validation_reports[model_name] = model.predict(validation_data[feature_names])
@@ -168,7 +177,9 @@ def predict_results(request, projectid):
                 try:
                     validation_reports[model_name] = model.predict(validation_data[feature_names])
                 except:
-                    title = 'feature names: ' + ", ".join(feature_names) + ' are not involved in the inputdata!'
+                    val_id = validation_data.columns.to_list()
+                    diff_feature_names = set(list(map(str, feature_names))) - set(map(str,val_id))
+                    title = 'feature names: ' + " , ".join(map(str, diff_feature_names)) + ' are not involved in the inputdata!'
                     messages.success(request, title)
                     return HttpResponseRedirect("/maler/predict")
                 validation_reports = pd.concat(
@@ -202,7 +213,9 @@ def predict_results(request, projectid):
                 try:
                     data_median = model.predict(pd.DataFrame(inputdata[feature_names].median()).T)[0]
                 except:
-                    title = 'feature names: ' + ", ".join(feature_names) + ' are not involved in the inputdata!'
+                    val_id = validation_data.columns.to_list()
+                    diff_feature_names = set(list(map(str, feature_names))) - set(map(str,val_id))
+                    title = 'feature names: ' + " , ".join(map(str, diff_feature_names)) + ' are not involved in the inputdata!'
                     messages.success(request, title)
                     return HttpResponseRedirect("/maler/predict")
                 vsurv_trace, vresultp = mk_surv_data(name, validation_data[feature_names], validation_label,

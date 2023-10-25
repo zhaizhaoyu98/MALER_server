@@ -20,6 +20,7 @@ def download_model(request, projectid_model):
     model = projectid_model.split('_')[1].replace(' ','_')
     print(projectid,model)
     file_path = (STATIC_ROOT + '/cache/' + projectid + '/' + model + '.pkl')
+    print(file_path)
     try:
         response = StreamingHttpResponse(open(file_path, 'rb'))
         response['content_type'] = "application/octet-stream"
@@ -27,3 +28,18 @@ def download_model(request, projectid_model):
         return response
     except Exception:
         raise Http404
+
+
+#
+# def cp_download_model(request, projectid_model):
+#     projectid = projectid_model.split('_')[0]
+#     # model = projectid_model.split('_')[1].replace(' ','_')
+#     md5 = ''
+#     file_path = (STATIC_ROOT + '/cache/' + projectid + '/' + md5 + '.pkl')
+#     try:
+#         response = StreamingHttpResponse(open(file_path, 'rb'))
+#         response['content_type'] = "application/octet-stream"
+#         response['Content-Disposition'] = 'attachment; filename=' + projectid + '_' + os.path.basename(file_path)
+#         return response
+#     except Exception:
+#         raise Http404

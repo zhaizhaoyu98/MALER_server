@@ -23,6 +23,9 @@ from sklearn.ensemble import BaggingRegressor
 
 from ML_WebServer.settings import STATIC_ROOT
 from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, JsonEncoder, split_train_test, mkradar
+# from mlserver.views.featureselection_method import mrmr_fs,FSS_fun,BSS_fun,train_estimator,train_top3,selectkbest_top20,pre_screening
+from mlserver.views.featureselection_method import mrmr_fs
+
 
 models_str = ['LinearRegression', 'SVM', 'Ridge', 'Lasso', 'DecisionTree', 'XGBoost',
                   'RandomForest', 'AdaBoost', 'GradientBoost', ]
@@ -39,6 +42,8 @@ def regression_oc_result(request, projectid):
     # select_model = request.POST.get('select_model')
     select_model = 'model_reg'
     feature_select_method = request.POST.get('feature_select_method')
+    fsm = request.POST.get("fsm")
+    form_action = request.POST.get("form_action")
     # file_upload_type = request.POST.get('file_upload_type')
 
     print('feature_select_method: ', feature_select_method)
@@ -114,11 +119,19 @@ def regression_oc_result(request, projectid):
         # data, label = classification_process(train_set)
         nordata4, nor_age4 = regression_preprocess(train_set)
         if len(test_set) > 0:
+            ifval = True
             validation_data, validation_label = regression_preprocess(test_set)
+        else:
+            ifval = False
 
-        # nordata4, vaildation_data, nor_age4, vaildation_label = train_test_split(x_dum, y, random_state=10,
-        #                                                                          train_size=0.7)  # 分验证集
-        features = selectkbest_top20(nordata4, nor_age4, score_func=f_regression, k=50)
+        # features = selectkbest_top20(nordata4, nor_age4, score_func=f_regression, k=50)
+
+
+        if fsm == 'A':
+            features = selectkbest_top20(nordata4, nor_age4, k=50)
+        elif fsm == 'M':
+            features = mrmr_fs(nordata4, nor_age4,form_action,k=50)
+
 
         nordata4 = nordata4[features]
         train_index, test_index = RegressionKFold(nordata4, nor_age4)
@@ -131,7 +144,6 @@ def regression_oc_result(request, projectid):
                 start = time.perf_counter()
                 clf_num, ms = pre_screening(nordata4, nor_age4, models[i], features, cv)
                 clf_nums.append(clf_num), cv_scores.append(ms)
-                # print('model num', i)
                 test_accs[i], estimators[i], mean_accs[i], predicts[i], max_features[i] = train_top3(models[i],nordata4, nor_age4,clf_num,train_index,test_index,features)
                 end = time.perf_counter()
                 print(round(end - start, 2))
@@ -229,8 +241,7 @@ def regression_oc_result(request, projectid):
         test_acc_reports = pd.DataFrame(data=test_accs)
         test_acc_reports.columns = models_str
         test_acc_reports_dict = df2bp(test_acc_reports)
-        test_acc_describe = np.round(test_acc_reports.describe().loc[("mean", 'min', 'max', 'std'), :],
-                                     3)
+        test_acc_describe = np.round(test_acc_reports.describe().loc[("mean", 'min', 'max', 'std'), :],3)
         test_acc_describe_ = test_acc_describe.reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
         test_acc_describe_dict = test_acc_describe_.to_dict('records')
 
@@ -317,6 +328,7 @@ def regression_oc_result(request, projectid):
             'vregpred_trace': vregpred_trace,
             'vreport_trace': vreport_trace,
             'val_report_dict': val_report_dict,
+            'ifval': ifval,
             # 'radar_dict': radar_dict,
             # 'radar_range': radar_range,
         }
@@ -352,6 +364,7 @@ def regression_oc_result(request, projectid):
         vregpred_trace = reg_pickle['vregpred_trace']
         vreport_trace = reg_pickle['vreport_trace']
         val_report_dict = reg_pickle['val_report_dict']
+        ifval = reg_pickle['ifval']
         # radar_dict = reg_pickle['radar_dict']
         # radar_range = reg_pickle['radar_range']
 
@@ -369,6 +382,7 @@ def regression_oc_result(request, projectid):
         'vregpred_trace': json.dumps(vregpred_trace,ensure_ascii=False, cls=JsonEncoder),
         'vreport_trace': json.dumps(vreport_trace,ensure_ascii=False, cls=JsonEncoder),
         'val_report_dict': json.dumps(val_report_dict),
+        'ifval': ifval,
         # 'radar_dict': json.dumps(radar_dict),
         # 'radar_range': json.dumps(radar_range)
     })

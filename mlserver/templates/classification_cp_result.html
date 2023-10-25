@@ -203,6 +203,7 @@
 								<th></th>
 								<th>Index</th>
 								<th>Feature Select Method</th>
+								<th>Optimal Feature Subset Search Methods</th>
 								<th class="none">Feature Names</th>
 								
 								<th>Mean Accuracy</th>
@@ -252,6 +253,9 @@
 			var f_data = {{ f_describe_dict|safe }};
 			
 			var max_reports_data = {{ max_reports_dict|safe }};
+			// 获取当前url
+			var url = this.location.pathname
+			var arr= url.split("/")
 			// plotly layout
 			var linechart_layout = {
 				xaxis: {
@@ -407,7 +411,7 @@
 					columnDefs: [ {
 					    className: 'control',
 					    orderable: false,
-					    targets:   9,
+					    targets:   10,
 					} ],
 					data: max_reports_data,
 					searching: false, 
@@ -417,7 +421,8 @@
 					columns: [
 						{ data: 'Method' },
 						{ data: 'md5' },
-						{ data: 'fsm' },
+						{ data: 'Fsm' },
+						{ data: 'fsm'},
 						{ data: 'feature_names' },
 						{ data: 'test_acc' },
 						{ data: 'precision' },
@@ -445,6 +450,21 @@
 								return data;
 							},
 						},
+						{
+							data: 'md5' ,
+							"render": function(data, type, row, meta){
+								if(type === 'display'){
+									if( arr[3] == 'prev'){
+										data = '<a value="' + $('#projectid').val() + '_' + data + '" href="../../model_download/' + $('#projectid').val() + '_' + data + '">Download</a>'
+									}else{
+										data = '<a value="' + $('#projectid').val() + '_' + data + '" href="../model_download/' + $('#projectid').val() + '_' + data + '">Download</a>'
+									}
+									
+								}
+								return data;
+							},
+						},
+						
 					]
 				});
 				Plotly.newPlot('linechartDiv', {{ line_chart_data|safe }}, linechart_layout);

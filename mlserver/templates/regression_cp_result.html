@@ -15,7 +15,7 @@
 		 <!-- DataTables -->
 		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
 		 <script type="text/javascript" charset="utf8" src="https://cdn.bootcdn.net/ajax/libs/datatables-buttons/2.2.3/js/dataTables.buttons.js"></script>
-		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>		
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>
 		 <!-- responsive -->
 		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>		 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css">
 		<style type="text/css">
@@ -74,6 +74,33 @@
 				color: #17a2b8; margin-bottom: 20px;
 				font-weight: bolder;
 			}
+			/* datatable button */
+			     .dt-button.icon_:before {
+			      color: #fff;
+			      padding-top: 100px;
+			      content: "\f019";
+			      font-family: FontAwesome;
+			      font-size: 20px;
+			     }
+			     .dt-button.icon_{
+			      background-color: #17a2b8;
+			      border-color: #17a2b8;
+			     }
+			     .dt-button {
+			      margin-top: 5px;
+			     }
+			     /* datatable search */
+			     .dataTables_filter {
+			      margin-top: 5px;
+			     }
+			     /* datatable info */
+			     .dataTables_info {
+			      margin-left: -30px;
+			     }
+			     
+			     .dataTables_length {
+			      margin-top: 5px;
+			     }
 			
 
 		</style>
@@ -186,6 +213,7 @@
 						</thead>
 					</table>
 					<br />
+					
 					<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
 						Report
 					</h3>
@@ -193,7 +221,9 @@
 						 <thead>
 							<tr>
 								<th></th>
+								<th>Index</th>
 								<th>Feature Select Method</th>
+								<th>Optimal Feature Subset Search Methods</th>
 								<th>Mean R-square</th>
 								<th>MAE</th>
 								<th>MSE</th>
@@ -201,6 +231,7 @@
 								<th>Feature_names/Parameter</th>
 								<th class="none">Parameter</th>
 								<th>View</th>
+								<th>Model Download</th>
 							</tr>
 						</thead>
 					</table>
@@ -229,6 +260,9 @@
 			var csrftoken = $("input[name='csrfmiddlewaretoken']").attr('value');
 			var acc_data = {{ cust_reports_describe_dict|safe }};
 			var report_data = {{ final_reports_dict|safe }};
+			// 获取当前url
+			var url = this.location.pathname
+			var arr= url.split("/")
 			// plotly layout
 			var acc_layout = {
 				title: 'Boxplot of test accuracy'
@@ -415,16 +449,23 @@
 					columnDefs: [ {
 					    className: 'control',
 					    orderable: false,
-					    targets:   6,
+					    targets:   8,
 					} ],
 					data: report_data,
 					searching: false, 
 					paging: false, 
 					info: false,
 					sort: false,
+					buttons: [{
+						extend: 'csv',
+						text: "",
+						className: "icon_",
+						filename:'Validation',
+						}],
 					columns: [
 						{ data: 'Method' },
-						// { data: 'md5' },
+						{ data: 'md5' },
+						{ data: 'Fsm' },
 						{ data: 'fsm' },
 						{ data: 'Mean R-square' },
 						{ data: 'MAE' },
@@ -446,6 +487,20 @@
 									{% else %}
 									data = '<a value="' + data + '" href="{{projectid}}_' + data + '">view</a>'
 									{% endif %}
+								}
+								return data;
+							},
+						},
+						{
+							data: 'md5' ,
+							"render": function(data, type, row, meta){
+								if(type === 'display'){
+									if( arr[3] == 'prev'){
+										data = '<a value="' + $('#projectid').val() + '_' + data + '" href="../../model_download/' + $('#projectid').val() + '_' + data + '">Download</a>'
+									}else{
+										data = '<a value="' + $('#projectid').val() + '_' + data + '" href="../model_download/' + $('#projectid').val() + '_' + data + '">Download</a>'
+									}
+									
 								}
 								return data;
 							},
@@ -587,7 +642,7 @@
 			};
 		
 		
-			//  单药物检验
+			
 			$(document).ready(function() {
 				// $('#radar_map').hide()
 				$("#submit_one_test").click(function() {

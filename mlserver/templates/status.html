@@ -113,7 +113,7 @@
 				<div class="col-xl-9 col-lg-12">
 					
 					<form action="{{form_action}}/{{ projectid }}" id="status_form" method="POST" >
-						{% csrf_token %}
+						<!-- {% csrf_token %} -->
 						<div class="col">
 							<div class="row">
 								<h2>PROJECTID: {{ projectid }}</h2>
@@ -183,9 +183,13 @@
 								
 							</div>
 						</div>
+						
+						<!-- 获取从preview后端传来的数据 -->
 						<input name="projectid" id="projectid" style="display: none;" value="{{ projectid }}"/>
 						<input name="feature_select_method" id="feature_select_method" style="display: none;" value="{{ feature_select_method }}"/>
 						<input name="model_md5" id="model_md5" style="display: none;" value="{{ model_md5 }}"/>
+						<input name="fsm" id="fsm" style="display: none;" value="{{ fsm }}"/>
+						<input name="form_action" id="form_action" style="display: none;" value="{{ form_action }}"/>
 					
 					<br />
 					<br />
