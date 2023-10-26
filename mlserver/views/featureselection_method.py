@@ -13,10 +13,11 @@ import copy
 import numpy as np
 import pandas as pd
 from sklearn.feature_selection import SelectKBest, chi2, f_classif
-from mrmr import mrmr_classif,mrmr_regression
+# from mrmr import mrmr_classif,mrmr_regression
 
 # info = form_action
 def mrmr_fs(data,label,info,k=50):
+    from mrmr import mrmr_classif, mrmr_regression
     k = min(len(data.columns),k)
     if info.split(",")[0] == 'classification':
         selected_id = mrmr_classif(X=data, y=label, K=50)
