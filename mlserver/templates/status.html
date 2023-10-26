@@ -113,7 +113,7 @@
 				<div class="col-xl-9 col-lg-12">
 					
 					<form action="{{form_action}}/{{ projectid }}" id="status_form" method="POST" >
-						<!-- {% csrf_token %} -->
+						{% csrf_token %}
 						<div class="col">
 							<div class="row">
 								<h2>PROJECTID: {{ projectid }}</h2>
