@@ -183,6 +183,7 @@ def result(request, projectid):
             clf_num, ms = pre_screening(data3, label3, svc, features, cv=cv)
             test_accs, estimators, mean_accs, predicts, f_names = train_top3(svc, data3, label3, clf_num,
                                                                              train_index, test_index, features)  ##
+            max_features = f_names
             line_chart_data = []
             line_trace = {
                 'mode': 'lines+markers',
@@ -386,8 +387,8 @@ def result(request, projectid):
             pickle.dump(cp_cache, f)
 
         #保存单个模型信息
+        print('max_features2: ',list(max_features))
         model_info = {}
-
         model_info['name'], model_info['model'], model_info['feature_names'] = clf_name, tmodels, max_features
         model_info['classes'] = classes
         with open(STATIC_ROOT + '/cache/' + projectid + '/' + para_md5 + '.pkl',
@@ -430,7 +431,7 @@ def result(request, projectid):
             clf_num, ms = pre_screening(data3, label3, svc, features, cv=cv)
             test_accs, estimators, mean_accs, predicts, f_names = train_top3(svc, data3, label3, clf_num,
                                                                              train_index, test_index, features)  ##
-
+            max_features = f_names
             line_chart_data = []
             line_trace = {
                 'mode': 'lines+markers',
@@ -495,7 +496,6 @@ def result(request, projectid):
                     columns={'index': 'Method', 'f1-score': 'f1score'})
 
                 para_str = feature_select_method + max_reports['Method'][0] + str(max_reports['parameter'][0]) + max_reports['Fsm'][0]
-                print('parastr: ',para_str)
                 para_md5 = md5_convert(para_str)[:6]
                 print(para_md5)
                 # add parameter md5 and feature select method
@@ -676,8 +676,9 @@ def result(request, projectid):
                           'wb') as f:
                     pickle.dump(cp_cache, f)
                 # 保存单个模型信息
+                print('max_features: ',list(max_features))
                 model_info = {}
-                model_info['name'], model_info['model'], model_info['feature_names'] = clf_name, tmodels, max_features
+                model_info['name'], model_info['model'], model_info['feature_names'] = clf_name, tmodels, list(max_features)
                 model_info['classes'] = classes
                 with open(STATIC_ROOT + '/cache/' + projectid + '/' + para_md5 + '.pkl',
                           'wb') as f:

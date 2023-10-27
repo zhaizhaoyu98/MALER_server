@@ -201,7 +201,7 @@
 						 <thead>
 							<tr>
 								<th></th>
-								<th>Index</th>
+								<!-- <th>Index</th> -->
 								<th>Feature Select Method</th>
 								<th>Optimal Feature Subset Search Methods</th>
 								<th class="none">Feature Names</th>
@@ -222,6 +222,8 @@
 								<th>Feature_names/Parameter</th>
 								<th class="none">Parameter</th>
 								<th>View</th>
+								<th>Model Download</th>
+								
 							</tr>
 						</thead>
 					</table>
@@ -248,7 +250,7 @@
 		{% include 'public_templates/footer.html' %}
 
 		<script>
-			var csrftoken = $("input[name='csrfmiddlewaretoken']").attr('value'); 
+			var csrftoken = $("input[name='csrfmiddlewaretoken']").attr('value');
 
 			var f_data = {{ f_describe_dict|safe }};
 			
@@ -411,7 +413,7 @@
 					columnDefs: [ {
 					    className: 'control',
 					    orderable: false,
-					    targets:   10,
+					    targets:   9,
 					} ],
 					data: max_reports_data,
 					searching: false, 
@@ -420,7 +422,7 @@
 					sort: false,
 					columns: [
 						{ data: 'Method' },
-						{ data: 'md5' },
+						// { data: 'md5' },
 						{ data: 'Fsm' },
 						{ data: 'fsm'},
 						{ data: 'feature_names' },
@@ -453,14 +455,14 @@
 						{
 							data: 'md5' ,
 							"render": function(data, type, row, meta){
-								if(type === 'display'){
+								// if(type === 'display'){
 									if( arr[3] == 'prev'){
 										data = '<a value="' + $('#projectid').val() + '_' + data + '" href="../../model_download/' + $('#projectid').val() + '_' + data + '">Download</a>'
 									}else{
 										data = '<a value="' + $('#projectid').val() + '_' + data + '" href="../model_download/' + $('#projectid').val() + '_' + data + '">Download</a>'
 									}
 									
-								}
+								// }
 								return data;
 							},
 						},
@@ -495,7 +497,7 @@
 			   $.ajax({
 				url:'/maler/get_cp_combination',
 				type:"POST",
-				headers: {"X-CSRFToken": csrftoken},  
+				// headers: {"X-CSRFToken": csrftoken},
 				data:formData,
 				processData:false,
 				contentType:false,
