@@ -318,9 +318,9 @@ def result(request, projectid):
             for each_model in model:
                 start = time.perf_counter()
                 if feature_select_method == 'FSS':
-                    sf, ms = FSS_fun(features, each_model,data3,label3,cv,n_jobs=4) #本地并行提高运行速度
+                    sf, ms = FSS_fun(features, each_model,data3,label3,cv,n_jobs=1) #本地并行提高运行速度
                 else:
-                    sf, ms = BSS_fun(features, each_model, data3, label3, cv,n_jobs=4)
+                    sf, ms = BSS_fun(features, each_model, data3, label3, cv,n_jobs=1)
                 selected_feature.append(sf), max_scores.append(ms)
                 end = time.perf_counter()
                 print(round(end - start, 3))

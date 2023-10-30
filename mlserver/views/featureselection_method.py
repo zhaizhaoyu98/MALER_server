@@ -20,9 +20,9 @@ def mrmr_fs(data,label,info,k=50):
     from mrmr import mrmr_classif, mrmr_regression
     k = min(len(data.columns),k)
     if info.split(",")[0] == 'classification':
-        selected_id = mrmr_classif(X=data, y=label, K=k,n_jobs=4)
+        selected_id = mrmr_classif(X=data, y=label, K=k,n_jobs=1)
     else:
-        selected_id = mrmr_regression(X=data, y=label, K=k,n_jobs=4)
+        selected_id = mrmr_regression(X=data, y=label, K=k,n_jobs=1)
     feature_names = list(data.loc[:,selected_id].columns)
     return feature_names
 
