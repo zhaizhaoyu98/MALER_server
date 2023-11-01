@@ -335,6 +335,41 @@
 			Plotly.react('histplotDiv', {{ hist_trace|safe }},hist_layout);
 			$("#loading").hide();
 			$("#main").attr('style','');
+			
+			
+			// websocket
+			// 点击连接websocket按钮，则启动访问websocket
+			$('#button_submit').click(function () {
+				if(window.s){
+					window.s.close()
+				}
+				// 设置websocket的服务端url
+				var s = new WebSocket("ws://" + window.location.host + "/maler/accept_socket");
+				window.s = s;
+				// 打开连接websocket服务，连接成功则打印信息
+				s.onopen = function () {
+					console.log('WebSocket open');//成功连接上Websocket
+				};
+	 
+				// 接收服务端发送过来的数据，在浏览器上刷新
+				s.onmessage = function (msg) {
+					// heartCheck.reset();
+					console.log('message: ' + msg.data);//打印出服务端返回过来的数据
+					var m = msg.data
+					var status = {{status}}
+					// if (status == 1){
+					// 	window.s.close();//关闭websocket
+					// 	console.log('websocket is closed!');
+					// }
+					
+				};
+				setInterval(() => {
+				  if (window.s.readyState === WebSocket.OPEN) {
+					window.s.send("heartbeat");
+				  }
+				}, 10000);
+			});
+
 		</script>
 	</body>
 </html>

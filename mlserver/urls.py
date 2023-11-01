@@ -6,7 +6,7 @@ from .views import home_views, analysis_views, predict_views, \
     classification_oc_result_views, classification_cp_result_views, \
     survival_oc_result_views, survival_cp_result_views, \
     regression_oc_result_views, regression_cp_result_views, help_views, \
-    download_views, preview_views, predict_result
+    download_views, preview_views, predict_result,websocket
 
 
 urlpatterns=[
@@ -16,7 +16,6 @@ urlpatterns=[
     # path('analysis_oneclick',analysis_views.analysis_oneclick),
     # path('analysis_perpara',analysis_views.analysis_perpara),
     path('analysis', analysis_views.get_analysis_page),
-    path('vue_analysis', analysis_views.get_vue_analysis_page), ####vue
 
     path('predict', predict_views.get_predict_page),
 
@@ -49,4 +48,11 @@ urlpatterns=[
     # ajax get combination
     # path('get_model',result_views.get_model),
     path('get_cp_combination', classification_cp_result_views.get_cp_combination),
+
+    path('vue_analysis', websocket.get_vue_analysis_page), ####vue
+    path('accept_socket', websocket.test_websocket2),
+    # path('vue_analysis', websocket.test_websocket2,name='test_websocket'),
+
+    path('test_websocket', websocket.test_websocket2, name='test_websocket'),
+    path('test_websocket_client', websocket.test_websocket_client , name='test_websocket_client'),
 ] + static (settings.STATIC_URL, document_root = settings.STATIC_ROOT)

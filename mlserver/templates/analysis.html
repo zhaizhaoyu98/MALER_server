@@ -4,6 +4,13 @@
 		<meta charset="utf-8">
 		<title>ANALYSIS</title>
 		<script src="/mlserver_static/cdn/js/spark-md5.min.js"></script>
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.13/lib/theme-chalk/index.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"></script>
+		<!-- 引入组件库 -->
+		<script src="https://unpkg.com/element-ui@2.15.13/lib/index.js"></script>
+		<script src="https://cdn.bootcdn.net/ajax/libs/axios/1.3.6/axios.min.js"></script>
+		<script src="https://unpkg.com/element-ui@2.15.13/lib/locale/lang/en.js"></script>
 		{% include 'public_templates/bootstrap.html' %}
 		<style type="text/css">
 			#home span {
@@ -92,6 +99,30 @@
 				font-family: arial;
 				font-weight: bold;
 			}
+			@import url("//unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css");
+			.text {
+			    font-size: 14px;
+			  }
+			
+			  .item {
+			    margin-bottom: 18px;
+			  }
+			
+			  .clearfix:before,
+			  .clearfix:after {
+			    display: table;
+			    content: "";
+			  }
+			  .clearfix:after {
+			    clear: both
+			  }
+			
+			  .box-card {
+			    width: 480px;
+			  }
+			  #card .el-card__header {
+			      background-color: rgba(0,0,0,.03);
+			  }
 		</style>
 		<script>
 			$(document).ready(function(){
@@ -101,7 +132,7 @@
 				$("#page_title").text('ANALYSIS');
 			});
 		</script>
-
+		
 	</head>
 	
 	
@@ -109,7 +140,7 @@
 		<!-- 导航栏 -->
 		{% include 'public_templates/nav_tem.html' %}
 		<!-- 主体 -->
-		<div class="container col-9">
+		<div class="container col-9" style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
 			<br />
 			<h4>Step1: Please select an analysis mode.</h4>
 			<hr />
@@ -392,6 +423,30 @@
 				</div>
 			</div>
 			<br />
+			
+			<!-- email -->
+
+			
+			<el-divider></el-divider>
+			<div id="card" class="row">
+				<div class="col-12">
+					<el-card shadow="never">
+						<div slot="header" >
+							<h4>Step5：Email（Optional)</h4>
+						</div>
+						<div>
+							<input type="text" name="email" style="width: 1000px;height: 40px;"/>
+							<p style="font-size: 14px;">Given the potential extended duration of the analysis process, we recommend 
+							submitting your email address above. This will enable us to notify you via email once the analysis is completed, 
+							providing you with access to your result page.</p>
+						</div>
+					</el-card>
+				</div>
+			</div>
+			
+
+			
+			
 			<div id="cp_model_select">
 				<div id="classification_child_model">
 					<div class="row row-cols-1 row-cols-md-3">
@@ -1784,6 +1839,8 @@
 		<!-- 底部 -->
 		{% include 'public_templates/footer.html' %}
 		<script>
+			new Vue().$mount('#card')
+			
 			document.querySelector('#upload_file').addEventListener('change', e => {
 			  const file = e.target.files[0];
 			  const fileReader = new FileReader()
@@ -2273,7 +2330,6 @@
 								{% endfor  %}
 			}
 			{%  endif %}
-			
 			
 			
 			
