@@ -16,7 +16,9 @@
                     if(window.s){
                         window.s.close()
                     }
-					var s = new WebSocket("ws://" + window.location.host + "/maler/accept_socket");
+					// var s = new WebSocket("ws://" + window.location.host + "/maler/accept_socket");
+					var s = new WebSocket("ws://inbirg.com/maler/accept_socket");
+					
 					window.s = s;
                     // 打开连接websocket服务，连接成功则打印信息
                     s.onopen = function () {
