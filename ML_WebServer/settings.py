@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'mlserver.apps.MlserverConfig',
     #websocket
     'dwebsocket',
+    # 'gunicorn',
 
 ]
 
