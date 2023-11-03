@@ -46,6 +46,7 @@ def test_websocket2(request):
             if WebSocket.has_messages():
                 # 接收Websocket客户端发送过来的消息
                 client_msg = WebSocket.read().decode("utf-8")
+                print(client_msg)
                 # 设置返回前端的数据
                 res = re.sub("吗?([？?])", "!", client_msg)
                 if connect_num < 3:
@@ -63,6 +64,7 @@ def test_websocket2(request):
                 connect_num = connect_num + 1
                 request.websocket.send(json.dumps(messages))
             else:
+                print('websocket faill!')
                 pass
         # while 1:
         #     time.sleep(1)  ## 向前端发送时间
