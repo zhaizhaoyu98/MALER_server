@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -128,7 +131,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'mlserver\\static').replace('\\','/')
 
 
 #dwebSocket
-import dwebsocket
-MIDDLEWARE_CLASSES=['dwebsocket.middleware.WebSocketMiddleware']      # 为所有的URL提供websocket，如果只是单独的视图需要可以不选
-WEBSOCKET_ACCEPT_ALL=True # 可以允许每一个单独的视图使用websockets
-WEBSOCKET_FACTORY_CLASS='dwebsocket.backends.uwsgi.factory.uWsgiWebSocketFactory' #uwsgi
+# import dwebsocket
+# MIDDLEWARE_CLASSES=['dwebsocket.middleware.WebSocketMiddleware']      # 为所有的URL提供websocket，如果只是单独的视图需要可以不选
+# WEBSOCKET_ACCEPT_ALL=True # 可以允许每一个单独的视图使用websockets
+# WEBSOCKET_FACTORY_CLASS='dwebsocket.backends.uwsgi.factory.uWsgiWebSocketFactory' #uwsgi

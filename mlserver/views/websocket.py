@@ -29,15 +29,16 @@
 from django.shortcuts import render
 import json
 import time
-from dwebsocket.decorators import accept_websocket
+from dwebsocket.decorators import accept_websocket,require_websocket
 import re
 import dwebsocket.websocket
 # Create your views here.
 
 
-@accept_websocket
+@require_websocket
 def test_websocket2(request):
     '''服务端视图'''
+    print('start def')
     connect_num = 0
     if request.is_websocket(): # 如果请求是websocket请求：WebSocket = request.websocket
         WebSocket = request.websocket
@@ -52,19 +53,20 @@ def test_websocket2(request):
                 if connect_num < 3:
                     messages = {
                         'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
-                        'status': 0
+                        'status': 0,
                         # 'server_msg': res,
                         # 'client_msg': client_msg
                     }
                 else:
                     messages = {
                         'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
-                        'status': 1
+                        'status': 1,
+                        # 'server_msg': res
                     }
                 connect_num = connect_num + 1
                 request.websocket.send(json.dumps(messages))
             else:
-                print('websocket faill!')
+                # print('websocket faill!')
                 pass
         # while 1:
         #     time.sleep(1)  ## 向前端发送时间
@@ -81,6 +83,4 @@ def test_websocket_client(request):
 #     return render(request, 'vue_analysis.html')
 
 def get_vue_analysis_page(request):
-    return render(request, 'vue_analysis.html',{
-        'status': 1,
-    })
+    return render(request, 'vue_analysis.html')
