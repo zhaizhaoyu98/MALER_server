@@ -31,11 +31,12 @@ import json
 import time
 from dwebsocket.decorators import accept_websocket,require_websocket
 import re
+from django.http import HttpResponse
 import dwebsocket.websocket
 # Create your views here.
 
 
-@require_websocket
+@accept_websocket
 def test_websocket2(request):
     '''服务端视图'''
     print('start def')
@@ -65,9 +66,10 @@ def test_websocket2(request):
                     }
                 connect_num = connect_num + 1
                 request.websocket.send(json.dumps(messages))
-            else:
-                # print('websocket faill!')
-                pass
+    else:
+        return HttpResponse('请使用 WebSocket 连接')
+        pass
+
         # while 1:
         #     time.sleep(1)  ## 向前端发送时间
         #     dit = {
