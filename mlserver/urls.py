@@ -50,7 +50,7 @@ urlpatterns=[
     path('get_cp_combination', classification_cp_result_views.get_cp_combination),
 
     path('vue_analysis', websocket.get_vue_analysis_page), ####vue
-    path('accept_socket', websocket.test_websocket2),
+    path('acceptsocket', websocket.test_websocket2),
     # path('vue_analysis', websocket.test_websocket2,name='test_websocket'),
 
     path('test_websocket', websocket.test_websocket2, name='test_websocket'),
