@@ -39,6 +39,7 @@ import dwebsocket.websocket
 @accept_websocket
 def test_websocket2(request):
     '''服务端视图'''
+    print('request: ',request)
     print('request.is_websocket(): ',request.is_websocket())
     connect_num = 0
     if request.is_websocket(): # 如果请求是websocket请求：WebSocket = request.websocket
