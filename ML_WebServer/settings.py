@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'mlserver.apps.MlserverConfig',
     #websocket
     'dwebsocket',
-    # 'gunicorn',
+    'gunicorn',
 
 ]
 
@@ -130,8 +130,8 @@ STATIC_URL = '/mlserver_static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'mlserver\\static').replace('\\','/')
 
 
-#dwebSocket
-import dwebsocket
-MIDDLEWARE_CLASSES=['dwebsocket.middleware.WebSocketMiddleware']      # 为所有的URL提供websocket，如果只是单独的视图需要可以不选
-WEBSOCKET_ACCEPT_ALL=True # 可以允许每一个单独的视图使用websockets
-WEBSOCKET_FACTORY_CLASS='dwebsocket.backends.uwsgi.factory.uWsgiWebSocketFactory' #uwsgi
+#dwebSocket uwsgi
+# import dwebsocket
+# MIDDLEWARE_CLASSES=['dwebsocket.middleware.WebSocketMiddleware']      # 为所有的URL提供websocket，如果只是单独的视图需要可以不选
+# WEBSOCKET_ACCEPT_ALL=True # 可以允许每一个单独的视图使用websockets
+# WEBSOCKET_FACTORY_CLASS='dwebsocket.backends.uwsgi.factory.uWsgiWebSocketFactory' #uwsgi
