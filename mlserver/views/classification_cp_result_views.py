@@ -24,10 +24,14 @@ from ML_WebServer.settings import STATIC_ROOT
 from mlserver.views.classification_oc_result_views import df2bp, mkroc, mkradar, JsonEncoder
 from mlserver.views.featureselection_method import mrmr_fs,FSS_fun,BSS_fun,train_estimator,train_top3,selectkbest_top20,pre_screening
 import warnings
+from dwebsocket.decorators import accept_websocket
 warnings.filterwarnings("ignore")
 
 title = ["Naive Bayes","SVM","RandomForest","Logistic","KNN","XGBoost","lightGBM",'Adaboost',"DecisionTree","GBDT"]
+import asyncio
 
+
+@accept_websocket
 def result(request, projectid):
     # select_model = request.POST.get('select_model')
     # if select_model == 'model_bclass':
@@ -36,6 +40,27 @@ def result(request, projectid):
     # else:
     #     prefix_id = 'MCC-'
     #     ifmarco = True
+    if request.is_websocket():
+        print('websocket on !!')
+        connect_num = 0
+        WebSocket = request.websocket
+        # 判断是否通过websocket接收到数据
+        while True:
+            if WebSocket.has_messages():
+                # 接收Websocket客户端发送过来的消息
+                if connect_num < 60:
+                    messages = {
+                        'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
+                        'status': 0,
+                    }
+                else:
+                    messages = {
+                        'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
+                        'status': 1,
+                    }
+                connect_num = connect_num + 1
+                time.sleep(10)
+                request.websocket.send(json.dumps(messages))
 
     # Feature selection methods
     feature_select_method = request.POST.get('feature_select_method')
@@ -1594,3 +1619,30 @@ def surv_para_group(max_depth, min_samples_split, min_samples_leaf, max_features
     elif 1 <= np.float(min_samples_split):
         min_samples_split = np.int(min_samples_split)
     return max_depth, min_samples_split, min_samples_leaf, max_features
+
+
+@accept_websocket
+def test_websocket2(request):
+    '''服务端视图'''
+    # print('request.is_websocket(): ',request.is_websocket())
+    connect_num = 0
+    if request.is_websocket():
+        WebSocket = request.websocket
+        while True:
+            # 判断是否通过websocket接收到数据
+            if WebSocket.has_messages():
+                # 接收Websocket客户端发送过来的消息
+                if connect_num < 60:
+                    messages = {
+                        'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
+                        'status': 0,
+                    }
+                else:
+                    messages = {
+                        'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
+                        'status': 1,
+                    }
+                connect_num = connect_num + 1
+                request.websocket.send(json.dumps(messages))
+    else:
+        return HttpResponse('请使用 WebSocket 连接')

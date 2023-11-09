@@ -48,10 +48,10 @@ def test_websocket2(request):
             # 判断是否通过websocket接收到数据
             if WebSocket.has_messages():
                 # 接收Websocket客户端发送过来的消息
-                client_msg = WebSocket.read().decode("utf-8")
-                print(client_msg)
+                # client_msg = WebSocket.read().decode("utf-8")
+                # print(client_msg)
                 # 设置返回前端的数据
-                res = re.sub("吗?([？?])", "!", client_msg)
+                # res = re.sub("吗?([？?])", "!", client_msg)
                 if connect_num < 3:
                     messages = {
                         'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
