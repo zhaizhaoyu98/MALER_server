@@ -39,44 +39,54 @@ import dwebsocket.websocket
 @accept_websocket
 def test_websocket2(request):
     '''服务端视图'''
-    print('request: ',request)
-    print('request.is_websocket(): ',request.is_websocket())
     connect_num = 0
     if request.is_websocket(): # 如果请求是websocket请求：WebSocket = request.websocket
         WebSocket = request.websocket
+        # while True:
+        #     if WebSocket.has_messages():
+        #         client_msg = WebSocket.read().decode("utf-8")
+        #         messages = {
+        #             'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
+        #             'status': 0,
+        #             # 'server_msg': res,
+        #             # 'client_msg': client_msg
+        #         }
+        #         request.websocket.send(json.dumps(messages))
         while True:
             # 判断是否通过websocket接收到数据
             if WebSocket.has_messages():
                 # 接收Websocket客户端发送过来的消息
                 # client_msg = WebSocket.read().decode("utf-8")
-                # print(client_msg)
-                # 设置返回前端的数据
-                # res = re.sub("吗?([？?])", "!", client_msg)
-                if connect_num < 3:
-                    messages = {
-                        'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
-                        'status': 0,
-                        # 'server_msg': res,
-                        # 'client_msg': client_msg
-                    }
+                # 他会等待客户端发来下一条消息, 直到关闭后才会返回，当关闭时返回None
+                message = request.websocket.wait()
+                if not message:
+                    break
                 else:
-                    messages = {
-                        'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
-                        'status': 1,
-                        # 'server_msg': res
-                    }
-                connect_num = connect_num + 1
-                request.websocket.send(json.dumps(messages))
+                    client_msg = str(message, encoding = "utf-8")
+                    if connect_num < 3:
+                        messages = {
+                            'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
+                            'status': 0,
+                            # 'server_msg': res,
+                            # 'client_msg': client_msg
+                        }
+                    else:
+                        messages = {
+                            'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
+                            'status': 1,
+                            # 'server_msg': res
+                        }
+                        from_mail = 'linzhewei1999@163.com'
+                        to_mail = '1198369937@qq.com'
+                        # send_email(from_mail,to_mail)
+                    time.sleep(1)
+                    connect_num = connect_num + 1
+                    request.websocket.send(json.dumps(messages))
+
     else:
-        return HttpResponse('请使用 WebSocket 连接')
         pass
 
-        # while 1:
-        #     time.sleep(1)  ## 向前端发送时间
-        #     dit = {
-        #         'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time()))
-        #     }
-        #     request.websocket.send(json.dumps(dit))
+
 
 def test_websocket_client(request):
     '''客户端视图'''
@@ -87,3 +97,17 @@ def test_websocket_client(request):
 
 def get_vue_analysis_page(request):
     return render(request, 'vue_analysis.html')
+
+
+def send_email(from_mail,to_mail):
+    from django.core.mail import send_mail
+    subject = 'Task run complete!'
+    content = '<a style="font-size: 28px; font-weight: 700; text-align: center;" href="' + \
+              '/timecourse/analysis/omics_data_analysis_page?analysisId=' + \
+              '">--》Click to see the results《--</a>'
+    # from_mail = 'linzhewei1999@163.com'
+    # to_mail = '1198369937@qq.com'
+    print('发送邮件' + content)
+    send_mail(subject, message=None, from_email=from_mail, recipient_list=[to_mail],
+              fail_silently=False,
+              html_message=content)

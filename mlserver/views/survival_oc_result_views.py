@@ -3,7 +3,7 @@ from django.shortcuts import render
 import os, shutil, copy, pickle, json, time
 import numpy as np
 import pandas as pd
-
+import re
 from sklearn.model_selection import cross_val_score,cross_validate, GridSearchCV, KFold,StratifiedKFold,RepeatedKFold
 from sksurv.datasets import get_x_y
 from sksurv.svm import FastKernelSurvivalSVM,FastSurvivalSVM
@@ -15,7 +15,8 @@ from sksurv.metrics import cumulative_dynamic_auc
 from lifelines.statistics import logrank_test
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, mklinechart, split_train_test, classification_process, JsonEncoder
+from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, mklinechart, split_train_test, \
+    classification_process, JsonEncoder,task_sendmail
 # from mlserver.views.regression_cp_result_views import pre_screening
 import warnings
 warnings.filterwarnings("ignore")
@@ -286,6 +287,15 @@ def survival_oc_result(request, projectid):
         vsubplot_sur = surv_pickle['vsubplot_sur']
         vpara_dict = surv_pickle['vpara_dict']
         vlinedata = surv_pickle['vlinedata']
+
+    #send email
+    to_mail = request.POST.get('to_mail')
+    print('mail: ',to_mail)
+    url = 'maler/survival_oc_result/' + projectid
+    if to_mail != '' and to_mail != None:
+        if re.match('^.*?@.*', to_mail):
+            task_sendmail(to_mail, url)
+
     return render(request, 'survival_oc_result.html', {
         'projectid': projectid,
         'line_chart_data': json.dumps(line_chart_data),

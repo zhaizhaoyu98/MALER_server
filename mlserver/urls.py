@@ -6,7 +6,7 @@ from .views import home_views, analysis_views, predict_views, \
     classification_oc_result_views, classification_cp_result_views, \
     survival_oc_result_views, survival_cp_result_views, \
     regression_oc_result_views, regression_cp_result_views, help_views, \
-    download_views, preview_views, predict_result,websocket
+    download_views, preview_views, predict_result,websocket,classification_cp_result_view_websocket
 
 
 urlpatterns=[
@@ -33,7 +33,9 @@ urlpatterns=[
     path('classification_oc_result/<str:projectid>', classification_oc_result_views.result),
 
     # custom parameter result
-    path('classification_cp_result/<str:projectid>', classification_cp_result_views.result),
+    # path('classification_cp_result/<str:projectid>', classification_cp_result_views.result),
+    path('classification_cp_result_ws/<str:projectid>', classification_cp_result_views.result),
+    path('classification_cp_result/<str:projectid>', classification_cp_result_view_websocket.return_running_page), ####websocket
     path('classification_cp_result/prev/<str:projectid_paramd5>', classification_cp_result_views.show_prev_page),
 
     # regression

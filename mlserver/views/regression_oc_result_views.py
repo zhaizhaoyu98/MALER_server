@@ -3,7 +3,7 @@ from django.shortcuts import render
 import os, shutil, copy, pickle, json, time
 import pandas as pd
 import numpy as np
-
+import re
 from scipy import stats
 from sklearn.feature_selection import SelectKBest, f_classif,chi2,VarianceThreshold,mutual_info_classif,f_regression
 from sklearn.model_selection import cross_val_score,cross_validate , GridSearchCV, KFold,\
@@ -22,7 +22,7 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import BaggingRegressor
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, JsonEncoder, split_train_test, mkradar
+from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, JsonEncoder, split_train_test, mkradar,task_sendmail
 # from mlserver.views.featureselection_method import mrmr_fs,FSS_fun,BSS_fun,train_estimator,train_top3,selectkbest_top20,pre_screening
 from mlserver.views.featureselection_method import mrmr_fs
 
@@ -44,16 +44,7 @@ def regression_oc_result(request, projectid):
     feature_select_method = request.POST.get('feature_select_method')
     fsm = request.POST.get("fsm")
     form_action = request.POST.get("form_action")
-    # file_upload_type = request.POST.get('file_upload_type')
-
-    print('feature_select_method: ', feature_select_method)
-
     projectid = request.POST.get('projectid')
-
-    # if file_upload_type == 'example_data':
-    #     upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/regression_example.csv'))
-    #     projectid = 'RO-' + upload_file_md5[:6] + '-' + feature_select_method
-
 
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'regression_pickle.pkl')):
         with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'rb') as f:
@@ -369,6 +360,13 @@ def regression_oc_result(request, projectid):
         # radar_range = reg_pickle['radar_range']
 
         # print(vregpred_trace)
+
+    #send email
+    to_mail = request.POST.get('to_mail')
+    print('mail: ',to_mail)
+    url = 'maler/regression_oc_result/'+ projectid
+    if to_mail != '' and to_mail != None:
+            task_sendmail(to_mail, url)
     return render(request, 'regression_oc_result.html', {
         'projectid': projectid,
         'line_chart_data': json.dumps(line_chart_data),

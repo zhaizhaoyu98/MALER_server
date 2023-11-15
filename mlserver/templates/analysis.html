@@ -96,8 +96,9 @@
 			background: #f0f1f2;
 			}
 			h4{
-				font-family: arial;
-				font-weight: bold;
+				/* font-family: arial; */
+				font-weight: bolder;
+				/* color: white; */
 			}
 			@import url("//unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css");
 			.text {
@@ -122,6 +123,7 @@
 			  }
 			  #card .el-card__header {
 			      background-color: rgba(0,0,0,.03);
+				  /* background-color: #17a2b8; */
 			  }
 		</style>
 		<script>
@@ -137,15 +139,36 @@
 	
 	
 	<body>
+		
+<!-- 		<div id="card" class="row">
+			<div class="col-12">
+				<el-card shadow="never">
+					<div slot="header" >
+						<h4>Step5：Email（Optional)</h4>
+					</div>
+					<div>
+						<p style="font-size: 14px;">Given the potential extended duration of the analysis process, we recommend 
+						submitting your email address above. This will enable us to notify you via email once the analysis is completed, 
+						providing you with access to your result page.</p>
+					</div>
+				</el-card>
+			</div>
+		</div> -->
+		
 		<!-- 导航栏 -->
 		{% include 'public_templates/nav_tem.html' %}
 		<!-- 主体 -->
 		<div class="container col-9" style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
 			<br />
-			<h4>Step1: Please select an analysis mode.</h4>
-			<hr />
+			<div id="card" class="row">
+			<div class="col-12">
+			<el-card shadow="never">
+				<div slot="header" >
+					<h4>Step1: Please select an analysis mode.</h4>
+				</div>
+			
+			<div>
 			<div class="row row-cols-1 row-cols-md-3">
-				
 				<div class="col md-3">
 					<div class="card select" id="model_bclass" onclick="model_selectactive(this.id)">
 						<div class="border-bottom" style="padding: 20px">
@@ -198,10 +221,18 @@
 					</div>
 				</div>
 			</div>
-			<br />
-			<h4>Step2: Please upload the files.</h4>
-			<hr />
+			</div>
+			</el-card>
+			</div>
+
 			<form action="preview" method="POST" id="form_step23" enctype="multipart/form-data">
+			<div class="col-12">
+				<br />
+			<el-card shadow="never">
+				<div slot="header" >
+					<h4>Step2: Please upload the files.</h4>
+				</div>
+			<div>
 				<div class="row">
 					<div class="col-3" id="data_up_select">
 						<label style="font-weight: bold; color: #666;font-size: 20px;">Choose data to upload: </label>
@@ -367,13 +398,19 @@
 						</div>
 					</div>
 				</div>
-
-				
+			</div>
+			</el-card>
+			</div>
 				
 				<br />
-				<h4>Step3: Please select a feature selection method.</h4>
-				<hr>
-				<div class="col-9">
+				<div class="col-12">
+				<el-card shadow="never">
+					<div slot="header" >
+						<h4>Step3: Please select a feature selection method.</h4>
+					</div>
+				<div>
+				<!-- <hr> -->
+				<div class="col-12">
 					<div>
 						{% csrf_token %}
 						<input name="select_model" id="select_model" style="display: none;" value="model_bclass"/>
@@ -393,7 +430,8 @@
 							<input type="radio" id="fsm" name="fsm" value="A" checked />&nbsp;ANOVA&nbsp;
 							<input type="radio" id="fsm" name="fsm" value="M" />&nbsp;MRMR&nbsp;
 						</div>
-						<br />
+						<!-- <br /> -->
+						<hr>
 						<div class="row">
 							<label style="font-weight: bold; color: #666;font-size: 20px;">Optimal Feature Subset Search Methods: </label>
 						</div>
@@ -406,12 +444,17 @@
 					</div>
 					
 				</div>
+				</div>
+			</el-card>
+			</div>
 			
-			
-			<br />
-			<br>
-			<h4>Step4: Please choose a processing method.</h4>
-			<hr>
+			<div class="col-12">
+				<br />
+			<el-card shadow="never">
+				<div slot="header" >
+					<h4>Step4: Please choose a processing method.</h4>
+				</div>
+			<div>
 			<div class="row">
 				<div class="col-6">
 					<button type="button" id="button_oc" onclick="" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">One-click
@@ -423,30 +466,7 @@
 				</div>
 			</div>
 			<br />
-			
-			<!-- email -->
 
-			
-			<el-divider></el-divider>
-			<div id="card" class="row">
-				<div class="col-12">
-					<el-card shadow="never">
-						<div slot="header" >
-							<h4>Step5：Email（Optional)</h4>
-						</div>
-						<div>
-							<input type="text" name="email" style="width: 1000px;height: 40px;"/>
-							<p style="font-size: 14px;">Given the potential extended duration of the analysis process, we recommend 
-							submitting your email address above. This will enable us to notify you via email once the analysis is completed, 
-							providing you with access to your result page.</p>
-						</div>
-					</el-card>
-				</div>
-			</div>
-			
-
-			
-			
 			<div id="cp_model_select">
 				<div id="classification_child_model">
 					<div class="row row-cols-1 row-cols-md-3">
@@ -1823,19 +1843,47 @@
 					</div>
 				</div>
 			</div>
+			</div>
+			</el-card>
+			</div>
+			
+			
+			<!-- email -->
+				<div class="col-12">
+					<br />
+					<el-card shadow="never">
+						<div slot="header" >
+							<h4>Step5：Email（Optional)</h4>
+						</div>
+						<div>
+							<input type="text" name="to_mail" id="to_mail" style="width: 1400px;height: 40px;"/>
+							<br />
+							<br />
+							<p style="font-size: 14px;">Given the potential extended duration of the analysis process, we recommend 
+							submitting your email address above. This will enable us to notify you via email once the analysis is completed, 
+							providing you with access to your result page.</p>
+						</div>
+					</el-card>
+				</div>
+			<br />
 			</form>
-			<br />
-			<button type="button" id="button_submit" onclick="form_sub()" class="btn btn-info" style="width: 100%;">Submit</button>
-			<br />
-			<p id="success_info" style="border: 1px solid #b3afb0; padding: 5px;border-radius: 5px;font-size: 14px;">
-				Please access your task status or results via this link
-				<!-- <h5 id="proj_link"></h5> -->
-			</p>
+			<!-- submit -->
 			<br />
 			<br />
+			<div class="col-12">
+				<button type="button" id="button_submit" onclick="form_sub()" class="btn btn-info" style="width: 100%;">Submit</button>
+				<br />
+				<p id="success_info" style="border: 1px solid #b3afb0; padding: 5px;border-radius: 5px;font-size: 14px;">
+					Please access your task status or results via this link
+					<!-- <h5 id="proj_link"></h5> -->
+				</p>
+			</div>
 			<br />
 			<br />
 		</div>
+		<br />
+		</div>
+		
 		<!-- 底部 -->
 		{% include 'public_templates/footer.html' %}
 		<script>
@@ -2244,7 +2292,8 @@
 				var random_token = randomString()
 				$("#random_token").val(random_token)
 				var select_model = $("#select_model").val()
-				
+				var to_mail = $("#to_mail").val()
+				console.log(to_mail)
 				//获取fsm radio中的name值 两种方法
 				// var radios = document.getElementsByName("fsm")
 				// for(var i=0;i<radios.length;i++){

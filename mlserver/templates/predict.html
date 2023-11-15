@@ -4,6 +4,13 @@
 		<meta charset="utf-8">
 		<title>PREDICT</title>
 		{% include 'public_templates/bootstrap.html' %}
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.13/lib/theme-chalk/index.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"></script>
+		<!-- 引入组件库 -->
+		<script src="https://unpkg.com/element-ui@2.15.13/lib/index.js"></script>
+		<script src="https://cdn.bootcdn.net/ajax/libs/axios/1.3.6/axios.min.js"></script>
+		<script src="https://unpkg.com/element-ui@2.15.13/lib/locale/lang/en.js"></script>
 		<style type="text/css">
 			#home span {
 				background-color: aliceblue;
@@ -89,7 +96,13 @@
 			    position: absolute;
 			    margin: 5px;
 			}
-			
+			h4{
+				/* font-family: arial; */
+				font-weight: bold;
+			}
+			#card .el-card__header {
+			    background-color: rgba(0,0,0,.03);
+			}
 		</style>
 		<script>
 			$(document).ready(function(){
@@ -104,11 +117,15 @@
 		<!-- 导航栏 -->
 		{% include 'public_templates/nav_tem.html' %}
 		<!-- 主体 -->
-		<div class="container col-9">
+		<div class="container col-9" style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
 			<br />
-			<h4>Step1: Please select an analysis mode.</h4>
-			<hr />
-			
+			<div id="card" class="row">
+			<div class="col-12">
+			<el-card shadow="never">
+				<div slot="header" >
+					<h4>Step1: Please select an analysis mode.</h4>
+				</div>
+			<div>
 			<div class="row row-cols-1 row-cols-md-3">
 				<div class="col md-3">
 					<div class="card" id="model_bclass" onclick="">
@@ -166,9 +183,19 @@
 					</div>
 				</div>
 			</div>
+			</div>
+			</el-card>
+			</div>
+			
+			
+			
+			<div class="col-12">
 			<br />
-			<h4>Step2: Please upload the files and models.</h4>
-			<hr />
+			<el-card shadow="never">
+				<div slot="header" >
+					<h4>Step2: Please upload the files and models.</h4>
+				</div>
+			<div>
 			<form action="predict_preview" method="POST" id="form_data" enctype="multipart/form-data">
 				<div class="row">
 					<input name="file_upload_type" id="file_upload_type" style="display: none;" value="user_data"/>
@@ -227,7 +254,6 @@
 						<br/>
 					</div>
 					
-
 			<!-- </div> -->
 
 			<script type="text/javascript">
@@ -311,47 +337,22 @@
 			</div>
 		</div>
 	</div>
-		<hr />
+	</div>
+	</el-card>
+	</div>
+	</div>
+		<br />
 		<p />
+		<div class="col-12">
 		<button type="button" id="button_submit" onclick="form_sub()" class="btn btn-info" style="width: 100%;">Submit</button>
 		<br />
 		<br />
-			<!-- <br />
-			<h4>Step3</h4>
-			<hr >
-			<div class="col-9">
-				<form action="cp_result" method="POST" enctype="multipart/form-data">
-					<div>
-						{% csrf_token %}
-						<input name="select_model" id="select_model" style="display: none;"/>
-						<div class="row">
-							<input type="radio" name="pick_method" value="selectbest" checked />selectbest
-						</div>
-						<br />
-						<div class="row">
-							<input type="radio" name="feature_select_method" value="TopK" checked />TopK 
-							<input type="radio" name="feature_select_method" value="FSS" />FSS 
-							<input type="radio" name="feature_select_method" value="BSS" />BSS 
-						</div>
-					</div>
-				</form>
-			</div>
-			
-			<br />
-			<h4>Step4</h4>
-			<hr >
-			<div class="row">
-				<div class="col-6">
-					<button type="button" onclick="window.location.href='/mlserver/analysis_oneclick'" class="btn btn-info" style="width: 100%;">One-click Analysis</button>
-				</div>
-				<div class="col-6">
-					<button type="button" onclick="window.location.href='/mlserver/analysis_perpara'" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">Personalized Parameters Analysis</button>
-				</div>				
-			</div> -->
+		</div>
 		</div>
 		<!-- 底部 -->
 		{% include 'public_templates/footer.html' %}
 		<script>
+			new Vue().$mount('#card')
 			function form_sub() {
 				// $("#form_data").submit()
 			}

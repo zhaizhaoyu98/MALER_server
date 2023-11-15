@@ -3,7 +3,7 @@ from django.shortcuts import render
 import os, shutil, copy, pickle, json, random, string
 import numpy as np
 import pandas as pd
-
+import re
 from sklearn.model_selection import cross_val_score,cross_validate, GridSearchCV, KFold,StratifiedKFold,RepeatedKFold
 from sksurv.datasets import get_x_y
 from sksurv.svm import FastKernelSurvivalSVM,FastSurvivalSVM
@@ -15,7 +15,7 @@ from sksurv.metrics import cumulative_dynamic_auc
 from lifelines.statistics import logrank_test
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, split_train_test, JsonEncoder
+from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, split_train_test, JsonEncoder,task_sendmail
 from mlserver.views.classification_cp_result_views import md5_convert, surv_para_group
 from mlserver.views.survival_oc_result_views import sur_data_process, cox_selection, \
     sur_RSKFold, FSS_fun, train_estimator, mk_surv_data,mk_surv_layout, time_dependent_auc, \
@@ -355,7 +355,13 @@ def survival_cp_result(request, projectid):
             vlinedata = cp_cache[select_md5]['vlinedata']
 
 
-
+    #send email
+    to_mail = request.POST.get('to_mail')
+    print('mail: ',to_mail)
+    url = 'maler/survival_cp_result/prev/'+ projectid + '_' + para_md5
+    if to_mail != '':
+        if re.match('^.*?@.*', to_mail):
+            task_sendmail(to_mail, url)
     return render(request, 'survival_cp_result.html', {
         'projectid': projectid,
         'sur_model_name': sur_model_name,

@@ -12,18 +12,19 @@ from mlserver.views.classification_cp_result_views import select_class_model, md
 from mlserver.views.regression_cp_result_views import select_reg_model
 from mlserver.views.survival_cp_result_views import select_sur_model
 from django.contrib import messages
-
+import re
 
 def preview_result(request):
     projectid = request.POST.get('projectid')
-    print(projectid)
     feature_select_method = request.POST.get('feature_select_method')
     fsm = request.POST.get('fsm')
     file_upload_type = request.POST.get('file_upload_type')
     select_model = request.POST.get('select_model')
     strategy = request.POST.get('strategy')
+    to_mail = request.POST.get('to_mail')
+    print('to_mail ',to_mail)
+
     model_md5 = None
-    print('fsm: ', fsm)
     print(projectid,file_upload_type, strategy)
 
 
@@ -136,6 +137,11 @@ def preview_result(request):
     inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0, sep=r'/|,|\t').T
 
     ''' check '''
+    if to_mail != '':
+        if not re.match('^.*?@.*', to_mail):
+            title = 'The provided email address is invalid, please provide a correct one.'
+            messages.success(request, title)
+            return render(request, "analysis.html")
     if select_model == 'model_bclass' and inputdata.iloc[:, 0].nunique(dropna=True) != 2:
         title = 'Selected analysis mode is inconsistent with the input data type!'
         messages.success(request, title)
@@ -187,6 +193,7 @@ def preview_result(request):
         'inputdata_display': inputdata_display,
         'inputdata_columns': inputdata_columns,
         'title_str': title_str,
+        'to_mail': to_mail,
     }
     with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'wb') as f:
         pickle.dump(preview_pickle, f)
@@ -203,6 +210,7 @@ def preview_result(request):
         'inputdata_columns': json.dumps(inputdata_columns),
         'title_str': title_str,
         'fsm': fsm,
+        'to_mail': to_mail
     })
 
 def data_hist(data, datatype='other'):

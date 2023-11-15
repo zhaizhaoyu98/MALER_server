@@ -63,9 +63,13 @@
 			.list-group-item.active {
 				background-color: #17a2b8;
 				border: 1px solid rgba(0, 0, 0, .125);
+				
 			}
 			#list-example a {
-				padding-left: 15px;
+				text-align: center;
+				line-height: 40px;
+				text-decoration: none;
+				outline: none;
 			}
 			
 			h3 {
@@ -112,25 +116,25 @@
 		<!-- 导航栏 -->
 		{% include 'public_templates/nav_tem.html' %}
 		
-		
-		<!-- 主体内容 -->
-		<div class="container col-9">
-			<br />
-			<div class="row">
-				<div class='col-2 d-none d-xl-block' style="">
-					<div id="list-example" class="list-group "
-						style="position: fixed; width:250px;height: 500px;margin-left: -50px;padding-left: 0;">
-						<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-2">C-index</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-3">Kaplan-Meier curve</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-4">Test</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-5">Report</a>
-						<!-- <a class="list-group-item list-group-item-action" href="#list-item-5">Drug Property Radar Chart</a> -->
-					</div>
+			<div class='col-2 d-none d-xl-block' style="">
+				<div id="list-example" class="list-group "
+					style="position: fixed; width:270px;height: 500px;margin-left: 20px;padding-left: 0;margin-top:30px;">
+					<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-2">C-index</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-3">Kaplan-Meier curve</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-4">Test</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-5">Report</a>
+					<!-- <a class="list-group-item list-group-item-action" href="#list-item-5">Drug Property Radar Chart</a> -->
 				</div>
-				<div class='col-xl-9 col-lg-12'>
-					<div class="row">
-						<h2>PROJECTID: {{ projectid }}</h2>
+			</div>
+		<div class="row">
+		<!-- 主体内容 -->
+		<div class="container col-8 " style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
+			<br />
+
+				<div class='col-xl-12 col-lg-12'>
+					<div style='text-align:center;'>
+						<h3>PROJECTID: {{ projectid }}</h3>
 					</div>
 					<hr />
 					<form action="" method="">

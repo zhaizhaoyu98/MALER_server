@@ -76,33 +76,34 @@
 	    position: absolute;
 	    margin: 5px;
 	} */
-	.abc{ border:2px solid #17a2b8; width:300px;margin-top: 100px;margin-left: 30px;border-radius: 25px 25px 25px 25px;}
+	.abc{ border:2px solid #17a2b8; width:300px;margin-top: 100px;margin-left: 0px;border-radius: 25px 25px 25px 25px;}
 	
 </style>
-<body>
+<body data-spy="scroll" data-target="#help_spy_scroll" style="padding-top: 0px;">
     {% include 'public_templates/nav_tem.html' %}
-	
-	<div class="container row col-xl-10 col-lg-10 col-12">
-		<div class="col-xl-3 col-lg-3 " id='spy_nav_div'>
-			<nav class="nav nav-pills nav-stacked" style="position:fixed;border-color: #000000;border: 1px;" id="help_spy_scroll" >
-				<ul data-spy="affix" data-offset-top="0" class="abc">
-					<li><a href="#top">Introduction</a></li>
-					<li><a href="#os_compat">Browser and OS Compatibility</a></li>
-					<li><a href="#gen">Machine Learning Analysis</a></li>
-					<li><a href="#oc">&nbsp; &nbsp; Binary Classification</a></li>
-					<li><a href="#od">&nbsp; &nbsp; Multiclass Classification</a></li>
-					<li><a href="#os">&nbsp; &nbsp; Regression</a></li>
-					<li><a href="#ts">&nbsp; &nbsp; Survival Analysis</a></li>
-					<li><a href="#browse">Feature Selection Methods</a></li>
-                    <li><a href="#one_click">One-click Modeling</a></li>
-					<li><a href="#cus_model">Customized Modeling</a></li>
-                    <li><a href="#predict">External Prediction</a></li>
-                    <li><a href="#samp">Sample Data</a></li>
-					<li><a href="#item-3">Contact Us</a></li>
-				</ul>
-			</nav>
-		</div>
-		<div class='col-xl-9 col-lg-9'>
+	<div class="col-xl-2 col-lg-2 " id='spy_nav_div'>
+		<nav class="nav nav-pills nav-stacked" style="position:fixed;border-color: #000000;border: 1px;" id="help_spy_scroll" >
+			<ul data-spy="affix" data-offset-top="0" class="abc">
+				<li><a href="#top">Introduction</a></li>
+				<li><a href="#os_compat">Browser and OS Compatibility</a></li>
+				<li><a href="#gen">Machine Learning Analysis</a></li>
+				<li><a href="#oc">&nbsp; &nbsp; Binary Classification</a></li>
+				<li><a href="#od">&nbsp; &nbsp; Multiclass Classification</a></li>
+				<li><a href="#os">&nbsp; &nbsp; Regression</a></li>
+				<li><a href="#ts">&nbsp; &nbsp; Survival Analysis</a></li>
+				<li><a href="#browse">Feature Selection Methods</a></li>
+	            <li><a href="#one_click">One-click Modeling</a></li>
+				<li><a href="#cus_model">Customized Modeling</a></li>
+	            <li><a href="#predict">External Prediction</a></li>
+	            <li><a href="#samp">Sample Data</a></li>
+				<li><a href="#item-3">Contact Us</a></li>
+			</ul>
+		</nav>
+	</div>
+	<div class="container row col-xl-8 col-lg-8 col-12" style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
+		<div class="col-xl-1 col-lg-1 ">
+			</div>
+		<div class='col-xl-10 col-lg-10'>
 			<br>
 			</br>
 			<h1>Introduction</h1>

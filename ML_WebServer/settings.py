@@ -135,3 +135,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'mlserver\\static').replace('\\','/')
 # MIDDLEWARE_CLASSES=['dwebsocket.middleware.WebSocketMiddleware']      # 为所有的URL提供websocket，如果只是单独的视图需要可以不选
 # WEBSOCKET_ACCEPT_ALL=True # 可以允许每一个单独的视图使用websockets
 # WEBSOCKET_FACTORY_CLASS='dwebsocket.backends.uwsgi.factory.uWsgiWebSocketFactory' #uwsgi
+
+#email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.163.com'      #126邮箱的邮箱服务地址
+EMAIL_PORT = 25  # 端口为465或587
+# EMAIL_USE_SSL = True  # SSL加密方式设置为True
+# EMAIL_USE_TLS = False
+EMAIL_HOST_USER = 'linzhewei1999@163.com'    #这里是你的邮箱账号
+EMAIL_HOST_PASSWORD = 'ZPFKAPUKPWDTXTTZ'   #注意这里不能用你邮箱账号的密码，而要用申请的设备授权码。

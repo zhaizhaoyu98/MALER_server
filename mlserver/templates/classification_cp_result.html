@@ -64,9 +64,13 @@
 			.list-group-item.active {
 				background-color: #17a2b8;
 				border: 1px solid rgba(0, 0, 0, .125);
+				
 			}
 			#list-example a {
-				padding-left: 15px;
+				text-align: center;
+				line-height: 40px;
+				text-decoration: none;
+				outline: none;
 			}
 			
 			h3 {
@@ -74,8 +78,6 @@
 				color: #17a2b8; margin-bottom: 20px;
 				font-weight: bolder;
 			}
-			
-
 		</style>
 		<script>
 			$(document).ready(function(){
@@ -113,24 +115,26 @@
 		<!-- 导航栏 -->
 		{% include 'public_templates/nav_tem.html' %}
 		
-		
-		<!-- 主体内容 -->
-		<div class="container col-9">
-			<br />
-			<div class="row">
-				<div class='col-2 d-none d-xl-block' style="">
-					<div id="list-example" class="list-group "
-						style="position: fixed; width:250px;height: 500px;margin-left: -50px;padding-left: 0;">
-						<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-2">Evaluation indices</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-3">ROC</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-4">Test</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-5">Report</a>
-					</div>
+			<div class="col-1 d-none d-xl-block">
+				<div id="list-example" class="list-group abc "
+					style="position: fixed; width:270px;height: 500px;margin-left: 20px;padding-left: 0;margin-top:30px;">
+					<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-2">Evaluation indices</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-3">ROC</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-4">Test</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-5">Report</a>
 				</div>
-				<div class='col-xl-9 col-lg-12'>
-					<div class="row">
-						<h2>PROJECTID: {{ projectid }}</h2>
+			</div>
+			
+		<div class="row">
+		<!-- 主体内容 -->
+<!-- 		<div class='col-1 d-none d-xl-block' style="">
+			</div> -->
+		<div class="container col-8 " style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
+			<br />
+				<div class='col-xl-12 col-lg-12'>
+					<div style='text-align:center;'>
+						<h3>PROJECTID: {{ projectid }}</h3>
 					</div>
 					<hr />
 					<form action="" method="" id="form_data">
@@ -188,8 +192,12 @@
 					</h3>
 					<div id="barplotDiv"></div>
 					<div class="row">
-					<div class="col" style="padding-right: 0px ;"><div id="heatmapDiv"></div></div>
-					<div class="col" style="padding-left: 0px ;"><div id="validrocDiv"></div></div>
+					<div class="col-6" style="padding-right: 0px;">
+						<div id="heatmapDiv"></div>
+						</div>
+					<div class="col-6" style="padding-left: 0px;">
+						<div id="validrocDiv"></div>
+						</div>
 					</div>
 					
 					
@@ -201,7 +209,7 @@
 						 <thead>
 							<tr>
 								<th></th>
-								<!-- <th>Index</th> -->
+								<th>Index</th>
 								<th>Feature Select Method</th>
 								<th>Optimal Feature Subset Search Methods</th>
 								<th class="none">Feature Names</th>
@@ -227,16 +235,15 @@
 							</tr>
 						</thead>
 					</table>
+					<br />
 					<button type="button" id="combination" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">Combination
 						</button>
 				</div>
+				<br />
+				<br />
 			</div>
-			
-			
-			<br />
-			<br />
-			<br />
-			<br />
+			</div>
+
 			<!-- <div class="row">
 				<div class="col-6">
 					<button type="button" onclick="window.location.href='/mlserver/analysis_oneclick'" class="btn btn-info" style="width: 100%;">One-click Analysis</button>
@@ -245,7 +252,9 @@
 					<button type="button" onclick="window.location.href='/mlserver/analysis_perpara'" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">Personalized Parameters Analysis</button>
 				</div>				
 			</div> -->
-		</div>
+		
+
+		<hr>
 		<!-- 底部 -->
 		{% include 'public_templates/footer.html' %}
 
@@ -356,6 +365,7 @@
 			}
 			
 			var radar_layout = {
+				title: 'Radar Chart',
 				polar: {
 					radialaxis: {
 				      range: [0.5, 1], 
@@ -413,7 +423,7 @@
 					columnDefs: [ {
 					    className: 'control',
 					    orderable: false,
-					    targets:   9,
+					    targets:   10,
 					} ],
 					data: max_reports_data,
 					searching: false, 
@@ -422,7 +432,7 @@
 					sort: false,
 					columns: [
 						{ data: 'Method' },
-						// { data: 'md5' },
+						{ data: 'md5' },	
 						{ data: 'Fsm' },
 						{ data: 'fsm'},
 						{ data: 'feature_names' },
@@ -495,14 +505,15 @@
 				// $('#myModalLabel').append($(this).parent().parent().children().eq(0).text())
 			   // console.log('API row values: ', formData);
 			   $.ajax({
-				url:'/maler/get_cp_combination',
+				url:'/maler/classification_cp_result_ajax',
 				type:"POST",
-				// headers: {"X-CSRFToken": csrftoken},
+				headers: {"X-CSRFToken": csrftoken},
 				data:formData,
 				processData:false,
 				contentType:false,
 				success:function(response){
 					exp_data_decode=JSON.parse(response)
+					// console.log(exp_data_decode)
 					Plotly.newPlot('mixrocplotDiv', exp_data_decode.roc_traces, roc_layout);
 					Plotly.newPlot('mixradarplotDiv', exp_data_decode.radar_dict, radar_layout);
 					// var BOM = '\uFEFF';

@@ -1,7 +1,7 @@
 import json
 
 from django.shortcuts import render
-
+import re
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -30,7 +30,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5, split_train_test
+from mlserver.views.classification_oc_result_views import get_file_md5, split_train_test,task_sendmail
 from mlserver.views.regression_oc_result_views import mkvregpredplot, mkvreportbarplot, JsonEncoder
 from mlserver.views.classification_cp_result_views import md5_convert
 from mlserver.views.survival_cp_result_views import surv_para_group
@@ -39,13 +39,6 @@ from mlserver.views.featureselection_method import mrmr_fs
 
 def regression_cp_result(request, projectid):
     feature_select_method = request.POST.get('feature_select_method')
-    # file_upload_type = request.POST.get('file_upload_type')
-    # print('feature_select_method: ', feature_select_method)
-    # print('regsvm_degree: ',request.POST.get('regsvm_degree') == None)
-    # print('regsvm_gamma: ', request.POST.get('regsvm_gamma'))
-    # reg_model_name = 'LinearRegression'
-    # reg_cust_model = LinearRegression()  # 选择模型
-
     model_md5 = request.POST.get('model_md5')
     with open(STATIC_ROOT + '/cache/' + projectid + '/model_pickle.pkl', 'rb') as f:
         model_set = pickle.load(f)
@@ -57,6 +50,10 @@ def regression_cp_result(request, projectid):
     # if projectid == '': projectid = 'None'
     fsm = request.POST.get('fsm')
     form_action = request.POST.get('form_action')
+    if fsm == 'A':
+        Fsm = 'ANOVA'
+    elif fsm == 'M':
+        Fsm = 'MRMR'
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'cp_cache.pkl')):
 
         # token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
@@ -262,167 +259,199 @@ def regression_cp_result(request, projectid):
             pickle.dump(model_info, f)
 
     else:
+        print('存在缓存！！！')
+        # 判断是否已经跑过该数据,如果是直接返回数据
         with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
             cp_cache = pickle.load(f)
-
-        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "data.csv", header=0, index_col=0).T
-        train_set, test_set, blind_set = split_train_test(inputdata)
-
-        nordata4, nor_age4 = regression_preprocess(train_set)
-        # nordata4, vaildation_data, nor_age4, vaildation_label = train_test_split(x_dum, y, random_state=10,
-        #                                                                          train_size=0.7)  # 分验证集
-
-        if len(test_set) > 0:
-            validation_data, validation_label = regression_preprocess(test_set)
-            ifval = True
-        else:
-            ifval = False
-        if fsm == 'A':
-            features = selectkbest_top20(nordata4, nor_age4, k=50)
-            Fsm = 'ANOVA'
-        elif fsm == 'M':
-            features = mrmr_fs(nordata4, nor_age4,form_action,k=50)
-            Fsm = 'MRMR'
-        # features = selectkbest_top20(nordata4, nor_age4, score_func=f_regression, k=50)
-        nordata4 = nordata4[features]
-
-        train_index, test_index = RegressionKFold(nordata4, nor_age4)
-        cv = RepeatedKFold(n_splits=5, n_repeats=1, random_state=10)
-
-        # Alphas=[0.0001,0.001,0.005,0.05,0.1,0.01]
-
-        # fss,bss
-        if feature_select_method != 'TopK':
-            if feature_select_method == 'FSS':
-                sf, ms = FSS_fun(features, reg_cust_model, nordata4, nor_age4, cv, n_jobs=1)
-            elif feature_select_method == 'BSS':
-                sf, ms = BSS_fun(features, reg_cust_model, nordata4, nor_age4, cv, n_jobs=1)
-            max_index = np.array(ms).argmax()
-            # max_index = ms.index(np.nanmax(ms))
-            max_score = max(ms)
-            max_features = (sf[:max_index + 1])
-            preds, tests, res = [], [], []
-            for i in range(len(train_index)):
-                xtrain, ytrain = nordata4.iloc[train_index[i], :], nor_age4[train_index[i]]
-                xtest, ytest = nordata4.iloc[test_index[i], :], nor_age4[test_index[i]]
-                xtrain, xtest = xtrain[max_features], xtest[max_features]
-                estimator, test_acc, predict = train_estimator(reg_cust_model, xtrain, ytrain, xtest, ytest)
-                tests.append(test_acc), res.append(estimator), preds.append(predict)
-
-        else:
-            clf_num, ms = pre_screening(nordata4, nor_age4, reg_cust_model, features)
-            tests, estimators, mean_accs, preds, res = train_top3(reg_cust_model, nordata4, nor_age4,
-                                                                  clf_num, train_index, test_index,
-                                                                  features)
-
-            # max_features = list(nordata4.iloc[:, clf_num].columns)
-            max_features = res
-        tmodels = copy.deepcopy(reg_cust_model)
-        tmodels.fit(nordata4[max_features], nor_age4)
-        paras = reg_cust_model.get_params()
-        if reg_model_name == 'Ridge' or reg_model_name == 'Lasso':
-            paras['alphas'] = tmodels.alpha_
-        select_str = feature_select_method + reg_model_name + str(paras) + Fsm
-        select_md5 = md5_convert(select_str)[:6]
-
-
-        if select_md5 not in cp_cache.keys():
-
-            line_chart_data = []
-            line_trace = {
-                'mode': 'lines+markers',
-                'name': reg_model_name,
-                'type': 'scatter',
-                'x': list(range(1, len(ms)+1)),
-                'y': ms
-            }
-            line_chart_data.append(line_trace)
-
-            cust_reports, cust_reports_describe = cust_cv_reports(preds, test_index, nor_age4, tests)
-
-            cust_reports_dict = df2bp(cust_reports)
-            cust_reports_describe_ = cust_reports_describe.reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
-            cust_reports_describe_dict = cust_reports_describe_.to_dict('records')
-
-
-            parameter, test_acc, best_esti = [], [], []
-            feature_names = []
-            best_esti.append(tmodels)
-            parameter.append(tmodels.get_params())
-
-            parameter[0] = str(parameter[0])
-            test_acc.append(cust_reports_describe.iloc[0, 0])
-            feature_names.append(str(max_features))
-            final_reports = {'parameter': parameter,
-                             'feature_names': feature_names,
-                             'Mean R-square': cust_reports.mean()[0],
-                             'MAE': cust_reports.mean()[1],
-                             'MSE': cust_reports.mean()[2],
-                             'Fsm': Fsm}
-
-            final_reports = pd.DataFrame(final_reports, index=[reg_model_name]).reset_index().rename(
-                columns={'index': 'Method'})
-            final_reports[['Mean R-square', 'MAE', 'MSE']] = np.round(final_reports[['Mean R-square', 'MAE', 'MSE']], 3)
-            final_reports['md5'], final_reports['fsm'] = select_md5, feature_select_method
-            final_reports_dict = final_reports.to_dict('records')
-
-            # validation
-            val_report = reg_cust_val(best_esti, validation_data, validation_label, max_features, reg_model_name)
-
-            validate_predict = best_esti[0].predict(validation_data[max_features])
-            vregpred_trace = mkvregpredplot([validate_predict], validation_label, [reg_model_name])
-            vreport_trace = []
-            i = 0
-            for m in list(val_report.columns):
-                subtrace = mkvreportbarplot(val_report[[m]])
-                subtrace[0]['xaxis'], subtrace[0]['yaxis'] = 'x' + str(i + 1), 'y' + str(i + 1)
-                i += 1
-                vreport_trace.append(subtrace[0])
-
-            val_report = np.round(val_report, 3)
-            val_report = val_report.reset_index().rename(columns={'index': 'Method'})
-            val_report_dict = val_report.to_dict('records')
-
-            # pickle
-            reg_pickle = {
-                'reg_model_name': reg_model_name,
-                'line_chart_data': line_chart_data,
-                'cust_reports_dict': cust_reports_dict,
-                'cust_reports_describe_dict': cust_reports_describe_dict,
-                'final_reports_dict': final_reports_dict,
-                'val_report_dict': val_report_dict,
-                'vregpred_trace': vregpred_trace,
-                'vreport_trace': vreport_trace,
-                'ifval': ifval,
-                'Fsm': Fsm
-            }
-
-            final_reports = pd.concat([cp_cache['reports'], final_reports], axis=0).drop_duplicates(keep='last')
-            final_reports[['Mean R-square','MAE','MSE']] = np.round(final_reports[['Mean R-square','MAE','MSE']],3)
-            final_reports_dict = final_reports.to_dict('records')
-            cp_cache[select_md5] = reg_pickle
-            cp_cache['reports'] = final_reports
-
-            with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl',
-                      'wb') as f:
-                pickle.dump(cp_cache, f)
-            # 保存单个模型信息
-            model_info = {}
-            print('mame:',reg_model_name,' model:::',tmodels)
-            model_info['name'], model_info['model'], model_info['feature_names'] = reg_model_name, tmodels, max_features
-            with open(STATIC_ROOT + '/cache/' + projectid + '/' + select_md5 + '.pkl', 'wb') as f:
-                pickle.dump(model_info, f)
-        else:
+        # if_cp_cache_reg(cp_cache,feature_select_method,Fsm,reg_cust_model,reg_model_name,projectid,request)
+        pd_reports = pd.DataFrame(cp_cache['reports'])
+        select_md5 = 0
+        for i in range(len(pd_reports.index)):
+            pd_report = pd_reports.iloc[i, :]
+            if (pd_report['parameter'] + pd_report['fsm'] + pd_report['Fsm']) == (
+                    str(reg_cust_model.get_params()) + feature_select_method + Fsm):
+                select_md5 = pd_report['md5']
+                print('using cache!!!')
+        if select_md5 != 0:
             final_reports_dict = cp_cache['reports'].to_dict('records')
             reg_model_name = cp_cache[select_md5]['reg_model_name']
             line_chart_data = cp_cache[select_md5]['line_chart_data']
             cust_reports_dict = cp_cache[select_md5]['cust_reports_dict']
             cust_reports_describe_dict = cp_cache[select_md5]['cust_reports_describe_dict']
-            val_report_dict = cp_cache[select_md5]['val_report_dict']
-            vregpred_trace = cp_cache[select_md5]['vregpred_trace']
-            vreport_trace = cp_cache[select_md5]['vreport_trace']
+            if 'val_report_dict' in cp_cache[select_md5].keys():
+                val_report_dict = cp_cache[select_md5]['val_report_dict']
+                vregpred_trace = cp_cache[select_md5]['vregpred_trace']
+                vreport_trace = cp_cache[select_md5]['vreport_trace']
+                ifval = True
+            else:
+                val_report_dict, vregpred_trace, vreport_trace = [], [], []
+                ifval = False
+            ###
+        else:
+            inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "data.csv", header=0, index_col=0).T
+            train_set, test_set, blind_set = split_train_test(inputdata)
+
+            nordata4, nor_age4 = regression_preprocess(train_set)
+            # nordata4, vaildation_data, nor_age4, vaildation_label = train_test_split(x_dum, y, random_state=10,
+            #                                                                          train_size=0.7)  # 分验证集
+
+            if len(test_set) > 0:
+                validation_data, validation_label = regression_preprocess(test_set)
+                ifval = True
+            else:
+                ifval = False
+            if fsm == 'A':
+                features = selectkbest_top20(nordata4, nor_age4, k=50)
+                Fsm = 'ANOVA'
+            elif fsm == 'M':
+                features = mrmr_fs(nordata4, nor_age4,form_action,k=50)
+                Fsm = 'MRMR'
+            # features = selectkbest_top20(nordata4, nor_age4, score_func=f_regression, k=50)
+            nordata4 = nordata4[features]
+
+            train_index, test_index = RegressionKFold(nordata4, nor_age4)
+            cv = RepeatedKFold(n_splits=5, n_repeats=1, random_state=10)
+
+            # Alphas=[0.0001,0.001,0.005,0.05,0.1,0.01]
+
+            # fss,bss
+            if feature_select_method != 'TopK':
+                if feature_select_method == 'FSS':
+                    sf, ms = FSS_fun(features, reg_cust_model, nordata4, nor_age4, cv, n_jobs=1)
+                elif feature_select_method == 'BSS':
+                    sf, ms = BSS_fun(features, reg_cust_model, nordata4, nor_age4, cv, n_jobs=1)
+                max_index = np.array(ms).argmax()
+                # max_index = ms.index(np.nanmax(ms))
+                max_score = max(ms)
+                max_features = (sf[:max_index + 1])
+                preds, tests, res = [], [], []
+                for i in range(len(train_index)):
+                    xtrain, ytrain = nordata4.iloc[train_index[i], :], nor_age4[train_index[i]]
+                    xtest, ytest = nordata4.iloc[test_index[i], :], nor_age4[test_index[i]]
+                    xtrain, xtest = xtrain[max_features], xtest[max_features]
+                    estimator, test_acc, predict = train_estimator(reg_cust_model, xtrain, ytrain, xtest, ytest)
+                    tests.append(test_acc), res.append(estimator), preds.append(predict)
+
+            else:
+                clf_num, ms = pre_screening(nordata4, nor_age4, reg_cust_model, features)
+                tests, estimators, mean_accs, preds, res = train_top3(reg_cust_model, nordata4, nor_age4,
+                                                                      clf_num, train_index, test_index,
+                                                                      features)
+
+                # max_features = list(nordata4.iloc[:, clf_num].columns)
+                max_features = res
+            tmodels = copy.deepcopy(reg_cust_model)
+            tmodels.fit(nordata4[max_features], nor_age4)
+            paras = reg_cust_model.get_params()
+            if reg_model_name == 'Ridge' or reg_model_name == 'Lasso':
+                paras['final_alphas'] = tmodels.alpha_
+            select_str = feature_select_method + reg_model_name + str(paras) + Fsm
+            select_md5 = md5_convert(select_str)[:6]
 
 
+            if select_md5 not in cp_cache.keys():
+
+                line_chart_data = []
+                line_trace = {
+                    'mode': 'lines+markers',
+                    'name': reg_model_name,
+                    'type': 'scatter',
+                    'x': list(range(1, len(ms)+1)),
+                    'y': ms
+                }
+                line_chart_data.append(line_trace)
+
+                cust_reports, cust_reports_describe = cust_cv_reports(preds, test_index, nor_age4, tests)
+
+                cust_reports_dict = df2bp(cust_reports)
+                cust_reports_describe_ = cust_reports_describe.reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
+                cust_reports_describe_dict = cust_reports_describe_.to_dict('records')
+
+
+                parameter, test_acc, best_esti = [], [], []
+                feature_names = []
+                best_esti.append(tmodels)
+                parameter.append(tmodels.get_params())
+
+                parameter[0] = str(parameter[0])
+                test_acc.append(cust_reports_describe.iloc[0, 0])
+                feature_names.append(str(max_features))
+                final_reports = {'parameter': parameter,
+                                 'feature_names': feature_names,
+                                 'Mean R-square': cust_reports.mean()[0],
+                                 'MAE': cust_reports.mean()[1],
+                                 'MSE': cust_reports.mean()[2],
+                                 'Fsm': Fsm}
+
+                final_reports = pd.DataFrame(final_reports, index=[reg_model_name]).reset_index().rename(
+                    columns={'index': 'Method'})
+                final_reports[['Mean R-square', 'MAE', 'MSE']] = np.round(final_reports[['Mean R-square', 'MAE', 'MSE']], 3)
+                final_reports['md5'], final_reports['fsm'] = select_md5, feature_select_method
+                final_reports_dict = final_reports.to_dict('records')
+
+                # validation
+                val_report = reg_cust_val(best_esti, validation_data, validation_label, max_features, reg_model_name)
+
+                validate_predict = best_esti[0].predict(validation_data[max_features])
+                vregpred_trace = mkvregpredplot([validate_predict], validation_label, [reg_model_name])
+                vreport_trace = []
+                i = 0
+                for m in list(val_report.columns):
+                    subtrace = mkvreportbarplot(val_report[[m]])
+                    subtrace[0]['xaxis'], subtrace[0]['yaxis'] = 'x' + str(i + 1), 'y' + str(i + 1)
+                    i += 1
+                    vreport_trace.append(subtrace[0])
+
+                val_report = np.round(val_report, 3)
+                val_report = val_report.reset_index().rename(columns={'index': 'Method'})
+                val_report_dict = val_report.to_dict('records')
+
+                # pickle
+                reg_pickle = {
+                    'reg_model_name': reg_model_name,
+                    'line_chart_data': line_chart_data,
+                    'cust_reports_dict': cust_reports_dict,
+                    'cust_reports_describe_dict': cust_reports_describe_dict,
+                    'final_reports_dict': final_reports_dict,
+                    'val_report_dict': val_report_dict,
+                    'vregpred_trace': vregpred_trace,
+                    'vreport_trace': vreport_trace,
+                    'ifval': ifval,
+                    'Fsm': Fsm
+                }
+
+                final_reports = pd.concat([cp_cache['reports'], final_reports], axis=0).drop_duplicates(keep='last')
+                final_reports[['Mean R-square','MAE','MSE']] = np.round(final_reports[['Mean R-square','MAE','MSE']],3)
+                final_reports_dict = final_reports.to_dict('records')
+                cp_cache[select_md5] = reg_pickle
+                cp_cache['reports'] = final_reports
+
+                with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl',
+                          'wb') as f:
+                    pickle.dump(cp_cache, f)
+                # 保存单个模型信息
+                model_info = {}
+                print('mame:',reg_model_name,' model:::',tmodels)
+                model_info['name'], model_info['model'], model_info['feature_names'] = reg_model_name, tmodels, max_features
+                with open(STATIC_ROOT + '/cache/' + projectid + '/' + select_md5 + '.pkl', 'wb') as f:
+                    pickle.dump(model_info, f)
+            else:
+                final_reports_dict = cp_cache['reports'].to_dict('records')
+                reg_model_name = cp_cache[select_md5]['reg_model_name']
+                line_chart_data = cp_cache[select_md5]['line_chart_data']
+                cust_reports_dict = cp_cache[select_md5]['cust_reports_dict']
+                cust_reports_describe_dict = cp_cache[select_md5]['cust_reports_describe_dict']
+                val_report_dict = cp_cache[select_md5]['val_report_dict']
+                vregpred_trace = cp_cache[select_md5]['vregpred_trace']
+                vreport_trace = cp_cache[select_md5]['vreport_trace']
+
+    #send email
+    to_mail = request.POST.get('to_mail')
+    print('mail: ',to_mail)
+    if 'para_md5' in locals():  # 判断是否使用缓存，已有数据的变量名是select_md5
+        url = 'maler/regression_cp_result/prev/'+ projectid + para_md5
+        if to_mail != '' and to_mail != None:
+            task_sendmail(to_mail, url)
     return render(request, 'regression_cp_result.html', {
         'projectid': projectid,
         'reg_model_name': reg_model_name,
@@ -938,3 +967,6 @@ def df2bp(df):
         i += 1
         data.append(trace)
     return data
+
+
+

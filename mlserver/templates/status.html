@@ -102,28 +102,28 @@
 	<body data-spy="scroll" data-target="#list-example" style="padding-top: 0px;">
 		<!-- 导航栏 -->
 		{% include 'public_templates/nav_tem.html' %}
-		
+		<div class="container col-6" style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
 		<div id="loading">loading...</div>
 		<!-- 主体内容 -->
-		<div class="container col-9" id="main" style="display: none;">
+		<div class="col-12" id="main" style="display: none;">
 			<br />
 			<div class="row">
 				<div class="col-2 d-none d-xl-block" style="">
 				</div>
-				<div class="col-xl-9 col-lg-12">
+				<div class="col-xl-12 col-lg-12">
 					
 					<form action="{{form_action}}/{{ projectid }}" id="status_form" method="POST" >
 						{% csrf_token %}
 						<div class="col">
-							<div class="row">
-								<h2>PROJECTID: {{ projectid }}</h2>
+							<div style="text-align: center;">
+								<h3>&nbsp;PROJECTID: {{ projectid }}</h3>
 							</div>
 						</div>
 						
 						<hr />
 						<div class="col">
-							<div class="row">
-								<h2 id="status">STATUS: {{ status|safe }}</h2>
+							<div style="text-align: center;">
+								<h3 id="status">STATUS: {{ status|safe }}</h3>
 							</div>
 						</div>
 						<div class="col-12">
@@ -155,7 +155,7 @@
 										Visualization of Data Distribution
 									</h3>
 									<div style="display: flex;">
-										<div id="histplotDiv" style="margin: auto;text-align:center;width: 900px;"></div>
+										<div id="histplotDiv" style="margin: auto;text-align:center;width: 920px;"></div>
 									</div>
 									
 								</div>
@@ -190,6 +190,7 @@
 						<input name="model_md5" id="model_md5" style="display: none;" value="{{ model_md5 }}"/>
 						<input name="fsm" id="fsm" style="display: none;" value="{{ fsm }}"/>
 						<input name="form_action" id="form_action" style="display: none;" value="{{ form_action }}"/>
+						<input name="to_mail" id="to_mail" style="display: none;" value="{{ to_mail }}"/>
 					
 					<br />
 					<br />
@@ -215,6 +216,7 @@
 					
 				</div>
 			</div>
+		</div>
 		</div>
 		<!-- 底部 -->
 		{% include 'public_templates/footer.html' %}
@@ -337,39 +339,6 @@
 			$("#main").attr('style','');
 			
 			
-			// websocket
-			// 点击连接websocket按钮，则启动访问websocket
-			$('#button_submit').click(function () {
-				if(window.s){
-					window.s.close()
-				}
-				// 设置websocket的服务端url
-				// var s = new WebSocket("ws://" + window.location.host + "/maler/acceptsocket");
-				var s = new WebSocket("ws://" + window.location.host + "/maler/{{form_action}}/{{projectid}}");
-				window.s = s;
-				// 打开连接websocket服务，连接成功则打印信息
-				s.onopen = function () {
-					console.log('WebSocket open');//成功连接上Websocket
-
-				};
-	 
-				// 接收服务端发送过来的数据，在浏览器上刷新
-				s.onmessage = function (msg) {
-					// heartCheck.reset();
-					console.log('message: ' + msg.data);//打印出服务端返回过来的数据
-					var m = msg.data
-					// if (status == 1){
-					// 	window.s.close();//关闭websocket
-					// 	console.log('websocket is closed!');
-					// }
-					
-				};
-				setInterval(() => {
-				  if (window.s.readyState === WebSocket.OPEN) {
-					window.s.send("heartbeat");
-				  }
-				}, 10000);
-			});
 
 		</script>
 	</body>

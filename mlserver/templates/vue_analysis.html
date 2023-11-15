@@ -23,6 +23,7 @@
                     // 打开连接websocket服务，连接成功则打印信息
                     s.onopen = function () {
                         console.log('WebSocket open');//成功连接上Websocket
+						// window.s.send("heartbeat")
                     };
  
                     // 接收服务端发送过来的数据，在浏览器上刷新
@@ -30,12 +31,11 @@
 						// heartCheck.reset();
                         console.log('message: ' + msg.data);//打印出服务端返回过来的数据
                         // $('#messagecontainer').prepend('<p>' + msg.data + '</p>');
-						var m = msg.data
-						// var status = {{status}}
-						// if (status == 1){
-						// 	window.s.close();
-						// 	console.log('websocket is closed!');
-						// }
+						var m = JSON.parse(msg.data)
+						if (m['status'] == 1){
+							window.s.close();
+							console.log('websocket is closed!');
+						}
 						
                     };
  
@@ -81,7 +81,14 @@
 		                }, this.timeout)
 		            }
 		        };
-		
+		// var analysis_results = localStorage.getItem("analysis_results");
+		window.addEventListener("message", (event) => {
+			console.log(event.origin)
+		    if (event.origin === "http://127.0.0.1:8000/maler/vue_analysis") {
+				var analysis_results = event.data;
+				console.log(analysis_results);
+		   }
+		});
 		
     </script>
 </head>
@@ -91,9 +98,20 @@
 <button type="button" id="connect_websocket">连接websocket</button>
 <button type="button" id="send_message">发送 message</button>
 <button type="button" id="close_websocket">关闭websocket</button>
+<!-- <a style="font-size: 18px; font-weight: 700; text-align: center;" href="' + url + '">--》Click here to see the results《--</a>' -->
+
 <h1>Received Messages</h1>
+ <script>
+	 
+
+	 // console.log(analysis_results);
+	 // document.write(analysis_results);
+ </script>
+ 
+ 
 <div id="messagecontainer"></div>
  
+
 </body>
 </html>
  

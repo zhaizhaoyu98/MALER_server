@@ -3,7 +3,7 @@ from django.http import Http404, StreamingHttpResponse
 import os, hashlib, shutil, pickle, time, json, copy
 import pandas as pd
 import numpy as np
-
+import re
 # from sklearnex import patch_sklearn, unpatch_sklearn
 # patch_sklearn()
 from sklearn.preprocessing import LabelEncoder, label_binarize
@@ -556,6 +556,13 @@ def result(request, projectid):
                                                                 classification_pickle['heatmap_anno'], \
                                                                 classification_pickle['valid_roc_traces'], \
                                                                 classification_pickle['radar_range']
+
+    #send email
+    to_mail = request.POST.get('to_mail')
+    print('mail: ',to_mail)
+    url = 'maler/classification_oc_result/'+ projectid
+    if to_mail != '' and to_mail != None:
+            task_sendmail(to_mail, url)
 
     return render(request, 'classification_oc_result.html', {
         'projectid': projectid,
@@ -1405,3 +1412,25 @@ class JsonEncoder(json.JSONEncoder):
             return obj.tolist()
         else:
             return super(JsonEncoder, self).default(obj)
+
+#send email
+def task_sendmail(to_mail,url):
+    from django.core.mail import send_mail
+    import sys
+    if sys.platform == 'win32':
+        local_url = 'http://127.0.0.1:8000/'
+    elif sys.platform == 'linux':
+        local_url = 'http://www.inbirg.com/'
+    subject = 'Task run complete!'
+    content = '<a style="font-size: 20px; font-weight: 700; text-align: center;" href="' + \
+              local_url + url + '">--》Click to see the results《--</a>'
+    # from_mail = 'Task run notification<' + '>'
+    from_mail = 'Task run notification <linzhewei1999@163.com>'
+    # to_mail = '1198369937@qq.com'
+    print('发送邮件' + content)
+    try:
+        send_mail(subject, message=None, from_email=from_mail, recipient_list=[to_mail], fail_silently=False,
+                  html_message=content)
+    except Exception as ee:
+        print('发送邮件异常!')
+        print(ee)
