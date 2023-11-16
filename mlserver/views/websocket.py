@@ -35,23 +35,61 @@ from django.http import HttpResponse
 import dwebsocket.websocket
 # Create your views here.
 
+from concurrent.futures import ThreadPoolExecutor
+import time
+
+
+# # 参数times用来模拟网络请求的时间
+def get_html(times):
+    time.sleep(times)
+    print("get page {}s finished".format(times))
+    return times
+
+# executor = ThreadPoolExecutor(max_workers=2)
+# # 通过submit函数提交执行的函数到线程池中，submit函数立即返回，不阻塞
+# task1 = executor.submit(get_html, (3))
+# task2 = executor.submit(get_html, (2))
+# # done方法用于判定某个任务是否完成
+# print(task1.done())
+# # cancel方法用于取消某个任务,该任务没有放入线程池中才能取消成功
+# print(task2.cancel())
+# time.sleep(4)
+# print(task1.done())
+# # result方法可以获取task的执行结果
+# print(task1.result())
+
+
+
+
+
+
+
+
+
+from concurrent.futures.thread import ThreadPoolExecutor
+global_thread_pool = ThreadPoolExecutor(2)
+def keep_alive(WebSocket):
+    i=0
+    while True:
+        if i <10 :
+            msg = {
+                'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
+                'msg': 'heartbeat'
+            }
+            time.sleep(5)
+            WebSocket.send(json.dumps(msg))
+            i = i+1
+        else:
+            return i
+
 
 @accept_websocket
 def test_websocket2(request):
     '''服务端视图'''
     connect_num = 0
+
     if request.is_websocket(): # 如果请求是websocket请求：WebSocket = request.websocket
         WebSocket = request.websocket
-        # while True:
-        #     if WebSocket.has_messages():
-        #         client_msg = WebSocket.read().decode("utf-8")
-        #         messages = {
-        #             'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
-        #             'status': 0,
-        #             # 'server_msg': res,
-        #             # 'client_msg': client_msg
-        #         }
-        #         request.websocket.send(json.dumps(messages))
         while True:
             # 判断是否通过websocket接收到数据
             if WebSocket.has_messages():
@@ -63,6 +101,9 @@ def test_websocket2(request):
                     break
                 else:
                     client_msg = str(message, encoding = "utf-8")
+                    # print(client_msg)
+                    global_thread_pool.submit(keep_alive,WebSocket)
+
                     if connect_num < 3:
                         messages = {
                             'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
@@ -76,12 +117,10 @@ def test_websocket2(request):
                             'status': 1,
                             # 'server_msg': res
                         }
-                        from_mail = 'linzhewei1999@163.com'
-                        to_mail = '1198369937@qq.com'
-                        # send_email(from_mail,to_mail)
                     time.sleep(1)
                     connect_num = connect_num + 1
                     request.websocket.send(json.dumps(messages))
+
 
     else:
         pass
@@ -111,3 +150,4 @@ def send_email(from_mail,to_mail):
     send_mail(subject, message=None, from_email=from_mail, recipient_list=[to_mail],
               fail_silently=False,
               html_message=content)
+

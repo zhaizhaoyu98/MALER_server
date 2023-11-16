@@ -33,8 +33,9 @@ urlpatterns=[
     path('classification_oc_result/<str:projectid>', classification_oc_result_views.result),
 
     # custom parameter result
-    # path('classification_cp_result/<str:projectid>', classification_cp_result_views.result),
-    path('classification_cp_result_ws/<str:projectid>', classification_cp_result_views.result),
+    # path('classification_cp_result/<str:projectid>', classification_cp_result_views),
+    # path('classification_cp_result_ws/<str:projectid>', classification_cp_result_views.result),
+    path('classification_cp_result_ws/<str:projectid>', classification_cp_result_view_websocket.result_ws), ##cp_websocket
     path('classification_cp_result/<str:projectid>', classification_cp_result_view_websocket.return_running_page), ####websocket
     path('classification_cp_result/prev/<str:projectid_paramd5>', classification_cp_result_views.show_prev_page),
 

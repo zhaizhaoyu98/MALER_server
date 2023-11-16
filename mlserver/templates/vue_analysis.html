@@ -32,10 +32,10 @@
                         console.log('message: ' + msg.data);//打印出服务端返回过来的数据
                         // $('#messagecontainer').prepend('<p>' + msg.data + '</p>');
 						var m = JSON.parse(msg.data)
-						if (m['status'] == 1){
-							window.s.close();
-							console.log('websocket is closed!');
-						}
+						// if (m['status'] == 1){
+						// 	window.s.close();
+						// 	console.log('websocket is closed!');
+						// }
 						
                     };
  

@@ -17,7 +17,7 @@ import re
 import chardet
 from zipfile import ZipFile
 
-from djangoProject import settings
+
 # 定义全局线程池
 global_thread_pool = ThreadPoolExecutor(100)
 
