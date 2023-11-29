@@ -282,18 +282,6 @@
 						</div>
 						
 						
-						<script type="text/javascript">
-							$("#upfile").click(function () {
-							    $("#upload_file").click();
-							});
-							var myfile = document.getElementById('upload_file');
-							myfile.addEventListener('change',function() {
-								// location.reload();
-								$(".showFileName").html(myfile.files[0].name);
-							});
-							
-						</script>
-						
 						
 						
 						<div id="samp_data" class='row' style="display: none;">
@@ -422,16 +410,21 @@
 						<input name="strategy" id="strategy" style="display: none;" value=""/>
 						<!-- <input name="fsm" id="fsm" style="display: none;" value=""/> -->
 						<!-- 新增特征筛选方法 anova mrmr-->
-						<div class="row">
-						<label style="font-weight: bold; color: #666;font-size: 20px;">Feature Selsection Methods: </label>
-						</div>
 						
-						<div class="row">
-							<input type="radio" id="fsm" name="fsm" value="A" checked />&nbsp;ANOVA&nbsp;
-							<input type="radio" id="fsm" name="fsm" value="M" />&nbsp;MRMR&nbsp;
+						<div id="fsm_radio">
+							<div class="row">
+							<label style="font-weight: bold; color: #666;font-size: 20px;">Feature Selsection Methods: </label>
+							</div>
+							
+							<div class="row" >
+								<input type="radio" id="fsm" name="fsm" value="A" checked />&nbsp;ANOVA&nbsp;
+								<input type="radio" id="fsm" name="fsm" value="M" />&nbsp;MRMR&nbsp;
+								<input type="radio" id="fsm" name="fsm" value="C" style="display: none;" />
+							</div>
+							<hr>
 						</div>
 						<!-- <br /> -->
-						<hr>
+						
 						<div class="row">
 							<label style="font-weight: bold; color: #666;font-size: 20px;">Optimal Feature Subset Search Methods: </label>
 						</div>
@@ -1905,6 +1898,17 @@
 				// console.log($("*[id^=model_]").attr('class','card'));
 				document.getElementById(id).className = 'card select';
 				document.getElementById('select_model').value = id;
+				console.log(id)
+				if ( id == 'model_sur'){
+					// 隐藏anova和mrmr
+					document.getElementById('fsm_radio').style.display = 'none',
+					// 不可选状态
+					$("input[name='fsm'][value='A']").attr('disabled','true')
+					$("input[name='fsm'][value='M']").attr('disabled','true')
+					// 选择指定radio进行checked
+					$("input[name='fsm'][value='C']").prop('checked','true')
+					console.log(($("input[name='fsm']:checked").val()))
+				}
 			}
 			
 			function cp_model_selectactive(id) {
@@ -2354,7 +2358,16 @@
 					 // alert(projectid);
 				}
 			})
-			
+
+			$("#upfile").click(function () {
+				$("#upload_file").click();
+			});
+			var myfile = document.getElementById('upload_file');
+			myfile.addEventListener('change',function() {
+				// location.reload();
+				$(".showFileName").html(myfile.files[0].name);
+			});
+				
 			$("#usr_up").click(function (){
 				$("#file_upload_type").val('user_data')
 			})

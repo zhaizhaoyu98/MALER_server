@@ -21,98 +21,91 @@ from sklearn.tree import DecisionTreeClassifier
 from lightgbm import LGBMClassifier
 from xgboost import XGBClassifier
 from ML_WebServer.settings import STATIC_ROOT
-# from mlserver.views.featureselection_method import mrmr_fs,FSS_fun,BSS_fun,train_estimator,train_top3,selectkbest_top20,pre_screening
-from mlserver.views.featureselection_method import mrmr_fs
+from mlserver.views.featureselection_method import mrmr_fs,FSS_fun,BSS_fun,train_estimator,train_top3,selectkbest_top20,pre_screening
+# from mlserver.views.featureselection_method import mrmr_fs
 import warnings
 warnings.filterwarnings("ignore")
-
+from concurrent.futures.thread import ThreadPoolExecutor
+pools = ThreadPoolExecutor(100)
+from dwebsocket.decorators import accept_websocket
 title = ["Naive Bayes","SVM","RandomForest","Logistic","KNN","XGBoost","lightGBM",'Adaboost',"DecisionTree","GBDT"]
 
-def result(request, projectid):
-    # model
-    njobs = 1  #本地设置并行任务数
+
+def return_running_page(request,projectid):
+    fsm = request.POST.get('fsm')
+    form_action = request.POST.get('form_action')
+    # model_md5 = request.POST.get('model_md5')
+    feature_select_method = request.POST.get('feature_select_method')
+    to_mail = request.POST.get('to_mail')
+    return render(request, 'classification_oc_result_ws.html', {
+        'fsm': fsm,
+        'form_action': form_action,
+        'projectid': projectid,
+        # 'model_md5': model_md5,
+        'feature_select_method': feature_select_method,
+        'to_mail': to_mail,
+    })
+
+def data_analysis(WebSocket,client_msg,projectid):
+    print('start analysis')
+    analysis_results = oc_analysis(client_msg,projectid)
+    analysis_results['status'] = 1
+    WebSocket.send(json.dumps(analysis_results))
+    print('finish!!')
+
+
+def oc_analysis(client_msg, projectid):
+    njobs = 1  # 本地设置并行任务数
     model = [GaussianNB(), SVC(cache_size=5000, probability=False), RFC(n_jobs=njobs, random_state=10),
-             LR(max_iter=4000, n_jobs=njobs), KNeighborsClassifier(n_jobs=njobs), XGBClassifier(n_jobs=njobs, random_state=10),
+             LR(max_iter=4000, n_jobs=njobs), KNeighborsClassifier(n_jobs=njobs),
+             XGBClassifier(n_jobs=njobs, random_state=10),
              LGBMClassifier(importance_type='gain', n_jobs=njobs), AdaBoostClassifier(),
              DecisionTreeClassifier(random_state=10), GradientBoostingClassifier(random_state=10)]
 
-    # projectid = request.POST.get('projectid')
-
-    # select_model = request.POST.get('select_model')
-    # file_upload_type = request.POST.get('file_upload_type')
-    # feature_select_method = projectid.split('-')[2]
-    # print(file_upload_type)
-    feature_select_method = request.POST.get('feature_select_method')
+    # feature_select_method = request.POST.get('feature_select_method')
+    feature_select_method = client_msg['feature_select_method']
     if projectid.split('-')[0][0] == 'B':
         select_model = 'model_bclass'
         ifmarco = False
     else:
         select_model = 'model_mclass'
         ifmarco = True
-
-    # if select_model == 'model_bclass':
-    #     prefix_id = 'BCO-'
-    #     ifmarco = False
-    # else:
-    #     prefix_id = 'MCO-'
-    #     ifmarco = True
-
     start_time = time.time()
-
-
     print(projectid)
-    # if file_upload_type == 'example_data':
-    #     if select_model == 'model_bclass':
-    #         filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'))
-    #         projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
-    #         inputdata = pd.read_csv(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'),
-    #                                 header=0, index_col=0).T
-    #     else:
-    #         filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'))
-    #         inputdata = pd.read_csv(
-    #             os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'),
-    #             header=0, index_col=0).T
-    #         projectid = prefix_id + filemd5[:6] + '-' + feature_select_method
-    '''
-    projectid = 'BCO-e5e9da-TopK'
-    data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'express_data.csv', header=0, index_col=0).T
-    label = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'label.csv', header=0, index_col=0)
-    
-    projectid = 'BCO-3eb2d0-533bd2-TopK'
-    data = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'multi_express_data.csv', header=0, index_col=0).T
-    label = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'multi_label.csv', header=0, index_col=0)
-    '''
+
     # make project folder in cache
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'classification_pickle.pkl')):
-        with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'rb') as f:
-            preview_pickle = pickle.load(f)
-        if preview_pickle['status'] == 'Preview':
-            preview_pickle['status'] = 'Running'
-            with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'wb') as f:
-                pickle.dump(preview_pickle, f)
-        else:
-            status = 'Running'
-            form_action = preview_pickle['form_action']
-            display_samples_dict = preview_pickle['display_samples_dict']
-            hist_trace = preview_pickle['hist_trace']
-            inputdata_display = preview_pickle['inputdata_display']
-            inputdata_columns = preview_pickle['inputdata_columns']
-            title_str = preview_pickle['title_str']
-            return render(request, 'status.html', {
-                'projectid': projectid,
-                'form_action': form_action,
-                'status': status,
-                'feature_select_method': feature_select_method,
-                # 'model_md5': model_md5,
-                'display_samples_dict': json.dumps(display_samples_dict),
-                'hist_trace': json.dumps(hist_trace, ensure_ascii=False, cls=JsonEncoder),
-                'inputdata_display': json.dumps(inputdata_display),
-                'inputdata_columns': json.dumps(inputdata_columns),
-                'title_str': title_str,
-            })
+        # with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'rb') as f:
+        #     preview_pickle = pickle.load(f)
+        # if preview_pickle['status'] == 'Preview':
+        #     preview_pickle['status'] = 'Running'
+        #     with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'wb') as f:
+        #         pickle.dump(preview_pickle, f)
+        # else:
+        #     status = 'Running'
+        #     form_action = preview_pickle['form_action']
+        #     display_samples_dict = preview_pickle['display_samples_dict']
+        #     hist_trace = preview_pickle['hist_trace']
+        #     inputdata_display = preview_pickle['inputdata_display']
+        #     inputdata_columns = preview_pickle['inputdata_columns']
+        #     title_str = preview_pickle['title_str']
+        #     return render(request, 'status.html', {
+        #         'projectid': projectid,
+        #         'form_action': form_action,
+        #         'status': status,
+        #         'feature_select_method': feature_select_method,
+        #         # 'model_md5': model_md5,
+        #         'display_samples_dict': json.dumps(display_samples_dict),
+        #         'hist_trace': json.dumps(hist_trace, ensure_ascii=False, cls=JsonEncoder),
+        #         'inputdata_display': json.dumps(inputdata_display),
+        #         'inputdata_columns': json.dumps(inputdata_columns),
+        #         'title_str': title_str,
+        #     })
 
-        fsm = request.POST.get("fsm")
-        form_action = request.POST.get("form_action")
+        # fsm = request.POST.get("fsm")
+        # form_action = request.POST.get("form_action")
+        fsm = client_msg['fsm']
+        form_action = client_msg['form_action']
 
         inputdata = pd.read_csv(
             STATIC_ROOT + '/cache/' + projectid + '/' + 'data.csv',
@@ -122,7 +115,7 @@ def result(request, projectid):
         data, label = classification_process(train_set)
         label3, classes = label_pre(label)
 
-        validation_data = []   #预先定义
+        validation_data = []  # 预先定义
         if len(test_set) > 0:
             ifval = True
             validation_data, validation_label = classification_process(test_set)
@@ -132,7 +125,7 @@ def result(request, projectid):
         if fsm == 'A':
             features = selectkbest_top20(data, label3, k=50)
         elif fsm == 'M':
-            features = mrmr_fs(data,label3,form_action)
+            features = mrmr_fs(data, label3, form_action)
 
         data3 = data.loc[:, features]
         if feature_select_method == 'TopK':
@@ -195,7 +188,8 @@ def result(request, projectid):
             recall_radar['Method'] = 'Recall'
             f1_score_radar = f1_score_describe.loc[f1_score_describe['Method'] == 'mean']
             f1_score_radar['Method'] = 'F1-score'
-            mean_method_model = pd.concat([test_acc_radar, auc_radar, precision_radar, recall_radar, f1_score_radar]).set_index('Method')
+            mean_method_model = pd.concat(
+                [test_acc_radar, auc_radar, precision_radar, recall_radar, f1_score_radar]).set_index('Method')
             radar_dict = mkradar(mean_method_model)
             radar_min = mean_method_model.min().min()
             radar_max = mean_method_model.max().max()
@@ -243,10 +237,11 @@ def result(request, projectid):
             # validation
             # ifval = True  #判断是否存在validation data
             heatmap_data, heatmap_anno = [], []
-            vbar_trace, valid_roc_traces = [],[]
+            vbar_trace, valid_roc_traces = [], []
             if len(validation_data) != 0:
                 if select_model == 'model_bclass':
-                    validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label, feature_names, ifmarco)
+                    validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label,
+                                                                          feature_names, ifmarco)
                     valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info(title, best_esti,
                                                                                            validation_data,
                                                                                            validation_label,
@@ -254,14 +249,16 @@ def result(request, projectid):
                                                                                            ifmarco)
                     valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=title)
                 else:
-                    validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label,feature_names, ifmarco)
-                    valid_roc_traces = multi_valid_roc_info(best_esti,validation_data,validation_label,feature_names,classes,title=title)
+                    validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label,
+                                                                          feature_names, ifmarco)
+                    valid_roc_traces = multi_valid_roc_info(best_esti, validation_data, validation_label, feature_names,
+                                                            classes, title=title)
 
                 vbar_trace = mkvbartrace(validate_reports)
 
                 num = 0
                 for array in validate_predicts:
-                    h_data, h_anno = mkheatmap(validation_label, array, classes, num+1)
+                    h_data, h_anno = mkheatmap(validation_label, array, classes, num + 1)
                     heatmap_data.append(h_data[0])
                     [heatmap_anno.append(h) for h in h_anno]
                     num += 1
@@ -269,26 +266,26 @@ def result(request, projectid):
             #     ifval = False
 
             classification_pickle = {'test_acc_reports_dict': test_acc_reports_dict,
-                                         'test_acc_describe_dict': test_acc_describe_dict,
-                                         'df_AUCs_dict': df_AUCs_dict,
-                                         'df_AUCs_describe_dict': df_AUCs_describe_dict,
-                                         'precision_reports_dict': precision_reports_dict,
-                                         'precision_describe_dict': precision_describe_dict,
-                                         'recall_reports_dict': recall_reports_dict,
-                                         'recall_describe_dict': recall_describe_dict,
-                                         'f1_score_reports_dict': f1_score_reports_dict,
-                                         'f1_score_describe_dict': f1_score_describe_dict,
-                                         'ifmarco': ifmarco,
-                                         'roc_traces': roc_traces,
-                                         'radar_dict': radar_dict,
-                                         'final_reports_dict': final_reports_dict,
-                                         'line_chart_data': line_chart_data,
-                                         'vbar_trace': vbar_trace,
-                                         'heatmap_data': heatmap_data,
-                                         'heatmap_anno': heatmap_anno,
-                                         'valid_roc_traces': valid_roc_traces,
-                                         'radar_range': radar_range,
-                                         'ifval': ifval}
+                                     'test_acc_describe_dict': test_acc_describe_dict,
+                                     'df_AUCs_dict': df_AUCs_dict,
+                                     'df_AUCs_describe_dict': df_AUCs_describe_dict,
+                                     'precision_reports_dict': precision_reports_dict,
+                                     'precision_describe_dict': precision_describe_dict,
+                                     'recall_reports_dict': recall_reports_dict,
+                                     'recall_describe_dict': recall_describe_dict,
+                                     'f1_score_reports_dict': f1_score_reports_dict,
+                                     'f1_score_describe_dict': f1_score_describe_dict,
+                                     'ifmarco': ifmarco,
+                                     'roc_traces': roc_traces,
+                                     'radar_dict': radar_dict,
+                                     'final_reports_dict': final_reports_dict,
+                                     'line_chart_data': line_chart_data,
+                                     'vbar_trace': vbar_trace,
+                                     'heatmap_data': heatmap_data,
+                                     'heatmap_anno': heatmap_anno,
+                                     'valid_roc_traces': valid_roc_traces,
+                                     'radar_range': radar_range,
+                                     'ifval': ifval}
 
             with open(STATIC_ROOT + '/cache/' + projectid + '/classification_pickle.pkl',
                       'wb') as f:
@@ -318,16 +315,16 @@ def result(request, projectid):
             for each_model in model:
                 start = time.perf_counter()
                 if feature_select_method == 'FSS':
-                    sf, ms = FSS_fun(features, each_model,data3,label3,cv,n_jobs=1) #本地并行提高运行速度
+                    sf, ms = FSS_fun(features, each_model, data3, label3, cv, n_jobs=1)  # 本地并行提高运行速度
                 else:
-                    sf, ms = BSS_fun(features, each_model, data3, label3, cv,n_jobs=1)
+                    sf, ms = BSS_fun(features, each_model, data3, label3, cv, n_jobs=1)
                 selected_feature.append(sf), max_scores.append(ms)
                 end = time.perf_counter()
                 print(round(end - start, 3))
             line_chart_data = []
             for f in range(len(max_scores)):
                 if len(np.argwhere(np.isnan(max_scores[f]))) == 1:
-                    xnum = list(range(1, len(ms)+1))
+                    xnum = list(range(1, len(ms) + 1))
                     xnum.pop(np.argwhere(np.isnan(max_scores[f]))[0][0])
                     ynum = max_scores[f]
                     ynum.pop(np.argwhere(np.isnan(max_scores[f]))[0][0])
@@ -343,7 +340,7 @@ def result(request, projectid):
                         'mode': 'lines+markers',
                         'name': title[f],
                         'type': 'scatter',
-                        'x': list(range(1, len(ms)+1)),
+                        'x': list(range(1, len(ms) + 1)),
                         'y': max_scores[f]
                     }
                 line_chart_data.append(trace)
@@ -417,7 +414,8 @@ def result(request, projectid):
             radar_max = mean_method_model.max().max()
             radar_range = [radar_min, radar_max]
             # ROC
-            mean_FPR, mean_TPR_df, auc_mean_std = get_ROC_info(estimators, data3, label3, max_features, test_index, df_AUCs,
+            mean_FPR, mean_TPR_df, auc_mean_std = get_ROC_info(estimators, data3, label3, max_features, test_index,
+                                                               df_AUCs,
                                                                title=title)
             roc_traces = mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=title)
 
@@ -466,7 +464,7 @@ def result(request, projectid):
                     valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info(title, best_esti,
                                                                                            validation_data,
                                                                                            validation_label,
-                                                                                           feature_names,ifmarco)
+                                                                                           feature_names, ifmarco)
                     valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=title)
                 else:
                     validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label,
@@ -530,12 +528,12 @@ def result(request, projectid):
             classification_pickle = pickle.load(f)
 
         test_acc_reports_dict, df_AUCs_dict, precision_reports_dict, \
-        recall_reports_dict, f1_score_reports_dict, roc_traces, ifmarco, ifval\
-            = classification_pickle['test_acc_reports_dict'],\
-              classification_pickle['df_AUCs_dict'],\
-              classification_pickle['precision_reports_dict'],\
-              classification_pickle['recall_reports_dict'],\
-              classification_pickle['f1_score_reports_dict'],\
+        recall_reports_dict, f1_score_reports_dict, roc_traces, ifmarco, ifval \
+            = classification_pickle['test_acc_reports_dict'], \
+              classification_pickle['df_AUCs_dict'], \
+              classification_pickle['precision_reports_dict'], \
+              classification_pickle['recall_reports_dict'], \
+              classification_pickle['f1_score_reports_dict'], \
               classification_pickle['roc_traces'], \
               classification_pickle['ifmarco'], \
               classification_pickle['ifval'],
@@ -551,20 +549,22 @@ def result(request, projectid):
               classification_pickle['line_chart_data'], \
               classification_pickle['radar_dict']
 
-        vbar_trace,heatmap_data,heatmap_anno,valid_roc_traces,radar_range = classification_pickle['vbar_trace'], \
-                                                                classification_pickle['heatmap_data'], \
-                                                                classification_pickle['heatmap_anno'], \
-                                                                classification_pickle['valid_roc_traces'], \
-                                                                classification_pickle['radar_range']
+        vbar_trace, heatmap_data, heatmap_anno, valid_roc_traces, radar_range = classification_pickle['vbar_trace'], \
+                                                                                classification_pickle['heatmap_data'], \
+                                                                                classification_pickle['heatmap_anno'], \
+                                                                                classification_pickle[
+                                                                                    'valid_roc_traces'], \
+                                                                                classification_pickle['radar_range']
 
-    #send email
-    to_mail = request.POST.get('to_mail')
-    print('mail: ',to_mail)
-    url = 'maler/classification_oc_result/'+ projectid
+    # send email
+    # to_mail = request.POST.get('to_mail')
+    to_mail = client_msg['to_mail']
+    print('mail: ', to_mail)
+    url = 'maler/classification_oc_result/' + projectid
     if to_mail != '' and to_mail != None:
-            task_sendmail(to_mail, url)
+        task_sendmail(to_mail, url)
 
-    return render(request, 'classification_oc_result.html', {
+    analysis_results = {
         'projectid': projectid,
         'test_acc_reports_dict': test_acc_reports_dict,
         'test_acc_describe_dict': test_acc_describe_dict,
@@ -576,34 +576,65 @@ def result(request, projectid):
         'recall_describe_dict': recall_describe_dict,
         'f1_score_reports_dict': f1_score_reports_dict,
         'f1_score_describe_dict': f1_score_describe_dict,
-        'roc_traces': json.dumps(roc_traces),
-        'final_reports_dict': json.dumps(final_reports_dict),
+        'roc_traces': roc_traces,
+        'final_reports_dict': final_reports_dict,
         'ifmarco': ifmarco,
         'line_chart_data': line_chart_data,
         'radar_dict': radar_dict,
         'radar_range': radar_range,
-        'vbar_trace': json.dumps(vbar_trace),
-        'heatmap_data': json.dumps(heatmap_data),
-        'heatmap_anno': json.dumps(heatmap_anno),
-        'valid_roc_traces': json.dumps(valid_roc_traces),
+        'vbar_trace': vbar_trace,
+        'heatmap_data': heatmap_data,
+        'heatmap_anno': heatmap_anno,
+        'valid_roc_traces': valid_roc_traces,
         'ifval': ifval,
-    })
+    }
+    return analysis_results
+
+    # return render(request, 'classification_oc_result.html', {
+    #     'projectid': projectid,
+    #     'test_acc_reports_dict': test_acc_reports_dict,
+    #     'test_acc_describe_dict': test_acc_describe_dict,
+    #     'df_AUCs_dict': df_AUCs_dict,
+    #     'df_AUCs_describe_dict': df_AUCs_describe_dict,
+    #     'precision_reports_dict': precision_reports_dict,
+    #     'precision_describe_dict': precision_describe_dict,
+    #     'recall_reports_dict': recall_reports_dict,
+    #     'recall_describe_dict': recall_describe_dict,
+    #     'f1_score_reports_dict': f1_score_reports_dict,
+    #     'f1_score_describe_dict': f1_score_describe_dict,
+    #     'roc_traces': json.dumps(roc_traces),
+    #     'final_reports_dict': json.dumps(final_reports_dict),
+    #     'ifmarco': ifmarco,
+    #     'line_chart_data': line_chart_data,
+    #     'radar_dict': radar_dict,
+    #     'radar_range': radar_range,
+    #     'vbar_trace': json.dumps(vbar_trace),
+    #     'heatmap_data': json.dumps(heatmap_data),
+    #     'heatmap_anno': json.dumps(heatmap_anno),
+    #     'valid_roc_traces': json.dumps(valid_roc_traces),
+    #     'ifval': ifval,
+    # })
+
+@accept_websocket
+def result_ws(request, projectid):
+    if request.is_websocket():
+        print('websocket on !!')
+        WebSocket = request.websocket
+        while True:
+            if WebSocket.has_messages():
+                client_msg = json.loads(WebSocket.wait())
+                if client_msg != 'heartbeat':
+                    print(client_msg)
+                    task1 = pools.submit(data_analysis,WebSocket,client_msg,projectid)
+                elif client_msg == 'heartbeat':
+                    messages = {
+                        'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
+                        'status': 0,
+                    }
+                    time.sleep(2)
+                    request.websocket.send(json.dumps(messages))
 
 
-
-
-# def get_model(request):
-#     model = request.POST.get('model').replace(' ','_')
-#     projectid = request.POST.get('projectid')
-#     print(model, projectid)
-#     file_path = (STATIC_ROOT + '/cache/' + projectid + '/' + model + '.pkl')
-#     try:
-#         response = StreamingHttpResponse(open(file_path, 'rb'))
-#         response['content_type'] = "application/octet-stream"
-#         response['Content-Disposition'] = 'attachment; filename=' + os.path.basename(file_path)
-#         return response
-#     except Exception:
-#         raise Http404
 
 '''
 file preprocess
@@ -637,26 +668,26 @@ def classification_process(data):
 '''
 machine learning functions
 '''
-def selectkbest_top20(data,label,k=20,score_func=f_classif):
-    selector = SelectKBest(score_func=score_func, k='all').fit(data,label)
-    df_scores = pd.DataFrame(selector.scores_)
-    df_columns = pd.DataFrame(data.columns)
-    df_feature_scores = pd.concat([df_columns, df_scores], axis=1)
-    df_feature_scores.columns = ['Feature', 'Score']
-    feature_names=df_feature_scores.sort_values(by='Score', ascending=False)[:k]['Feature']
-    return feature_names
-#初筛
-def pre_screening(data2,label,model,features):
-    #第一步筛选
-    cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=1, random_state=10)#和回归，生存分析的不一致
-    feature_names = features
-    data2 = data2[feature_names].to_numpy()
-    #ifs方法得到前三分类器选择的特征数
-    clf = copy.deepcopy(model)
-    features_num = min([len(features),20])
-    cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,n_jobs=1).mean() for i in range(1,features_num+1)]
-    clf_num = list(pd.DataFrame(cv_scores).iloc[:,0].sort_values(ascending=False).index[:3]+1)
-    return clf_num,cv_scores
+# def selectkbest_top20(data,label,k=20,score_func=f_classif):
+#     selector = SelectKBest(score_func=score_func, k='all').fit(data,label)
+#     df_scores = pd.DataFrame(selector.scores_)
+#     df_columns = pd.DataFrame(data.columns)
+#     df_feature_scores = pd.concat([df_columns, df_scores], axis=1)
+#     df_feature_scores.columns = ['Feature', 'Score']
+#     feature_names=df_feature_scores.sort_values(by='Score', ascending=False)[:k]['Feature']
+#     return feature_names
+# #初筛
+# def pre_screening(data2,label,model,features):
+#     #第一步筛选
+#     cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=1, random_state=10)#和回归，生存分析的不一致
+#     feature_names = features
+#     data2 = data2[feature_names].to_numpy()
+#     #ifs方法得到前三分类器选择的特征数
+#     clf = copy.deepcopy(model)
+#     features_num = min([len(features),20])
+#     cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,n_jobs=1).mean() for i in range(1,features_num+1)]
+#     clf_num = list(pd.DataFrame(cv_scores).iloc[:,0].sort_values(ascending=False).index[:3]+1)
+#     return clf_num,cv_scores
 
 def multi_label_pre_screening(data2,label,model):
     #第一步筛选
@@ -677,13 +708,6 @@ def label_pre(ml_label):
     classes = dict(zip(ml_label3,np.unique(ml_label2)))
     return ml_label2,classes
 
-# #特征筛选
-# def selectkbest(data,label,k=100):
-#     features = data.columns
-#     select = SelectKBest(score_func=chi2,k=k)
-#     z = select.fit_transform(data,label)# 拟合数据
-#     filter = select.get_support()  #select.get_support(indices=True)返回索引
-#     return features[filter]
 
 #n次k折数据拆分
 def RSKFold (data,label,n=10,k=5):
@@ -696,36 +720,36 @@ def RSKFold (data,label,n=10,k=5):
     return train_index,test_index
 
 #top3训练
-def train_estimator(clf,xtrain,ytrain,xtest,ytest):
-    clf2 = copy.deepcopy(clf)
-    res = clf2.fit(xtrain,ytrain)
-    predict = res.predict(xtest)
-    test_acc = accuracy_score(ytest,predict,normalize=True,)
-    return res,test_acc,predict
-
-def train_top3(clf,data,label,clf_num,train_index,test_index,feature_names):
-    test_accs,estimators,predicts,f_names = {},{},{},{}
-    mean_accs = []
-    for j in range(len(clf_num)):    #top3分类器
-        preds,tests,res,f_name = [],[],[],[]
-        for i in range(len(train_index)):
-            xtrain,ytrain = data.iloc[train_index[i],:],label[train_index[i]]
-            xtest,ytest = data.iloc[test_index[i],:],label[test_index[i]]
-            xtrain,xtest = xtrain.loc[:,feature_names[:clf_num[j]]],xtest.loc[:,feature_names[:clf_num[j]]]
-            estimator,test_acc,predict = train_estimator(clf,xtrain,ytrain,xtest,ytest)
-            tests.append(test_acc),res.append(estimator),preds.append(predict)
-        mean_accs.append(np.mean(tests))
-        test_accs[clf_num[j]] = tests
-        estimators[clf_num[j]] = res
-        predicts[clf_num[j]] = preds
-        f_names[clf_num[j]] = feature_names[:clf_num[j]]
-    #选择得分最高的topk
-    topk = clf_num[mean_accs.index(max(mean_accs))]
-    test_accs = test_accs[topk]
-    estimators = estimators[topk]
-    predicts = predicts[topk]
-    f_names = f_names[topk]
-    return test_accs,estimators,mean_accs,predicts,f_names
+# def train_estimator(clf,xtrain,ytrain,xtest,ytest):
+#     clf2 = copy.deepcopy(clf)
+#     res = clf2.fit(xtrain,ytrain)
+#     predict = res.predict(xtest)
+#     test_acc = accuracy_score(ytest,predict,normalize=True,)
+#     return res,test_acc,predict
+#
+# def train_top3(clf,data,label,clf_num,train_index,test_index,feature_names):
+#     test_accs,estimators,predicts,f_names = {},{},{},{}
+#     mean_accs = []
+#     for j in range(len(clf_num)):    #top3分类器
+#         preds,tests,res,f_name = [],[],[],[]
+#         for i in range(len(train_index)):
+#             xtrain,ytrain = data.iloc[train_index[i],:],label[train_index[i]]
+#             xtest,ytest = data.iloc[test_index[i],:],label[test_index[i]]
+#             xtrain,xtest = xtrain.loc[:,feature_names[:clf_num[j]]],xtest.loc[:,feature_names[:clf_num[j]]]
+#             estimator,test_acc,predict = train_estimator(clf,xtrain,ytrain,xtest,ytest)
+#             tests.append(test_acc),res.append(estimator),preds.append(predict)
+#         mean_accs.append(np.mean(tests))
+#         test_accs[clf_num[j]] = tests
+#         estimators[clf_num[j]] = res
+#         predicts[clf_num[j]] = preds
+#         f_names[clf_num[j]] = feature_names[:clf_num[j]]
+#     #选择得分最高的topk
+#     topk = clf_num[mean_accs.index(max(mean_accs))]
+#     test_accs = test_accs[topk]
+#     estimators = estimators[topk]
+#     predicts = predicts[topk]
+#     f_names = f_names[topk]
+#     return test_accs,estimators,mean_accs,predicts,f_names
 
 def defalut_ml(xtrain,ytrain,xtest,ytest,njobs = 1):
     tests = []
@@ -1097,48 +1121,48 @@ def macro_roc(estimator,xtest,ytest,proba,n_classes):
 #     max_scores.reverse()
 #     return selected_feature,max_scores
 
-def FSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
-    feature_names2 = list(feature_names)
-    selected_feature = []
-    max_scores = []
-    features_num = min([len(feature_names),20])#判断特征数目是否大于20
-    for i in range(features_num):
-        cv_scores = []
-        for feature in feature_names2:
-            train_feature = [feature] + selected_feature
-            data1 = pd.DataFrame(data.loc[:,train_feature])
-            cv_score = cross_val_score(clf,data1,label,cv=cv,n_jobs=n_jobs,error_score='raise').mean()
-            cv_scores.append(cv_score)
-        max_index = np.array(cv_scores).argmax()
-        max_score = max(cv_scores)
-        max_scores.append(max_score)
-        selected_feature.append(feature_names2[max_index])
-        feature_names2.remove(feature_names2[max_index])
-    return selected_feature,max_scores
-
-def BSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
-    feature_names2 = list(feature_names)
-    selected_feature = []
-    max_scores = []
-    max_scores.append(cross_val_score(clf,data,label,cv=cv,n_jobs=n_jobs).mean())#计算全部特征下的训练结果
-    features_num = min([len(feature_names),100])#判断特征数目是否大于50
-    for i in range(features_num-1):
-        cv_scores = []
-        for feature in feature_names2:
-            train_feature = feature_names2[:] #切片，独立于原列表
-            train_feature.remove(feature)
-            data1 = pd.DataFrame(data.loc[:,train_feature])
-            cv_score = cross_val_score(clf,data1,label,cv=cv,n_jobs=n_jobs).mean()
-            cv_scores.append(cv_score)
-        max_index = np.array(cv_scores).argmax()
-        max_score = max(cv_scores)
-        max_scores.append(max_score)
-        selected_feature.append(feature_names2[max_index])
-        del feature_names2[max_index]
-    selected_feature.append(feature_names2[0])
-    selected_feature.reverse() #反向排序
-    max_scores.reverse()
-    return selected_feature,max_scores
+# def FSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
+#     feature_names2 = list(feature_names)
+#     selected_feature = []
+#     max_scores = []
+#     features_num = min([len(feature_names),20])#判断特征数目是否大于20
+#     for i in range(features_num):
+#         cv_scores = []
+#         for feature in feature_names2:
+#             train_feature = [feature] + selected_feature
+#             data1 = pd.DataFrame(data.loc[:,train_feature])
+#             cv_score = cross_val_score(clf,data1,label,cv=cv,n_jobs=n_jobs,error_score='raise').mean()
+#             cv_scores.append(cv_score)
+#         max_index = np.array(cv_scores).argmax()
+#         max_score = max(cv_scores)
+#         max_scores.append(max_score)
+#         selected_feature.append(feature_names2[max_index])
+#         feature_names2.remove(feature_names2[max_index])
+#     return selected_feature,max_scores
+#
+# def BSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
+#     feature_names2 = list(feature_names)
+#     selected_feature = []
+#     max_scores = []
+#     max_scores.append(cross_val_score(clf,data,label,cv=cv,n_jobs=n_jobs).mean())#计算全部特征下的训练结果
+#     features_num = min([len(feature_names),100])#判断特征数目是否大于50
+#     for i in range(features_num-1):
+#         cv_scores = []
+#         for feature in feature_names2:
+#             train_feature = feature_names2[:] #切片，独立于原列表
+#             train_feature.remove(feature)
+#             data1 = pd.DataFrame(data.loc[:,train_feature])
+#             cv_score = cross_val_score(clf,data1,label,cv=cv,n_jobs=n_jobs).mean()
+#             cv_scores.append(cv_score)
+#         max_index = np.array(cv_scores).argmax()
+#         max_score = max(cv_scores)
+#         max_scores.append(max_score)
+#         selected_feature.append(feature_names2[max_index])
+#         del feature_names2[max_index]
+#     selected_feature.append(feature_names2[0])
+#     selected_feature.reverse() #反向排序
+#     max_scores.reverse()
+#     return selected_feature,max_scores
 
 def validate_result(estimators,vdata,vlabel,features, ifmarco,title=title):
     validate_reports, validate_predicts = [], []

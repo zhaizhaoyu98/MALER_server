@@ -37,8 +37,28 @@
 			/* table tbody {
 				font-size: 5px;
 			} */
-			table * {
+/* 			table * {
 				font-size: 15px;
+			} */
+			
+			.table
+			{
+			border-collapse: collapse;
+			/* margin: 1px,1px,1px,1px; */
+			margin: auto;
+			text-align: center;
+			}
+			.table td, .table th
+			{
+			border: 1px solid rgba(0,0,0,.1);
+			color: #666;
+			height: 45px;
+			}
+			.table .thead th
+			{
+			background-color: rgba(0,0,0,.03);
+			width: 35px;
+			height: 45px;
 			}
 			
 			#list-item-1,
@@ -72,6 +92,55 @@
 				color: #17a2b8; margin-bottom: 20px;
 				font-weight: bolder;
 			}
+			
+			.progress-6 {
+			  width:200px;
+			  height:10px;
+			  border-radius: 20px;
+			  color: #17a2b8;
+			  border:2px solid;
+			  /* position: relative; */
+			  position: relative;
+			}
+			.progress-6::before {
+			  content:"";
+			  position: absolute;
+			  margin:1px;
+			  inset:0 100% 0 0;
+			  border-radius: inherit;
+			  background: #17a2b8;
+			  animation:p6 5s infinite;
+			}
+			@keyframes p6 {
+			    100% {inset:0}
+			}
+			
+			.progress-4 {
+			  width:200px;
+			  height:10px;
+			  -webkit-mask:linear-gradient(90deg,#17a2b8 70%,#0000 0) 0/10%;
+			  background:
+			   linear-gradient(#17a2b8 0 0) 0/0% no-repeat
+			   #ddd;
+			  animation:p4 5s infinite steps(12);
+			}
+			@keyframes p4 {
+			    100% {background-size:120%}
+			}
+			.progress-2 {
+			  width:120px;
+			  height:20px;
+			  border-radius: 20px;
+			  background:
+			   linear-gradient(orange 0 0) 0/0% no-repeat
+			   lightblue;
+			  animation:p2 2s infinite steps(10);
+			}
+			@keyframes p2 {
+			    100% {background-size:110%}
+			}
+
+			
 		</style>
 		<script>
 			$(document).ready(function(){
@@ -87,20 +156,43 @@
 		{% include 'public_templates/nav_tem.html' %}
 		<div id= running>
 			<br>
-			<h4>running...</h4>
-			<form action="" method="" id="form_data">
-				{%  csrf_token %}
-				<input style="display: none;" type="text" id="projectid"  name="projectid" value="{{projectid}}"/>
-				<input style="display: none;" type="text" id="form_action"  name="form_action" value="{{form_action}}"/>
-				<input style="display: none;" type="text" id="fsm"  name="fsm" value="{{fsm}}"/>
-				<input style="display: none;" type="text" id="model_md5"  name="model_md5" value="{{model_md5}}"/>
-				<input style="display: none;" type="text" id="feature_select_method"  name="feature_select_method" value="{{feature_select_method}}"/>
-				<input style="display: none;" type="text" id="to_mail"  name="to_mail" value="{{to_mail}}"/>
-			</form>
-			
-			
+				<table id="running_table"  style="width: 50%;" lazyload="True" class="table">
+					 <thead>
+						 <pre>
+							<tr><th> Project Details</th></tr>
+							<tr><th> ProjectID:&nbsp;&nbsp;{{projectid}}</th></tr>
+							<tr><th id="time"> Submitted time: </th></tr>
+							<tr><th>Status: Running &nbsp;&nbsp;&nbsp;&nbsp; <div class="progress-6" style="display: inline-block;"></div></th></tr>
+							<tr><th id="analysis_time"> Analysis time:&nbsp;&nbsp;{{projectid}}</th></tr>
+							<tr><th> The project has been submitted, please wait... </th></tr>
+						</pre>
+						
+					</thead>
+				</table>
 		</div>
-		
+		<script>
+			// var localtime = new Date().toLocaleTimeString();
+			// document.getElementById('time').innerHTML = 'Submit time: ' + localtime
+			var localtime = getNowTime()
+			document.getElementById('time').innerHTML = 'Submitted time: &nbsp;&nbsp;'  + localtime
+			// x = '{{time}}'
+			// console.log(x)
+			// console.log(localtime)
+			function getNowTime(){
+			        const date=new Date();
+			        const year=date.getFullYear();
+			        const month=date.getMonth();
+			        const day=date.getDate();
+			        const hour=date.getHours();
+			        const minute=date.getMinutes();
+			        const seconds=date.getSeconds();
+					// month[0] = January
+			        return `${year}-${month+1}-${day} ${hour}:${minute<10?'0'+minute:minute}:${seconds<10?'0'+seconds:seconds}`
+			function AnalysisTime(){
+				
+			}
+			    }
+		</script>
 		<div id=show_data style="display: none;">
 
 				<div class="col-1 d-none d-xl-block">
@@ -108,8 +200,8 @@
 						style="position: fixed; width:270px;height: 500px;margin-left: 20px;padding-left: 0;margin-top:30px;">
 						<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
 						<a class="list-group-item list-group-item-action" href="#list-item-2">Evaluation indices</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-3">ROC</a>
-						<a class="list-group-item list-group-item-action" href="#list-item-4">Test</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-3" id="ifmarco_roc">ROC curve</a>
+						<a class="list-group-item list-group-item-action" href="#list-item-4" id="test" style="display: none;">Test</a>
 						<a class="list-group-item list-group-item-action" href="#list-item-5">Report</a>
 					</div>
 				</div>
@@ -133,9 +225,7 @@
 						</h3>
 						<div id="linechartDiv"></div>
 						
-						<h3 class="panel-heading" id="list-item-2" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-							{{model_name}}
-						</h3>
+						<h3 class="panel-heading" id="list-item-2" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;"><!-- {{model_name}} --></h3>
 						<div id="accboxplotDiv"></div>
 						
 						<table id="ftable" class="display" style="width: 100%;" lazyload="True">
@@ -153,14 +243,7 @@
 						
 						<br />
 						
-						<h3 class="panel-heading" id="list-item-3" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-							{% if ifmarco != True %}
-								ROC
-							{% else %}
-								Marco ROC
-							{% endif %}
-							
-						</h3>
+						<h3 class="panel-heading" id="list-item-3" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">ROC curve</h3>
 						<div id="rocplotDiv" style="margin-right: 0px;"></div>
 						
 						
@@ -172,20 +255,18 @@
 							
 						
 						
-						
-						<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-							Test
-						</h3>
-						<div id="barplotDiv"></div>
-						<div class="row">
-						<div class="col-6" style="padding-right: 0px;">
-							<div id="heatmapDiv"></div>
-							</div>
-						<div class="col-6" style="padding-left: 0px;">
-							<div id="validrocDiv"></div>
+						<div id="test_plot" style="display: none;">
+							<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">Test</h3>
+							<div id="barplotDiv"></div>
+							<div class="row">
+							<div class="col-6" style="padding-right: 0px;">
+								<div id="heatmapDiv"></div>
+								</div>
+							<div class="col-6" style="padding-left: 0px;">
+								<div id="validrocDiv"></div>
+								</div>
 							</div>
 						</div>
-						
 						
 						
 						<h3 class="panel-heading" id="list-item-5" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
@@ -201,18 +282,10 @@
 									<th class="none">Feature Names</th>
 									
 									<th>Mean Accuracy</th>
-									
-									{% if ifmarco != True %}
-										<th>Mean Precision</th>
-										<th>Mean AUC</th>
-										<th>Mean Recall</th>
-										<th>Mean F1-score</th>
-									{% else %}
-										<th>Marco Mean Precision</th>
-										<th>Marco Mean AUC</th>
-										<th>Marco Mean Recall</th>
-										<th>Marco Mean F1-score</th>
-									{% endif %}
+									<th id="th1">Mean Precision</th>
+									<th id="th2">Mean AUC</th>
+									<th id="th3">Mean Recall</th>
+									<th id="th4">Mean F1-score</th>
 									<th>Feature_names/Parameter</th>
 									<th class="none">Parameter</th>
 									<th>View</th>
@@ -238,243 +311,13 @@
 			// 获取当前url
 			var url = this.location.pathname
 			var arr= url.split("/")
-			// ajax
-		// 	$(document).ready(function(){
-		// 		var csrftoken = $("input[name='csrfmiddlewaretoken']").attr('value');
-		// 		var analysis_data =new FormData();
-		// 		analysis_data.append('projectid',"{{projectid}}")
-		// 		analysis_data.append('form_action',"{{form_action}}")
-		// 		analysis_data.append('fsm',"{{fsm}}")
-		// 		analysis_data.append('model_md5',"{{model_md5}}")
-		// 		analysis_data.append('feature_select_method',"{{feature_select_method}}")
-		// 		analysis_data.append('to_mail',"{{to_mail}}")
-		// 		$.ajax({
-		// 				url:'/maler/classification_cp_result_ws/{{projectid}}',
-		// 				type:"POST",
-		// 				headers: {"X-CSRFToken": csrftoken},
-		// 				data:analysis_data,
-		// 				processData:false,
-		// 				contentType:false,
-		// 				success:function(response){
-		// 					document.getElementById('running').style.display = "none"
-		// 					document.getElementById('show_data').style.display = "block"
-							
-		// 					results_data=JSON.parse(response)
-		// 					console.log(results_data)
-							
-		// 					var f_data = results_data.f_describe_dict;
-		// 					var max_reports_data = results_data.max_reports_dict;
-
-		// 					// plotly layout
-		// 					var linechart_layout = {
-		// 						xaxis: {
-		// 						  title: 'Number of features', 
-		// 						  anchor: 'y', 
-		// 						}, 
-		// 						yaxis: {
-		// 						  title: 'Accuracy', 
-		// 						  anchor: 'x', 
-		// 						}, 
-		// 						margin:{
-		// 							t: 30
-		// 						}
-		// 					}
-		// 					var acc_layout = {
-		// 						title: 'Boxplot of '+ results_data.model_name
-		// 					};
-		// 					var roc_layout = {
-		// 						title: 'ROC', 
-		// 						  // width: 1000, 
-		// 						  xaxis: {
-		// 							type: 'linear', 
-		// 							range: [0, 1], 
-		// 							title: 'FPR', 
-		// 							autorange: true
-		// 						  }, 
-		// 						  yaxis: {
-		// 							type: 'linear', 
-		// 							range: [-0.05555555555555555, 1.0555555555555556], 
-		// 							title: 'TPR', 
-		// 							autorange: true
-		// 						  }, 
-		// 						  height:550,
-		// 						  legend: {
-		// 							x: 1,
-		// 							y: 0.1, 
-		// 							xanchor: 'right', 
-		// 							orientation: 'v'
-		// 						  }, 
-		// 						  titlefont: {size: 18}
-		// 					};
-		// 					var roc_layout2 = {
-		// 						title: 'ROC', 
-		// 						  margin: {
-		// 										  'b': 60,
-		// 										  'l': 150,
-		// 										  'r': 150,
-		// 										  't': 60
-		// 						  },
-		// 						  xaxis: {
-		// 							type: 'linear', 
-		// 							range: [0, 1], 
-		// 							title: 'FPR', 
-		// 							autorange: true
-		// 						  }, 
-		// 						  yaxis: {
-		// 							type: 'linear', 
-		// 							range: [-0.05555555555555555, 1.0555555555555556], 
-		// 							title: 'TPR', 
-		// 							autorange: true
-		// 						  }, 
-		// 						  height:650,
-		// 						  legend: {
-		// 							x: 1,
-		// 							y: 0.1, 
-		// 							xanchor: 'right', 
-		// 							orientation: 'v'
-		// 						  }, 
-		// 						  titlefont: {size: 18}
-		// 					};
-							
-		// 					var bar_layout = {
-		// 						 title: 'Evaluation indices ',
-		// 						 barmode: 'stack'
-		// 					}
-		// 					var heatmap_layout = {
-		// 						title: 'Confusion Matrix ',
-		// 						  annotations: results_data.heatmap_anno,
-		// 						  xaxis: {
-		// 							ticks: '',
-		// 							title: 'Predicted label', 
-		// 							side: 'bottom'
-		// 						  },
-		// 						  height:550,
-		// 						  yaxis: {
-		// 							ticks: '',
-		// 							ticksuffix: ' ',
-		// 							width: 700,
-		// 							height: 700,
-		// 							title: 'True label', 
-		// 							autosize: false
-		// 						  },
-		// 						titlefont: {size: 18}
-		// 					}
-							
-		// 					var radar_layout = {
-		// 						title: 'Radar Chart',
-		// 						polar: {
-		// 							radialaxis: {
-		// 							  range: [0.5, 1], 
-		// 							  visible: true
-		// 							},
-		// 						}, 
-		// 						height:550,
-		// 						showlegend: true
-		// 					}
-		// 					// 分割线
-		// 					<!--第三步：初始化Datatables-->
-		// 					$(document).ready( function () {
-		// 						$('#ftable').DataTable({
-		// 							data: f_data,
-		// 							searching: false, 
-		// 							paging: false, 
-		// 							info: false,
-		// 							sort: false,
-		// 							columns: [
-		// 								{ data: 'Method' },
-		// 								{ 
-		// 									data: 'test_accuracy' ,
-		// 								},
-		// 								{ data: 'precision' },
-		// 								{ data: 'AUC' },
-		// 								{ data: 'recall' },
-		// 								{ data: 'f1-score' },
-		// 							]
-		// 						});
-		// 						$('#paratable').DataTable({
-		// 							responsive: {
-		// 							    details: {
-		// 							        type: 'column',
-		// 							        target: 'tr'
-		// 							    }
-		// 							},
-		// 							columnDefs: [ {
-		// 							    className: 'control',
-		// 							    orderable: false,
-		// 							    targets:   10,
-		// 							} ],
-		// 							data: max_reports_data,
-		// 							searching: false, 
-		// 							paging: false, 
-		// 							info: false,
-		// 							sort: false,
-		// 							columns: [
-		// 								{ data: 'Method' },
-		// 								{ data: 'md5' },	
-		// 								{ data: 'Fsm' },
-		// 								{ data: 'fsm'},
-		// 								{ data: 'feature_names' },
-		// 								{ data: 'test_acc' },
-		// 								{ data: 'precision' },
-		// 								{ data: 'AUC' },
-		// 								{ data: 'recall' },
-		// 								{ data: 'f1score' },
-		// 								{ 
-		// 									data: 'parameter',
-		// 									render: function(data, type, row) {
-		// 										return '';
-		// 									}
-		// 								 },
-		// 								{ data: 'parameter' },
-		// 								{ 
-		// 									data: 'md5' ,
-		// 									"render": function(data, type, row, meta){
-		// 										if(type === 'display'){
-		// 											// data = '<button style="background: url(https://img.icons8.com/sf-regular-filled/48/undefined/download.png);width: 2.5rem;height: 2.5rem;border: none;" value="' + $('#projectid').val() + '_' + data + '" href="result/' + $('#projectid').val() + '_' + data + '"></button>'
-		// 											{% if change_page != True %}
-		// 											data = '<a value="' + data + '" href="prev/{{projectid}}_' + data + '">view</a>'
-		// 											{% else %}
-		// 											data = '<a value="' + data + '" href="{{projectid}}_' + data + '">view</a>'
-		// 											{% endif %}
-		// 										}
-		// 										return data;
-		// 									},
-		// 								},
-		// 								{
-		// 									data: 'md5' ,
-		// 									"render": function(data, type, row, meta){
-		// 										// if(type === 'display'){
-		// 											if( arr[3] == 'prev'){
-		// 												data = '<a value="' + $('#projectid').val() + '_' + data + '" href="../../model_download/' + $('#projectid').val() + '_' + data + '">Download</a>'
-		// 											}else{
-		// 												data = '<a value="' + $('#projectid').val() + '_' + data + '" href="../model_download/' + $('#projectid').val() + '_' + data + '">Download</a>'
-		// 											}
-													
-		// 										// }
-		// 										return data;
-		// 									},
-		// 								},
-										
-		// 							]
-		// 						});
-		// 						Plotly.newPlot('linechartDiv',results_data.line_chart_data, linechart_layout);
-		// 						Plotly.newPlot('rocplotDiv', results_data.roc_traces , roc_layout2);
-		// 						Plotly.newPlot('rocplotDiv', results_data.roc_traces, roc_layout2);
-		// 						Plotly.newPlot('accboxplotDiv',results_data.final_reports_dict, acc_layout);
-		// 						Plotly.newPlot('barplotDiv', results_data.bar_dict, bar_layout);
-		// 						Plotly.newPlot('heatmapDiv', results_data.heatmap_dict, heatmap_layout);
-		// 						Plotly.newPlot('validrocDiv', results_data.valid_roc_traces, roc_layout);
-		// 						});
-								
-							
-		// 					},
-		// 			})
-		// });
+			var csrftoken = $("input[name='csrfmiddlewaretoken']").attr('value');
+			
 		$('#combination').on('click', function(){
 			var formData=new FormData();
 			formData.append('projectid',"{{projectid}}")
 		   $.ajax({
-			url:'/maler/classification_cp_result_ajax',
+			url:'/maler/get_cp_combination',
 			type:"POST",
 			headers: {"X-CSRFToken": csrftoken},
 			data:formData,
@@ -521,85 +364,28 @@
 						console.log('websocket is closed!');
 						document.getElementById('running').style.display = "none"
 						document.getElementById('show_data').style.display = "block"
+						document.getElementById('list-item-2').innerHTML = results_data.model_name
+						if (results_data.ifval == true) {
+							document.getElementById('test').style.display = "block"
+							document.getElementById('test_plot').style.display = "block"
+							
+						};
+						if (results_data.ifmarco != true) {
+							document.getElementById('list-item-3').innerHTML = 'Marco ' + document.getElementById('list-item-3').innerHTML
+							document.getElementById('ifmarco_roc').innerHTML = 'Marco ' + document.getElementById('ifmarco_roc').innerHTML
+							
+							for (var i=0;i<4;i++){
+								var split_name = $("*[id^=th]")[i].innerHTML.split(" ")
+								$("*[id^=th]")[i].innerHTML = split_name[0] + ' Marco ' + split_name[1]
+							}
+						}
 						
 						var f_data = results_data.f_describe_dict;
 						var max_reports_data = results_data.max_reports_dict;
-	
-						// plotly layout
-						var linechart_layout = {
-							xaxis: {
-							  title: 'Number of features', 
-							  anchor: 'y', 
-							}, 
-							yaxis: {
-							  title: 'Accuracy', 
-							  anchor: 'x', 
-							}, 
-							margin:{
-								t: 30
-							}
-						}
+						// poltly layout
 						var acc_layout = {
 							title: 'Boxplot of '+ results_data.model_name
 						};
-						var roc_layout = {
-							title: 'ROC', 
-							  // width: 1000, 
-							  xaxis: {
-								type: 'linear', 
-								range: [0, 1], 
-								title: 'FPR', 
-								autorange: true
-							  }, 
-							  yaxis: {
-								type: 'linear', 
-								range: [-0.05555555555555555, 1.0555555555555556], 
-								title: 'TPR', 
-								autorange: true
-							  }, 
-							  height:550,
-							  legend: {
-								x: 1,
-								y: 0.1, 
-								xanchor: 'right', 
-								orientation: 'v'
-							  }, 
-							  titlefont: {size: 18}
-						};
-						var roc_layout2 = {
-							title: 'ROC', 
-							  margin: {
-											  'b': 60,
-											  'l': 150,
-											  'r': 150,
-											  't': 60
-							  },
-							  xaxis: {
-								type: 'linear', 
-								range: [0, 1], 
-								title: 'FPR', 
-								autorange: true
-							  }, 
-							  yaxis: {
-								type: 'linear', 
-								range: [-0.05555555555555555, 1.0555555555555556], 
-								title: 'TPR', 
-								autorange: true
-							  }, 
-							  height:650,
-							  legend: {
-								x: 1,
-								y: 0.1, 
-								xanchor: 'right', 
-								orientation: 'v'
-							  }, 
-							  titlefont: {size: 18}
-						};
-						
-						var bar_layout = {
-							 title: 'Evaluation indices ',
-							 barmode: 'stack'
-						}
 						var heatmap_layout = {
 							title: 'Confusion Matrix ',
 							  annotations: results_data.heatmap_anno,
@@ -618,18 +404,6 @@
 								autosize: false
 							  },
 							titlefont: {size: 18}
-						}
-						
-						var radar_layout = {
-							title: 'Radar Chart',
-							polar: {
-								radialaxis: {
-								  range: [0.5, 1], 
-								  visible: true
-								},
-							}, 
-							height:550,
-							showlegend: true
 						}
 						// 分割线
 						<!--第三步：初始化Datatables-->
@@ -736,7 +510,92 @@
 			      }
 			    }, 5000);
 			});
+			// plotly layout
+			var linechart_layout = {
+				xaxis: {
+				  title: 'Number of features', 
+				  anchor: 'y', 
+				}, 
+				yaxis: {
+				  title: 'Accuracy', 
+				  anchor: 'x', 
+				}, 
+				margin:{
+					t: 30
+				}
+			}
+
+			var roc_layout = {
+				title: 'ROC curve', 
+				  // width: 1000, 
+				  xaxis: {
+					type: 'linear', 
+					range: [0, 1], 
+					title: 'FPR', 
+					autorange: true
+				  }, 
+				  yaxis: {
+					type: 'linear', 
+					range: [-0.05555555555555555, 1.0555555555555556], 
+					title: 'TPR', 
+					autorange: true
+				  }, 
+				  height:550,
+				  legend: {
+					x: 1,
+					y: 0.1, 
+					xanchor: 'right', 
+					orientation: 'v'
+				  }, 
+				  titlefont: {size: 18}
+			};
+			var roc_layout2 = {
+				title: 'ROC curve', 
+				  margin: {
+								  'b': 60,
+								  'l': 150,
+								  'r': 150,
+								  't': 60
+				  },
+				  xaxis: {
+					type: 'linear', 
+					range: [0, 1], 
+					title: 'FPR', 
+					autorange: true
+				  }, 
+				  yaxis: {
+					type: 'linear', 
+					range: [-0.05555555555555555, 1.0555555555555556], 
+					title: 'TPR', 
+					autorange: true
+				  }, 
+				  height:650,
+				  legend: {
+					x: 1,
+					y: 0.1, 
+					xanchor: 'right', 
+					orientation: 'v'
+				  }, 
+				  titlefont: {size: 18}
+			};
 			
+			var bar_layout = {
+				 title: 'Evaluation indices ',
+				 barmode: 'stack'
+			}
+
+			
+			var radar_layout = {
+				title: 'Radar Chart',
+				polar: {
+					radialaxis: {
+					  range: [0.5, 1], 
+					  visible: true
+					},
+				}, 
+				height:550,
+				showlegend: true
+			}
 			
 	</script>
 	

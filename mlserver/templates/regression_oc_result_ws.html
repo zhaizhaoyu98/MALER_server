@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ANALYSIS</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		{% include 'public_templates/bootstrap.html' %}
+		<script src="https://cdn.plot.ly/plotly-2.8.3.min.js"></script>
+		 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"> 
+		 <!-- jQuery -->
+		 <!-- <script type="text/javascript" charset="utf8" src="http://code.jquery.com/jquery-1.10.2.min.js"></script> -->
+		 <!-- DataTables -->
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+		 <script type="text/javascript" charset="utf8" src="https://cdn.bootcdn.net/ajax/libs/datatables-buttons/2.2.3/js/dataTables.buttons.js"></script>
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>		
+		 <!-- responsive -->
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>		 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css">
+		<style type="text/css">
+			
+			.dataTable {
+				text-align: center;
+				vertical-align: middle !important;
+			}
+			
+			#home span {
+				background-color: aliceblue;
+			}
+
+			.btn.btn-outline-danger {
+				height: 38px;
+				/* margin-top: 30px; */
+			}
+
+			#one_class_test_form .form-row {
+				margin: 0;
+				padding: 0;
+				height: 40px;
+			}
+
+			/* table tbody {
+				font-size: 5px;
+			} */
+			table * {
+				font-size: 15px;
+			}
+			
+			#list-item-1,
+			#list-item-2,
+			#list-item-3,
+			#list-item-4,
+			#list-item-5,
+			#list-item-6,
+			#list-item-7,
+			#list-item-8{
+				padding-top: 10px;
+				padding-bottom: 10px;
+				padding-left: 1rem;
+			}
+			
+			/* 左侧导航颜色 */
+			.list-group-item.active {
+				background-color: #17a2b8;
+				border: 1px solid rgba(0, 0, 0, .125);
+				
+			}
+			#list-example a {
+				text-align: center;
+				line-height: 40px;
+				text-decoration: none;
+				outline: none;
+			}
+			
+			h3 {
+				/* color: cornflowerblue; */
+				color: #17a2b8; margin-bottom: 20px;
+				font-weight: bolder;
+			}
+			
+
+		</style>
+		<script>
+			$(document).ready(function(){
+			// 导航栏
+			$("#nav_tools").addClass("active");
+			$("tbody").addClass("bg-white");
+			$("#page_title").text('ANALYSIS');
+			});
+		</script>
+	</head>
+	<body data-spy="scroll" data-target="#list-example" style="padding-top: 0px;">
+		<!-- 导航栏 -->
+		{% include 'public_templates/nav_tem.html' %}
+		
+		<div id= running>
+			<br>
+				<table id="running_table"  style="width: 50%;" lazyload="True">
+					 <thead>
+						 <pre>
+							<tr><th> Project Details</th></tr>
+							<tr><th> ProjectID:&nbsp;&nbsp;{{projectid}}</th></tr>
+							<tr><th id="time"> Submitted time: </th></tr>
+							<tr><th>Status: Running &nbsp;&nbsp;&nbsp;&nbsp; <div class="progress-6" style="display: inline-block;"></div></th></tr>
+							<tr><th id="analysis_time"> Analysis time:&nbsp;&nbsp;{{projectid}}</th></tr>
+							<tr><th> The project has been submitted, please wait... </th></tr>
+						</pre>
+						
+					</thead>
+				</table>
+		</div>
+		<script>
+			var localtime = getNowTime()
+			document.getElementById('time').innerHTML = 'Submitted time: &nbsp;&nbsp;'  + localtime
+			function getNowTime(){
+			        const date=new Date();
+			        const year=date.getFullYear();
+			        const month=date.getMonth();
+			        const day=date.getDate();
+			        const hour=date.getHours();
+			        const minute=date.getMinutes();
+			        const seconds=date.getSeconds();
+					// month[0] = January
+			        return `${year}-${month+1}-${day} ${hour}:${minute<10?'0'+minute:minute}:${seconds<10?'0'+seconds:seconds}`
+			function AnalysisTime(){
+				
+			}
+			    }
+		</script>
+		<!-- 主体内容 -->
+		<div id=show_data style="display: none;">
+			
+			<div class='col-2 d-none d-xl-block' style="">
+				<div id="list-example" class="list-group "
+					style="position: fixed; width:270px;height: 500px;margin-left: 20px;padding-left: 0;margin-top:30px">
+					<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-2">R-square</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-3">MAE</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-4">MSE</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-5" id="test" style="display: none;">Test</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-6">Report</a>
+					<!-- <a class="list-group-item list-group-item-action" href="#list-item-5">Drug Property Radar Chart</a> -->
+				</div>
+			</div>
+			<div class="row">
+		<div class="container col-8" style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
+			<br />
+			
+				<div class='col-xl-12 col-lg-12'>
+					<!-- <div class="row"> -->
+						<div style='text-align:center;'>
+							<h3>PROJECTID: {{ projectid }}</h3>
+						</div>
+					<!-- </div> -->
+					<hr />
+					<form action="" method="">
+						{%  csrf_token %}
+						<input style="display: none;" type="text" id="projectid"  name="projectid" value="{{projectid}}"/>
+					</form>
+					
+					<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Optimal feature subset result
+					</h3>
+					<div id="linechartDiv"></div>
+					<br />
+					<h3 class="panel-heading" id="list-item-2" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						R-square
+					</h3>
+					<div id="accboxplotDiv"></div>
+					<table id="acctable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>LinearRegression</th>
+								<th>SVM</th>
+								<th>Ridge</th>
+								<th>Lasso</th>
+								<th>DecisionTree</th>
+								<th>XGBoost</th>
+								<th>RandomForest</th>
+								<th>AdaBoost</th>
+								<th>GradientBoost</th>
+							</tr>
+						</thead>
+					</table>
+					<br />
+					<h3 class="panel-heading" id="list-item-3" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						MAE
+					</h3>
+					<div id="maeboxplotDiv"></div>
+					<table id="maetable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>LinearRegression</th>
+								<th>SVM</th>
+								<th>Ridge</th>
+								<th>Lasso</th>
+								<th>DecisionTree</th>
+								<th>XGBoost</th>
+								<th>RandomForest</th>
+								<th>AdaBoost</th>
+								<th>GradientBoost</th>
+							</tr>
+						</thead>
+					</table>
+					<br />
+					<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						MSE
+					</h3>
+					<div id="mseboxplotDiv"></div>
+					<table id="msetable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>LinearRegression</th>
+								<th>SVM</th>
+								<th>Ridge</th>
+								<th>Lasso</th>
+								<th>DecisionTree</th>
+								<th>XGBoost</th>
+								<th>RandomForest</th>
+								<th>AdaBoost</th>
+								<th>GradientBoost</th>
+							</tr>
+						</thead>
+					</table>
+					
+					<br />
+					<div id="test_plot" style="display: none;">
+						<h3 class="panel-heading" id="list-item-5" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+							Test
+						</h3>
+						<!-- <div id="survplotDiv"></div> -->
+						<div id="vlineplotDiv"></div>
+						<div id="vlineplotDiv2"></div>
+						<div id="vlineplotDiv3"></div>
+						
+						<hr>
+						<div id="vbarplotDiv"></div>
+						<table id="vregtable" class="display" style="width: 100%;" lazyload="True">
+							 <thead>
+								<tr>
+									<th></th>
+									<th>LinearRegression</th>
+									<th>SVM</th>
+									<th>Ridge</th>
+									<th>Lasso</th>
+									<th>DecisionTree</th>
+									<th>XGBoost</th>
+									<th>RandomForest</th>
+									<th>AdaBoost</th>
+									<th>GradientBoost</th>
+								</tr>
+							</thead>
+						</table>
+						<br />
+					</div>
+					<h3 class="panel-heading" id="list-item-6" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Report
+					</h3>
+					<table id="reporttable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>Mean R-square</th>
+								<th>Mean MAE</th>
+								<th>Mean MSE</th>
+								<th class="none">Feature Names</th>
+								<th>Feature_names/Parameter</th>
+								<th class="none">Parameter</th>
+								<th>Model Download</th>
+							</tr>
+						</thead>
+					</table>
+					<br />
+					<br />
+				</div>
+			</div>
+
+
+		</div>
+		<br />
+		<br />
+		</div>
+
+		<br />
+		<!-- 底部 -->
+		{% include 'public_templates/footer.html' %}
+
+		<script>
+			var csrftoken = $("input[name='csrfmiddlewaretoken']").attr('value');
+			
+			
+			$(document).ready(function(){
+				var analysis_info = {
+					projectid: "{{projectid}}",
+					feature_select_method: "{{feature_select_method}}",
+					// model_md5: "{{model_md5}}",
+					fsm: "{{fsm}}",
+					form_action: "{{form_action}}",
+					to_mail: '{{to_mail}}'
+				}
+				var s = new WebSocket("ws://" + window.location.host + "/maler/regression_oc_result_ws/{{projectid}}");
+				window.s = s;
+				// 打开连接websocket服务，连接成功则打印信息
+				s.onopen = function () {
+					console.log('WebSocket open');//成功连接上Websocket
+					window.s.send(JSON.stringify(analysis_info))
+				};
+				s.onmessage = function (msg) {
+					// heartCheck.reset();
+				    console.log('raw message: ' + msg.data)//打印出服务端返回过来的数据
+				    // $('#messagecontainer').prepend('<p>' + msg.data + '</p>');
+					var results_data = JSON.parse(msg.data)
+					if (results_data['status'] == 1){
+						window.s.close();
+						console.log('websocket is closed!');
+						
+						document.getElementById('running').style.display = "none"
+						document.getElementById('show_data').style.display = "block"
+						if (results_data.ifval == true) {
+							document.getElementById('test').style.display = "block"
+							document.getElementById('test_plot').style.display = "block"
+							
+						};
+						
+						
+						var acc_data = results_data.test_acc_describe_dict;
+						var report_data = results_data.final_reports_dict;
+						// plotly layout
+						var rsquare_layout = {
+							title: 'Boxplot of R-square'
+						};
+						var mae_layout = {
+							title: 'Boxplot of MAE'
+						};
+						var mse_layout = {
+							title: 'Boxplot of MSE'
+						};
+						var xtitle = {
+							text: 'True value',
+							font: {
+								size: 10
+							},
+							standoff: 0
+						};
+						var ytitle = {
+							text: 'Predicted value',
+							font: {
+								size: 10
+							},
+							standoff: 0
+						};
+						// var vlinelayout = {
+						//   title: 'Scatter plot for predicted value', 
+						//   margin: {
+						// 	  'b': 30,
+						// 	  'l': 60,
+						// 	  'r': 60,
+						// 	  't': 75
+						//   },
+						//   legend:{
+						// 	  orientation: 'h',
+						// 	  xanchor: 'middle',
+						// 	  yanchor: 'right',
+						// 	  valign: 'middle',
+						// 	  x: 0.4,
+						// 	  y: 1.02,
+						// 	  itemclick: false,
+						// 	  itemdoubleclick: false
+						//   },
+						//   height: 1320,
+						//   xaxis1: {
+						//     title: xtitle, 
+						//     anchor: 'y1', 
+						//     domain: [0.0, 0.3]
+						//   }, 
+						//   xaxis2: {
+						//     title: xtitle, 
+						//     anchor: 'y2', 
+						//     domain: [0.33, 0.66]
+						//   }, 
+						//   xaxis3: {
+						//     title: xtitle, 
+						//     anchor: 'y3', 
+						//     domain: [0.7, 1.0], 
+						//   }, 
+						//   xaxis4: {
+						//     title: xtitle, 
+						//     anchor: 'y4', 
+						//     domain: [0.0, 0.3]
+						//   }, 
+						//   xaxis5: {
+						//     title: xtitle, 
+						//     anchor: 'y5', 
+						//     domain: [0.33, 0.66]
+						//   }, 
+						//   xaxis6: {
+						//     title: xtitle, 
+						//     anchor: 'y6', 
+						//     domain: [0.7, 1]
+						//   },
+						//   xaxis7: {
+						//     title: xtitle, 
+						//     anchor: 'y7', 
+						//     domain: [0.0, 0.3]
+						//   },
+						//   xaxis8: {
+						//     title: xtitle, 
+						//     anchor: 'y8', 
+						//     domain: [0.33, 0.66]
+						//   },
+						//   xaxis9: {
+						//     title: xtitle, 
+						//     anchor: 'y9', 
+						//     domain: [0.7, 1]
+						//   },
+						//   yaxis1: {
+						//     title: ytitle, 
+						//     anchor: 'x1', 
+						//     domain: [0.7, 1.0]
+						//   }, 
+						//   yaxis2: {
+						//     title: ytitle, 
+						//     anchor: 'x2', 
+						//     domain: [0.7, 1.0]
+						//   }, 
+						//   yaxis3: {
+						//     title: ytitle, 
+						//     anchor: 'x3', 
+						//     domain: [0.7, 1.0]
+						//   }, 
+						//   yaxis4: {
+						//     title: ytitle, 
+						//     anchor: 'x4', 
+						//     domain: [0.33, 0.66]
+						//   },
+						//   yaxis5: {
+						//     title: ytitle, 
+						//     anchor: 'x5', 
+						//     domain: [0.33, 0.66]
+						//   }, 
+						//   yaxis6: {
+						//     title: ytitle, 
+						//     anchor: 'x6', 
+						//     domain: [0.33, 0.66]
+						//   }, 
+						//   yaxis7: {
+						//     title: ytitle, 
+						//     anchor: 'x7', 
+						//     domain: [0.0, 0.3]
+						//   }, 
+						//   yaxis8: {
+						//     title: ytitle, 
+						//     anchor: 'x8', 
+						//     domain: [0.0, 0.3]
+						//   }, 
+						//   yaxis9: {
+						//     title: ytitle, 
+						//     anchor: 'x9', 
+						//     domain: [0.0, 0.3]
+						//   }, 
+						//   annotations: [
+						//     {
+						//       x: 0.15, 
+						//       y: 1.0, 
+						//       font: {size: 13}, 
+						//       text: 'LinearRegression', 
+						//       xref: 'paper', 
+						//       yref: 'paper', 
+						//       xanchor: 'center', 
+						//       yanchor: 'bottom', 
+						//       showarrow: false
+						//     }, 
+						//     {
+						//       x: 0.5, 
+						//       y: 1.0, 
+						//       font: {size: 13}, 
+						//       text: 'SVM', 
+						//       xref: 'paper', 
+						//       yref: 'paper', 
+						//       xanchor: 'center', 
+						//       yanchor: 'bottom', 
+						//       showarrow: false
+						//     }, 
+						//     {
+						//       x: 0.85, 
+						//       y: 1, 
+						//       font: {size: 13}, 
+						//       text: 'Ridge', 
+						//       xref: 'paper', 
+						//       yref: 'paper', 
+						//       xanchor: 'center', 
+						//       yanchor: 'bottom', 
+						//       showarrow: false
+						//     }, 
+						//     {
+						//       x: 0.15, 
+						//       y: 0.65, 
+						//       font: {size: 13}, 
+						//       text: 'Lasso', 
+						//       xref: 'paper', 
+						//       yref: 'paper', 
+						//       xanchor: 'center', 
+						//       yanchor: 'bottom', 
+						//       showarrow: false
+						//     }, 
+						//     {
+						//       x: 0.5, 
+						//       y: 0.65, 
+						//       font: {size: 13}, 
+						//       text: 'DecisionTree', 
+						//       xref: 'paper', 
+						//       yref: 'paper', 
+						//       xanchor: 'center', 
+						//       yanchor: 'bottom', 
+						//       showarrow: false
+						//     }, 
+						//     {
+						//       x: 0.85, 
+						//       y: 0.65, 
+						//       font: {size: 13}, 
+						//       text: 'XGBoost', 
+						//       xref: 'paper', 
+						//       yref: 'paper', 
+						//       xanchor: 'center', 
+						//       yanchor: 'bottom', 
+						//       showarrow: false
+						//     }, 
+						//     {
+						//       x: 0.15, 
+						//       y: 0.285, 
+						//       font: {size: 13}, 
+						//       text: 'RandomForest', 
+						//       xref: 'paper', 
+						//       yref: 'paper', 
+						//       xanchor: 'center', 
+						//       yanchor: 'bottom', 
+						//       showarrow: false
+						//     },
+						// 	{
+						// 	  x: 0.5, 
+						// 	  y: 0.285, 
+						// 	  font: {size: 13}, 
+						// 	  text: 'AdaBoost', 
+						// 	  xref: 'paper', 
+						// 	  yref: 'paper', 
+						// 	  xanchor: 'center', 
+						// 	  yanchor: 'bottom', 
+						// 	  showarrow: false
+						// 	}, 
+						// 	{
+						// 	  x: 0.85, 
+						// 	  y: 0.285, 
+						// 	  font: {size: 13}, 
+						// 	  text: 'GradientBoost', 
+						// 	  xref: 'paper', 
+						// 	  yref: 'paper', 
+						// 	  xanchor: 'center', 
+						// 	  yanchor: 'bottom', 
+						// 	  showarrow: false
+						// 	},
+						//   ]
+						// };
+						
+						var vlinelayout1 = {
+							title: 'Scatter plot for predicted value',
+							margin: {
+							  'b': 45,
+							  'l': 60,
+							  'r': 60,
+							  't': 120
+							},
+							legend:{
+							  orientation: 'h',
+							  xanchor: 'middle',
+							  yanchor: 'right',
+							  valign: 'middle',
+							  x: 0.4,
+							  y: 1.02,
+							  itemclick: false,
+							  itemdoubleclick: false
+							},
+							height: 525,
+							xaxis1: {
+							  title: xtitle, 
+							  anchor: 'y1', 
+							  domain: [0.0, 0.3]
+							}, 
+							xaxis2: {
+							  title: xtitle, 
+							  anchor: 'y2', 
+							  domain: [0.33, 0.66]
+							}, 
+							xaxis3: {
+							  title: xtitle, 
+							  anchor: 'y3', 
+							  domain: [0.7, 1.0], 
+							}, 
+							yaxis1: {
+							  title: ytitle, 
+							  anchor: 'x1', 
+							  // domain: [0.7, 1.0]
+							}, 
+							yaxis2: {
+							  title: ytitle, 
+							  anchor: 'x2', 
+							  // domain: [0.7, 1.0]
+							}, 
+							yaxis3: {
+							  title: ytitle, 
+							  anchor: 'x3', 
+							  // domain: [0.7, 1.0]
+							}, 
+							annotations: [
+							  {
+							    x: 0.15, 
+							    y: 1.0, 
+							    font: {size: 13}, 
+							    text: '<span style="font-size: 10pt;">LinearRegression<br>'+ JSON.parse(results_data.vregpred_trace)[1]['text'] + '</span>', 
+							    xref: 'paper', 
+							    yref: 'paper', 
+							    xanchor: 'center', 
+							    yanchor: 'bottom', 
+							    showarrow: false
+							  }, 
+							  {
+							    x: 0.5, 
+							    y: 1.0, 
+							    font: {size: 13}, 
+							    text:  '<span style="font-size: 10pt;">SVM<br>'+ JSON.parse(results_data.vregpred_trace)[3]['text'] + '</span>', 
+							    xref: 'paper', 
+							    yref: 'paper', 
+							    xanchor: 'center', 
+							    yanchor: 'bottom', 
+							    showarrow: false
+							  }, 
+							  {
+							    x: 0.85, 
+							    y: 1, 
+							    font: {size: 13}, 
+							    text: '<span style="font-size: 10pt;">Ridge<br>'+ JSON.parse(results_data.vregpred_trace)[5]['text'] + '</span>', 
+							    xref: 'paper', 
+							    yref: 'paper', 
+							    xanchor: 'center', 
+							    yanchor: 'bottom', 
+							    showarrow: false
+							  },
+							  ]
+						};
+						var vlinelayout2 = {
+							title: '',
+							margin: {
+							  'b': 45,
+							  'l': 60,
+							  'r': 60,
+							  't': 45
+							},
+							legend:{
+							  orientation: 'h',
+							  xanchor: 'middle',
+							  yanchor: 'right',
+							  valign: 'middle',
+							  x: 0.4,
+							  y: 1.02,
+							  itemclick: false,
+							  itemdoubleclick: false
+							},
+							// height: 1320,
+							xaxis4: {
+							  title: xtitle, 
+							  anchor: 'y4', 
+							  domain: [0.0, 0.3]
+							}, 
+							xaxis5: {
+							  title: xtitle, 
+							  anchor: 'y5', 
+							  domain: [0.33, 0.66]
+							}, 
+							xaxis6: {
+							  title: xtitle, 
+							  anchor: 'y6', 
+							  domain: [0.7, 1.0], 
+							}, 
+							yaxis4: {
+							  title: ytitle, 
+							  anchor: 'x4', 
+							  // domain: [0.7, 1.0]
+							}, 
+							yaxis5: {
+							  title: ytitle, 
+							  anchor: 'x5', 
+							  // domain: [0.7, 1.0]
+							}, 
+							yaxis6: {
+							  title: ytitle, 
+							  anchor: 'x6', 
+							  // domain: [0.7, 1.0]
+							}, 
+							annotations: [
+							  {
+							    x: 0.15, 
+							    y: 1.0, 
+							    font: {size: 13}, 
+							    text: '<span style="font-size: 10pt;">Lasso<br>'+ JSON.parse(results_data.vregpred_trace)[7]['text'] + '</span>', 
+							    xref: 'paper', 
+							    yref: 'paper', 
+							    xanchor: 'center', 
+							    yanchor: 'bottom', 
+							    showarrow: false
+							  }, 
+							  {
+							    x: 0.5, 
+							    y: 1.0, 
+							    font: {size: 13}, 
+							    text: '<span style="font-size: 10pt;">DecisionTree<br>'+ JSON.parse(results_data.vregpred_trace)[9]['text'] + '</span>',
+							    xref: 'paper', 
+							    yref: 'paper', 
+							    xanchor: 'center', 
+							    yanchor: 'bottom', 
+							    showarrow: false
+							  }, 
+							  {
+							    x: 0.85, 
+							    y: 1, 
+							    font: {size: 13}, 
+							    text: '<span style="font-size: 10pt;">XGBoost<br>'+ JSON.parse(results_data.vregpred_trace)[11]['text'] + '</span>',
+							    xref: 'paper', 
+							    yref: 'paper', 
+							    xanchor: 'center', 
+							    yanchor: 'bottom', 
+							    showarrow: false
+							  },
+							  ]
+						};
+						var vlinelayout3 = {
+							title: '',
+							margin: {
+							  'b': 45,
+							  'l': 60,
+							  'r': 60,
+							  't': 60
+							},
+							legend:{
+							  orientation: 'h',
+							  xanchor: 'middle',
+							  yanchor: 'right',
+							  valign: 'middle',
+							  x: 0.4,
+							  y: 1.02,
+							  itemclick: false,
+							  itemdoubleclick: false
+							},
+							height: 465,
+							xaxis7: {
+							  title: xtitle, 
+							  anchor: 'y7', 
+							  domain: [0.0, 0.3]
+							}, 
+							xaxis8: {
+							  title: xtitle, 
+							  anchor: 'y8', 
+							  domain: [0.33, 0.66]
+							}, 
+							xaxis9: {
+							  title: xtitle, 
+							  anchor: 'y9', 
+							  domain: [0.7, 1.0], 
+							}, 
+							yaxis7: {
+							  title: ytitle, 
+							  anchor: 'x7', 
+							  // domain: [0.7, 1.0]
+							}, 
+							yaxis8: {
+							  title: ytitle, 
+							  anchor: 'x8', 
+							  // domain: [0.7, 1.0]
+							}, 
+							yaxis9: {
+							  title: ytitle, 
+							  anchor: 'x9', 
+							  // domain: [0.7, 1.0]
+							}, 
+							annotations: [
+							  {
+							    x: 0.15, 
+							    y: 1.0, 
+							    font: {size: 13}, 
+							    text: '<span style="font-size: 10pt;">RandomForest<br>'+ JSON.parse(results_data.vregpred_trace)[13]['text'] + '</span>',
+							    xref: 'paper', 
+							    yref: 'paper', 
+							    xanchor: 'center', 
+							    yanchor: 'bottom', 
+							    showarrow: false
+							  }, 
+							  {
+							    x: 0.5, 
+							    y: 1.0, 
+							    font: {size: 13}, 
+							    text: '<span style="font-size: 10pt;">AdaBoost<br>'+ JSON.parse(results_data.vregpred_trace)[15]['text'] + '</span>', 
+							    xref: 'paper', 
+							    yref: 'paper', 
+							    xanchor: 'center', 
+							    yanchor: 'bottom', 
+							    showarrow: false
+							  }, 
+							  {
+							    x: 0.85, 
+							    y: 1, 
+							    font: {size: 13}, 
+							    text: '<span style="font-size: 10pt;">GradientBoost<br>'+ JSON.parse(results_data.vregpred_trace)[17]['text'] + '</span>', 
+							    xref: 'paper', 
+							    yref: 'paper', 
+							    xanchor: 'center', 
+							    yanchor: 'bottom', 
+							    showarrow: false
+							  },
+							  ]
+						};
+						var vbarplotlayout = {
+							title: 'Evaluation indices',
+							margin: {
+							  'b': 80,
+							  'l': 30,
+							  'r': 60,
+							  't': 70
+							},
+							legend:{
+							  itemclick: false,
+							  itemdoubleclick: false
+							},
+							height: 550,
+							xaxis1: {
+							  title: '', 
+							  anchor: 'y1', 
+							  domain: [0.0, 0.3]
+							}, 
+							xaxis2: {
+							  title: '', 
+							  anchor: 'y2', 
+							  domain: [0.33, 0.66]
+							}, 
+							xaxis3: {
+							  title: '', 
+							  anchor: 'y3', 
+							  domain: [0.7, 1], 
+							}, 
+							yaxis1: {
+							  title: '', 
+							  anchor: 'x1', 
+							  domain: [0, 1.0]
+							}, 
+							yaxis2: {
+							  title: '', 
+							  anchor: 'x2', 
+							  domain: [0, 1.0]
+							}, 
+							yaxis3: {
+							  title: '', 
+							  anchor: 'x3', 
+							  domain: [0, 1.0], 
+							}, 
+							annotations: [
+							  {
+							    x: 0.15, 
+							    y: 1.0, 
+							    font: {size: 16}, 
+							    text: 'R-square', 
+							    xref: 'paper', 
+							    yref: 'paper', 
+							    xanchor: 'center', 
+							    yanchor: 'bottom', 
+							    showarrow: false
+							  }, 
+							  {
+							    x: 0.5, 
+							    y: 1.0, 
+							    font: {size: 16}, 
+							    text: 'MAE', 
+							    xref: 'paper', 
+							    yref: 'paper', 
+							    xanchor: 'center', 
+							    yanchor: 'bottom', 
+							    showarrow: false
+							  }, 
+							  {
+							    x: 0.85, 
+							    y: 1, 
+							    font: {size: 16}, 
+							    text: 'MSE', 
+							    xref: 'paper', 
+							    yref: 'paper', 
+							    xanchor: 'center', 
+							    yanchor: 'bottom', 
+							    showarrow: false
+							  }, 
+							]
+						}
+						var linechart_layout = {
+							xaxis: {
+							  title: 'Number of features', 
+							  anchor: 'y', 
+							}, 
+							yaxis: {
+							  title: 'R-square', 
+							  anchor: 'x', 
+							}, 
+							height: 500,
+							margin:{
+								t: 30
+							}
+						}
+						<!--第三步：初始化Datatables-->
+						$('#acctable').DataTable({
+							data: acc_data,
+							searching: false, 
+							paging: false, 
+							info: false,
+							sort: false,
+							columns: [
+								{ data: 'Method' },
+								{ data: 'LinearRegression' },
+								{ data: 'SVM' },
+								{ data: 'Ridge' },
+								{ data: 'Lasso' },
+								{ data: 'DecisionTree' },
+								{ data: 'XGBoost' },
+								{ data: 'RandomForest' },
+								{ data: 'AdaBoost' },
+								{ data: 'GradientBoost' },
+							]
+						});
+						$('#maetable').DataTable({
+							data: results_data.MAE_report_describe_dict,
+							searching: false, 
+							paging: false, 
+							info: false,
+							sort: false,
+							columns: [
+								{ data: 'Method' },
+								{ data: 'LinearRegression' },
+								{ data: 'SVM' },
+								{ data: 'Ridge' },
+								{ data: 'Lasso' },
+								{ data: 'DecisionTree' },
+								{ data: 'XGBoost' },
+								{ data: 'RandomForest' },
+								{ data: 'AdaBoost' },
+								{ data: 'GradientBoost' },
+							]
+						});
+						$('#msetable').DataTable({
+							data: results_data.MSE_report_describe_dict,
+							searching: false, 
+							paging: false, 
+							info: false,
+							sort: false,
+							columns: [
+								{ data: 'Method' },
+								{ data: 'LinearRegression' },
+								{ data: 'SVM' },
+								{ data: 'Ridge' },
+								{ data: 'Lasso' },
+								{ data: 'DecisionTree' },
+								{ data: 'XGBoost' },
+								{ data: 'RandomForest' },
+								{ data: 'AdaBoost' },
+								{ data: 'GradientBoost' },
+							]
+						});
+						$('#reporttable').DataTable({
+							responsive: {
+								details: {
+									type: 'column',
+									target: 'tr'
+								}
+							},
+							columnDefs: [ {
+								className: 'control',
+								orderable: false,
+								targets:   5,
+							} ],
+							data: report_data,
+							searching: false, 
+							paging: false, 
+							info: false,
+							sort: false,
+							columns: [
+								{ data: 'Method' },
+								{ data: 'Mean R-square' },
+								{ data: 'Mean MAE' },
+								{ data: 'Mean MSE' },
+								{ data: 'feature_names' },
+								{ 
+									data: 'parameter',
+									render: function(data, type, row) {
+										return '';
+									}
+								 },
+								{ data: 'parameter' },
+								{ 
+									data: 'Method' ,
+									"render": function(data, type, row, meta){
+										if(type === 'display'){
+											data = '<a value="' + $('#projectid').val() + '_' + data + '" href="../model_download/' + $('#projectid').val() + '_' + data + '">Download</a>'
+										}
+										return data;
+									},
+								},
+							]
+						});
+						$('#vregtable').DataTable({
+							data: results_data.val_report_dict,
+							searching: false, 
+							paging: false, 
+							info: false,
+							sort: false,
+							columns: [
+								{ data: 'Method' },
+								{ data: 'LinearRegression' },
+								{ data: 'SVM' },
+								{ data: 'Ridge' },
+								{ data: 'Lasso' },
+								{ data: 'DecisionTree' },
+								{ data: 'XGBoost' },
+								{ data: 'RandomForest' },
+								{ data: 'AdaBoost' },
+								{ data: 'GradientBoost' },
+							]
+						});
+						
+						Plotly.newPlot('linechartDiv', results_data.line_chart_data, linechart_layout);
+						Plotly.newPlot('accboxplotDiv', results_data.test_acc_reports_dict, rsquare_layout);
+						Plotly.newPlot('maeboxplotDiv', results_data.MAE_report_dict, mae_layout);
+						Plotly.newPlot('mseboxplotDiv', results_data.MSE_report_dict, mse_layout);
+						// Plotly.newPlot('vlineplotDiv', JSON.parse(results_data.vregpred_trace), vlinelayout);
+						Plotly.newPlot('vlineplotDiv', JSON.parse(results_data.vregpred_trace).slice(0,6), vlinelayout1);
+						Plotly.newPlot('vlineplotDiv2', JSON.parse(results_data.vregpred_trace).slice(6,12), vlinelayout2);
+						Plotly.newPlot('vlineplotDiv3', JSON.parse(results_data.vregpred_trace).slice(12,18), vlinelayout3);
+						
+						Plotly.newPlot('vbarplotDiv', JSON.parse(results_data.vreport_trace), vbarplotlayout);
+						
+						console.log(JSON.parse(results_data.vregpred_trace))
+						
+						// var keys = Object.keys(JSON.parse(results_data.vregpred_trace)).slice(0,3)
+						// var vals = keys.map(function(key){
+						// 	return JSON.parse(results_data.vregpred_trace)[key]
+						// })
+						console.log( JSON.parse(results_data.vregpred_trace)[1]['text'] )
+						// console.log((results_data.vregpred_trace)[0])
+					}
+				};
+					
+					
+				setInterval(() => {
+				  if (window.s.readyState === WebSocket.OPEN) {
+					window.s.send(JSON.stringify("heartbeat"));
+				  }
+				}, 10000);
+			});
+			
+			
+			
+		</script>
+	</body>
+</html>

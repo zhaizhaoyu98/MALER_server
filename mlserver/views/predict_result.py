@@ -12,11 +12,11 @@ from ML_WebServer.settings import STATIC_ROOT
 from mlserver.views.classification_oc_result_views import get_file_md5
 from django.contrib import messages
 from mlserver.views.predict_views import pred_val_split, sur_pred_plot
-from mlserver.views.classification_oc_result_views import classification_process, JsonEncoder
-from mlserver.views.regression_oc_result_views import regression_preprocess
-from mlserver.views.classification_cp_result_views import pre_valid, mkbar, mkheatmap, valid_roc_info, mkroc
-from mlserver.views.regression_cp_result_views import reg_cust_val, mkvregpredplot, mkvreportbarplot
-from mlserver.views.survival_oc_result_views import sur_data_process, mk_surv_data, time_dependent_auc, mk_auc_line, mk_surv_layout
+from mlserver.views.classification_oc_result_view_webscoket import classification_process, JsonEncoder
+from mlserver.views.regression_oc_result_view_websocket import regression_preprocess
+from mlserver.views.classification_cp_result_view_websocket import pre_valid, mkbar, mkheatmap, valid_roc_info, mkroc
+from mlserver.views.regression_cp_result_view_websocket import reg_cust_val, mkvregpredplot, mkvreportbarplot
+from mlserver.views.survival_oc_result_view_websocket import sur_data_process, mk_surv_data, time_dependent_auc, mk_auc_line, mk_surv_layout
 def predict_results(request, projectid):
     # predict
     # if request.method == "POST":

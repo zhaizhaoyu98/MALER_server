@@ -30,98 +30,86 @@ import warnings
 warnings.filterwarnings("ignore")
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5, split_train_test,task_sendmail
-from mlserver.views.regression_oc_result_views import mkvregpredplot, mkvreportbarplot, JsonEncoder
-from mlserver.views.classification_cp_result_views import md5_convert
-from mlserver.views.survival_cp_result_views import surv_para_group
-# from mlserver.views.featureselection_method import mrmr_fs,FSS_fun,BSS_fun,train_estimator,train_top3,selectkbest_top20,pre_screening
-from mlserver.views.featureselection_method import mrmr_fs
+from mlserver.views.classification_oc_result_view_webscoket import get_file_md5, split_train_test,task_sendmail
+from mlserver.views.regression_oc_result_view_websocket import mkvregpredplot, mkvreportbarplot, JsonEncoder
+from mlserver.views.classification_cp_result_view_websocket import md5_convert
+from mlserver.views.survival_cp_result_view_websocket import surv_para_group
+from mlserver.views.featureselection_method import mrmr_fs,FSS_fun,BSS_fun,train_estimator,train_top3,selectkbest_top20,pre_screening
 
-def regression_cp_result(request, projectid):
-    feature_select_method = request.POST.get('feature_select_method')
+from concurrent.futures.thread import ThreadPoolExecutor
+pools = ThreadPoolExecutor(100)
+from dwebsocket.decorators import accept_websocket
+import time
+
+def return_running_page(request,projectid):
+    fsm = request.POST.get('fsm')
+    form_action = request.POST.get('form_action')
     model_md5 = request.POST.get('model_md5')
+    feature_select_method = request.POST.get('feature_select_method')
+    to_mail = request.POST.get('to_mail')
+    return render(request, 'regression_cp_result_ws.html', {
+        'fsm': fsm,
+        'form_action': form_action,
+        'projectid': projectid,
+        'model_md5': model_md5,
+        'feature_select_method': feature_select_method,
+        'to_mail': to_mail,
+    })
+
+
+def data_analysis(WebSocket,client_msg,projectid):
+    print('start analysis')
+    analysis_results = cp_analysis(client_msg,projectid)
+    print('analysis finish!!')
+    analysis_results['status'] = 1
+    WebSocket.send(json.dumps(analysis_results))
+    print('send finish!!')
+
+@accept_websocket
+def result_ws(request, projectid):
+    if request.is_websocket():
+        print('websocket on !!')
+        WebSocket = request.websocket
+        while True:
+            if WebSocket.has_messages():
+                # client_msg = request.websocket.wait()
+                # client_msg = str(client_msg, encoding="utf-8")
+                client_msg = json.loads(WebSocket.wait())
+                if client_msg != 'heartbeat':
+                    print(client_msg)
+                    # task1 = pools.submit(data_analysis,WebSocket,client_msg,projectid)
+                    data_analysis(WebSocket, client_msg, projectid)
+                elif client_msg == 'heartbeat':
+                    messages = {
+                        'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
+                        'status': 0,
+                    }
+                    time.sleep(5)
+                    request.websocket.send(json.dumps(messages))
+
+
+def cp_analysis(client_msg,projectid):
+    # feature_select_method = request.POST.get('feature_select_method')
+    # model_md5 = request.POST.get('model_md5')
+    feature_select_method = client_msg['feature_select_method']
+    model_md5 = client_msg['model_md5']
+
     with open(STATIC_ROOT + '/cache/' + projectid + '/model_pickle.pkl', 'rb') as f:
         model_set = pickle.load(f)
     print(model_set)
     reg_cust_model, reg_model_name = model_set[model_md5]['model'], model_set[model_md5]['model_name']
-    # reg_cust_model, reg_model_name = select_reg_model(request)
-    # get project id
-    # projectid = request.POST.get('projectid')
-    # if projectid == '': projectid = 'None'
-    fsm = request.POST.get('fsm')
-    form_action = request.POST.get('form_action')
+    # fsm = request.POST.get('fsm')
+    # form_action = request.POST.get('form_action')
+    fsm = client_msg['fsm']
+    form_action = client_msg['form_action']
+
     if fsm == 'A':
         Fsm = 'ANOVA'
     elif fsm == 'M':
         Fsm = 'MRMR'
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'cp_cache.pkl')):
-
-        # token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
-        # token = request.POST.get('random_token')
-        # if file_upload_type == 'user_data':
-        #     '''
-        #     IMPORRT DATA
-        #     '''
-        #     obj_file = request.FILES.get('upload_file')
-        #     f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
-        #     for line in obj_file.chunks():
-        #         f.write(line)
-        #     f.close()
-        #
-        #     filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
-        #
-        #     projectid = 'RC-' + filemd5[:6] + '-' + token
-        #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-        #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-        #     shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
-        #     # shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
-        #     # rename
-        #     os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, \
-        #               STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv")
-        #     # os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_label.name, \
-        #     #           STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv")
-        #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0,
-        #                             index_col=0).T
-        # else:
-        #     filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/regression_example.csv'))
-        #     filename = 'regression_example.csv'
-        #     projectid = 'RC-' + filemd5[:6] + '-' + token
-        #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-        #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-        #     shutil.copy(STATIC_ROOT + '/cache/example/' + filename, newpath)
-        #     os.rename(newpath + '/' + filename, \
-        #               newpath + '/' + "load_data.csv")
-        #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/example/' + filename, header=0, index_col=0).T
-        '''
-        IMPORRT DATA
-        '''
-        # file load
-        # upload_file = request.FILES.get('upload_file')
-        # f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
-        # for line in upload_file.chunks():
-        #     f.write(line)
-        # f.close()
-        # upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
-        # token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
-        # projectid = 'RC-' + upload_file_md5[:6] + '-' + token
-
-        # newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-        # os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-        # shutil.move(STATIC_ROOT + '/cache/' + upload_file.name, newpath)
-        # rename
-        # os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, \
-        #           STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv")
-        '''
-        projectid='RC-19f4d5-L3BYDx'
-        data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0, index_col=0).T
-
-        '''
-        # inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0, index_col=0).T
         inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
         train_set, test_set, blind_set = split_train_test(inputdata)
-
-
-
         nordata4, nor_age4 = regression_preprocess(train_set)
         if len(test_set) > 0:
             validation_data, validation_label = regression_preprocess(test_set)
@@ -190,9 +178,9 @@ def regression_cp_result(request, projectid):
         feature_names = []
         best_esti.append(tmodels)
         parameter.append(tmodels.get_params())
-        if reg_model_name == 'Ridge' or reg_model_name == 'Lasso':
-            parameter[0]['alphas'] = tmodels.alpha_
-        parameter[0] = str(parameter[0])
+        # if reg_model_name == 'Ridge' or reg_model_name == 'Lasso':
+        #     parameter[0]['alphas'] = tmodels.alpha_
+        # parameter[0] = str(parameter[0])
         test_acc.append(cust_reports_describe.iloc[0, 0])
         feature_names.append(str(max_features))
         final_reports = {'parameter': parameter,
@@ -205,7 +193,7 @@ def regression_cp_result(request, projectid):
         final_reports = pd.DataFrame(final_reports, index=[reg_model_name]).reset_index().rename(
             columns={'index': 'Method'})
         final_reports[['Mean R-square', 'MAE', 'MSE']] = np.round(final_reports[['Mean R-square', 'MAE', 'MSE']], 3)
-        final_reports_dict = final_reports.to_dict('records')
+        # final_reports_dict = final_reports.to_dict('records')
 
         # validation
         val_report = reg_cust_val(best_esti,validation_data,validation_label,max_features, reg_model_name)
@@ -224,6 +212,23 @@ def regression_cp_result(request, projectid):
         val_report = val_report.reset_index().rename(columns={'index': 'Method'})
         val_report_dict = val_report.to_dict('records')
 
+
+        # make cache
+        cp_cache = {}
+        para_str = feature_select_method + final_reports['Method'][0] + str(final_reports['parameter'][0]) + Fsm
+        para_md5 = md5_convert(para_str)[:6]
+        if reg_model_name == 'Ridge' or reg_model_name == 'Lasso':
+            final_reports['parameter'][0]['final_alphas'] = tmodels.alpha_
+
+        final_reports['md5'], final_reports['fsm'] = para_md5, feature_select_method
+        final_reports2 = copy.deepcopy(final_reports)
+        final_reports['parameter'][0] = str(final_reports['parameter'][0])
+        final_reports_dict = final_reports.to_dict('records')
+        # add parameter md5 and feature select method
+
+        print('final_reports_dict',final_reports_dict)
+
+
         # pickle
         reg_pickle = {
             'reg_model_name': reg_model_name,
@@ -237,16 +242,10 @@ def regression_cp_result(request, projectid):
             'ifval': ifval,
             'Fsm': Fsm
         }
-        # make cache
-        cp_cache = {}
-        para_str = feature_select_method + final_reports['Method'][0] + str(final_reports['parameter'][0]) + final_reports['Fsm'][0]
-        para_md5 = md5_convert(para_str)[:6]
-        # add parameter md5 and feature select method
-        final_reports['md5'], final_reports['fsm'] = para_md5, feature_select_method
-        final_reports_dict = final_reports.to_dict('records')
 
         cp_cache[para_md5] = reg_pickle
-        cp_cache['reports'] = final_reports
+        cp_cache['reports'] = final_reports2 ##后续剔除final_alphas需要保证'reports'为dict，但前端展示需要转为str
+
 
         with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl',
                   'wb') as f:
@@ -259,42 +258,45 @@ def regression_cp_result(request, projectid):
             pickle.dump(model_info, f)
 
     else:
-        print('存在缓存！！！')
+        print('存在缓存文件！！！')
         # 判断是否已经跑过该数据,如果是直接返回数据
         with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
             cp_cache = pickle.load(f)
         # if_cp_cache_reg(cp_cache,feature_select_method,Fsm,reg_cust_model,reg_model_name,projectid,request)
+        #转pandas，匹配缓存数据
         pd_reports = pd.DataFrame(cp_cache['reports'])
         select_md5 = 0
         for i in range(len(pd_reports.index)):
             pd_report = pd_reports.iloc[i, :]
-            if (pd_report['parameter'] + pd_report['fsm'] + pd_report['Fsm']) == (
+            if pd_report['Method'] == 'Ridge' or pd_report['Method'] == 'Lasso':
+                pd_report['parameter'].pop('final_alphas') #删除额外添加的parameter信息，用于匹配
+            if (str(pd_report['parameter']) + pd_report['fsm'] + pd_report['Fsm']) == (
                     str(reg_cust_model.get_params()) + feature_select_method + Fsm):
                 select_md5 = pd_report['md5']
                 print('using cache!!!')
-        if select_md5 != 0:
-            final_reports_dict = cp_cache['reports'].to_dict('records')
+        if select_md5 != 0: #调用缓存信息
+            # final_reports_dict = cp_cache['reports'].to_dict('records')
+            final_reports_dict = cp_cache[select_md5]['final_reports_dict']
             reg_model_name = cp_cache[select_md5]['reg_model_name']
             line_chart_data = cp_cache[select_md5]['line_chart_data']
             cust_reports_dict = cp_cache[select_md5]['cust_reports_dict']
             cust_reports_describe_dict = cp_cache[select_md5]['cust_reports_describe_dict']
-            if 'val_report_dict' in cp_cache[select_md5].keys():
-                val_report_dict = cp_cache[select_md5]['val_report_dict']
-                vregpred_trace = cp_cache[select_md5]['vregpred_trace']
-                vreport_trace = cp_cache[select_md5]['vreport_trace']
+            # val
+            val_report_dict = cp_cache[select_md5]['val_report_dict']
+            vregpred_trace = cp_cache[select_md5]['vregpred_trace']
+            vreport_trace = cp_cache[select_md5]['vreport_trace']
+            if len(cp_cache[select_md5]['val_report_dict']) != 0:
                 ifval = True
             else:
-                val_report_dict, vregpred_trace, vreport_trace = [], [], []
                 ifval = False
             ###
         else:
+            print('using cache fail !! ')
             inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "data.csv", header=0, index_col=0).T
             train_set, test_set, blind_set = split_train_test(inputdata)
-
             nordata4, nor_age4 = regression_preprocess(train_set)
             # nordata4, vaildation_data, nor_age4, vaildation_label = train_test_split(x_dum, y, random_state=10,
             #                                                                          train_size=0.7)  # 分验证集
-
             if len(test_set) > 0:
                 validation_data, validation_label = regression_preprocess(test_set)
                 ifval = True
@@ -343,14 +345,12 @@ def regression_cp_result(request, projectid):
             tmodels = copy.deepcopy(reg_cust_model)
             tmodels.fit(nordata4[max_features], nor_age4)
             paras = reg_cust_model.get_params()
+            select_str = feature_select_method + reg_model_name + str(paras) + Fsm
+            para_md5 = md5_convert(select_str)[:6]
+            # 计算md5之后再添加final_alphas 信息
             if reg_model_name == 'Ridge' or reg_model_name == 'Lasso':
                 paras['final_alphas'] = tmodels.alpha_
-            select_str = feature_select_method + reg_model_name + str(paras) + Fsm
-            select_md5 = md5_convert(select_str)[:6]
-
-
-            if select_md5 not in cp_cache.keys():
-
+            if para_md5 not in cp_cache.keys():
                 line_chart_data = []
                 line_trace = {
                     'mode': 'lines+markers',
@@ -422,6 +422,8 @@ def regression_cp_result(request, projectid):
 
                 final_reports = pd.concat([cp_cache['reports'], final_reports], axis=0).drop_duplicates(keep='last')
                 final_reports[['Mean R-square','MAE','MSE']] = np.round(final_reports[['Mean R-square','MAE','MSE']],3)
+                final_reports2 = final_reports
+                final_reports['parameter'][0] = str(final_reports['parameter'][0])
                 final_reports_dict = final_reports.to_dict('records')
                 cp_cache[select_md5] = reg_pickle
                 cp_cache['reports'] = final_reports
@@ -436,7 +438,8 @@ def regression_cp_result(request, projectid):
                 with open(STATIC_ROOT + '/cache/' + projectid + '/' + select_md5 + '.pkl', 'wb') as f:
                     pickle.dump(model_info, f)
             else:
-                final_reports_dict = cp_cache['reports'].to_dict('records')
+                # final_reports_dict = cp_cache['reports'].to_dict('records')
+                final_reports_dict = cp_cache[select_md5]['final_reports_dict']
                 reg_model_name = cp_cache[select_md5]['reg_model_name']
                 line_chart_data = cp_cache[select_md5]['line_chart_data']
                 cust_reports_dict = cp_cache[select_md5]['cust_reports_dict']
@@ -446,24 +449,47 @@ def regression_cp_result(request, projectid):
                 vreport_trace = cp_cache[select_md5]['vreport_trace']
 
     #send email
-    to_mail = request.POST.get('to_mail')
-    print('mail: ',to_mail)
+    # to_mail = request.POST.get('to_mail')
+    to_mail = client_msg['to_mail']
+    print('send mail: ',to_mail)
     if 'para_md5' in locals():  # 判断是否使用缓存，已有数据的变量名是select_md5
         url = 'maler/regression_cp_result/prev/'+ projectid + para_md5
         if to_mail != '' and to_mail != None:
             task_sendmail(to_mail, url)
-    return render(request, 'regression_cp_result.html', {
+    analysis_results = {
         'projectid': projectid,
         'reg_model_name': reg_model_name,
-        'line_chart_data': json.dumps(line_chart_data),
-        'cust_reports_dict': json.dumps(cust_reports_dict),
-        'cust_reports_describe_dict': json.dumps(cust_reports_describe_dict),
-        'final_reports_dict': json.dumps(final_reports_dict),
-        'val_report_dict': json.dumps(val_report_dict),
-        'vregpred_trace': json.dumps(vregpred_trace,ensure_ascii=False, cls=JsonEncoder),
-        'vreport_trace': json.dumps(vreport_trace,ensure_ascii=False, cls=JsonEncoder),
+        'line_chart_data': line_chart_data,
+        'cust_reports_dict': cust_reports_dict,
+        'cust_reports_describe_dict': cust_reports_describe_dict,
+        # 'final_reports_dict': final_reports_dict,
+        'final_reports_dict': json.dumps(final_reports_dict, ensure_ascii=False, cls=JsonEncoder),
+        'val_report_dict': val_report_dict,
+        # 'vregpred_trace': vregpred_trace,
+        # 'vreport_trace': vreport_trace,
+        'vregpred_trace': json.dumps(vregpred_trace, ensure_ascii=False, cls=JsonEncoder),
+        'vreport_trace': json.dumps(vreport_trace, ensure_ascii=False, cls=JsonEncoder),
         'ifval': ifval,
-    })
+    }
+    return analysis_results
+
+
+    # return render(request, 'regression_cp_result.html', {
+    #     'projectid': projectid,
+    #     'reg_model_name': reg_model_name,
+    #     'line_chart_data': json.dumps(line_chart_data),
+    #     'cust_reports_dict': json.dumps(cust_reports_dict),
+    #     'cust_reports_describe_dict': json.dumps(cust_reports_describe_dict),
+    #     'final_reports_dict': json.dumps(final_reports_dict),
+    #     'val_report_dict': json.dumps(val_report_dict),
+    #     'vregpred_trace': json.dumps(vregpred_trace,ensure_ascii=False, cls=JsonEncoder),
+    #     'vreport_trace': json.dumps(vreport_trace,ensure_ascii=False, cls=JsonEncoder),
+    #     'ifval': ifval,
+    # })
+
+
+
+
 
 def show_prev_page(request, projectid_paramd5):
     if len(projectid_paramd5.split('-')[2]) != 4:
@@ -547,7 +573,8 @@ def show_prev_page(request, projectid_paramd5):
         # with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
         #     cp_cache = pickle.load(f)
 
-        final_reports_dict = cp_cache['reports'].to_dict('records')
+        # final_reports_dict = cp_cache['reports'].to_dict('records')
+        final_reports_dict = cp_cache[paramd5]['final_reports_dict']
         reg_model_name = cp_cache[paramd5]['reg_model_name']
         line_chart_data = cp_cache[paramd5]['line_chart_data']
         cust_reports_dict = cp_cache[paramd5]['cust_reports_dict']
@@ -555,8 +582,11 @@ def show_prev_page(request, projectid_paramd5):
         val_report_dict = cp_cache[paramd5]['val_report_dict']
         vregpred_trace = cp_cache[paramd5]['vregpred_trace']
         vreport_trace = cp_cache[paramd5]['vreport_trace']
-
-        return render(request, 'regression_cp_result.html', {
+        if len(cp_cache[paramd5]['val_report_dict']) != 0:
+            ifval = True
+        else:
+            ifval = False
+        return render(request, 'regression_cp_result_prev.html', {
             'projectid': projectid,
             'reg_model_name': reg_model_name,
             'line_chart_data': json.dumps(line_chart_data),
@@ -567,6 +597,7 @@ def show_prev_page(request, projectid_paramd5):
             'vregpred_trace': json.dumps(vregpred_trace, ensure_ascii=False, cls=JsonEncoder),
             'vreport_trace': json.dumps(vreport_trace, ensure_ascii=False, cls=JsonEncoder),
             'change_page': True,
+            'ifval': ifval,
         })
     else:
         projectid = projectid_paramd5

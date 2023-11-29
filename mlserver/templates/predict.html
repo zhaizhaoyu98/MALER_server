@@ -256,29 +256,6 @@
 					
 			<!-- </div> -->
 
-			<script type="text/javascript">
-				$("#upmodel").click(function () {
-					// $("#upload_model").show()
-				    $("#upload_model").click();
-				});
-				$("#upfile").click(function () {
-					// $("#upload_model").show()
-				    $("#upload_file").click();
-				});
-				var mymodel = document.getElementById('upload_model');
-				mymodel.addEventListener('change',function() {
-					// $(".showModelName").html(mymodel.files[0].name);
-					document.getElementById("showModelName").innerHTML = mymodel.files[0].name;
-					mymodel&&mymodel.reset();
-				});
-				var myfile = document.getElementById('upload_file');
-				myfile.addEventListener('change',function() {
-					// location.reload();
-					$(".showFileName").html(myfile.files[0].name);
-				});
-				
-				
-			</script>
 			
 			
 			<div id="pred_samp_data" class='row' style="display: none;">
@@ -502,6 +479,27 @@
 					$(this).removeClass('active');
 				});
 				
+				$("#upmodel").click(function () {
+					// $("#upload_model").show()
+					$("#upload_model").click();
+				});
+				$("#upfile").click(function () {
+					// $("#upload_model").show()
+					$("#upload_file").click();
+				});
+				var mymodel = document.getElementById('upload_model');
+				mymodel.addEventListener('change',function() {
+					// $(".showModelName").html(mymodel.files[0].name);
+					document.getElementById("showModelName").innerHTML = mymodel.files[0].name;
+					mymodel&&mymodel.reset();
+				});
+				var myfile = document.getElementById('upload_file');
+				myfile.addEventListener('change',function() {
+					// location.reload();
+					$(".showFileName").html(myfile.files[0].name);
+				});
+					
+
 				$("#usr_up").click(function (){
 					$("#file_upload_type").val('user_data')
 				})

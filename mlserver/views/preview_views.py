@@ -7,10 +7,10 @@ import numpy as np
 import pandas as pd
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5, split_train_test, JsonEncoder
-from mlserver.views.classification_cp_result_views import select_class_model, md5_convert
-from mlserver.views.regression_cp_result_views import select_reg_model
-from mlserver.views.survival_cp_result_views import select_sur_model
+from mlserver.views.classification_oc_result_view_webscoket import get_file_md5, split_train_test, JsonEncoder
+from mlserver.views.classification_cp_result_view_websocket import select_class_model, md5_convert
+from mlserver.views.regression_cp_result_view_websocket import select_reg_model
+from mlserver.views.survival_cp_result_view_websocket import select_sur_model
 from django.contrib import messages
 import re
 

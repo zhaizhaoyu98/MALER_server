@@ -21,7 +21,7 @@ from sklearn.tree import DecisionTreeClassifier
 from lightgbm import LGBMClassifier
 from xgboost import XGBClassifier
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import df2bp, mkroc, mkradar, JsonEncoder ,task_sendmail
+from mlserver.views.classification_oc_result_view_webscoket import df2bp, mkroc, mkradar, JsonEncoder ,task_sendmail
 from mlserver.views.featureselection_method import mrmr_fs,FSS_fun,BSS_fun,train_estimator,train_top3,selectkbest_top20,pre_screening
 import warnings
 from dwebsocket.decorators import accept_websocket
@@ -30,717 +30,6 @@ warnings.filterwarnings("ignore")
 title = ["Naive Bayes","SVM","RandomForest","Logistic","KNN","XGBoost","lightGBM",'Adaboost',"DecisionTree","GBDT"]
 from concurrent.futures.thread import ThreadPoolExecutor
 pools = ThreadPoolExecutor(100)
-
-@accept_websocket
-def result(request, projectid):
-    if request.is_websocket():
-        print('websocket on !!')
-        connect_num = 0
-        WebSocket = request.websocket
-        client_msg = json.loads(WebSocket.wait())
-        print(client_msg)
-        # request.websocket.send(json.dumps(client_msg))
-
-        # Feature selection methods
-        # feature_select_method = request.POST.get('feature_select_method')
-        # model_md5 = request.POST.get('model_md5')
-
-        feature_select_method = client_msg['feature_select_method']
-        model_md5 = client_msg['model_md5']
-
-        with open(STATIC_ROOT + '/cache/' + projectid + '/model_pickle.pkl', 'rb') as f:
-            model_set = pickle.load(f)
-
-        if projectid.split('-')[0][0] == 'B':
-            ifmarco = False
-        else:
-            ifmarco = True
-        svc, clf_name = model_set[model_md5]['model'], model_set[model_md5]['model_name']
-        # select child model
-        # select_child_model = request.POST.get('select_child_model').replace("task_", "")
-        # print(select_child_model)
-        # file_upload_type = request.POST.get('file_upload_type')
-
-        '''
-        MODULE PARAMETERS
-        '''
-        # if select_child_model == 'svm':
-        #     svc = get_svc_model(request)
-
-        # svc, clf_name = select_class_model(request)
-        # get project id
-        # projectid = request.POST.get('projectid')
-        # if projectid == '': projectid='None'
-
-        if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'cp_cache.pkl')):
-            inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
-            '''
-            IMPORT DATA
-            '''
-            # label load
-            # obj_label = request.FILES.get('upload_label')
-            # print(obj_label.name)
-            # f = open(os.path.join(STATIC_ROOT, 'cache', obj_label.name), 'wb')
-            # for line in obj_label.chunks():
-            #     f.write(line)
-            # f.close()
-            # random token
-            # token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
-            # token = request.POST.get('random_token')
-            # if file_upload_type == 'user_data':
-            #     '''
-            #     IMPORRT DATA
-            #     '''
-            #     obj_file = request.FILES.get('upload_file')
-            #     f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
-            #     for line in obj_file.chunks():
-            #         f.write(line)
-            #     f.close()
-            #
-            #     filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
-            #
-            #     projectid = prefix_id + filemd5[:6] + '-' + token
-            #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-            #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-            #     shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
-            #     # shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
-            #     # rename
-            #     os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, \
-            #               STATIC_ROOT + '/cache/' + projectid + '/' + "express_data.csv")
-            #     # os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_label.name, \
-            #     #           STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv")
-            #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "express_data.csv", header=0,
-            #                             index_col=0).T
-            # else:
-            #     if select_model == 'model_bclass':
-            #         filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/binary_classification_example.csv'))
-            #         filename = 'binary_classification_example.csv'
-            #     else:
-            #         filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/multiclass_classification_example.csv'))
-            #         filename = 'multiclass_classification_example.csv'
-            #     projectid = prefix_id + filemd5[:6] + '-' + token
-            #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-            #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-            #     shutil.copy(STATIC_ROOT + '/cache/example/' + filename, newpath)
-            #     os.rename(newpath + '/' + filename, \
-            #               newpath + '/' + "express_data.csv")
-            #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/example/' + filename, header=0, index_col=0).T
-            # profile load
-            # obj_file = request.FILES.get('upload_file')
-            # f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
-            # for line in obj_file.chunks():
-            #     f.write(line)
-            # f.close()
-
-
-            '''
-            CALCULATE PROJECTID
-            '''
-            # filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
-
-
-
-            print(projectid)
-            '''
-                feature_select_method = 'TopK'
-                select_model = 'model_bclass'
-                select_child_model = 'svm'
-                svm_kernel, svm_c, svm_degree, svm_coef = 'rbf',1,2,0
-                projectid = '911c4d-c3ceec-TopK-RWZIlT'
-                data = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'express_data.csv', header=0, index_col=0).T
-                label = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'label.csv', header=0, index_col=0)
-            '''
-
-            # read files
-
-            # label = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'label_3columns.csv', header=0, index_col=0)
-            # data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'express_data.csv', header=0, index_col=0).T
-            # label = pd.read_csv(STATIC_ROOT + '/cache/' + '/' + projectid + '/' + 'label.csv', header=0, index_col=0)
-
-            # label = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv", header=0, index_col=0)
-            # line_chart_data = 'null'
-            # preprocess
-            # label = np.array(label).ravel()
-            # label2, classes = label_pre(label)
-
-            train_set, test_set, blind_set = split_train_test(inputdata)
-            data, label = classification_process(train_set)
-            label3, classes = label_pre(label)
-            if len(test_set) > 0:
-                validation_data, validation_label = classification_process(test_set)
-                validation_label, ll = label_pre(validation_label)
-
-            # fsm = request.POST.get("fsm")
-            # form_action = request.POST.get("form_action")
-            fsm = client_msg['fsm']
-            form_action = client_msg['form_action']
-
-            if fsm == 'A':
-                features = selectkbest_top20(data, label3, k=50)
-                Fsm = 'ANOVA'
-            elif fsm == 'M':
-                features = mrmr_fs(data, label3, form_action)
-                Fsm = 'MRMR'
-            data3 = data.loc[:, features]
-
-            train_index, test_index = RSKFold(data3, label3)  # 十次五折交叉验证
-
-
-
-            if feature_select_method == 'TopK':
-                cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=1, random_state=10)
-                clf_num, ms = pre_screening(data3, label3, svc, features, cv=cv)
-                test_accs, estimators, mean_accs, predicts, f_names = train_top3(svc, data3, label3, clf_num,
-                                                                                 train_index, test_index, features)  ##
-                max_features = f_names
-                line_chart_data = []
-                line_trace = {
-                    'mode': 'lines+markers',
-                    'name': clf_name,
-                    'type': 'scatter',
-                    'x': list(range(1, len(ms) + 1)),
-                    'y': ms
-                }
-                line_chart_data.append(line_trace)
-
-                final_reports, f_describe = customized_report(clf_name, estimators, data3, label3, predicts,
-                                                              test_index, f_names, test_accs)
-
-                final_reports_dict = df2bp(final_reports)
-                f_describe = np.round(f_describe.loc[("mean", 'min', 'max', 'std'), :],
-                                      3).reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
-                f_describe_dict = f_describe.to_dict('records')
-                # ROC
-                mean_FPR, mean_TPR_df, auc_mean_std = get_ROC_info(clf_name, estimators, data3, label3, test_index, f_names,
-                                                                   final_reports, predicts)
-                roc_traces = mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=[clf_name])
-
-                tmodels = copy.deepcopy(svc)
-                tmodels.fit(data3[f_names], label3)
-
-                # 最优分类器表格展示
-                parameter, train_acc, test_acc, best_esti = [], [], [], []
-                precision, AUC, recall, f1_score = [], [], [], []
-                feature_names = []
-
-                # maxauc_index = np.array(test_accs).argmax()
-                best_esti.append(tmodels)
-                parameter.append(str(tmodels.get_params()))
-
-                test_acc.append(final_reports["test_accuracy"].mean())
-                precision.append(final_reports["precision"].mean())
-                recall.append(final_reports["recall"].mean())
-                f1_score.append(final_reports["f1-score"].mean())
-                AUC.append(final_reports["AUC"].mean())
-                feature_names.append(list(f_names))
-                max_reports = {'parameter': parameter,
-                               'feature_names': [str(f) for f in feature_names],
-                               'test_acc': test_acc,
-                               'precision': precision,
-                               'AUC': AUC,
-                               'recall': recall,
-                               'f1-score': f1_score,
-                               'Fsm': Fsm}
-                max_reports = pd.DataFrame(max_reports, index=[clf_name])
-                max_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']] = np.round(
-                    max_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']], 3)
-                max_reports = max_reports.reset_index().rename(
-                    columns={'index': 'Method', 'f1-score': 'f1score'})
-
-                '''validation'''
-                validate_predict,validate_report = pre_valid(best_esti[0],validation_data,validation_label,f_names)
-                # barplot
-                bar_dict = mkbar(validate_report)
-                # heatmap
-                heatmap_dict, heatmap_anno = mkheatmap(validation_label, validate_predict, classes)
-                # roc
-                valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info(clf_name, best_esti[0], validation_data, validation_label, f_names)
-                valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=[clf_name])
-
-                report_describe_roc = {
-                    'final_reports': final_reports,
-                    'f_describe': f_describe,
-                    'roc': {'mean_FPR': mean_FPR, 'mean_TPR_df': mean_TPR_df, 'auc_mean_std': auc_mean_std},
-                    # validation
-                    'bar_dict': bar_dict,
-                    'heatmap_dict': heatmap_dict,
-                    'heatmap_anno': heatmap_anno,
-                    'valid_roc_traces': valid_roc_traces,
-                    'line_chart_data': line_chart_data
-                    # 'report': max_reports
-                }
-            elif feature_select_method == 'FSS' or feature_select_method == 'BSS':
-                print("run FSS or BSS")
-                cv2 = RepeatedStratifiedKFold(n_splits=5, n_repeats=1, random_state=10)
-                start = time.perf_counter()
-                if feature_select_method == 'FSS':
-                    selected_feature, max_scores = FSS_fun(features, svc, data3, label3, cv2,n_jobs=1) #njobs修改
-                else:
-                    selected_feature, max_scores = BSS_fun(features, svc, data3, label3, cv2,n_jobs=1) #njobs修改
-                # 得到最值
-                max_index = max_scores.index(np.nanmax(max_scores))
-                max_score = max(max_scores)
-                max_features = selected_feature[:max_index + 1]
-                preds, tests, res = [], [], []
-                for i in range(len(train_index)):
-                    xtrain, ytrain = data3.iloc[train_index[i], :], label3[train_index[i]]
-                    xtest, ytest = data3.iloc[test_index[i], :], label3[test_index[i]]
-                    xtrain, xtest = xtrain[max_features], xtest[max_features]
-                    estimator, test_acc, predict = train_estimator(svc, xtrain, ytrain, xtest, ytest)
-                    tests.append(test_acc), res.append(estimator), preds.append(predict)
-                end = time.perf_counter()
-                print(round(end - start, 2))
-                line_chart_data = []
-                trace = {
-                    'mode': 'lines+markers',
-                    'name': clf_name,
-                    'type': 'scatter',
-                    'x': list(range(1, len(max_scores) + 1)),
-                    'y': max_scores
-                }
-                line_chart_data.append(trace)
-
-                final_reports, f_describe = customized_report(clf_name, res, data3, label3, preds, test_index,
-                                                              max_features, tests)
-                final_reports_dict = df2bp(final_reports)
-                f_describe = np.round(f_describe.loc[("mean", 'min', 'max', 'std'), :],
-                                      3).reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
-                f_describe_dict = f_describe.to_dict('records')
-
-                # ROC
-                mean_FPR, mean_TPR_df, auc_mean_std = get_ROC_info(clf_name, res, data3, label3, test_index, max_features,
-                                                                   final_reports, preds)
-                roc_traces = mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=[clf_name])
-
-                tmodels = copy.deepcopy(svc)
-                tmodels.fit(data3[max_features], label3)
-
-                # 最优分类器表格展示
-                parameter, train_acc, test_acc, best_esti = [], [], [], []
-                precision, AUC, recall, f1_score = [], [], [], []
-                feature_names = []
-
-                # maxauc_index = np.array(tests).argmax()
-                best_esti.append(tmodels)
-                parameter.append(str(tmodels.get_params()))
-
-                test_acc.append(final_reports["test_accuracy"].mean())
-                precision.append(final_reports["precision"].mean())
-                recall.append(final_reports["recall"].mean())
-                f1_score.append(final_reports["f1-score"].mean())
-                AUC.append(final_reports["AUC"].mean())
-                feature_names.append(list(max_features))
-                max_reports = {'parameter': parameter,
-                               'feature_names': [str(f) for f in feature_names],
-                               'test_acc': test_acc,
-                               'precision': precision,
-                               'AUC': AUC,
-                               'recall': recall,
-                               'f1-score': f1_score,
-                               'Fsm': Fsm}
-                max_reports = pd.DataFrame(max_reports, index=[clf_name])
-                max_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']] = np.round(
-                    max_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']], 3)
-                max_reports = max_reports.reset_index().rename(
-                    columns={'index': 'Method', 'f1-score': 'f1score'})
-
-                '''validation'''
-                validate_predict, validate_report = pre_valid(best_esti[0], validation_data, validation_label, max_features)
-                # barplot
-                bar_dict = mkbar(validate_report)
-                # heatmap
-                heatmap_dict, heatmap_anno = mkheatmap(validation_label, validate_predict, classes)
-                # roc
-                valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info(clf_name, best_esti[0],
-                                                                                       validation_data, validation_label,
-                                                                                       max_features)
-                valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=[clf_name])
-
-                report_describe_roc = {
-                    'final_reports': final_reports,
-                    'f_describe': f_describe,
-                    'roc': {'mean_FPR': mean_FPR, 'mean_TPR_df': mean_TPR_df, 'auc_mean_std': auc_mean_std},
-                    # validation
-                    'bar_dict': bar_dict,
-                    'heatmap_dict': heatmap_dict,
-                    'heatmap_anno': heatmap_anno,
-                    'valid_roc_traces': valid_roc_traces,
-                    'line_chart_data': line_chart_data
-                    # 'report': max_reports
-                }
-
-                # report_describe_roc = {
-                #     'final_reports': final_reports,
-                #     'f_describe': f_describe,
-                #     'roc': {'mean_FPR': mean_FPR, 'mean_TPR_df': mean_TPR_df, 'auc_mean_std': auc_mean_std},
-                #     # 'report': max_reports
-                # }
-
-            # make cache
-            #md5码信息，用于区别不同任务
-            cp_cache = {}
-            para_str = feature_select_method + max_reports['Method'][0] + str(max_reports['parameter'][0]) + max_reports['Fsm'][0]
-            para_md5 = md5_convert(para_str)[:6]
-            # add parameter md5 and feature select method
-            max_reports['md5'],max_reports['fsm'] = para_md5, feature_select_method
-            # max_reports['Fsm'] = Fsm
-
-
-            max_reports_dict = max_reports.to_dict('records')
-
-            cp_cache[para_md5] = report_describe_roc
-            cp_cache['reports'] = max_reports
-
-            with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl',
-                      'wb') as f:
-                pickle.dump(cp_cache, f)
-
-            #保存单个模型信息
-            print('max_features2: ',list(max_features))
-            model_info = {}
-            model_info['name'], model_info['model'], model_info['feature_names'] = clf_name, tmodels, max_features
-            model_info['classes'] = classes
-            with open(STATIC_ROOT + '/cache/' + projectid + '/' + para_md5 + '.pkl',
-                      'wb') as f:
-                pickle.dump(model_info, f)
-
-        else:
-            inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "data.csv", header=0, index_col=0).T
-            # label = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv", header=0, index_col=0)
-            # line_chart_data = 'null'
-            # preprocess
-            # label = np.array(label).ravel()
-            # label3, classes = label_pre(label)
-
-            train_set, test_set, blind_set = split_train_test(inputdata)
-            data, label = classification_process(train_set)
-            label3, classes = label_pre(label)
-
-            if len(test_set) > 0:
-                validation_data, validation_label = classification_process(test_set)
-                validation_label, ll = label_pre(validation_label)
-
-            # ANOVA方法
-            # fsm = request.POST.get("fsm")
-            # form_action = request.POST.get("fsm")
-            fsm = client_msg['fsm']
-            form_action = client_msg['form_action']
-            if fsm == 'A':
-                features = selectkbest_top20(data, label3, k=50)
-                Fsm = 'ANOVA'
-            elif fsm == 'M':
-                features = mrmr_fs(data,label3,form_action)
-                Fsm = 'MRMR'
-            data3 = data.loc[:, features]
-            # 拆分验证集
-            # data3, validation_data, label3, validation_label = train_test_split(data2, label2, random_state=10,
-            #                                                                     train_size=0.9)
-            train_index, test_index = RSKFold(data3, label3)  # 十次五折交叉验证
-            # clf_name = select_child_model.upper()
-            if feature_select_method == 'TopK':
-                cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=1, random_state=10)
-                clf_num, ms = pre_screening(data3, label3, svc, features, cv=cv)
-                test_accs, estimators, mean_accs, predicts, f_names = train_top3(svc, data3, label3, clf_num,
-                                                                                 train_index, test_index, features)  ##
-                max_features = f_names
-                line_chart_data = []
-                line_trace = {
-                    'mode': 'lines+markers',
-                    'name': clf_name,
-                    'type': 'scatter',
-                    'x': list(range(1, len(ms) + 1)),
-                    'y': ms
-                }
-                line_chart_data.append(line_trace)
-
-                maxauc_index = np.array(test_accs).argmax()
-                select_str = feature_select_method + clf_name + str(estimators[maxauc_index].get_params())
-                select_md5 = md5_convert(select_str)[:6]
-                # load pickle
-                with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
-                    cp_cache = pickle.load(f)
-
-                if select_md5 not in cp_cache.keys():
-                    final_reports, f_describe = customized_report(clf_name, estimators, data3, label3, predicts,
-                                                                  test_index, f_names, test_accs)
-
-                    final_reports_dict = df2bp(final_reports)
-                    f_describe = np.round(f_describe.loc[("mean", 'min', 'max', 'std'), :],
-                                          3).reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
-                    f_describe_dict = f_describe.to_dict('records')
-
-                    mean_FPR, mean_TPR_df, auc_mean_std = get_ROC_info(clf_name, estimators, data3, label3, test_index,
-                                                                       f_names,
-                                                                       final_reports, predicts)
-                    roc_traces = mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=[clf_name])
-
-                    tmodels = copy.deepcopy(svc)
-                    tmodels.fit(data3[f_names], label3)
-
-                    # 最优分类器表格展示
-                    parameter, train_acc, test_acc, best_esti = [], [], [], []
-                    precision, AUC, recall, f1_score = [], [], [], []
-                    feature_names = []
-
-                    # maxauc_index = np.array(test_accs).argmax()
-                    best_esti.append(tmodels)
-                    parameter.append(str(tmodels.get_params()))
-
-                    test_acc.append(final_reports["test_accuracy"].mean())
-                    precision.append(final_reports["precision"].mean())
-                    recall.append(final_reports["recall"].mean())
-                    f1_score.append(final_reports["f1-score"].mean())
-                    AUC.append(final_reports["AUC"].mean())
-                    feature_names.append(list(f_names))
-                    max_reports = {'parameter': parameter,
-                                   'feature_names': [str(f) for f in feature_names],
-                                   'test_acc': test_acc,
-                                   'precision': precision,
-                                   'AUC': AUC,
-                                   'recall': recall,
-                                   'f1-score': f1_score,
-                                   'Fsm': Fsm}
-                    max_reports = pd.DataFrame(max_reports, index=[clf_name])
-                    max_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']] = np.round(
-                        max_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']], 3)
-                    max_reports = max_reports.reset_index().rename(
-                        columns={'index': 'Method', 'f1-score': 'f1score'})
-
-                    para_str = feature_select_method + max_reports['Method'][0] + str(max_reports['parameter'][0]) + max_reports['Fsm'][0]
-                    para_md5 = md5_convert(para_str)[:6]
-                    print(para_md5)
-                    # add parameter md5 and feature select method
-                    max_reports['md5'], max_reports['fsm'] = para_md5, feature_select_method
-
-                    '''validation'''
-                    validate_predict, validate_report = pre_valid(best_esti[0], validation_data, validation_label, f_names)
-                    # barplot
-                    bar_dict = mkbar(validate_report)
-                    # heatmap
-                    heatmap_dict, heatmap_anno = mkheatmap(validation_label, validate_predict, classes)
-                    # roc
-                    valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info(clf_name, best_esti[0],
-                                                                                           validation_data,
-                                                                                           validation_label, f_names)
-                    valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=[clf_name])
-
-                    report_describe_roc = {
-                        'final_reports': final_reports,
-                        'f_describe': f_describe,
-                        'roc': {'mean_FPR': mean_FPR, 'mean_TPR_df': mean_TPR_df, 'auc_mean_std': auc_mean_std},
-                        # validation
-                        'bar_dict': bar_dict,
-                        'heatmap_dict': heatmap_dict,
-                        'heatmap_anno': heatmap_anno,
-                        'valid_roc_traces': valid_roc_traces,
-                        'line_chart_data': line_chart_data
-                    }
-
-                    max_reports = pd.concat([cp_cache['reports'], max_reports], axis=0).drop_duplicates(keep='last')
-                    max_reports_dict = max_reports.to_dict('records')
-                    cp_cache[para_md5] = report_describe_roc
-                    cp_cache['reports'] = max_reports
-
-                    with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl',
-                              'wb') as f:
-                        pickle.dump(cp_cache, f)
-                else:
-                    final_reports_dict = df2bp(cp_cache[select_md5]['final_reports'])
-                    f_describe_dict = cp_cache[select_md5]['f_describe'].to_dict('records')
-                    roc_traces = mkroc(
-                        cp_cache[select_md5]['roc']['mean_FPR'],
-                        cp_cache[select_md5]['roc']['mean_TPR_df'],
-                        cp_cache[select_md5]['roc']['auc_mean_std'],
-                        title=[clf_name]
-                    )
-                    max_reports_dict = cp_cache['reports'].to_dict('records')
-                    bar_dict = cp_cache[select_md5]['bar_dict']
-                    heatmap_dict = cp_cache[select_md5]['heatmap_dict']
-                    heatmap_anno = cp_cache[select_md5]['heatmap_anno']
-                    valid_roc_traces = cp_cache[select_md5]['valid_roc_traces']
-                    line_chart_data = cp_cache[select_md5]['line_chart_data']
-            elif feature_select_method == 'FSS' or feature_select_method == 'BSS':
-                cv2 = RepeatedStratifiedKFold(n_splits=5, n_repeats=1, random_state=10)
-                start = time.perf_counter()
-                if feature_select_method == 'FSS':
-                    selected_feature, max_scores = FSS_fun(features, svc, data3, label3, cv2)
-                else:
-                    selected_feature, max_scores = BSS_fun(features, svc, data3, label3, cv2)
-                # 得到最值
-                max_index = max_scores.index(np.nanmax(max_scores))
-                max_score = max(max_scores)
-                max_features = selected_feature[:max_index + 1]
-                preds, tests, res = [], [], []
-                for i in range(len(train_index)):
-                    xtrain, ytrain = data3.iloc[train_index[i], :], label3[train_index[i]]
-                    xtest, ytest = data3.iloc[test_index[i], :], label3[test_index[i]]
-                    xtrain, xtest = xtrain[max_features], xtest[max_features]
-                    estimator, test_acc, predict = train_estimator(svc, xtrain, ytrain, xtest, ytest)
-                    tests.append(test_acc), res.append(estimator), preds.append(predict)
-                end = time.perf_counter()
-                print(round(end - start, 2))
-                line_chart_data = []
-                trace = {
-                    'mode': 'lines+markers',
-                    'name': clf_name,
-                    'type': 'scatter',
-                    'x': list(range(1, len(max_scores)+1)),
-                    'y': max_scores
-                }
-                line_chart_data.append(trace)
-
-                maxauc_index = np.array(tests).argmax()
-                select_str = feature_select_method + clf_name + str(res[maxauc_index].get_params())
-                select_md5 = md5_convert(select_str)[:6]
-                # load pickle
-                with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
-                    cp_cache = pickle.load(f)
-
-                if select_md5 not in cp_cache.keys():
-
-                    final_reports, f_describe = customized_report(clf_name, res, data3, label3, preds, test_index,
-                                                                  max_features, tests)
-                    final_reports_dict = df2bp(final_reports)
-                    f_describe = np.round(f_describe.loc[("mean", 'min', 'max', 'std'), :],
-                                          3).reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
-                    f_describe_dict = f_describe.to_dict('records')
-
-                    # ROC
-                    mean_FPR, mean_TPR_df, auc_mean_std = get_ROC_info(clf_name, res, data3, label3, test_index, max_features,
-                                                                       final_reports, preds)
-                    roc_traces = mkroc(mean_FPR, mean_TPR_df, auc_mean_std, title=[clf_name])
-
-                    tmodels = copy.deepcopy(svc)
-                    tmodels.fit(data3[max_features], label3)
-
-                    # 最优分类器表格展示
-                    parameter, train_acc, test_acc, best_esti = [], [], [], []
-                    precision, AUC, recall, f1_score = [], [], [], []
-                    feature_names = []
-
-                    # maxauc_index = np.array(tests).argmax()
-                    best_esti.append(tmodels)
-                    parameter.append(str(tmodels.get_params()))
-
-                    test_acc.append(final_reports["test_accuracy"].mean())
-                    precision.append(final_reports["precision"].mean())
-                    recall.append(final_reports["recall"].mean())
-                    f1_score.append(final_reports["f1-score"].mean())
-                    AUC.append(final_reports["AUC"].mean())
-                    feature_names.append(list(max_features))
-                    max_reports = {'parameter': parameter,
-                                   'feature_names': [str(f) for f in feature_names],
-                                   'test_acc': test_acc,
-                                   'precision': precision,
-                                   'AUC': AUC,
-                                   'recall': recall,
-                                   'f1-score': f1_score,
-                                   'Fsm': Fsm}
-                    max_reports = pd.DataFrame(max_reports, index=[clf_name])
-                    max_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']] = np.round(
-                        max_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']], 3)
-                    max_reports = max_reports.reset_index().rename(
-                        columns={'index': 'Method', 'f1-score': 'f1score'})
-
-                    para_str = feature_select_method + max_reports['Method'][0] + str(max_reports['parameter'][0]) + max_reports['Fsm'][0]
-                    para_md5 = md5_convert(para_str)[:6]
-                    print(para_md5)
-                    # add parameter md5 and feature select method
-                    max_reports['md5'], max_reports['fsm'] = para_md5, feature_select_method
-
-                    '''validation'''
-                    validate_predict, validate_report = pre_valid(best_esti[0], validation_data, validation_label, max_features)
-                    # barplot
-                    bar_dict = mkbar(validate_report)
-                    # heatmap
-                    heatmap_dict, heatmap_anno = mkheatmap(validation_label, validate_predict, classes)
-                    # roc
-                    valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info(clf_name, best_esti[0],
-                                                                                           validation_data,
-                                                                                           validation_label, max_features)
-                    valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=[clf_name])
-
-                    report_describe_roc = {
-                        'final_reports': final_reports,
-                        'f_describe': f_describe,
-                        'roc': {'mean_FPR': mean_FPR, 'mean_TPR_df': mean_TPR_df, 'auc_mean_std': auc_mean_std},
-                        # validation
-                        'bar_dict': bar_dict,
-                        'heatmap_dict': heatmap_dict,
-                        'heatmap_anno': heatmap_anno,
-                        'valid_roc_traces': valid_roc_traces,
-                        'line_chart_data': line_chart_data
-                    }
-
-                    # report_describe_roc = {
-                    #     'final_reports': final_reports,
-                    #     'f_describe': f_describe,
-                    #     'roc': {'mean_FPR': mean_FPR, 'mean_TPR_df': mean_TPR_df, 'auc_mean_std': auc_mean_std},
-                    #     # 'report': max_reports
-                    # }
-                    max_reports = pd.concat([cp_cache['reports'], max_reports], axis=0).drop_duplicates(keep='last')
-                    max_reports_dict = max_reports.to_dict('records')
-                    cp_cache[para_md5] = report_describe_roc
-                    cp_cache['reports'] = max_reports
-
-                    with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl',
-                              'wb') as f:
-                        pickle.dump(cp_cache, f)
-                    # 保存单个模型信息
-                    print('max_features: ',list(max_features))
-                    model_info = {}
-                    model_info['name'], model_info['model'], model_info['feature_names'] = clf_name, tmodels, list(max_features)
-                    model_info['classes'] = classes
-                    with open(STATIC_ROOT + '/cache/' + projectid + '/' + para_md5 + '.pkl',
-                              'wb') as f:
-                        pickle.dump(model_info, f)
-
-                else:
-                    final_reports_dict = df2bp(cp_cache[select_md5]['final_reports'])
-                    f_describe_dict = cp_cache[select_md5]['f_describe'].to_dict('records')
-                    roc_traces = mkroc(
-                        cp_cache[select_md5]['roc']['mean_FPR'],
-                        cp_cache[select_md5]['roc']['mean_TPR_df'],
-                        cp_cache[select_md5]['roc']['auc_mean_std'],
-                        title=[clf_name]
-                    )
-                    max_reports_dict = cp_cache['reports'].to_dict('records')
-                    bar_dict = cp_cache[select_md5]['bar_dict']
-                    heatmap_dict = cp_cache[select_md5]['heatmap_dict']
-                    heatmap_anno = cp_cache[select_md5]['heatmap_anno']
-                    valid_roc_traces = cp_cache[select_md5]['valid_roc_traces']
-                    line_chart_data = cp_cache[select_md5]['line_chart_data']
-
-
-        # return render(request, 'classification_cp_result.html', {
-        #     'projectid': projectid,
-        #     'final_reports_dict': final_reports_dict,
-        #     'f_describe_dict': f_describe_dict,
-        #     'roc_traces': json.dumps(roc_traces),
-        #     'max_reports_dict': max_reports_dict,
-        #     'ifmarco': ifmarco,
-        #     'model_name': clf_name,
-        #     'bar_dict': bar_dict,
-        #     'heatmap_dict': json.dumps(heatmap_dict),
-        #     'heatmap_anno': json.dumps(heatmap_anno),
-        #     'valid_roc_traces': json.dumps(valid_roc_traces),
-        #     'line_chart_data': json.dumps(line_chart_data),
-        # })
-        analysis_results = {
-            'projectid': projectid,
-            'final_reports_dict': final_reports_dict,
-            'f_describe_dict': f_describe_dict,
-            'roc_traces': json.dumps(roc_traces),
-            'max_reports_dict': max_reports_dict,
-            'ifmarco': ifmarco,
-            'model_name': clf_name,
-            'bar_dict': bar_dict,
-            'heatmap_dict': json.dumps(heatmap_dict),
-            'heatmap_anno': json.dumps(heatmap_anno),
-            'valid_roc_traces': json.dumps(valid_roc_traces),
-            'line_chart_data': json.dumps(line_chart_data),
-        }
-        request.websocket.send(json.dumps(analysis_results))
 
 
 
@@ -758,6 +47,7 @@ def return_running_page(request,projectid):
         'model_md5': model_md5,
         'feature_select_method': feature_select_method,
         'to_mail': to_mail,
+        'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
     })
 
 
@@ -811,9 +101,11 @@ def cp_analysis(client_msg,projectid):
         data, label = classification_process(train_set)
         label3, classes = label_pre(label)
         validation_data = []  # 预先定义
+        ifval = False
         if len(test_set) > 0:
             validation_data, validation_label = classification_process(test_set)
             validation_label, ll = label_pre(validation_label)
+            ifval = True
         # fsm = request.POST.get("fsm")
         # form_action = request.POST.get("form_action")
 
@@ -916,9 +208,9 @@ def cp_analysis(client_msg,projectid):
             cv2 = RepeatedStratifiedKFold(n_splits=5, n_repeats=1, random_state=10)
             start = time.perf_counter()
             if feature_select_method == 'FSS':
-                selected_feature, max_scores = FSS_fun(features, svc, data3, label3, cv2, n_jobs=1)  # njobs修改
+                selected_feature, max_scores = FSS_fun(features, svc, data3, label3, cv2, n_jobs=5)  # njobs修改
             else:
-                selected_feature, max_scores = BSS_fun(features, svc, data3, label3, cv2, n_jobs=1)  # njobs修改
+                selected_feature, max_scores = BSS_fun(features, svc, data3, label3, cv2, n_jobs=5)  # njobs修改
             # 得到最值
             max_index = max_scores.index(np.nanmax(max_scores))
             max_score = max(max_scores)
@@ -986,6 +278,99 @@ def cp_analysis(client_msg,projectid):
             max_reports = max_reports.reset_index().rename(
                 columns={'index': 'Method', 'f1-score': 'f1score'})
 
+            # # bayeSearch
+            # import skopt
+            # from skopt.space import Real, Integer, Categorical
+            # from skopt import BayesSearchCV
+            # def randomforest_bayeSCV(model, cv):
+            #     max_dep = list(range(3, 20))
+            #     max_dep.append(None)
+            #     randomforest_model_para = {
+            #         'n_estimators': Integer(10, 200),
+            #         #          'max_depth'   : Integer(3, 50),
+            #         'max_depth': max_dep,
+            #         'min_samples_split': Integer(2, 50),
+            #         'min_samples_leaf': Integer(1, 50),
+            #         # 'max_features': ['auto', 'sqrt', 'log2'],
+            #     }
+            #     opt = BayesSearchCV(
+            #         estimator=model,
+            #         search_spaces=randomforest_model_para,
+            #         n_iter=200,
+            #         cv=cv,
+            #         n_jobs=4,
+            #         # n_points=2,
+            #         random_state=10,
+            #         # verbose=2
+            #     )
+            #     return opt
+            #
+            # rf = copy.deepcopy(svc)
+            # rf_opt = randomforest_bayeSCV(rf, cv2)
+            # rf_opt.fit(data3[max_features], label3)
+            #
+            # print("val. score: %s" % rf_opt.best_score_)
+            # print("test score: %s" % rf_opt.score(validation_data.loc[:, max_features], validation_label))
+            # print("best params: %s" % str(rf_opt.best_params_))
+            # print('raw params: %s' % str(svc.get_params()))
+            #
+            # validate_predict2, validate_report2 = pre_valid(rf_opt.best_estimator_, validation_data, validation_label,
+            #                                               max_features)
+            #
+            # # GridSearchCV
+            # from sklearn.model_selection import GridSearchCV
+            # max_dep = list(range(3, 20))
+            # max_dep.append(None)
+            # param_grid = {
+            #     'n_estimators': range(50, 500, 10),
+            #     'max_depth': max_dep,
+            #     #          'min_samples_split': range(2, 50),
+            #     #          'min_samples_leaf':  range(1, 50),
+            #     #          'max_features' :     ['auto','sqrt','log2'],
+            # }
+            # # 网格搜索
+            # start = time.perf_counter()
+            # grid_search = GridSearchCV(rf, param_grid, cv=cv2, scoring='accuracy', verbose=2, n_jobs=4)
+            # grid_search.fit(data3[max_features], label3)
+            # print("网格搜索最优参数：", grid_search.best_params_)
+            # print("网格搜索最优得分：", grid_search.best_score_)
+            # end = time.perf_counter()
+            # print('analusis time: ',round(end - start, 2))
+            # grid_search.best_estimator_.score(validation_data.loc[:, max_features], validation_label)
+            #
+            # #raw
+            # raw = cross_val_score(estimator=rf, X=data3[max_features], y=label3, cv=cv2)
+            # cross_val_score(estimator=svc,X=data3[max_features], y=label3,cv=cv2,error_score='raise',n_jobs=4).mean()
+            #
+            # np.mean(raw)
+            # rf.fit(data3[max_features],label3)
+            # rf.score(validation_data.loc[:, max_features], validation_label)
+            #
+            # ###
+            # feature_names2 = list(features)
+            # selected_feature = []
+            # max_scores = []
+            # features_num = min([len(features), 20])  # 判断特征数目是否大于20
+            # for i in range(features_num):
+            #     cv_scores = []
+            #     for feature in feature_names2:
+            #         # train_feature = [feature] + selected_feature
+            #         train_feature = selected_feature + [feature]
+            #         data1 = pd.DataFrame(data.loc[:, train_feature])
+            #         cv_score = cross_val_score(svc, data1, label, cv=cv2, n_jobs=4, error_score='raise').mean()
+            #         cv_scores.append(cv_score)
+            #     max_index = np.array(cv_scores).argmax()
+            #     max_score = max(cv_scores)
+            #     # if max(cv_scores) > 0.974:
+            #     #     break
+            #     max_scores.append(max_score)
+            #     selected_feature.append(feature_names2[max_index])
+            #     print(max_score,' ',feature_names2[max_index])
+            #     feature_names2.remove(feature_names2[max_index])
+            # ###FSS
+            # cross_val_score(svc, data3[max_features], label3, cv=cv2, n_jobs=4, error_score='raise').mean()
+
+
             '''validation'''
             bar_dict, heatmap_dict, heatmap_anno, valid_roc_traces = [], [], [], []
             if len(validation_data) != 0:
@@ -1032,10 +417,10 @@ def cp_analysis(client_msg,projectid):
             pickle.dump(cp_cache, f)
 
         # 保存单个模型信息
-        print('max_features2: ', list(max_features))
         model_info = {}
         model_info['name'], model_info['model'], model_info['feature_names'] = clf_name, tmodels, max_features
         model_info['classes'] = classes
+        print('model_info', model_info)
         with open(STATIC_ROOT + '/cache/' + projectid + '/' + para_md5 + '.pkl',
                   'wb') as f:
             pickle.dump(model_info, f)
@@ -1067,13 +452,16 @@ def cp_analysis(client_msg,projectid):
             )
             max_reports_dict = cp_cache['reports'].to_dict('records')
             line_chart_data = cp_cache[select_md5]['line_chart_data']
-            if 'bar_dict' in cp_cache[select_md5].keys():
-                bar_dict = cp_cache[select_md5]['bar_dict']
-                heatmap_dict = cp_cache[select_md5]['heatmap_dict']
-                heatmap_anno = cp_cache[select_md5]['heatmap_anno']
-                valid_roc_traces = cp_cache[select_md5]['valid_roc_traces']
+            #val
+            bar_dict = cp_cache[select_md5]['bar_dict']
+            heatmap_dict = cp_cache[select_md5]['heatmap_dict']
+            heatmap_anno = cp_cache[select_md5]['heatmap_anno']
+            valid_roc_traces = cp_cache[select_md5]['valid_roc_traces']
+            # if 'bar_dict' in cp_cache[select_md5].keys():
+            if len(cp_cache[select_md5]['bar_dict']) != 0:
+                ifval = True
             else:
-                bar_dict, heatmap_dict, heatmap_anno, valid_roc_traces = [], [], [], []
+                ifval = False
         ###没有跑过，从头分析
         else:
             inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "data.csv", header=0, index_col=0).T
@@ -1081,9 +469,11 @@ def cp_analysis(client_msg,projectid):
             data, label = classification_process(train_set)
             label3, classes = label_pre(label)
             validation_data = []
+            ifval = False
             if len(test_set) > 0:
                 validation_data, validation_label = classification_process(test_set)
                 validation_label, ll = label_pre(validation_label)
+                ifval = True
 
             # ANOVA方法
             if fsm == 'A':
@@ -1433,6 +823,7 @@ def cp_analysis(client_msg,projectid):
         'heatmap_anno': heatmap_anno,
         'valid_roc_traces': valid_roc_traces,
         'line_chart_data': line_chart_data,
+        'ifval': ifval,
     }
     return analysis_results
 
@@ -1462,20 +853,9 @@ def result_ws(request, projectid):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 def show_prev_page(request, projectid_paramd5):
-    if len(projectid_paramd5.split('-')[2]) != 4:
+    print(projectid_paramd5)
+    if len(projectid_paramd5.split('-')[3]) != 4:
         if len(projectid_paramd5.split('_')) == 2:
             projectid = projectid_paramd5.split('_')[0]
             paramd5 = projectid_paramd5.split('_')[1]
@@ -1492,6 +872,10 @@ def show_prev_page(request, projectid_paramd5):
             projectid = projectid_paramd5
             if not os.path.exists(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl'):
                 status = 'Running'
+                # return render(request, 'status.html', {
+                #     'status': status,
+                #     'projectid': projectid,
+                # })
                 with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'rb') as f:
                     preview_pickle = pickle.load(f)
                 feature_select_method = preview_pickle['feature_select_method']
@@ -1563,23 +947,16 @@ def show_prev_page(request, projectid_paramd5):
         heatmap_anno = cp_cache[paramd5]['heatmap_anno']
         valid_roc_traces = cp_cache[paramd5]['valid_roc_traces']
         line_chart_data = cp_cache[paramd5]['line_chart_data']
-        ifmarco = False
-        # return render(request, 'classification_cp_result.html', {
-        #     'projectid': projectid,
-        #     'final_reports_dict': final_reports_dict,
-        #     'f_describe_dict': f_describe_dict,
-        #     'roc_traces': json.dumps(roc_traces),
-        #     'max_reports_dict': max_reports_dict,
-        #     'ifmarco': ifmarco,
-        #     'model_name': clf_name,
-        #     'bar_dict': bar_dict,
-        #     'heatmap_dict': json.dumps(heatmap_dict),
-        #     'heatmap_anno': json.dumps(heatmap_anno),
-        #     'valid_roc_traces': json.dumps(valid_roc_traces),
-        #     'line_chart_data':json.dumps(line_chart_data),
-        #     'change_page': True,
-        # })
-        analysis_results = {
+        # ifmarco = False
+        if projectid.split('-')[0][0] == 'B':
+            ifmarco = False
+        else:
+            ifmarco = True
+        if len(cp_cache[paramd5]['bar_dict']) != 0:
+            ifval = True
+        else:
+            ifval = False
+        return render(request, 'classification_cp_result_prev.html', {
             'projectid': projectid,
             'final_reports_dict': final_reports_dict,
             'f_describe_dict': f_describe_dict,
@@ -1593,9 +970,8 @@ def show_prev_page(request, projectid_paramd5):
             'valid_roc_traces': json.dumps(valid_roc_traces),
             'line_chart_data':json.dumps(line_chart_data),
             'change_page': True,
-        }
-        request.websocket.send(json.dumps(analysis_results))
-
+            'ifval': ifval,
+        })
     else:
         projectid = projectid_paramd5
         if not os.path.exists(STATIC_ROOT + '/cache/' + projectid + '/classification_pickle.pkl'):
@@ -1636,30 +1012,7 @@ def show_prev_page(request, projectid_paramd5):
                                                                                         'valid_roc_traces'], \
                                                                                     classification_pickle['radar_range']
 
-            # return render(request, 'classification_oc_result.html', {
-            #     'projectid': projectid,
-            #     'test_acc_reports_dict': test_acc_reports_dict,
-            #     'test_acc_describe_dict': test_acc_describe_dict,
-            #     'df_AUCs_dict': df_AUCs_dict,
-            #     'df_AUCs_describe_dict': df_AUCs_describe_dict,
-            #     'precision_reports_dict': precision_reports_dict,
-            #     'precision_describe_dict': precision_describe_dict,
-            #     'recall_reports_dict': recall_reports_dict,
-            #     'recall_describe_dict': recall_describe_dict,
-            #     'f1_score_reports_dict': f1_score_reports_dict,
-            #     'f1_score_describe_dict': f1_score_describe_dict,
-            #     'roc_traces': json.dumps(roc_traces),
-            #     'final_reports_dict': json.dumps(final_reports_dict),
-            #     'ifmarco': ifmarco,
-            #     'line_chart_data': line_chart_data,
-            #     'radar_dict': radar_dict,
-            #     'radar_range': radar_range,
-            #     'vbar_trace': json.dumps(vbar_trace),
-            #     'heatmap_data': json.dumps(heatmap_data),
-            #     'heatmap_anno': json.dumps(heatmap_anno),
-            #     'valid_roc_traces': json.dumps(valid_roc_traces),
-            # })
-            analysis_results = {
+            return render(request, 'classification_oc_result.html', {
                 'projectid': projectid,
                 'test_acc_reports_dict': test_acc_reports_dict,
                 'test_acc_describe_dict': test_acc_describe_dict,
@@ -1681,13 +1034,11 @@ def show_prev_page(request, projectid_paramd5):
                 'heatmap_data': json.dumps(heatmap_data),
                 'heatmap_anno': json.dumps(heatmap_anno),
                 'valid_roc_traces': json.dumps(valid_roc_traces),
-            }
-            request.websocket.send(json.dumps(analysis_results))
+            })
 
 # get ajax customize parameters ROC RADAR
-def get_cp_combination(request,client_msg):
+def get_cp_combination(request):
     projectid = request.POST.get('projectid')
-    projectid = client_msg['projectid']
     print(projectid)
     # load pickle
     with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:

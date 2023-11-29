@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ANALYSIS</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		{% include 'public_templates/bootstrap.html' %}
+		<script src="https://cdn.plot.ly/plotly-2.8.3.min.js"></script>
+<!-- 		<script crossorigin="anonymous" integrity="sha512-vMD/IRB4/cFDdU2MrTwKXOLmIJ1ULs18mzmMIWLCNYg/nZZkCdjBX+UPrtQdkleuuf0YaqXssaKk8ZXOpHo3qg=="
+		 src="https://lib.baomitu.com/echarts/5.0.1/echarts.min.js"></script> -->
+		 <!-- DataTables CSS -->
+		 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"> 
+		 <!-- jQuery -->
+		 <!-- <script type="text/javascript" charset="utf8" src="http://code.jquery.com/jquery-1.10.2.min.js"></script> -->
+		 <!-- DataTables -->
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+		 <script type="text/javascript" charset="utf8" src="https://cdn.bootcdn.net/ajax/libs/datatables-buttons/2.2.3/js/dataTables.buttons.js"></script>
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>		
+		 <!-- responsive -->
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>		 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css">
+		<style type="text/css">
+			
+			.dataTable {
+				text-align: center;
+				vertical-align: middle !important;
+			}
+			
+			#home span {
+				background-color: aliceblue;
+			}
+
+			.btn.btn-outline-danger {
+				height: 38px;
+				/* margin-top: 30px; */
+			}
+
+			#one_class_test_form .form-row {
+				margin: 0;
+				padding: 0;
+				height: 40px;
+			}
+
+			/* table tbody {
+				font-size: 5px;
+			} */
+			table * {
+				font-size: 15px;
+			}
+			
+			#list-item-1,
+			#list-item-2,
+			#list-item-3,
+			#list-item-4,
+			#list-item-5,
+			#list-item-6,
+			#list-item-7,
+			#list-item-8,
+			#list-item-9,
+			#list-item-10{
+				padding-top: 10px;
+				padding-bottom: 10px;
+				padding-left: 1rem;
+			}
+			
+			.list-group-item.active {
+				background-color: #17a2b8;
+				border: 1px solid rgba(0, 0, 0, .125);
+				
+			}
+			#list-example a {
+				text-align: center;
+				line-height: 40px;
+				text-decoration: none;
+				outline: none;
+			}
+			
+			h3 {
+				/* color: cornflowerblue; */
+				color: #17a2b8; margin-bottom: 20px;
+				font-weight: bolder;
+			}
+			
+
+		</style>
+		<script>
+			$(document).ready(function(){
+			// 导航栏
+			$("#nav_tools").addClass("active");
+			$("tbody").addClass("bg-white");
+			$("#page_title").text('ANALYSIS');
+			});
+		</script>
+	</head>
+	<body data-spy="scroll" data-target="#list-example" style="padding-top: 0px;">
+		<!-- 导航栏 -->
+		{% include 'public_templates/nav_tem.html' %}
+		
+		<div id= running>
+			<br>
+				<table id="running_table"  style="width: 50%;" lazyload="True">
+					 <thead>
+						 <pre>
+							<tr><th> Project Details</th></tr>
+							<tr><th> ProjectID:&nbsp;&nbsp;{{projectid}}</th></tr>
+							<tr><th id="time"> Submitted time: </th></tr>
+							<tr><th>Status: Running &nbsp;&nbsp;&nbsp;&nbsp; <div class="progress-6" style="display: inline-block;"></div></th></tr>
+							<tr><th id="analysis_time"> Analysis time:&nbsp;&nbsp;{{projectid}}</th></tr>
+							<tr><th> The project has been submitted, please wait... </th></tr>
+						</pre>
+						
+					</thead>
+				</table>
+		</div>
+		<script>
+			var localtime = getNowTime()
+			document.getElementById('time').innerHTML = 'Submitted time: &nbsp;&nbsp;'  + localtime
+			// x = '{{time}}'
+			// console.log(x)
+			// console.log(localtime)
+			function getNowTime(){
+			        const date=new Date();
+			        const year=date.getFullYear();
+			        const month=date.getMonth();
+			        const day=date.getDate();
+			        const hour=date.getHours();
+			        const minute=date.getMinutes();
+			        const seconds=date.getSeconds();
+					// month[0] = January
+			        return `${year}-${month+1}-${day} ${hour}:${minute<10?'0'+minute:minute}:${seconds<10?'0'+seconds:seconds}`
+			function AnalysisTime(){
+				
+			}
+			    }
+		</script>
+		
+		<div id=show_data style="display: none;">
+		<div class='col-1 d-none d-xl-block' style="">
+			<div id="list-example" class="list-group "
+				style="position: fixed; width:270px;height: 500px;margin-left: 20px;padding-left: 0;margin-top:30px">
+				<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
+				<a class="list-group-item list-group-item-action" href="#list-item-2">Accuracy</a>
+				<div id='ifmarco'>
+					<a class="list-group-item list-group-item-action" href="#list-item-3">AUC</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-4">Precision</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-5">Recall</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-6">F1-score</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-7">ROC curve</a>
+				</div>
+				<a class="list-group-item list-group-item-action" href="#list-item-8">Evaluation indices radar</a>
+				
+				<a class="list-group-item list-group-item-action" href="#list-item-9" id="test" style="display: none;">Test</a>
+				<a class="list-group-item list-group-item-action" href="#list-item-10">Report</a>
+				<!-- <a class="list-group-item list-group-item-action" href="#list-item-5">Drug Property Radar Chart</a> -->
+			</div>
+		</div>
+		<div class="row">
+		<!-- 主体内容 -->
+		<div class="container col-8" style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
+			<br />
+			
+
+				<div class='col-xl-12 col-lg-12'>
+					<div style='text-align:center;'>
+						<h3>PROJECTID: {{ projectid }}</h3>
+					</div>
+					<hr />
+					<form action="" method="">
+						{%  csrf_token %}
+						<input style="display: none;" type="text" id="projectid"  name="projectid" value="{{projectid}}"/>
+					</form>
+					
+					<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Optimal feature subset result
+					</h3>
+					<div id="linechartDiv"></div>
+					
+					<h3 class="panel-heading" id="list-item-2" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Accuracy
+					</h3>
+					<div id="accboxplotDiv"></div>
+					
+					<table id="acctable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>Naive Bayes</th>
+								<th>SVM</th>
+								<th>RandomForest</th>
+								<th>Logistic</th>
+								<th>KNN</th>
+								<th>XGBoost</th>
+								<th>lightGBM</th>
+								<th>Adaboost</th>
+								<th>DecisionTree</th>
+								<th>GBDT</th>
+							</tr>
+						</thead>
+					</table>
+					
+					<br />
+					<h3 class="panel-heading" id="list-item-3" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+							AUC
+						
+					</h3>
+					<div id="aucboxplotDiv"></div>
+					<table id="auctable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>Naive Bayes</th>
+								<th>SVM</th>
+								<th>RandomForest</th>
+								<th>Logistic</th>
+								<th>KNN</th>
+								<th>XGBoost</th>
+								<th>lightGBM</th>
+								<th>Adaboost</th>
+								<th>DecisionTree</th>
+								<th>GBDT</th>
+							</tr>
+						</thead>
+					</table>
+					<br />
+					<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+							Precision
+						
+					</h3>
+					<div id="precisionboxplotDiv"></div>
+					<table id="precisiontable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>Naive Bayes</th>
+								<th>SVM</th>
+								<th>RandomForest</th>
+								<th>Logistic</th>
+								<th>KNN</th>
+								<th>XGBoost</th>
+								<th>lightGBM</th>
+								<th>Adaboost</th>
+								<th>DecisionTree</th>
+								<th>GBDT</th>
+							</tr>
+						</thead>
+					</table>
+					<br />
+					<h3 class="panel-heading" id="list-item-5" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+							Recall
+						
+					</h3>
+					<div id="recallboxplotDiv"></div>
+					<table id="recalltable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>Naive Bayes</th>
+								<th>SVM</th>
+								<th>RandomForest</th>
+								<th>Logistic</th>
+								<th>KNN</th>
+								<th>XGBoost</th>
+								<th>lightGBM</th>
+								<th>Adaboost</th>
+								<th>DecisionTree</th>
+								<th>GBDT</th>
+							</tr>
+						</thead>
+					</table>
+					<br />
+					<h3 class="panel-heading" id="list-item-6" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+							F1-score
+						
+					</h3>
+					<div id="f1_scoreboxplotDiv"></div>
+					<table id="f1_scoretable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>Naive Bayes</th>
+								<th>SVM</th>
+								<th>RandomForest</th>
+								<th>Logistic</th>
+								<th>KNN</th>
+								<th>XGBoost</th>
+								<th>lightGBM</th>
+								<th>Adaboost</th>
+								<th>DecisionTree</th>
+								<th>GBDT</th>
+							</tr>
+						</thead>
+					</table>
+					<br />
+					<h3 class="panel-heading" id="list-item-7" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+							ROC curve
+						
+					</h3>
+					<div id="rocplotDiv" style="margin-right: 0px;"></div>
+					
+					<h3 class="panel-heading" id="list-item-8" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">Evaluation indices radar</h3>
+					<div id="radarplotDiv" style="margin-right: 0px;"></div>
+					
+					
+					<div id="test_plot" style="display: none;">
+						<h3 class="panel-heading" id="list-item-9" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">Test</h3>
+							
+						<div id="vbarplotDiv"</div>
+						<hr>
+						<div id="heatmapDiv"</div>
+						<hr>
+						<div id="vrocplotDiv" style="margin-right: 0px;"></div>
+					</div>
+					
+					<h3 class="panel-heading" id="list-item-10" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Report
+					</h3>
+					<table id="finaltable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th class="none">Feature Names</th>
+								<th>Mean Accuracy</th>
+									<th id="th1">Mean Precision</th>
+									<th id="th2">Mean AUC</th>
+									<th id="th3">Mean Recall</th>
+									<th id="th4">Mean F1-score</th>
+								</div>
+								<th>Feature_names/Parameter</th>
+								<th class="none">Parameter</th>
+								<th>Model Download</th>
+							</tr>
+						</thead>
+					</table>
+					<br />
+					<br />
+				</div>
+			</div>
+			</div>
+			</div>
+		</div>
+		<br />
+		</div>
+		<br />
+		<br />
+		<!-- 底部 -->
+		{% include 'public_templates/footer.html' %}
+
+		<script>
+
+			var csrftoken = $("input[name='csrfmiddlewaretoken']").attr('value');
+			
+			// ws
+			$(document).ready(function(){
+				var analysis_info = {
+					projectid: "{{projectid}}",
+					feature_select_method: "{{feature_select_method}}",
+					model_md5: "{{model_md5}}",
+					fsm: "{{fsm}}",
+					form_action: "{{form_action}}",
+					to_mail: '{{to_mail}}'
+				}
+				var s = new WebSocket("ws://" + window.location.host + "/maler/classification_oc_result_ws/{{projectid}}");
+				window.s = s;
+					// 打开连接websocket服务，连接成功则打印信息
+					s.onopen = function () {
+						console.log('WebSocket open');//成功连接上Websocket
+						window.s.send(JSON.stringify(analysis_info))
+					};
+				s.onmessage = function (msg) {
+					console.log('raw message: ' + msg.data)//打印出服务端返回过来的数据
+					var results_data = JSON.parse(msg.data)
+					if (results_data['status'] == 1){
+						window.s.close();
+						console.log('websocket is closed!');
+						document.getElementById('running').style.display = "none"
+						document.getElementById('show_data').style.display = "block"
+						
+						if (results_data.ifval == true) {
+							document.getElementById('test').style.display = "block"
+							document.getElementById('test_plot').style.display = "block"
+							
+						};
+						
+						if (results_data.ifmarco != true) {
+							for (var i=2;i<7;i++){
+								$("*[id^=list-item-]")[i].innerHTML = 'Marco ' + $("*[id^=list-item-]")[i].innerHTML
+							}
+							for (var i=0;i<4;i++){
+								var split_name = $("*[id^=th]")[i].innerHTML.split(" ")
+								$("*[id^=th]")[i].innerHTML = split_name[0] + ' Marco ' + split_name[1]
+							}
+							document.getElementById('ifmarco').innerHTML = '<a class="list-group-item list-group-item-action" href="#list-item-3">Marco AUC</a>'+
+																			'<a class="list-group-item list-group-item-action" href="#list-item-4">Marco Precision</a>'+
+																			'<a class="list-group-item list-group-item-action" href="#list-item-5">Marco Recall</a>'+
+																			'<a class="list-group-item list-group-item-action" href="#list-item-6">Marco F1-score</a>'+
+																			'<a class="list-group-item list-group-item-action" href="#list-item-7">Marco ROC curve </a>'
+						};
+
+						var acc_data = results_data.test_acc_describe_dict;
+						var auc_data = results_data.df_AUCs_describe_dict;
+						var precision_data = results_data.precision_describe_dict;
+						var recall_data = results_data.recall_describe_dict;
+						var f1_score_data = results_data.f1_score_describe_dict;
+						var final_data = results_data.final_reports_dict;
+						var inside_num = results_data.heatmap_anno;
+						// plotly layout
+						var linechart_layout = {
+							xaxis: {
+							  title: 'Number of features', 
+							  anchor: 'y', 
+							}, 
+							yaxis: {
+							  title: 'Accuracy', 
+							  anchor: 'x', 
+							}, 
+							margin:{
+								t: 30
+							}
+						}
+						var acc_layout = {
+							title: 'Boxplot of accuracy'
+						};
+						var auc_layout = {
+							title: 'Boxplot of AUC'
+						};
+						
+						var precision_layout = {
+							title: 'Boxplot of precision'
+						};
+						
+						var recall_layout = {
+							title: 'Boxplot of recall'
+						}
+						
+						var f1_score_layout = {
+							title: 'Boxplot of f1-score'
+						};
+						
+						var xtitle = {
+							text: 'Predicted label',
+							font: {
+								size: 10
+							},
+							standoff: 0
+						};
+						var ytitle = {
+							text: 'True label',
+							font: {
+								size: 10
+							},
+							standoff: 0
+						};
+						var hist_layout = {
+							title: 'Evaluation indices',
+							}
+						
+						var model = ["Naive Bayes","SVM","RandomForest",
+						"Logistic","KNN","XGBoost","lightGBM",'Adaboost',
+						"DecisionTree","GBDT"]
+						var multi_annotations = [];
+						
+						var heatmap_layout = {
+							title: 'Confusion Matrix',
+							margin: {
+							  'b': 50,
+							  'l': 100,
+							  'r': 60,
+							  't': 75
+							},
+							height: 800,
+							xaxis1: {
+							  title: xtitle, 
+							  anchor: 'y1', 
+							  domain: [0.0, 0.2]
+							}, 
+							xaxis2: {
+							  title: xtitle, 
+							  anchor: 'y2', 
+							  domain: [0.266, 0.466]
+							}, 
+							xaxis3: {
+							  title: xtitle, 
+							  anchor: 'y3', 
+							  domain: [0.532, 0.732] 
+							}, 
+							xaxis4: {
+							  title: xtitle, 
+							  anchor: 'y4', 
+							  domain: [0.798, 0.998]
+							}, 
+							xaxis5: {
+							  title: xtitle, 
+							  anchor: 'y5', 
+							  domain: [0.0, 0.2]
+							}, 
+							xaxis6: {
+							  title: xtitle, 
+							  anchor: 'y6', 
+							  domain: [0.266, 0.466]
+							},
+							xaxis7: {
+							  title: xtitle, 
+							  anchor: 'y7', 
+							  domain: [0.532, 0.732]
+							},
+							xaxis8: {
+							  title: xtitle, 
+							  anchor: 'y8', 
+							  domain: [0.798, 0.998]
+							},
+							xaxis9: {
+							  title: xtitle, 
+							  anchor: 'y9', 
+							  domain: [0.0, 0.2]
+							},
+							xaxis10: {
+							  title: xtitle, 
+							  anchor: 'y10', 
+							  domain: [0.266, 0.466]
+							},
+							yaxis1: {
+							  title: ytitle, 
+							  anchor: 'x1', 
+							  domain: [0.75, 1.0]
+							}, 
+							yaxis2: {
+							  title: ytitle, 
+							  anchor: 'x2', 
+							  domain: [0.75, 1.0]
+							}, 
+							yaxis3: {
+							  title: ytitle, 
+							  anchor: 'x3', 
+							  domain: [0.75, 1.0]
+							}, 
+							yaxis4: {
+							  title: ytitle, 
+							  anchor: 'x4', 
+							  domain: [0.75, 1]
+							},
+							yaxis5: {
+							  title: ytitle, 
+							  anchor: 'x5', 
+							  domain: [0.375, 0.625]
+							}, 
+							yaxis6: {
+							  title: ytitle, 
+							  anchor: 'x6', 
+							  domain: [0.375, 0.625]
+							}, 
+							yaxis7: {
+							  title: ytitle, 
+							  anchor: 'x7', 
+							  domain: [0.375, 0.625]
+							}, 
+							yaxis8: {
+							  title: ytitle, 
+							  anchor: 'x8', 
+							  domain: [0.375, 0.625]
+							}, 
+							yaxis9: {
+							  title: ytitle, 
+							  anchor: 'x9', 
+							  domain: [0.0, 0.25]
+							},
+							yaxis10: {
+							  title: ytitle, 
+							  anchor: 'x10', 
+							  domain: [0.0, 0.25]
+							},
+							annotations: inside_num
+						}
+						
+						var multi_roc_layout = {
+							title: 'ROC',
+							margin: {
+							  'b': 50,
+							  'l': 60,
+							  'r': 60,
+							  't': 75
+							},
+							showlegend: false,
+							height: 900,
+							xaxis1: {
+							  title: xtitle, 
+							  anchor: 'y1', 
+							  domain: [0.0, 0.2]
+							}, 
+							xaxis2: {
+							  title: xtitle, 
+							  anchor: 'y2', 
+							  domain: [0.266, 0.466]
+							}, 
+							xaxis3: {
+							  title: xtitle, 
+							  anchor: 'y3', 
+							  domain: [0.532, 0.732] 
+							}, 
+							xaxis4: {
+							  title: xtitle, 
+							  anchor: 'y4', 
+							  domain: [0.798, 0.998]
+							}, 
+							xaxis5: {
+							  title: xtitle, 
+							  anchor: 'y5', 
+							  domain: [0.0, 0.2]
+							}, 
+							xaxis6: {
+							  title: xtitle, 
+							  anchor: 'y6', 
+							  domain: [0.266, 0.466]
+							},
+							xaxis7: {
+							  title: xtitle, 
+							  anchor: 'y7', 
+							  domain: [0.532, 0.732]
+							},
+							xaxis8: {
+							  title: xtitle, 
+							  anchor: 'y8', 
+							  domain: [0.798, 0.998]
+							},
+							xaxis9: {
+							  title: xtitle, 
+							  anchor: 'y9', 
+							  domain: [0.0, 0.2]
+							},
+							xaxis10: {
+							  title: xtitle, 
+							  anchor: 'y10', 
+							  domain: [0.266, 0.466]
+							},
+							yaxis1: {
+							  title: ytitle, 
+							  anchor: 'x1', 
+							  domain: [0.75, 1.0]
+							}, 
+							yaxis2: {
+							  title: ytitle, 
+							  anchor: 'x2', 
+							  domain: [0.75, 1.0]
+							}, 
+							yaxis3: {
+							  title: ytitle, 
+							  anchor: 'x3', 
+							  domain: [0.75, 1.0]
+							}, 
+							yaxis4: {
+							  title: ytitle, 
+							  anchor: 'x4', 
+							  domain: [0.75, 1]
+							},
+							yaxis5: {
+							  title: ytitle, 
+							  anchor: 'x5', 
+							  domain: [0.375, 0.625]
+							}, 
+							yaxis6: {
+							  title: ytitle, 
+							  anchor: 'x6', 
+							  domain: [0.375, 0.625]
+							}, 
+							yaxis7: {
+							  title: ytitle, 
+							  anchor: 'x7', 
+							  domain: [0.375, 0.625]
+							}, 
+							yaxis8: {
+							  title: ytitle, 
+							  anchor: 'x8', 
+							  domain: [0.375, 0.625]
+							}, 
+							yaxis9: {
+							  title: ytitle, 
+							  anchor: 'x9', 
+							  domain: [0.0, 0.25]
+							},
+							yaxis10: {
+							  title: ytitle, 
+							  anchor: 'x10', 
+							  domain: [0.0, 0.25]
+							},
+							annotations: multi_annotations
+						}
+						var roc_layout = {
+							title: 'ROC curve', 
+							  xaxis: {
+								type: 'linear', 
+								range: [0, 1], 
+								title: 'FPR', 
+								autorange: true
+							  }, 
+							  yaxis: {
+								type: 'linear', 
+								range: [-0.05555555555555555, 1.0555555555555556], 
+								title: 'TPR', 
+								autorange: true
+							  }, 
+							  height: 800, 
+							  legend: {
+								x: 1,
+								y: 0.1, 
+								xanchor: 'right', 
+								orientation: 'v'
+							  }, 
+							  titlefont: {size: 22}
+						};
+						var radar_layout = {
+							polar: {
+								radialaxis: {
+								  range: results_data.radar_range, 
+								  visible: true
+								},
+							}, 
+							showlegend: true
+						}
+						for(var i=0;i<model.length;i++){
+							var subtitle = {
+								text: model[i],
+								 showarrow: false,
+								 x: 0.5,
+								 xref: "x"+(i+1)+" domain",
+								 y: 1.15,
+								 yref: "y"+(i+1)+" domain"
+							};
+							inside_num.push(subtitle) 
+							multi_annotations.push(subtitle) 
+						};
+						<!--第三步：初始化Datatables-->
+						$('#acctable').DataTable({
+							data: acc_data,
+							searching: false, 
+							paging: false, 
+							info: false,
+							sort: false,
+							columns: [
+								{ data: 'Method' },
+								{ 
+									data: 'Naive Bayes' ,
+								},
+								{ data: 'SVM' },
+								{ data: 'RandomForest' },
+								{ data: 'Logistic' },
+								{ data: 'KNN' },
+								{ data: 'XGBoost' },
+								{ data: 'lightGBM' },
+								{ data: 'Adaboost' },
+								{ data: 'DecisionTree' },
+								{ data: 'GBDT' },
+							]
+						});
+						$('#auctable').DataTable({
+							data: auc_data,
+							searching: false, 
+							paging: false, 
+							info: false,
+							sort: false,
+							columns: [
+								{ data: 'Method' },
+								{data: 'Naive Bayes' },
+								{ data: 'SVM' },
+								{ data: 'RandomForest' },
+								{ data: 'Logistic' },
+								{ data: 'KNN' },
+								{ data: 'XGBoost' },
+								{ data: 'lightGBM' },
+								{ data: 'Adaboost' },
+								{ data: 'DecisionTree' },
+								{ data: 'GBDT' },
+							]
+						});
+						$('#precisiontable').DataTable({
+							data: precision_data,
+							searching: false, 
+							paging: false, 
+							info: false,
+							sort: false,
+							columns: [
+								{ data: 'Method' },
+								{data: 'Naive Bayes' },
+								{ data: 'SVM' },
+								{ data: 'RandomForest' },
+								{ data: 'Logistic' },
+								{ data: 'KNN' },
+								{ data: 'XGBoost' },
+								{ data: 'lightGBM' },
+								{ data: 'Adaboost' },
+								{ data: 'DecisionTree' },
+								{ data: 'GBDT' },
+							]
+						});
+						$('#recalltable').DataTable({
+							data: recall_data,
+							searching: false, 
+							paging: false, 
+							info: false,
+							sort: false,
+							columns: [
+								{ data: 'Method' },
+								{data: 'Naive Bayes' },
+								{ data: 'SVM' },
+								{ data: 'RandomForest' },
+								{ data: 'Logistic' },
+								{ data: 'KNN' },
+								{ data: 'XGBoost' },
+								{ data: 'lightGBM' },
+								{ data: 'Adaboost' },
+								{ data: 'DecisionTree' },
+								{ data: 'GBDT' },
+							]
+						});
+						$('#f1_scoretable').DataTable({
+							data: f1_score_data,
+							searching: false, 
+							paging: false, 
+							info: false,
+							sort: false,
+							columns: [
+								{ data: 'Method' },
+								{data: 'Naive Bayes' },
+								{ data: 'SVM' },
+								{ data: 'RandomForest' },
+								{ data: 'Logistic' },
+								{ data: 'KNN' },
+								{ data: 'XGBoost' },
+								{ data: 'lightGBM' },
+								{ data: 'Adaboost' },
+								{ data: 'DecisionTree' },
+								{ data: 'GBDT' },
+							]
+						});
+						$('#finaltable').DataTable({
+							responsive: {
+								details: {
+									type: 'column',
+									target: 'tr'
+								}
+							},
+							columnDefs: [ {
+								className: 'control',
+								orderable: false,
+								targets:   7,
+							} ],
+							data: final_data,
+							searching: false, 
+							paging: false, 
+							info: false,
+							sort: false,
+							columns: [
+								{ data: 'Method' },
+								{ data: 'feature_names' },
+								{ data: 'test_acc' },
+								{ data: 'precision' },
+								{ data: 'AUC' },
+								{ data: 'recall' },
+								{ data: 'f1score' },
+								{ 
+									data: 'parameter',
+									render: function(data, type, row) {
+										return '';
+									}
+								 },
+								{ data: 'parameter' },
+								{ 
+									data: 'Method' ,
+									"render": function(data, type, row, meta){
+										if(type === 'display'){
+											data = '<a value="' + $('#projectid').val() + '_' + data + '" href="../model_download/' + 
+											$('#projectid').val() + '_' + data + '">Download</a>'
+										}
+										return data;
+									},
+								},
+							]
+						});
+						Plotly.newPlot('linechartDiv', results_data.line_chart_data, linechart_layout);
+						Plotly.newPlot('accboxplotDiv', results_data.test_acc_reports_dict, acc_layout);
+						Plotly.newPlot('aucboxplotDiv', results_data.df_AUCs_dict, auc_layout);
+						Plotly.newPlot('precisionboxplotDiv', results_data.precision_reports_dict, precision_layout);
+						Plotly.newPlot('recallboxplotDiv', results_data.recall_reports_dict, recall_layout);
+						Plotly.newPlot('f1_scoreboxplotDiv', results_data.f1_score_reports_dict, f1_score_layout);
+						Plotly.newPlot('rocplotDiv', results_data.roc_traces, roc_layout);
+						Plotly.newPlot('radarplotDiv', results_data.radar_dict, radar_layout);
+						Plotly.newPlot('vbarplotDiv', results_data.vbar_trace,hist_layout);
+						Plotly.newPlot('heatmapDiv', results_data.heatmap_data, heatmap_layout);
+						{% if ifmarco != True %}
+						Plotly.newPlot('vrocplotDiv', results_data.valid_roc_traces, roc_layout);
+						{% else %}
+						Plotly.newPlot('vrocplotDiv', results_data.valid_roc_traces, multi_roc_layout);
+						{% endif %}
+						
+
+					};
+				};
+				setInterval(() => {
+					  if (window.s.readyState === WebSocket.OPEN) {
+						window.s.send(JSON.stringify("heartbeat"));
+					  }
+					}, 10000);
+				
+			});
+
+			
+
+			
+			
+			
+			
+			// var acc_data = {{ test_acc_describe_dict|safe }};
+			// var auc_data = {{ df_AUCs_describe_dict|safe }};
+			// var precision_data = {{ precision_describe_dict|safe }};
+			// var recall_data = {{ recall_describe_dict|safe }};
+			// var f1_score_data = {{ f1_score_describe_dict|safe }};
+			// var final_data = {{ final_reports_dict|safe }};
+			// // plotly layout
+			// var linechart_layout = {
+			// 	xaxis: {
+			// 	  title: 'Number of features', 
+			// 	  anchor: 'y', 
+			// 	}, 
+			// 	yaxis: {
+			// 	  title: 'Accuracy', 
+			// 	  anchor: 'x', 
+			// 	}, 
+			// 	margin:{
+			// 		t: 30
+			// 	}
+			// }
+			
+			// var acc_layout = {
+			// 	title: 'Boxplot of accuracy'
+			// };
+			// var auc_layout = {
+			// 	title: 'Boxplot of AUC'
+			// };
+			
+			
+			// var precision_layout = {
+			// 	title: 'Boxplot of precision'
+			// };
+			
+			
+			// var recall_layout = {
+			// 	title: 'Boxplot of recall'
+			// }
+			
+			
+			// var f1_score_layout = {
+			// 	title: 'Boxplot of f1-score'
+			// };
+			
+			// // var xtitle = 'Predicted label';
+			// var xtitle = {
+			// 	text: 'Predicted label',
+			// 	font: {
+			// 		size: 10
+			// 	},
+			// 	standoff: 0
+			// };
+			// var ytitle = {
+			// 	text: 'True label',
+			// 	font: {
+			// 		size: 10
+			// 	},
+			// 	standoff: 0
+			// };
+			
+			
+			// var inside_num = {{heatmap_anno|safe}};
+			// var model = ["Naive Bayes","SVM","RandomForest",
+			// "Logistic","KNN","XGBoost","lightGBM",'Adaboost',
+			// "DecisionTree","GBDT"]
+			// var multi_annotations = [];
+			// var hist_layout = {
+			// 	title: 'Evaluation indices',
+			// 	}
+			// 	for(var i=0;i<model.length;i++){
+			// 		var subtitle = {
+			// 			text: model[i],
+			// 			 showarrow: false,
+			// 			 x: 0.5,
+			// 			 xref: "x"+(i+1)+" domain",
+			// 			 y: 1.15,
+			// 			 yref: "y"+(i+1)+" domain"
+			// 		};
+			// 	    inside_num.push(subtitle) 
+			// 		multi_annotations.push(subtitle) 
+			// };
+			
+			
+			// var heatmap_layout = {
+			// 	title: 'Confusion Matrix',
+			// 	margin: {
+			// 	  // 'b': 30,
+			// 	  // 'l': 30,
+			// 	  // 'r': 5,
+			// 	  // 't': 75
+			// 	  'b': 50,
+			// 	  'l': 100,
+			// 	  'r': 60,
+			// 	  't': 75
+			// 	},
+			// 	// legend:{
+			// 	//   orientation: 'h',
+			// 	//   xanchor: 'middle',
+			// 	//   yanchor: 'right',
+			// 	//   valign: 'middle',
+			// 	//   x: 0.4,
+			// 	//   y: 1.08,
+			// 	//   itemclick: false,
+			// 	//   itemdoubleclick: false
+			// 	// },
+			// 	height: 800,
+			// 	xaxis1: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y1', 
+			// 	  domain: [0.0, 0.2]
+			// 	}, 
+			// 	xaxis2: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y2', 
+			// 	  domain: [0.266, 0.466]
+			// 	}, 
+			// 	xaxis3: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y3', 
+			// 	  domain: [0.532, 0.732] 
+			// 	}, 
+			// 	xaxis4: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y4', 
+			// 	  domain: [0.798, 0.998]
+			// 	}, 
+			// 	xaxis5: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y5', 
+			// 	  domain: [0.0, 0.2]
+			// 	}, 
+			// 	xaxis6: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y6', 
+			// 	  domain: [0.266, 0.466]
+			// 	},
+			// 	xaxis7: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y7', 
+			// 	  domain: [0.532, 0.732]
+			// 	},
+			// 	xaxis8: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y8', 
+			// 	  domain: [0.798, 0.998]
+			// 	},
+			// 	xaxis9: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y9', 
+			// 	  domain: [0.0, 0.2]
+			// 	},
+			// 	xaxis10: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y10', 
+			// 	  domain: [0.266, 0.466]
+			// 	},
+			// 	yaxis1: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x1', 
+			// 	  domain: [0.75, 1.0]
+			// 	}, 
+			// 	yaxis2: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x2', 
+			// 	  domain: [0.75, 1.0]
+			// 	}, 
+			// 	yaxis3: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x3', 
+			// 	  domain: [0.75, 1.0]
+			// 	}, 
+			// 	yaxis4: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x4', 
+			// 	  domain: [0.75, 1]
+			// 	},
+			// 	yaxis5: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x5', 
+			// 	  domain: [0.375, 0.625]
+			// 	}, 
+			// 	yaxis6: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x6', 
+			// 	  domain: [0.375, 0.625]
+			// 	}, 
+			// 	yaxis7: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x7', 
+			// 	  domain: [0.375, 0.625]
+			// 	}, 
+			// 	yaxis8: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x8', 
+			// 	  domain: [0.375, 0.625]
+			// 	}, 
+			// 	yaxis9: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x9', 
+			// 	  domain: [0.0, 0.25]
+			// 	},
+			// 	yaxis10: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x10', 
+			// 	  domain: [0.0, 0.25]
+			// 	},
+			// 	annotations: inside_num
+			// }
+			
+			// var multi_roc_layout = {
+			// 	title: 'ROC',
+			// 	margin: {
+			// 	  // 'b': 30,
+			// 	  // 'l': 30,
+			// 	  // 'r': 5,
+			// 	  // 't': 75
+			// 	  'b': 50,
+			// 	  'l': 60,
+			// 	  'r': 60,
+			// 	  't': 75
+			// 	},
+			// 	showlegend: false,
+			// 	// legend:{
+			// 	//   orientation: 'h',
+			// 	//   xanchor: 'middle',
+			// 	//   yanchor: 'right',
+			// 	//   valign: 'middle',
+			// 	//   x: 0.4,
+			// 	//   y: 1.08,
+			// 	//   itemclick: false,
+			// 	//   itemdoubleclick: false
+			// 	// },
+			// 	height: 900,
+			// 	xaxis1: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y1', 
+			// 	  domain: [0.0, 0.2]
+			// 	}, 
+			// 	xaxis2: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y2', 
+			// 	  domain: [0.266, 0.466]
+			// 	}, 
+			// 	xaxis3: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y3', 
+			// 	  domain: [0.532, 0.732] 
+			// 	}, 
+			// 	xaxis4: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y4', 
+			// 	  domain: [0.798, 0.998]
+			// 	}, 
+			// 	xaxis5: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y5', 
+			// 	  domain: [0.0, 0.2]
+			// 	}, 
+			// 	xaxis6: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y6', 
+			// 	  domain: [0.266, 0.466]
+			// 	},
+			// 	xaxis7: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y7', 
+			// 	  domain: [0.532, 0.732]
+			// 	},
+			// 	xaxis8: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y8', 
+			// 	  domain: [0.798, 0.998]
+			// 	},
+			// 	xaxis9: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y9', 
+			// 	  domain: [0.0, 0.2]
+			// 	},
+			// 	xaxis10: {
+			// 	  title: xtitle, 
+			// 	  anchor: 'y10', 
+			// 	  domain: [0.266, 0.466]
+			// 	},
+			// 	yaxis1: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x1', 
+			// 	  domain: [0.75, 1.0]
+			// 	}, 
+			// 	yaxis2: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x2', 
+			// 	  domain: [0.75, 1.0]
+			// 	}, 
+			// 	yaxis3: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x3', 
+			// 	  domain: [0.75, 1.0]
+			// 	}, 
+			// 	yaxis4: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x4', 
+			// 	  domain: [0.75, 1]
+			// 	},
+			// 	yaxis5: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x5', 
+			// 	  domain: [0.375, 0.625]
+			// 	}, 
+			// 	yaxis6: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x6', 
+			// 	  domain: [0.375, 0.625]
+			// 	}, 
+			// 	yaxis7: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x7', 
+			// 	  domain: [0.375, 0.625]
+			// 	}, 
+			// 	yaxis8: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x8', 
+			// 	  domain: [0.375, 0.625]
+			// 	}, 
+			// 	yaxis9: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x9', 
+			// 	  domain: [0.0, 0.25]
+			// 	},
+			// 	yaxis10: {
+			// 	  title: ytitle, 
+			// 	  anchor: 'x10', 
+			// 	  domain: [0.0, 0.25]
+			// 	},
+			// 	annotations: multi_annotations
+			// }
+			// var roc_layout = {
+			// 	title: 'ROC', 
+			// 	  // width: 1000, 
+			// 	  xaxis: {
+			// 	    type: 'linear', 
+			// 	    range: [0, 1], 
+			// 	    title: 'FPR', 
+			// 	    autorange: true
+			// 	  }, 
+			// 	  yaxis: {
+			// 	    type: 'linear', 
+			// 	    range: [-0.05555555555555555, 1.0555555555555556], 
+			// 	    title: 'TPR', 
+			// 	    autorange: true
+			// 	  }, 
+			// 	  height: 800, 
+			// 	  legend: {
+			// 	    x: 1,
+			// 	    y: 0.1, 
+			// 	    xanchor: 'right', 
+			// 	    orientation: 'v'
+			// 	  }, 
+			// 	  titlefont: {size: 22}
+			// };
+			
+			// var radar_layout = {
+			// 	polar: {
+			// 		radialaxis: {
+			// 	      range: {{radar_range|safe}}, 
+			// 	      visible: true
+			// 	    },
+			// 	}, 
+			// 	showlegend: true
+			// }
+			// <!--第三步：初始化Datatables-->
+			// $(document).ready( function () {
+			// 	$('#acctable').DataTable({
+			// 		data: acc_data,
+			// 		searching: false, 
+			// 		paging: false, 
+			// 		info: false,
+			// 		sort: false,
+			// 		columns: [
+			// 			{ data: 'Method' },
+			// 			{ 
+			// 				data: 'Naive Bayes' ,
+			// 			},
+			// 			{ data: 'SVM' },
+			// 			{ data: 'RandomForest' },
+			// 			{ data: 'Logistic' },
+			// 			{ data: 'KNN' },
+			// 			{ data: 'XGBoost' },
+			// 			{ data: 'lightGBM' },
+			// 			{ data: 'Adaboost' },
+			// 			{ data: 'DecisionTree' },
+			// 			{ data: 'GBDT' },
+			// 		]
+			// 	});
+			// 	$('#auctable').DataTable({
+			// 		data: auc_data,
+			// 		searching: false, 
+			// 		paging: false, 
+			// 		info: false,
+			// 		sort: false,
+			// 		columns: [
+			// 			{ data: 'Method' },
+			// 			{data: 'Naive Bayes' },
+			// 			{ data: 'SVM' },
+			// 			{ data: 'RandomForest' },
+			// 			{ data: 'Logistic' },
+			// 			{ data: 'KNN' },
+			// 			{ data: 'XGBoost' },
+			// 			{ data: 'lightGBM' },
+			// 			{ data: 'Adaboost' },
+			// 			{ data: 'DecisionTree' },
+			// 			{ data: 'GBDT' },
+			// 		]
+			// 	});
+			// 	$('#precisiontable').DataTable({
+			// 		data: precision_data,
+			// 		searching: false, 
+			// 		paging: false, 
+			// 		info: false,
+			// 		sort: false,
+			// 		columns: [
+			// 			{ data: 'Method' },
+			// 			{data: 'Naive Bayes' },
+			// 			{ data: 'SVM' },
+			// 			{ data: 'RandomForest' },
+			// 			{ data: 'Logistic' },
+			// 			{ data: 'KNN' },
+			// 			{ data: 'XGBoost' },
+			// 			{ data: 'lightGBM' },
+			// 			{ data: 'Adaboost' },
+			// 			{ data: 'DecisionTree' },
+			// 			{ data: 'GBDT' },
+			// 		]
+			// 	});
+			// 	$('#recalltable').DataTable({
+			// 		data: recall_data,
+			// 		searching: false, 
+			// 		paging: false, 
+			// 		info: false,
+			// 		sort: false,
+			// 		columns: [
+			// 			{ data: 'Method' },
+			// 			{data: 'Naive Bayes' },
+			// 			{ data: 'SVM' },
+			// 			{ data: 'RandomForest' },
+			// 			{ data: 'Logistic' },
+			// 			{ data: 'KNN' },
+			// 			{ data: 'XGBoost' },
+			// 			{ data: 'lightGBM' },
+			// 			{ data: 'Adaboost' },
+			// 			{ data: 'DecisionTree' },
+			// 			{ data: 'GBDT' },
+			// 		]
+			// 	});
+			// 	$('#f1_scoretable').DataTable({
+			// 		data: f1_score_data,
+			// 		searching: false, 
+			// 		paging: false, 
+			// 		info: false,
+			// 		sort: false,
+			// 		columns: [
+			// 			{ data: 'Method' },
+			// 			{data: 'Naive Bayes' },
+			// 			{ data: 'SVM' },
+			// 			{ data: 'RandomForest' },
+			// 			{ data: 'Logistic' },
+			// 			{ data: 'KNN' },
+			// 			{ data: 'XGBoost' },
+			// 			{ data: 'lightGBM' },
+			// 			{ data: 'Adaboost' },
+			// 			{ data: 'DecisionTree' },
+			// 			{ data: 'GBDT' },
+			// 		]
+			// 	});
+			// 	$('#finaltable').DataTable({
+			// 		responsive: {
+			// 		    details: {
+			// 		        type: 'column',
+			// 		        target: 'tr'
+			// 		    }
+			// 		},
+			// 		columnDefs: [ {
+			// 		    className: 'control',
+			// 		    orderable: false,
+			// 		    targets:   7,
+			// 		} ],
+			// 		data: final_data,
+			// 		searching: false, 
+			// 		paging: false, 
+			// 		info: false,
+			// 		sort: false,
+			// 		columns: [
+			// 			{ data: 'Method' },
+			// 			{ data: 'feature_names' },
+			// 			{ data: 'test_acc' },
+			// 			{ data: 'precision' },
+			// 			{ data: 'AUC' },
+			// 			{ data: 'recall' },
+			// 			{ data: 'f1score' },
+			// 			{ 
+			// 				data: 'parameter',
+			// 				render: function(data, type, row) {
+			// 					return '';
+			// 				}
+			// 			 },
+			// 			{ data: 'parameter' },
+			// 			{ 
+			// 				data: 'Method' ,
+			// 				"render": function(data, type, row, meta){
+			// 					if(type === 'display'){
+			// 						// data = '<button style="background: url(https://img.icons8.com/sf-regular-filled/48/undefined/download.png);width: 2.5rem;height: 2.5rem;border: none;" value="' + $('#projectid').val() + '_' + data + '" href="result/' + $('#projectid').val() + '_' + data + '"></button>'
+			// 						data = '<a value="' + $('#projectid').val() + '_' + data + '" href="../model_download/' + $('#projectid').val() + '_' + data + '">Download</a>'
+			// 					}
+			// 					return data;
+			// 				},
+			// 			},
+			// 		]
+			// 	});
+			// 	Plotly.newPlot('linechartDiv', {{ line_chart_data|safe }}, linechart_layout);
+			// 	Plotly.newPlot('accboxplotDiv', {{ test_acc_reports_dict|safe }}, acc_layout);
+			// 	Plotly.newPlot('aucboxplotDiv', {{ df_AUCs_dict|safe }}, auc_layout);
+			// 	Plotly.newPlot('precisionboxplotDiv', {{ precision_reports_dict|safe }}, precision_layout);
+			// 	Plotly.newPlot('recallboxplotDiv', {{ recall_reports_dict|safe }}, recall_layout);
+			// 	Plotly.newPlot('f1_scoreboxplotDiv', {{ f1_score_reports_dict|safe }}, f1_score_layout);
+			// 	Plotly.newPlot('rocplotDiv', {{roc_traces|safe}}, roc_layout);
+			// 	Plotly.newPlot('radarplotDiv', {{radar_dict|safe}}, radar_layout);
+			// 	Plotly.newPlot('vbarplotDiv', {{vbar_trace|safe}},hist_layout);
+			// 	Plotly.newPlot('heatmapDiv', {{heatmap_data|safe}}, heatmap_layout);
+			// 	{% if ifmarco != True %}
+			// 	Plotly.newPlot('vrocplotDiv', {{valid_roc_traces|safe}}, roc_layout);
+			// 	{% else %}
+			// 	Plotly.newPlot('vrocplotDiv', {{valid_roc_traces|safe}}, multi_roc_layout);
+			// 	{% endif %}
+			// });
+		</script>
+	</body>
+</html>

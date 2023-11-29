@@ -45,7 +45,8 @@ def FSS_fun(feature_names,clf,data,label,cv,n_jobs=1):
     for i in range(features_num):
         cv_scores = []
         for feature in feature_names2:
-            train_feature = [feature] + selected_feature
+            # train_feature = [feature] + selected_feature
+            train_feature = selected_feature + [feature]
             data1 = pd.DataFrame(data.loc[:,train_feature])
             cv_score = cross_val_score(clf,data1,label,cv=cv,n_jobs=n_jobs,error_score='raise').mean()
             cv_scores.append(cv_score)
@@ -110,7 +111,7 @@ def train_top3(clf,data,label,clf_num,train_index,test_index,feature_names):
     f_names = f_names[topk]
     return test_accs,estimators,mean_accs,predicts,f_names
 
-def pre_screening(data2,label,model,features,cv=2):
+def pre_screening(data2,label,model,features,cv=5):
     #第一步筛选
     feature_names = features
     data2 = data2[feature_names].to_numpy()
@@ -118,6 +119,6 @@ def pre_screening(data2,label,model,features,cv=2):
     clf = model
     # cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,).mean() for i in range(1,21)]
     features_num = min([len(features), 20])
-    cv_scores = [cross_val_score(clf, data2[:, :i], label, cv=cv, n_jobs=1).mean() for i in range(1, features_num + 1)]
+    cv_scores = [cross_val_score(clf, data2[:, :i], label, cv=cv, n_jobs=4).mean() for i in range(1, features_num + 1)]
     clf_num = list(pd.DataFrame(cv_scores).iloc[:,0].sort_values(ascending=False).index[:3]+1)
     return clf_num, cv_scores

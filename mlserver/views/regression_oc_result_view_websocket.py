@@ -22,92 +22,110 @@ from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.ensemble import BaggingRegressor
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, JsonEncoder, split_train_test, mkradar,task_sendmail
+from mlserver.views.classification_oc_result_view_webscoket import get_file_md5, df2bp, JsonEncoder, split_train_test, mkradar,task_sendmail
 # from mlserver.views.featureselection_method import mrmr_fs,FSS_fun,BSS_fun,train_estimator,train_top3,selectkbest_top20,pre_screening
 from mlserver.views.featureselection_method import mrmr_fs
+
+from dwebsocket.decorators import accept_websocket
+from concurrent.futures.thread import ThreadPoolExecutor
+pools = ThreadPoolExecutor(100)
+
+def return_running_page(request,projectid):
+    fsm = request.POST.get('fsm')
+    form_action = request.POST.get('form_action')
+    # model_md5 = request.POST.get('model_md5')
+    feature_select_method = request.POST.get('feature_select_method')
+    to_mail = request.POST.get('to_mail')
+    return render(request, 'regression_oc_result_ws.html', {
+        'fsm': fsm,
+        'form_action': form_action,
+        'projectid': projectid,
+        # 'model_md5': model_md5,
+        'feature_select_method': feature_select_method,
+        'to_mail': to_mail,
+    })
+def data_analysis(WebSocket,client_msg,projectid):
+    print('start analysis')
+    analysis_results = oc_reg_analysis(client_msg,projectid)
+    analysis_results['status'] = 1
+    WebSocket.send(json.dumps(analysis_results))
+    print('finish!!')
+
+
+@accept_websocket
+def result_ws(request, projectid):
+    if request.is_websocket():
+        print('websocket on !!')
+        WebSocket = request.websocket
+        while True:
+            if WebSocket.has_messages():
+                client_msg = json.loads(WebSocket.wait())
+                if client_msg != 'heartbeat':
+                    print(client_msg)
+                    task1 = pools.submit(data_analysis,WebSocket,client_msg,projectid)
+                elif client_msg == 'heartbeat':
+                    messages = {
+                        'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
+                        'status': 0,
+                    }
+                    time.sleep(2)
+                    request.websocket.send(json.dumps(messages))
 
 
 models_str = ['LinearRegression', 'SVM', 'Ridge', 'Lasso', 'DecisionTree', 'XGBoost',
                   'RandomForest', 'AdaBoost', 'GradientBoost', ]
-def regression_oc_result(request, projectid):
+def oc_reg_analysis(client_msg,projectid):
     Alphas = [0.01, 0.05, 0.1, 1.0, 2.0, 5.0, 10.0]
-    models = [LinearRegression(n_jobs=1), SVR(kernel='linear', max_iter=5000), RidgeCV(alphas=Alphas),
-              LassoCV(n_jobs=1, alphas=Alphas),
-              DecisionTreeRegressor(random_state=10), XGBRegressor(n_jobs=1),
-              RandomForestRegressor(n_jobs=1, random_state=10),
+    njobs = 1
+    models = [LinearRegression(n_jobs=njobs), SVR(kernel='linear', max_iter=5000), RidgeCV(alphas=Alphas),
+              LassoCV(n_jobs=njobs, alphas=Alphas),
+              DecisionTreeRegressor(random_state=10), XGBRegressor(n_jobs=njobs),
+              RandomForestRegressor(n_jobs=njobs, random_state=10),
               AdaBoostRegressor(random_state=10), GradientBoostingRegressor(random_state=10), ]
     models_str = ['LinearRegression', 'SVM', 'Ridge', 'Lasso', 'DecisionTree', 'XGBoost',
                   'RandomForest', 'AdaBoost', 'GradientBoost', ]
 
     # select_model = request.POST.get('select_model')
     select_model = 'model_reg'
-    feature_select_method = request.POST.get('feature_select_method')
-    fsm = request.POST.get("fsm")
-    form_action = request.POST.get("form_action")
-    projectid = request.POST.get('projectid')
+    # feature_select_method = request.POST.get('feature_select_method')
+    # fsm = request.POST.get("fsm")
+    # form_action = request.POST.get("form_action")
+    # projectid = request.POST.get('projectid')
+    feature_select_method = client_msg['feature_select_method']
+    fsm = client_msg['fsm']
+    form_action = client_msg['form_action']
 
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'regression_pickle.pkl')):
         with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'rb') as f:
             preview_pickle = pickle.load(f)
-        if preview_pickle['status'] == 'Preview':
-            preview_pickle['status'] = 'Running'
-            with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'wb') as f:
-                pickle.dump(preview_pickle, f)
-        else:
-            status = 'Running'
-            form_action = preview_pickle['form_action']
-            display_samples_dict = preview_pickle['display_samples_dict']
-            hist_trace = preview_pickle['hist_trace']
-            inputdata_display = preview_pickle['inputdata_display']
-            inputdata_columns = preview_pickle['inputdata_columns']
-            title_str = preview_pickle['title_str']
-            return render(request, 'status.html', {
-                'projectid': projectid,
-                'form_action': form_action,
-                'status': status,
-                'feature_select_method': feature_select_method,
-                # 'model_md5': model_md5,
-                'display_samples_dict': json.dumps(display_samples_dict),
-                'hist_trace': json.dumps(hist_trace, ensure_ascii=False, cls=JsonEncoder),
-                'inputdata_display': json.dumps(inputdata_display),
-                'inputdata_columns': json.dumps(inputdata_columns),
-                'title_str': title_str,
-            })
-        inputdata = pd.read_csv(
-            STATIC_ROOT + '/cache/' + projectid + '/' + 'data.csv',
-            header=0, index_col=0).T
-        # if file_upload_type == 'user_data':
-        #     '''
-        #     IMPORRT DATA
-        #     '''
-        #     # file load
-        #     upload_file = request.FILES.get('upload_file')
-        #     f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
-        #     for line in upload_file.chunks():
-        #         f.write(line)
-        #     f.close()
-        #     upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
-        #     projectid = 'RO-' + upload_file_md5[:6] + '-' + feature_select_method
-        #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-        #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-        #     shutil.move(STATIC_ROOT + '/cache/' + upload_file.name, newpath)
-        #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, header=0,
-        #                             index_col=0).T
+        # if preview_pickle['status'] == 'Preview':
+        #     preview_pickle['status'] = 'Running'
+        #     with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'wb') as f:
+        #         pickle.dump(preview_pickle, f)
         # else:
-        #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-        #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-        #     shutil.copy(STATIC_ROOT + '/cache/example/regression_example.csv', newpath)
-        #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/example/regression_example.csv', header=0, index_col=0).T
-
-
-        '''
-        feature_select_method='TopK'
-        projectid='RO-19f4d5-TopK'
-        data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'regression_data.csv', header=0, index_col=0).T
-        '''
+        #     status = 'Running'
+        #     form_action = preview_pickle['form_action']
+        #     display_samples_dict = preview_pickle['display_samples_dict']
+        #     hist_trace = preview_pickle['hist_trace']
+        #     inputdata_display = preview_pickle['inputdata_display']
+        #     inputdata_columns = preview_pickle['inputdata_columns']
+        #     title_str = preview_pickle['title_str']
+        #     return render(request, 'status.html', {
+        #         'projectid': projectid,
+        #         'form_action': form_action,
+        #         'status': status,
+        #         'feature_select_method': feature_select_method,
+        #         # 'model_md5': model_md5,
+        #         'display_samples_dict': json.dumps(display_samples_dict),
+        #         'hist_trace': json.dumps(hist_trace, ensure_ascii=False, cls=JsonEncoder),
+        #         'inputdata_display': json.dumps(inputdata_display),
+        #         'inputdata_columns': json.dumps(inputdata_columns),
+        #         'title_str': title_str,
+        #     })
+        inputdata = pd.read_csv(
+            STATIC_ROOT + '/cache/' + projectid + '/' + 'data.csv',header=0, index_col=0).T
 
         train_set, test_set, blind_set = split_train_test(inputdata)
-        # data, label = classification_process(train_set)
         nordata4, nor_age4 = regression_preprocess(train_set)
         if len(test_set) > 0:
             ifval = True
@@ -115,14 +133,10 @@ def regression_oc_result(request, projectid):
         else:
             ifval = False
 
-        # features = selectkbest_top20(nordata4, nor_age4, score_func=f_regression, k=50)
-
-
         if fsm == 'A':
             features = selectkbest_top20(nordata4, nor_age4, k=50)
         elif fsm == 'M':
             features = mrmr_fs(nordata4, nor_age4,form_action,k=50)
-
 
         nordata4 = nordata4[features]
         train_index, test_index = RegressionKFold(nordata4, nor_age4)
@@ -135,7 +149,8 @@ def regression_oc_result(request, projectid):
                 start = time.perf_counter()
                 clf_num, ms = pre_screening(nordata4, nor_age4, models[i], features, cv)
                 clf_nums.append(clf_num), cv_scores.append(ms)
-                test_accs[i], estimators[i], mean_accs[i], predicts[i], max_features[i] = train_top3(models[i],nordata4, nor_age4,clf_num,train_index,test_index,features)
+                test_accs[i], estimators[i], mean_accs[i], predicts[i], max_features[i] = train_top3(models[i],nordata4,
+                                        nor_age4,clf_num,train_index,test_index,features)
                 end = time.perf_counter()
                 print(round(end - start, 2))
 
@@ -223,11 +238,11 @@ def regression_oc_result(request, projectid):
                     predicts[j] = preds
                     end = time.perf_counter()
                     print(round(end - start, 2))
-        else:
-            print('error')
-            return render(request, 'ERROR.html', {
-                'error_msg': 'Invalid input!'
-            })
+        # else:
+        #     print('error')
+        #     return render(request, 'ERROR.html', {
+        #         'error_msg': 'Invalid input!'
+        #     })
 
         test_acc_reports = pd.DataFrame(data=test_accs)
         test_acc_reports.columns = models_str
@@ -282,7 +297,7 @@ def regression_oc_result(request, projectid):
             best_esti.append(tmodels[i])
             par = tmodels[i].get_params()
             if i == 2 or i == 3:
-                par['alphas'] = tmodels[i].alpha_
+                par['final_alphas'] = tmodels[i].alpha_
             parameter.append(str(par))
             R2.append(test_acc_describe.iloc[0, :][i])
             Mae.append(MAE_report_describe.iloc[0, :][i])
@@ -362,28 +377,43 @@ def regression_oc_result(request, projectid):
         # print(vregpred_trace)
 
     #send email
-    to_mail = request.POST.get('to_mail')
+    # to_mail = request.POST.get('to_mail')
+    to_mail = client_msg['to_mail']
     print('mail: ',to_mail)
     url = 'maler/regression_oc_result/'+ projectid
     if to_mail != '' and to_mail != None:
             task_sendmail(to_mail, url)
-    return render(request, 'regression_oc_result.html', {
+    analysis_results = {
         'projectid': projectid,
-        'line_chart_data': json.dumps(line_chart_data),
-        'test_acc_reports_dict': json.dumps(test_acc_reports_dict),
-        'test_acc_describe_dict': json.dumps(test_acc_describe_dict),
-        'MAE_report_describe_dict': json.dumps(MAE_report_describe_dict),
-        'MSE_report_describe_dict': json.dumps(MSE_report_describe_dict),
-        'MAE_report_dict': json.dumps(MAE_report_dict),
-        'MSE_report_dict': json.dumps(MSE_report_dict),
-        'final_reports_dict': json.dumps(final_reports_dict),
+        'line_chart_data': line_chart_data,
+        'test_acc_reports_dict': test_acc_reports_dict,
+        'test_acc_describe_dict': test_acc_describe_dict,
+        'MAE_report_describe_dict': MAE_report_describe_dict,
+        'MSE_report_describe_dict': MSE_report_describe_dict,
+        'MAE_report_dict': MAE_report_dict,
+        'MSE_report_dict': MSE_report_dict,
+        'final_reports_dict': final_reports_dict,
         'vregpred_trace': json.dumps(vregpred_trace,ensure_ascii=False, cls=JsonEncoder),
         'vreport_trace': json.dumps(vreport_trace,ensure_ascii=False, cls=JsonEncoder),
-        'val_report_dict': json.dumps(val_report_dict),
+        'val_report_dict': val_report_dict,
         'ifval': ifval,
-        # 'radar_dict': json.dumps(radar_dict),
-        # 'radar_range': json.dumps(radar_range)
-    })
+    }
+    return analysis_results
+    # return render(request, 'regression_oc_result.html', {
+    #     'projectid': projectid,
+    #     'line_chart_data': json.dumps(line_chart_data),
+    #     'test_acc_reports_dict': json.dumps(test_acc_reports_dict),
+    #     'test_acc_describe_dict': json.dumps(test_acc_describe_dict),
+    #     'MAE_report_describe_dict': json.dumps(MAE_report_describe_dict),
+    #     'MSE_report_describe_dict': json.dumps(MSE_report_describe_dict),
+    #     'MAE_report_dict': json.dumps(MAE_report_dict),
+    #     'MSE_report_dict': json.dumps(MSE_report_dict),
+    #     'final_reports_dict': json.dumps(final_reports_dict),
+    #     'vregpred_trace': json.dumps(vregpred_trace,ensure_ascii=False, cls=JsonEncoder),
+    #     'vreport_trace': json.dumps(vreport_trace,ensure_ascii=False, cls=JsonEncoder),
+    #     'val_report_dict': json.dumps(val_report_dict),
+    #     'ifval': ifval,
+    # })
 
 
 '''
@@ -596,7 +626,7 @@ def mkvregpredplot(validate_predicts, vaildation_label, models_str=models_str):
             'mode': 'lines',
             # 'name': 'fit line',
             'type': 'scatter',
-            'text': 'R: ' + str(np.round(rs[j][0], 3)) + '<br>pvalue: ' + str(np.round(rs[j][1], 3)),
+            'text': 'cor = ' + str(np.round(rs[j][0], 3)) + ', pvalue = ' + str(np.round(rs[j][1], 3)),
             'x': xl,
             'y': xl,
             'xaxis': 'x' + str(j + 1),

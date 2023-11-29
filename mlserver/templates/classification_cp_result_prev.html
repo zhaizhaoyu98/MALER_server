@@ -15,7 +15,7 @@
 		 <!-- DataTables -->
 		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
 		 <script type="text/javascript" charset="utf8" src="https://cdn.bootcdn.net/ajax/libs/datatables-buttons/2.2.3/js/dataTables.buttons.js"></script>
-		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>		
 		 <!-- responsive -->
 		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>		 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css">
 		<style type="text/css">
@@ -72,40 +72,12 @@
 				text-decoration: none;
 				outline: none;
 			}
+			
 			h3 {
 				/* color: cornflowerblue; */
 				color: #17a2b8; margin-bottom: 20px;
 				font-weight: bolder;
 			}
-			/* datatable button */
-			     .dt-button.icon_:before {
-			      color: #fff;
-			      padding-top: 100px;
-			      content: "\f019";
-			      font-family: FontAwesome;
-			      font-size: 20px;
-			     }
-			     .dt-button.icon_{
-			      background-color: #17a2b8;
-			      border-color: #17a2b8;
-			     }
-			     .dt-button {
-			      margin-top: 5px;
-			     }
-			     /* datatable search */
-			     .dataTables_filter {
-			      margin-top: 5px;
-			     }
-			     /* datatable info */
-			     .dataTables_info {
-			      margin-left: -30px;
-			     }
-			     
-			     .dataTables_length {
-			      margin-top: 5px;
-			     }
-			
-
 		</style>
 		<script>
 			$(document).ready(function(){
@@ -142,27 +114,30 @@
 	<body data-spy="scroll" data-target="#list-example" style="padding-top: 0px;">
 		<!-- 导航栏 -->
 		{% include 'public_templates/nav_tem.html' %}
-		<div class='col-2 d-none d-xl-block' style="">
-			<div id="list-example" class="list-group "
-				style="position: fixed; width:270px;height: 500px;margin-left: 20px;padding-left: 0;margin-top:30px;">
-				<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
-				<a class="list-group-item list-group-item-action" href="#list-item-2">Accuracy</a>
-				<a class="list-group-item list-group-item-action" href="#list-item-3">Test</a>
-				<a class="list-group-item list-group-item-action" href="#list-item-4">Report</a>
+		
+			<div class="col-1 d-none d-xl-block">
+				<div id="list-example" class="list-group abc "
+					style="position: fixed; width:270px;height: 500px;margin-left: 20px;padding-left: 0;margin-top:30px;">
+					<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-2">Evaluation indices</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-3">ROC curve</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-4" id="test" style="display: none;">Test</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-5">Report</a>
+				</div>
 			</div>
-		</div>
+			
 		<div class="row">
 		<!-- 主体内容 -->
+<!-- 		<div class='col-1 d-none d-xl-block' style="">
+			</div> -->
 		<div class="container col-8 " style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
 			<br />
-			
-
 				<div class='col-xl-12 col-lg-12'>
 					<div style='text-align:center;'>
 						<h3>PROJECTID: {{ projectid }}</h3>
 					</div>
 					<hr />
-					<form action="" method="">
+					<form action="" method="" id="form_data">
 						{%  csrf_token %}
 						<input style="display: none;" type="text" id="projectid"  name="projectid" value="{{projectid}}"/>
 					</form>
@@ -173,81 +148,100 @@
 					<div id="linechartDiv"></div>
 					
 					<h3 class="panel-heading" id="list-item-2" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-						Evaluation indices
+						{{model_name}}
 					</h3>
 					<div id="accboxplotDiv"></div>
-					<div id="maeboxplotDiv"></div>
-					<div id="mseboxplotDiv"></div>
 					
-					<table id="acctable" class="display" style="width: 100%;" lazyload="True">
+					<table id="ftable" class="display" style="width: 100%;" lazyload="True">
 						 <thead>
 							<tr>
 								<th></th>
-								<th>R-square</th>
-								<th>MAE</th>
-								<th>MSE</th>
+								<th>Accuracy</th>
+								<th>Precision</th>
+								<th>AUC</th>
+								<th>Recall</th>
+								<th>F1-score</th>
 							</tr>
 						</thead>
 					</table>
 					
 					<br />
-					<!-- <h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-						Regression
-					</h3> -->
-					<!-- <div id="survplotDiv"></div> -->
-					<!-- <div id="testsurvplotDiv"></div> -->
-					<br />
+					
 					<h3 class="panel-heading" id="list-item-3" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-						Test
+						{% if ifmarco != True %}
+							ROC
+						{% else %}
+							Marco ROC
+						{% endif %}
+						
 					</h3>
-					<!-- <div id="survplotDiv"></div> -->
+					<div id="rocplotDiv" style="margin-right: 0px;"></div>
 					
-
-					<div id="vlineplotDiv"></div>
-					<div id="vbarplotDiv"></div>
-					<table id="vregtable" class="display" style="width: 100%;" lazyload="True">
-						 <thead>
-							<tr>
-								<th></th>
-								<th>R-square</th>
-								<th>MAE</th>
-								<th>MSE</th>
-							</tr>
-						</thead>
-					</table>
-					<br />
 					
-					<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+					<div class="row">
+						<div class="col" style="padding-right: 0px;"><div id="mixrocplotDiv"></div></div>
+						<div class="col" style="padding-left: 0px;"><div id="mixradarplotDiv"></div></div>
+						
+					</div>
+						
+					
+					
+					<div id="test_plot" style="display: none;">
+						<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">Test</h3>
+						<div id="barplotDiv"></div>
+						<div class="row">
+						<div class="col-6" style="padding-right: 0px;">
+							<div id="heatmapDiv"></div>
+							</div>
+						<div class="col-6" style="padding-left: 0px;">
+							<div id="validrocDiv"></div>
+							</div>
+						</div>
+					</div>
+					
+					
+					<h3 class="panel-heading" id="list-item-5" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
 						Report
 					</h3>
-					<table id="reporttable" class="display" style="width: 100%;" lazyload="True">
+					<table id="paratable" class="display" style="width: 100%;" lazyload="True">
 						 <thead>
 							<tr>
 								<th></th>
 								<th>Index</th>
 								<th>Feature Select Method</th>
 								<th>Optimal Feature Subset Search Methods</th>
-								<th>Mean R-square</th>
-								<th>MAE</th>
-								<th>MSE</th>
 								<th class="none">Feature Names</th>
+								
+								<th>Mean Accuracy</th>
+								
+								{% if ifmarco != True %}
+									<th>Mean Precision</th>
+									<th>Mean AUC</th>
+									<th>Mean Recall</th>
+									<th>Mean F1-score</th>
+<!-- 								{% else %}
+									<th>Marco Mean Precision</th>
+									<th>Marco Mean AUC</th>
+									<th>Marco Mean Recall</th>
+									<th>Marco Mean F1-score</th>
+								{% endif %} -->
 								<th>Feature_names/Parameter</th>
 								<th class="none">Parameter</th>
 								<th>View</th>
 								<th>Model Download</th>
+								
 							</tr>
 						</thead>
 					</table>
 					<br />
-					<br />
+					<button type="button" id="combination" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">Combination
+						</button>
 				</div>
+				<br />
+				<br />
 			</div>
-			
-			
+			</div>
 
-			<br />
-			<br />
-			
 			<!-- <div class="row">
 				<div class="col-6">
 					<button type="button" onclick="window.location.href='/mlserver/analysis_oneclick'" class="btn btn-info" style="width: 100%;">One-click Analysis</button>
@@ -256,171 +250,141 @@
 					<button type="button" onclick="window.location.href='/mlserver/analysis_perpara'" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">Personalized Parameters Analysis</button>
 				</div>				
 			</div> -->
-		</div>
+		
+
+		<hr>
 		<!-- 底部 -->
 		{% include 'public_templates/footer.html' %}
 
 		<script>
 			var csrftoken = $("input[name='csrfmiddlewaretoken']").attr('value');
-			var acc_data = {{ cust_reports_describe_dict|safe }};
-			var report_data = {{ final_reports_dict|safe }};
+
+			var f_data = {{ f_describe_dict|safe }};
+			
+			var max_reports_data = {{ max_reports_dict|safe }};
 			// 获取当前url
 			var url = this.location.pathname
 			var arr= url.split("/")
 			// plotly layout
-			var acc_layout = {
-				title: 'Boxplot of test accuracy'
-			};
-			var xtitle = ''
-			var ytitle = ''
-			var vlinelayout = {
-			  title: '', 
-			  margin: {
-				  // 'b': 30,
-				  // 'l': 30,
-				  // 'r': 5,
-				  // 't': 75
-				  'b': 30,
-				  'l': 60,
-				  'r': 60,
-				  't': 40
-			  },
-			  legend:{
-				  orientation: 'h',
-				  xanchor: 'middle',
-				  yanchor: 'right',
-				  valign: 'middle',
-				  x: 0.4,
-				  y: 1.08,
-				  itemclick: false,
-				  itemdoubleclick: false
-			  },
-			  xaxis: {
-			     title: 'True value', 
-			     anchor: 'y', 
-			     // domain: [0.0, 0.3]
-			   },
-			   yaxis: {
-			      title: 'Predicted value', 
-			      anchor: 'x', 
-			      // domain: [0.0, 0.3]
-			    },
-			
-			};
-			var vbarplotlayout = {
-				title: '',
-				margin: {
-				  'b': 70,
-				  'l': 60,
-				  'r': 60,
-				  't': 50
-				},
-				legend:{
-				  itemclick: false,
-				  itemdoubleclick: false
-				},
-				// height: 1200,
-				xaxis1: {
-				  title: '', 
-				  anchor: 'y1', 
-				  domain: [0.0, 0.3]
-				}, 
-				xaxis2: {
-				  title: '', 
-				  anchor: 'y2', 
-				  domain: [0.33, 0.66]
-				}, 
-				xaxis3: {
-				  title: '', 
-				  anchor: 'y3', 
-				  domain: [0.7, 1], 
-				}, 
-				yaxis1: {
-				  title: '', 
-				  anchor: 'x1', 
-				  domain: [0, 1.0]
-				}, 
-				yaxis2: {
-				  title: '', 
-				  anchor: 'x2', 
-				  domain: [0, 1.0]
-				}, 
-				yaxis3: {
-				  title: '', 
-				  anchor: 'x3', 
-				  domain: [0, 1.0], 
-				}, 
-				annotations: [
-				  {
-				    x: 0.15, 
-				    y: 1.0, 
-				    font: {size: 16}, 
-				    text: 'R-square', 
-				    xref: 'paper', 
-				    yref: 'paper', 
-				    xanchor: 'center', 
-				    yanchor: 'bottom', 
-				    showarrow: false
-				  }, 
-				  {
-				    x: 0.5, 
-				    y: 1.0, 
-				    font: {size: 16}, 
-				    text: 'MAE', 
-				    xref: 'paper', 
-				    yref: 'paper', 
-				    xanchor: 'center', 
-				    yanchor: 'bottom', 
-				    showarrow: false
-				  }, 
-				  {
-				    x: 0.85, 
-				    y: 1, 
-				    font: {size: 16}, 
-				    text: 'MSE', 
-				    xref: 'paper', 
-				    yref: 'paper', 
-				    xanchor: 'center', 
-				    yanchor: 'bottom', 
-				    showarrow: false
-				  }, 
-				]
-			}
-			var vline_layout = {
-			  title:'Time dependent AUC',
-			  height:750,
-			  xaxis: {
-			    title: 'days from enrollment', 
-			  },
-			  yaxis: {
-			    title: 'time-dependent AUC', 
-			  },
-			  legend:{
-			  				  orientation: 'h',
-			  				  xanchor: 'middle',
-			  				  yanchor: 'right',
-			  				  valign: 'middle',
-			  				  x: 0.05,
-			  				  y: 1.08
-			  },
-			};
 			var linechart_layout = {
 				xaxis: {
 				  title: 'Number of features', 
 				  anchor: 'y', 
 				}, 
 				yaxis: {
-				  title: 'R-square', 
+				  title: 'Accuracy', 
 				  anchor: 'x', 
 				}, 
 				margin:{
 					t: 30
 				}
 			}
+			
+			var acc_layout = {
+				title: 'Boxplot of {{model_name}}'
+			};
+			
+			var roc_layout = {
+				title: 'ROC curve', 
+				  // width: 1000, 
+				  xaxis: {
+				    type: 'linear', 
+				    range: [0, 1], 
+				    title: 'FPR', 
+				    autorange: true
+				  }, 
+				  yaxis: {
+				    type: 'linear', 
+				    range: [-0.05555555555555555, 1.0555555555555556], 
+				    title: 'TPR', 
+				    autorange: true
+				  }, 
+				  height:550,
+				  legend: {
+				    x: 1,
+				    y: 0.1, 
+				    xanchor: 'right', 
+				    orientation: 'v'
+				  }, 
+				  titlefont: {size: 18}
+			};
+			var roc_layout2 = {
+				title: 'ROC curve', 
+				  margin: {
+				  				  'b': 60,
+				  				  'l': 150,
+				  				  'r': 150,
+				  				  't': 60
+				  },
+				  xaxis: {
+				    type: 'linear', 
+				    range: [0, 1], 
+				    title: 'FPR', 
+				    autorange: true
+				  }, 
+				  yaxis: {
+				    type: 'linear', 
+				    range: [-0.05555555555555555, 1.0555555555555556], 
+				    title: 'TPR', 
+				    autorange: true
+				  }, 
+				  height:650,
+				  legend: {
+				    x: 1,
+				    y: 0.1, 
+				    xanchor: 'right', 
+				    orientation: 'v'
+				  }, 
+				  titlefont: {size: 18}
+			};
+			
+			var bar_layout = {
+				 title: 'Evaluation indices ',
+				 barmode: 'stack'
+			}
+			var heatmap_layout = {
+				title: 'Confusion Matrix ',
+				  annotations: {{heatmap_anno |safe}},
+				  xaxis: {
+				    ticks: '',
+					title: 'Predicted label', 
+				    side: 'bottom'
+				  },
+				  height:550,
+				  yaxis: {
+				    ticks: '',
+				    ticksuffix: ' ',
+				    width: 700,
+				    height: 700,
+					title: 'True label', 
+				    autosize: false
+				  },
+				titlefont: {size: 18}
+			}
+			
+			var radar_layout = {
+				title: 'Radar Chart',
+				polar: {
+					radialaxis: {
+				      range: [0.5, 1], 
+				      visible: true
+				    },
+				}, 
+				height:550,
+				showlegend: true
+			}
 			<!--第三步：初始化Datatables-->
 			$(document).ready( function () {
-				$('#acctable').DataTable({
-					data: acc_data,
+				// js中为大写，转为字符串进行判断
+				var ifval = '{{ifval}}'
+				if ( ifval == "True") {
+					console.log(ifval)
+					document.getElementById('test').style.display = "block"
+					document.getElementById('test_plot').style.display = "block"
+					
+				};
+				$('#ftable').DataTable({
+					data: f_data,
 					searching: false, 
 					paging: false, 
 					info: false,
@@ -438,12 +402,24 @@
 					//data 这里是固定不变的，name，position，salary，office 为你数据里对应的属性
 					columns: [
 						{ data: 'Method' },
-						{ data: 'R-square' },
-						{ data: 'MAE' },
-						{ data: 'MSE' },
+						{ 
+							data: 'test_accuracy' ,
+							
+							// "render": function(data, type, row, meta){
+							//     if(type === 'display'){
+							// 		data = '<a href="' + 'javascript:void(0);' + '" onclick="" data-toggle="modal" data-target="#diffModal" style="color: #4f9eee;">' + data + '</a>';
+							//     }
+							
+							//     return data;
+							// }
+						},
+						{ data: 'precision' },
+						{ data: 'AUC' },
+						{ data: 'recall' },
+						{ data: 'f1-score' },
 					]
 				});
-				$('#reporttable').DataTable({
+				$('#paratable').DataTable({
 					responsive: {
 					    details: {
 					        type: 'column',
@@ -453,28 +429,24 @@
 					columnDefs: [ {
 					    className: 'control',
 					    orderable: false,
-					    targets:   8,
+					    targets:   10,
 					} ],
-					data: report_data,
+					data: max_reports_data,
 					searching: false, 
 					paging: false, 
 					info: false,
 					sort: false,
-					buttons: [{
-						extend: 'csv',
-						text: "",
-						className: "icon_",
-						filename:'Validation',
-						}],
 					columns: [
 						{ data: 'Method' },
-						{ data: 'md5' },
+						{ data: 'md5' },	
 						{ data: 'Fsm' },
-						{ data: 'fsm' },
-						{ data: 'Mean R-square' },
-						{ data: 'MAE' },
-						{ data: 'MSE' },
+						{ data: 'fsm'},
 						{ data: 'feature_names' },
+						{ data: 'test_acc' },
+						{ data: 'precision' },
+						{ data: 'AUC' },
+						{ data: 'recall' },
+						{ data: 'f1score' },
 						{ 
 							data: 'parameter',
 							render: function(data, type, row) {
@@ -486,6 +458,7 @@
 							data: 'md5' ,
 							"render": function(data, type, row, meta){
 								if(type === 'display'){
+									// data = '<button style="background: url(https://img.icons8.com/sf-regular-filled/48/undefined/download.png);width: 2.5rem;height: 2.5rem;border: none;" value="' + $('#projectid').val() + '_' + data + '" href="result/' + $('#projectid').val() + '_' + data + '"></button>'
 									{% if change_page != True %}
 									data = '<a value="' + data + '" href="prev/{{projectid}}_' + data + '">view</a>'
 									{% else %}
@@ -498,96 +471,74 @@
 						{
 							data: 'md5' ,
 							"render": function(data, type, row, meta){
-								if(type === 'display'){
+								// if(type === 'display'){
 									if( arr[3] == 'prev'){
 										data = '<a value="' + $('#projectid').val() + '_' + data + '" href="../../model_download/' + $('#projectid').val() + '_' + data + '">Download</a>'
 									}else{
 										data = '<a value="' + $('#projectid').val() + '_' + data + '" href="../model_download/' + $('#projectid').val() + '_' + data + '">Download</a>'
 									}
 									
-								}
+								// }
 								return data;
 							},
 						},
+						
 					]
 				});
-				$('#vregtable').DataTable({
-					data: {{val_report_dict|safe}},
-					searching: false, 
-					paging: false, 
-					info: false,
-					sort: false,
-					// order: [[ 4, "asc" ],[ 1, "desc"]],
-					// "dom": "<'row'<'col-sm-12 col-md-1'B><'col-sm-12 col-md-8'i><'col-sm-12 col-md-3'f>>" +
-					// 	"<'row'<'col-sm-12'tr>>" +
-					// 	"<'row'<'col-sm-12 col-md-5'l><'col-sm-12 col-md-7'p>>",
-					// buttons: [{
-					// 	extend: 'csv',
-					// 	text: "",
-					// 	className: "icon_",
-					// 	}],
-					//使用对象数组，一定要配置columns，告诉 DataTables 每列对应的属性
-					//data 这里是固定不变的，name，position，salary，office 为你数据里对应的属性
-					columns: [
-						{ data: 'Method' },
-						{ data: 'R-square' },
-						{ data: 'MAE' },
-						{ data: 'MSE' },
-					]
-				});
+				Plotly.newPlot('linechartDiv', {{ line_chart_data|safe }}, linechart_layout);
+				Plotly.newPlot('rocplotDiv', {{roc_traces|safe}}, roc_layout2);
+				Plotly.newPlot('rocplotDiv', {{roc_traces|safe}}, roc_layout2);
+				Plotly.newPlot('accboxplotDiv', {{ final_reports_dict|safe }}, acc_layout);
+				Plotly.newPlot('barplotDiv', {{ bar_dict|safe }}, bar_layout);
+				Plotly.newPlot('heatmapDiv', {{ heatmap_dict |safe}}, heatmap_layout);
+				Plotly.newPlot('validrocDiv', {{ valid_roc_traces |safe}}, roc_layout);
 				
-				Plotly.newPlot('linechartDiv', {{ line_chart_data|safe }},linechart_layout);
-				Plotly.newPlot('accboxplotDiv', {{ cust_reports_dict|safe }}, vbarplotlayout);
-				// Plotly.newPlot('survplotDiv', test_obj.SurvivalSVM.surv_trace, test_obj.SurvivalSVM.surv_layout);
-				Plotly.newPlot('vlineplotDiv', {{vregpred_trace|safe}}, vlinelayout);
-				Plotly.newPlot('vbarplotDiv', {{vreport_trace|safe}}, vbarplotlayout);
-			// $('#finaltable').on('click', 'button', function(){
-				
-			// 	var formData=new FormData();
-			// 	// formData.append('gene',fc_table.row(this).data()['symbol'])
-			// 	var modelname = $(this).val().replace(' ','_')
-			// 	formData.append('model',$(this).val())
-			// 	formData.append('projectid',$('#projectid').val())
-			// 	// formData.append('studyid',$('#studyid').val())
-			// 	// formData.append('id',$(this).parent().parent().parent().parent().attr('id'))
-			// 	// add gene name to modal
-			// 	// $('#diffModalLabel').empty()
-			// 	// $("#commonboxplotDiv").empty()
-			// 	// $("#loader-diff").show()
-			// 	// $('#diffModalLabel').append($(this).parent().parent().children().eq(0).text())
-			// 	// $('#myModalLabel').empty()
-			// 	// $('#myModalLabel').append($(this).parent().parent().children().eq(0).text())
-			//    // console.log('API row values: ', formData);
-			//    $.ajax({
-			// 	url:'/mlserver/get_model',
-			// 	type:"POST",
-			// 	headers: {"X-CSRFToken": csrftoken},
-			// 	data:formData,
-			// 	processData:false,
-			// 	contentType:false,
-			// 	success:function(response){
-			// 		// exp_data_decode=JSON.parse(exp_data)
-			// 		var BOM = '\uFEFF';
-			// 		csvString = BOM + response;
-			// 		console.log(csvString)
-			// 		var a = document.createElement('a');
-			// 		a.href = 'data:attachment/pkl,' + encodeURI(csvString);
-			// 		a.target = '_blank';
-			// 		a.download = $('#projectid').val() + '_' + modelname + '.pkl';//文件名
-			// 		document.body.appendChild(a); // Firefox 中必须这么写，不然不会起效果
-			// 		a.click();
-			// 	}
-			//    })
-			//    // window.location.href = 'detail/'+ sample_id;
-			//   })
+			
+			$('#combination').on('click', function(){
+				var formData=new FormData();
+				// formData.append('gene',fc_table.row(this).data()['symbol'])
+				// var modelname = $(this).val().replace(' ','_')
+				formData.append('projectid',"{{projectid}}")
+				// formData.append('projectid',$('#projectid').val())
+				// formData.append('studyid',$('#studyid').val())
+				// formData.append('id',$(this).parent().parent().parent().parent().attr('id'))
+				// add gene name to modal
+				// $('#diffModalLabel').empty()
+				// $("#commonboxplotDiv").empty()
+				// $("#loader-diff").show()
+				// $('#diffModalLabel').append($(this).parent().parent().children().eq(0).text())
+				// $('#myModalLabel').empty()
+				// $('#myModalLabel').append($(this).parent().parent().children().eq(0).text())
+			   // console.log('API row values: ', formData);
+			   $.ajax({
+				url:'/maler/classification_cp_result_ajax',
+				type:"POST",
+				headers: {"X-CSRFToken": csrftoken},
+				data:formData,
+				processData:false,
+				contentType:false,
+				success:function(response){
+					exp_data_decode=JSON.parse(response)
+					// console.log(exp_data_decode)
+					Plotly.newPlot('mixrocplotDiv', exp_data_decode.roc_traces, roc_layout);
+					Plotly.newPlot('mixradarplotDiv', exp_data_decode.radar_dict, radar_layout);
+					// var BOM = '\uFEFF';
+					// csvString = BOM + response;
+					// console.log(csvString)
+					// var a = document.createElement('a');
+					// a.href = 'data:attachment/pkl,' + encodeURI(csvString);
+					// a.target = '_blank';
+					// a.download = $('#projectid').val() + '_' + modelname + '.pkl';//文件名
+					// document.body.appendChild(a); // Firefox 中必须这么写，不然不会起效果
+					// a.click();
+				}
+			   })
+			   // window.location.href = 'detail/'+ sample_id;
+			  })
 			
 			});
 		</script>
 		<script>
-			
-			
-			
-			
 			
 			function add_example(){
 				$("#exampleFormControlSelect1").val("Mus musculus");
@@ -646,7 +597,7 @@
 			};
 		
 		
-			
+			//  单药物检验
 			$(document).ready(function() {
 				// $('#radar_map').hide()
 				$("#submit_one_test").click(function() {

@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ANALYSIS</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		{% include 'public_templates/bootstrap.html' %}
+		<script src="https://cdn.plot.ly/plotly-2.8.3.min.js"></script>
+<!-- 		<script crossorigin="anonymous" integrity="sha512-vMD/IRB4/cFDdU2MrTwKXOLmIJ1ULs18mzmMIWLCNYg/nZZkCdjBX+UPrtQdkleuuf0YaqXssaKk8ZXOpHo3qg=="
+		 src="https://lib.baomitu.com/echarts/5.0.1/echarts.min.js"></script> -->
+		 <!-- DataTables CSS -->
+		 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"> 
+		 <!-- jQuery -->
+		 <!-- <script type="text/javascript" charset="utf8" src="http://code.jquery.com/jquery-1.10.2.min.js"></script> -->
+		 <!-- DataTables -->
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+		 <script type="text/javascript" charset="utf8" src="https://cdn.bootcdn.net/ajax/libs/datatables-buttons/2.2.3/js/dataTables.buttons.js"></script>
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>		
+		 <!-- responsive -->
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>		 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css">
+		<style type="text/css">
+			
+			.dataTable {
+				text-align: center;
+				vertical-align: middle !important;
+			}
+			
+			#home span {
+				background-color: aliceblue;
+			}
+
+			.btn.btn-outline-danger {
+				height: 38px;
+				/* margin-top: 30px; */
+			}
+
+			#one_class_test_form .form-row {
+				margin: 0;
+				padding: 0;
+				height: 40px;
+			}
+
+			/* table tbody {
+				font-size: 5px;
+			} */
+			table * {
+				font-size: 15px;
+			}
+			
+			#list-item-1,
+			#list-item-2,
+			#list-item-3,
+			#list-item-4,
+			#list-item-5,
+			#list-item-6,
+			#list-item-7,
+			#list-item-8{
+				padding-top: 10px;
+				padding-bottom: 10px;
+				padding-left: 1rem;
+			}
+			
+			/* 左侧导航颜色 */
+			.list-group-item.active {
+				background-color: #17a2b8;
+				border: 1px solid rgba(0, 0, 0, .125);
+				
+			}
+			#list-example a {
+				text-align: center;
+				line-height: 40px;
+				text-decoration: none;
+				outline: none;
+			}
+			
+			h3 {
+				/* color: cornflowerblue; */
+				color: #17a2b8; margin-bottom: 20px;
+				font-weight: bolder;
+			}
+			
+
+		</style>
+		<script>
+			$(document).ready(function(){
+			// 导航栏
+			$("#nav_tools").addClass("active");
+			$("tbody").addClass("bg-white");
+			$("#page_title").text('ANALYSIS');
+			});
+		</script>
+	</head>
+	<body data-spy="scroll" data-target="#list-example" style="padding-top: 0px;">
+		<!-- 导航栏 -->
+		{% include 'public_templates/nav_tem.html' %}
+		
+		<div id= running>
+			<br>
+				<table id="running_table"  style="width: 50%;" lazyload="True">
+					 <thead>
+						 <pre>
+							<tr><th> Project Details</th></tr>
+							<tr><th> ProjectID:&nbsp;&nbsp;{{projectid}}</th></tr>
+							<tr><th id="time"> Submitted time: </th></tr>
+							<tr><th>Status: Running &nbsp;&nbsp;&nbsp;&nbsp; <div class="progress-6" style="display: inline-block;"></div></th></tr>
+							<tr><th id="analysis_time"> Analysis time:&nbsp;&nbsp;{{projectid}}</th></tr>
+							<tr><th> The project has been submitted, please wait... </th></tr>
+						</pre>
+						
+					</thead>
+				</table>
+		</div>
+		<script>
+			var localtime = getNowTime()
+			document.getElementById('time').innerHTML = 'Submitted time: &nbsp;&nbsp;'  + localtime
+			// x = '{{time}}'
+			// console.log(x)
+			// console.log(localtime)
+			function getNowTime(){
+			        const date=new Date();
+			        const year=date.getFullYear();
+			        const month=date.getMonth();
+			        const day=date.getDate();
+			        const hour=date.getHours();
+			        const minute=date.getMinutes();
+			        const seconds=date.getSeconds();
+					// month[0] = January
+			        return `${year}-${month+1}-${day} ${hour}:${minute<10?'0'+minute:minute}:${seconds<10?'0'+seconds:seconds}`
+			function AnalysisTime(){
+				
+			}
+			    }
+		</script>
+		
+		
+		<div id=show_data style="display: none;">
+			<div class='col-2 d-none d-xl-block' style="">
+				<div id="list-example" class="list-group "
+					style="position: fixed; width:270px;height: 500px;margin-left: 20px;padding-left: 0;margin-top:30px;">
+					<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-2">C-index</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-3">Kaplan-Meier curve</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-4" id="test" style="display: none;">Test</a>
+					<a class="list-group-item list-group-item-action" href="#list-item-5">Report</a>
+				</div>
+			</div>
+		<div class="row">
+		<!-- 主体内容 -->
+		<div class="container col-8 " style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
+			<br />
+			
+				<div class='col-xl-12 col-lg-12'>
+					<div style='text-align:center;'>
+						<h3>PROJECTID: {{ projectid }}</h3>
+					</div>
+					<hr />
+					<form action="" method="">
+						{%  csrf_token %}
+						<input style="display: none;" type="text" id="projectid"  name="projectid" value="{{projectid}}"/>
+					</form>
+					
+					<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Optimal feature subset result
+					</h3>
+					<div id="linechartDiv"></div>
+					
+					<h3 class="panel-heading" id="list-item-2" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						C-index
+					</h3>
+					<div id="accboxplotDiv"></div>
+					
+					<table id="acctable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+					</table>
+					
+					<br />
+					<h3 class="panel-heading" id="list-item-3" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Kaplan-Meier curve
+					</h3>
+					<!-- <div id="survplotDiv"></div> -->
+					<div id="survplotDiv"></div>
+					<br />
+					<div id="test_plot" style="display: none;">
+						<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+							Test
+						</h3>
+						<!-- <div id="survplotDiv"></div> -->
+						<div id="vsurvplotDiv"></div>
+						<div id="vlineplotDiv"></div>
+					</div>
+					
+					<br />
+					<h3 class="panel-heading" id="list-item-5" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Report
+					</h3>
+					<table id="reporttable" class="display" style="width: 100%;" lazyload="True">
+						 <thead>
+							<tr>
+								<th></th>
+								<th>Index</th>
+								<th>Optimal Feature Subset Search Method</th>
+								<th class="none">Feature Names</th>
+								<th>Mean C-index</th>
+								<th>Feature_names/Parameter</th>
+								<th class="none">Parameter</th>
+								<th>View</th>
+								<th>Download</th>
+							</tr>
+						</thead>
+					</table>
+				<br />		
+				<br />	
+				</div>
+			</div>
+			<br />
+			<br />
+
+		</div>
+		<br />
+		<br />
+		</div>
+		<!-- 底部 -->
+		{% include 'public_templates/footer.html' %}
+
+		<script>
+			var csrftoken = $("input[name='csrfmiddlewaretoken']").attr('value');
+			var url = this.location.pathname
+			var arr= url.split("/")
+			$(document).ready(function(){
+				
+				var analysis_info = {
+					projectid: "{{projectid}}",
+					feature_select_method: "{{feature_select_method}}",
+					model_md5: "{{model_md5}}",
+					fsm: "{{fsm}}",
+					form_action: "{{form_action}}",
+					to_mail: '{{to_mail}}'
+				}
+				var s = new WebSocket("ws://" + window.location.host + "/maler/survival_cp_result_ws/{{projectid}}");
+				window.s = s;
+				    // 打开连接websocket服务，连接成功则打印信息
+				    s.onopen = function () {
+				        console.log('WebSocket open');//成功连接上Websocket
+						window.s.send(JSON.stringify(analysis_info))
+				    };
+				 
+				    // 接收服务端发送过来的数据，在浏览器上刷新
+				    s.onmessage = function (msg) {
+						// heartCheck.reset();
+				        console.log('raw message: ' + msg.data)//打印出服务端返回过来的数据
+				        // $('#messagecontainer').prepend('<p>' + msg.data + '</p>');
+						var results_data = JSON.parse(msg.data)
+						if (results_data['status'] == 1){
+							window.s.close();
+							console.log('websocket is closed!');
+							document.getElementById('running').style.display = "none"
+							document.getElementById('show_data').style.display = "block"
+							var acc_data = results_data.test_acc_describe_dict;
+							var report_data = results_data.final_reports_dict;
+							if (results_data.ifval == true) {
+								document.getElementById('test').style.display = "block"
+								document.getElementById('test_plot').style.display = "block"
+								
+							};
+							// plotly layout
+							var acc_layout = {
+								title: 'Boxplot of C-index'
+							};
+							
+							var vline_layout = {
+							  title:'Time dependent AUC',
+							  height:750,
+							  xaxis: {
+							    title: 'days from enrollment', 
+							  },
+							  yaxis: {
+							    title: 'time-dependent AUC', 
+							  },
+							  legend:{
+							  				  // orientation: 'h',
+							  				  xanchor: 'middle',
+							  				  yanchor: 'right',
+							  				  valign: 'middle',
+							  				  x: 0.5,
+							  				  y: 1.05
+							  },
+							  showlegend: true
+							};
+							var linechart_layout = {
+								xaxis: {
+								  title: 'Number of features', 
+								  anchor: 'y', 
+								}, 
+								yaxis: {
+								  title: 'C-index', 
+								  anchor: 'x', 
+								}, 
+								margin:{
+									t: 30
+								}
+							}
+							<!--第三步：初始化Datatables-->
+							$('#acctable').DataTable({
+								data: acc_data,
+								searching: false, 
+								paging: false, 
+								info: false,
+								sort: false,
+								columns: [
+									{ data: 'Method' },
+									{ 
+										data: results_data.sur_model_name,
+									},
+								]
+							});
+							$('#reporttable').DataTable({
+								responsive: {
+									details: {
+										type: 'column',
+										target: 'tr'
+									}
+								},
+								columnDefs: [ {
+									className: 'control',
+									orderable: false,
+									targets:   5,
+								} ],
+								data: report_data,
+								searching: false, 
+								paging: false, 
+								info: false,
+								sort: false,
+								columns: [
+									
+									{ data: 'Method' },
+									{ data: 'md5'},
+									{ data: 'fsm' },
+									{ data: 'feature_names' },
+									{ data: 'Mean C-index' },
+									{ 
+										data: 'parameter',
+										render: function(data, type, row) {
+											return '';
+										}
+									 },
+									{ data: 'parameter' },
+									{ 
+										data: 'md5' ,
+										"render": function(data, type, row, meta){
+											if(type === 'display'){
+												// data = '<button style="background: url(https://img.icons8.com/sf-regular-filled/48/undefined/download.png);width: 2.5rem;height: 2.5rem;border: none;" value="' + $('#projectid').val() + '_' + data + '" href="result/' + $('#projectid').val() + '_' + data + '"></button>'
+												{% if change_page != True %}
+												data = '<a value="' + data + '" href="prev/{{projectid}}_' + data + '">view</a>'
+												{% else %}
+												data = '<a value="' + data + '" href="{{projectid}}_' + data + '">view</a>'
+												{% endif %}
+											}
+											return data;
+										},
+									},
+									{
+										data: 'md5' ,
+										"render": function(data, type, row, meta){
+											// if(type === 'display'){
+												if( arr[3] == 'prev'){
+													data = '<a value="' + $('#projectid').val() + '_' + data + '" href="../../model_download/' + $('#projectid').val() + '_' + data + '">Download</a>'
+												}else{
+													data = '<a value="' + $('#projectid').val() + '_' + data + '" href="../model_download/' + $('#projectid').val() + '_' + data + '">Download</a>'
+												}
+												
+											// }
+											return data;
+										},
+									},
+								]
+							});
+							// var test_obj = eval('(' + '{{surv_data|safe}}' + ')'); 
+							// var valid_obj = eval('(' + '{{vsurv_data|safe}}' + ')'); 
+							console.log()
+							Plotly.newPlot('linechartDiv', results_data.line_chart_data, linechart_layout);
+							Plotly.newPlot('accboxplotDiv', results_data.test_acc_reports_dict, acc_layout);
+							Plotly.newPlot('survplotDiv', results_data.surv_data.surv_trace, results_data.surv_data.surv_layout);
+							Plotly.newPlot('vsurvplotDiv', results_data.vsurv_data.surv_trace, results_data.vsurv_data.surv_layout);
+							// Plotly.newPlot('testsurvplotDiv', {{subplot_sur|safe}}, testlayout);
+							// Plotly.newPlot('vsurvplotDiv', {{vsubplot_sur|safe}}, vsubplotlayout);
+							Plotly.newPlot('vlineplotDiv', results_data.vlinedata, vline_layout);
+							
+							
+					};
+				};
+			});
+				
+				
+				setInterval(() => {
+				      if (window.s.readyState === WebSocket.OPEN) {
+				        window.s.send(JSON.stringify("heartbeat"));
+				      }
+				    }, 5000);
+							
+							
+							
+							
+							
+			// var acc_data = {{ test_acc_describe_dict|safe }};
+			// var report_data = {{ final_reports_dict|safe }};
+			// // plotly layout
+			// var acc_layout = {
+			// 	title: 'Boxplot of C-index'
+			// };
+			
+			// var vline_layout = {
+			//   title:'Time dependent AUC',
+			//   height:750,
+			//   xaxis: {
+			//     title: 'days from enrollment', 
+			//   },
+			//   yaxis: {
+			//     title: 'time-dependent AUC', 
+			//   },
+			//   legend:{
+			//   				  // orientation: 'h',
+			//   				  xanchor: 'middle',
+			//   				  yanchor: 'right',
+			//   				  valign: 'middle',
+			//   				  x: 0.5,
+			//   				  y: 1.05
+			//   },
+			//   showlegend: true
+			// };
+			// var linechart_layout = {
+			// 	xaxis: {
+			// 	  title: 'Number of features', 
+			// 	  anchor: 'y', 
+			// 	}, 
+			// 	yaxis: {
+			// 	  title: 'C-index', 
+			// 	  anchor: 'x', 
+			// 	}, 
+			// 	margin:{
+			// 		t: 30
+			// 	}
+			// }
+			// <!--第三步：初始化Datatables-->
+			// $(document).ready( function () {
+			// 	$('#acctable').DataTable({
+			// 		data: acc_data,
+			// 		searching: false, 
+			// 		paging: false, 
+			// 		info: false,
+			// 		sort: false,
+			// 		columns: [
+			// 			{ data: 'Method' },
+			// 			{ 
+			// 				data: '{{sur_model_name}}' ,
+			// 			},
+			// 		]
+			// 	});
+			// 	$('#reporttable').DataTable({
+			// 		responsive: {
+			// 		    details: {
+			// 		        type: 'column',
+			// 		        target: 'tr'
+			// 		    }
+			// 		},
+			// 		columnDefs: [ {
+			// 		    className: 'control',
+			// 		    orderable: false,
+			// 		    targets:   4,
+			// 		} ],
+			// 		data: report_data,
+			// 		searching: false, 
+			// 		paging: false, 
+			// 		info: false,
+			// 		sort: false,
+			// 		columns: [
+			// 			{ data: 'Method' },
+			// 			{ data: 'fsm' },
+			// 			{ data: 'feature_names' },
+			// 			{ data: 'Mean C-index' },
+			// 			{ 
+			// 				data: 'parameter',
+			// 				render: function(data, type, row) {
+			// 					return '';
+			// 				}
+			// 			 },
+			// 			{ data: 'parameter' },
+			// 			{ 
+			// 				data: 'md5' ,
+			// 				"render": function(data, type, row, meta){
+			// 					if(type === 'display'){
+			// 						// data = '<button style="background: url(https://img.icons8.com/sf-regular-filled/48/undefined/download.png);width: 2.5rem;height: 2.5rem;border: none;" value="' + $('#projectid').val() + '_' + data + '" href="result/' + $('#projectid').val() + '_' + data + '"></button>'
+			// 						{% if change_page != True %}
+			// 						data = '<a value="' + data + '" href="prev/{{projectid}}_' + data + '">view</a>'
+			// 						{% else %}
+			// 						data = '<a value="' + data + '" href="{{projectid}}_' + data + '">view</a>'
+			// 						{% endif %}
+			// 					}
+			// 					return data;
+			// 				},
+			// 			},
+			// 		]
+			// 	});
+			// 	var test_obj = eval('(' + '{{surv_data|safe}}' + ')'); 
+			// 	var valid_obj = eval('(' + '{{vsurv_data|safe}}' + ')'); 
+			// 	Plotly.newPlot('linechartDiv', {{ line_chart_data|safe }}, linechart_layout);
+			// 	Plotly.newPlot('accboxplotDiv', {{ test_acc_reports_dict|safe }}, acc_layout);
+			// 	Plotly.newPlot('survplotDiv', test_obj.surv_trace, test_obj.surv_layout);
+			// 	Plotly.newPlot('vsurvplotDiv', valid_obj.surv_trace, valid_obj.surv_layout);
+			// 	// Plotly.newPlot('testsurvplotDiv', {{subplot_sur|safe}}, testlayout);
+			// 	// Plotly.newPlot('vsurvplotDiv', {{vsubplot_sur|safe}}, vsubplotlayout);
+			// 	Plotly.newPlot('vlineplotDiv', {{vlinedata|safe}}, vline_layout);
+			
+			// });
+		</script>
+	</body>
+</html>

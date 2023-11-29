@@ -6,7 +6,7 @@ import os, shutil, pickle
 import numpy as np
 import pandas as pd
 
-from mlserver.views.classification_oc_result_views import JsonEncoder
+from mlserver.views.classification_oc_result_view_webscoket import JsonEncoder
 from ML_WebServer.settings import STATIC_ROOT
 from mlserver.views.classification_oc_result_views import get_file_md5
 from django.contrib import messages

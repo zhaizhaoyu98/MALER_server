@@ -15,268 +15,120 @@ from sksurv.metrics import cumulative_dynamic_auc
 from lifelines.statistics import logrank_test
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5, df2bp, split_train_test, JsonEncoder,task_sendmail
-from mlserver.views.classification_cp_result_views import md5_convert, surv_para_group
-from mlserver.views.survival_oc_result_views import sur_data_process, cox_selection, \
-    sur_RSKFold, FSS_fun, train_estimator, mk_surv_data,mk_surv_layout, time_dependent_auc, \
-    mk_auc_line, pre_screening, train_top3, BSS_fun
+
+from mlserver.views.classification_oc_result_view_webscoket import get_file_md5, df2bp, split_train_test, JsonEncoder,task_sendmail
+from mlserver.views.classification_cp_result_view_websocket import md5_convert, surv_para_group
+from mlserver.views.survival_oc_result_view_websocket import sur_data_process, cox_selection, train_top3,pre_screening,\
+    sur_RSKFold, train_estimator, mk_surv_data,mk_surv_layout, time_dependent_auc, mk_auc_line
+from mlserver.views.featureselection_method import FSS_fun,BSS_fun
 import warnings
+from dwebsocket.decorators import accept_websocket
+from concurrent.futures.thread import ThreadPoolExecutor
+pools = ThreadPoolExecutor(100)
 warnings.filterwarnings("ignore")
+import time
 
-
-def survival_cp_result(request, projectid):
-    feature_select_method = request.POST.get('feature_select_method')
-    # file_upload_type = request.POST.get('file_upload_type')
-    # print('feature_select_method: ', feature_select_method)
-    # select_model = request.POST.get('select_model')
-    # select_child_model = request.POST.get('select_child_model').replace('task_','')
-    # select_child_model = 'survivalsvm'
-    '''
-    sur_model = 'GradientBoostingSurvival'
-    select_model = Survival_gradientboosting()
-    sur_model = Survival_gradientboosting(Loss='coxph', Max_depth=3, Min_samples_split=2,
-                                                 Min_samples_leaf=1, Max_features=None,
-                                                 N_estimators=100, Learning_rate=0.1)
-    '''
-
+def return_running_page(request,projectid):
+    fsm = request.POST.get('fsm')
+    form_action = request.POST.get('form_action')
     model_md5 = request.POST.get('model_md5')
-    with open(STATIC_ROOT + '/cache/' + projectid + '/model_pickle.pkl', 'rb') as f:
-        model_set = pickle.load(f)
-    print(model_set)
-    sur_model, sur_model_name = model_set[model_md5]['model'], model_set[model_md5]['model_name']
-    # sur_model, sur_model_name = select_sur_model(request)
+    feature_select_method = request.POST.get('feature_select_method')
+    to_mail = request.POST.get('to_mail')
+    return render(request, 'survival_cp_result_ws.html', {
+        'fsm': fsm,
+        'form_action': form_action,
+        'projectid': projectid,
+        'model_md5': model_md5,
+        'feature_select_method': feature_select_method,
+        'to_mail': to_mail,
+    })
 
+def data_analysis(WebSocket,client_msg,projectid):
+    # client_msg = json.loads(WebSocket.wait())
+    # client_msg = str(client_msg, encoding="utf-8")
+    # print('data_analysis: ', client_msg)
+    # print(projectid)
+    # client_msg['status'] = 1
+    # time.sleep(5)
+    # WebSocket.send(json.dumps(client_msg))
+    print('start analysis')
+    analysis_results = cp_sur_analysis(client_msg,projectid)
+    analysis_results['status'] = 1
+    WebSocket.send(json.dumps(analysis_results))
+    print('finish!!')
 
-    # get project id
-    # projectid = request.POST.get('projectid')
-    # if projectid == '': projectid = 'None'
+@accept_websocket
+def result_ws(request, projectid):
+    if request.is_websocket():
+        print('websocket on !!')
+        WebSocket = request.websocket
+        while True:
+            if WebSocket.has_messages():
+                client_msg = json.loads(WebSocket.wait())
+                if client_msg != 'heartbeat':
+                    print(client_msg)
+                    task1 = pools.submit(data_analysis,WebSocket,client_msg,projectid)
+                    # data_analysis(WebSocket,client_msg,projectid)
+                    # print(task1.result())
+                    # pools.shutdown()
+                elif client_msg == 'heartbeat':
+                    messages = {
+                        'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
+                        'status': 0,
+                    }
+                    time.sleep(2)
+                    request.websocket.send(json.dumps(messages))
 
-    if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'cp_cache.pkl')):
-        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
-        # token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
-        # token = request.POST.get('random_token')
-        # if file_upload_type == 'user_data':
-        #     '''
-        #     IMPORRT DATA
-        #     '''
-        #     obj_file = request.FILES.get('upload_file')
-        #     f = open(os.path.join(STATIC_ROOT, 'cache', obj_file.name), 'wb')
-        #     for line in obj_file.chunks():
-        #         f.write(line)
-        #     f.close()
-        #
-        #     filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_file.name))
-        #
-        #     projectid = 'RC-' + filemd5[:6] + '-' + token
-        #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-        #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-        #     shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
-        #     # shutil.move(STATIC_ROOT + '/cache/' + obj_label.name, newpath)
-        #     # rename
-        #     os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_file.name, \
-        #               STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv")
-        #     # os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + obj_label.name, \
-        #     #           STATIC_ROOT + '/cache/' + projectid + '/' + "label.csv")
-        #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0,
-        #                             index_col=0).T
-        # else:
-        #     filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/survival_example.csv'))
-        #     filename = 'survival_example.csv'
-        #     projectid = 'RC-' + filemd5[:6] + '-' + token
-        #     os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-        #     newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-        #     shutil.copy(STATIC_ROOT + '/cache/example/' + filename, newpath)
-        #     os.rename(newpath + '/' + filename, \
-        #               newpath + '/' + "load_data.csv")
-        #     inputdata = pd.read_csv(STATIC_ROOT + '/cache/example/' + filename, header=0, index_col=0).T
-        '''
-        IMPORRT DATA
-        '''
-        # file load
-        # upload_file = request.FILES.get('upload_file')
-        # f = open(os.path.join(STATIC_ROOT, 'cache', upload_file.name), 'wb')
-        # for line in upload_file.chunks():
-        #     f.write(line)
-        # f.close()
+def cp_sur_analysis(client_msg,projectid):
+    try:
+        feature_select_method = client_msg['feature_select_method']
+        model_md5 = client_msg['model_md5']
+        fsm = client_msg['fsm']
 
-        # upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', upload_file.name))
-        # token = ''.join(random.sample(string.digits + string.ascii_letters, 6))
-        # projectid = 'SC-' + upload_file_md5[:6] + '-' + token
-
-        # newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-        # os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-        # shutil.move(STATIC_ROOT + '/cache/' + upload_file.name, newpath)
-        # rename
-        # os.rename(STATIC_ROOT + '/cache/' + projectid + '/' + upload_file.name, \
-        #           STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv")
-        '''
-        projectid='SC-e8ce60-FSS'
-        data = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'load_breast_cancer.csv', header=0, index_col=0).T
-        '''
-        # inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + "load_data.csv", header=0, index_col=0).T
-        train_set, test_set, blind_set = split_train_test(inputdata, datatype='survival')
-
-        x2, y2 = sur_data_process(train_set)
-        # x2, vaildation_data, y2, vaildation_label = train_test_split(x, y, random_state=10, train_size=0.7,
-        #                                                              stratify=y['Status'])
-        if len(test_set) > 0:
-            validation_data, validation_label = sur_data_process(test_set)
-        cv = KFold(n_splits=5, shuffle=True, random_state=10)
-        features = cox_selection(x2, y2)
-        # features,ss2 = cox_selection(x2,y2)
-        x3 = x2[features]
-        train_index, test_index = sur_RSKFold(x3, y2)
-        if feature_select_method != 'TopK':
-            if feature_select_method == 'FSS':
-                sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=1)
+        with open(STATIC_ROOT + '/cache/' + projectid + '/model_pickle.pkl', 'rb') as f:
+            model_set = pickle.load(f)
+        print(model_set)
+        sur_model, sur_model_name = model_set[model_md5]['model'], model_set[model_md5]['model_name']
+        if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'cp_cache.pkl')):
+            inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
+            train_set, test_set, blind_set = split_train_test(inputdata, datatype='survival')
+            x2, y2 = sur_data_process(train_set)
+            if len(test_set) > 0:
+                validation_data, validation_label = sur_data_process(test_set)
+                ifval = True
             else:
-                sf, ms = BSS_fun(features, sur_model, x3, y2, cv, n_jobs=1)
-            max_index = np.array(ms).argmax()
-            max_score = max(ms)
-            max_features = (sf[:max_index + 1])
-
-
-            preds, tests, res = [], [], []
-            for i in range(len(train_index)):
-                xtrain, ytrain = x3.iloc[train_index[i], :], y2[train_index[i]]
-                xtest, ytest = x3.iloc[test_index[i], :], y2[test_index[i]]
-                xtrain, xtest = xtrain[max_features], xtest[max_features]
-                estimator, test_acc, predict = train_estimator(sur_model, xtrain, ytrain, xtest, ytest)
-                tests.append(test_acc), res.append(estimator), preds.append(predict)
-        else:
-            clf_num, ms = pre_screening(x3, y2, sur_model, features)
-            tests, estimators, mean_accs, preds, res = train_top3(sur_model, x3, y2, clf_num, train_index,
-                                                                             test_index, features)
-            max_features = res
-        tmodels = copy.deepcopy(sur_model)
-        tmodels.fit(x3[max_features], y2)
-
-        test_acc_reports = pd.DataFrame(data=tests)
-        test_acc_reports.columns = [sur_model_name]
-        test_acc_reports_dict = df2bp(test_acc_reports)
-        test_acc_describe = np.round(test_acc_reports.describe().loc[("mean", 'min', 'max', 'std'), :],
-                                     3)
-        test_acc_describe_ = test_acc_describe.reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
-        test_acc_describe_dict = test_acc_describe_.to_dict('records')
-
-        line_chart_data = []
-        line_trace = {
-            'mode': 'lines+markers',
-            'name': sur_model_name,
-            'type': 'scatter',
-            'x': list(range(1, len(ms)+1)),
-            'y': ms
-        }
-        line_chart_data.append(line_trace)
-
-        parameter, test_acc, best_esti = [], [], []
-        feature_names = []
-        best_esti.append(tmodels)
-        parameter.append(str(tmodels.get_params()))
-        test_acc.append(test_acc_describe.iloc[0, 0])
-        feature_names.append(str(max_features))
-        final_reports = {'Mean C-index': test_acc,
-                         'parameter': parameter,
-                         'feature_names': feature_names, }
-        final_reports = pd.DataFrame(final_reports, index=[sur_model_name]).reset_index().rename(
-            columns={'index': 'Method'})
-        final_reports_dict = final_reports.to_dict('records')
-
-        data_median = tmodels.predict(pd.DataFrame(x3[max_features].median()).T)[0]
-        surv_trace, resultp = mk_surv_data(sur_model_name, x3[max_features],y2,best_esti[0],data_median)
-        surv_layout = mk_surv_layout(sur_model_name, resultp)
-        surv_data = {'surv_trace': surv_trace, 'surv_layout': surv_layout}
-
-        # validation
-        vsurv_trace, vresultp = mk_surv_data(sur_model_name, validation_data[max_features],validation_label,best_esti[0],data_median)
-        vsurv_layout = mk_surv_layout(sur_model_name, vresultp)
-        vsurv_data = {'surv_trace': vsurv_trace, 'surv_layout': vsurv_layout}
-
-        vlinedata = []
-        va_times, rsf_auc, mean_auc, cindex = time_dependent_auc(best_esti[0], validation_data,
-                                                                 validation_label, y2,
-                                                                 max_features, sur_model_name)
-
-        vlinetrace = mk_auc_line(sur_model_name, va_times, rsf_auc, mean_auc, cindex)
-        vlinedata.append(vlinetrace)
-        # pickle
-        surv_pickle = {
-            'sur_model_name': sur_model_name,
-            'line_chart_data': line_chart_data,
-            'test_acc_reports_dict': test_acc_reports_dict,
-            'test_acc_describe_dict': test_acc_describe_dict,
-            'final_reports_dict': final_reports_dict,
-            'surv_data': surv_data,
-            'vsurv_data': vsurv_data,
-            'vlinedata': vlinedata
-        }
-        # make cache
-        cp_cache = {}
-        para_str = feature_select_method + final_reports['Method'][0] + str(final_reports['parameter'][0])
-        para_md5 = md5_convert(para_str)[:6]
-        # add parameter md5 and feature select method
-        final_reports['md5'], final_reports['fsm'] = para_md5, feature_select_method
-        final_reports_dict = final_reports.to_dict('records')
-
-        cp_cache[para_md5] = surv_pickle
-        cp_cache['reports'] = final_reports
-
-        with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl',
-                  'wb') as f:
-            pickle.dump(cp_cache, f)
-
-    else:
-        with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
-            cp_cache = pickle.load(f)
-
-        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
-        train_set, test_set, blind_set = split_train_test(inputdata, datatype='survival')
-
-        x2, y2 = sur_data_process(train_set)
-        if len(test_set) > 0:
-            validation_data, validation_label = sur_data_process(test_set)
-        # x2, vaildation_data, y2, vaildation_label = train_test_split(x, y, random_state=10, train_size=0.7,
-        #                                                              stratify=y['Status'])
-        cv = KFold(n_splits=5, shuffle=True, random_state=10)
-        features = cox_selection(x2, y2)
-        # features,ss2 = cox_selection(x2,y2)
-        x3 = x2[features]
-        train_index, test_index = sur_RSKFold(x3, y2)
-        if feature_select_method != 'TopK':
-            if feature_select_method == 'FSS':
-                sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=1)
+                ifval = False
+            cv = KFold(n_splits=5, shuffle=True, random_state=10)
+            features = cox_selection(x2, y2)
+            x3 = x2[features]
+            train_index, test_index = sur_RSKFold(x3, y2)
+            if feature_select_method != 'TopK':
+                if feature_select_method == 'FSS':
+                    sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=4)
+                else:
+                    sf, ms = BSS_fun(features, sur_model, x3, y2, cv, n_jobs=4)
+                max_index = np.array(ms).argmax()
+                max_score = max(ms)
+                max_features = (sf[:max_index + 1])
+                preds, tests, res = [], [], []
+                for i in range(len(train_index)):
+                    xtrain, ytrain = x3.iloc[train_index[i], :], y2[train_index[i]]
+                    xtest, ytest = x3.iloc[test_index[i], :], y2[test_index[i]]
+                    xtrain, xtest = xtrain[max_features], xtest[max_features]
+                    estimator, test_acc, predict = train_estimator(sur_model, xtrain, ytrain, xtest, ytest)
+                    tests.append(test_acc), res.append(estimator), preds.append(predict)
             else:
-                sf, ms = BSS_fun(features, sur_model, x3, y2, cv, n_jobs=1)
-            max_index = np.array(ms).argmax()
-            max_score = max(ms)
-            max_features = (sf[:max_index + 1])
-
-            preds, tests, res = [], [], []
-            for i in range(len(train_index)):
-                xtrain, ytrain = x3.iloc[train_index[i], :], y2[train_index[i]]
-                xtest, ytest = x3.iloc[test_index[i], :], y2[test_index[i]]
-                xtrain, xtest = xtrain[max_features], xtest[max_features]
-                estimator, test_acc, predict = train_estimator(sur_model, xtrain, ytrain, xtest, ytest)
-                tests.append(test_acc), res.append(estimator), preds.append(predict)
-        else:
-            clf_num, ms = pre_screening(x3, y2, sur_model, features)
-            tests, estimators, mean_accs, preds, res = train_top3(sur_model, x3, y2, clf_num, train_index,
-                                                                  test_index, features)
-            max_features = res
-
-        tmodels = copy.deepcopy(sur_model)
-        tmodels.fit(x3[max_features], y2)
-
-        select_str = feature_select_method + sur_model_name + str(tmodels.get_params())
-        select_md5 = md5_convert(select_str)[:6]
-
-        if select_md5 not in cp_cache.keys():
+                clf_num, ms = pre_screening(x3, y2, sur_model, features)
+                tests, estimators, mean_accs, preds, res = train_top3(sur_model, x3, y2, clf_num, train_index,
+                                                                                 test_index, features)
+                max_features = res
+            tmodels = copy.deepcopy(sur_model)
+            tmodels.fit(x3[max_features], y2)
 
             test_acc_reports = pd.DataFrame(data=tests)
             test_acc_reports.columns = [sur_model_name]
             test_acc_reports_dict = df2bp(test_acc_reports)
-            test_acc_describe = np.round(test_acc_reports.describe().loc[("mean", 'min', 'max', 'std'), :],
-                                         3)
+            test_acc_describe = np.round(test_acc_reports.describe().loc[("mean", 'min', 'max', 'std'), :],3)
             test_acc_describe_ = test_acc_describe.reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
             test_acc_describe_dict = test_acc_describe_.to_dict('records')
 
@@ -301,27 +153,27 @@ def survival_cp_result(request, projectid):
                              'feature_names': feature_names, }
             final_reports = pd.DataFrame(final_reports, index=[sur_model_name]).reset_index().rename(
                 columns={'index': 'Method'})
-            final_reports['md5'], final_reports['fsm'] = select_md5, feature_select_method
             final_reports_dict = final_reports.to_dict('records')
 
             data_median = tmodels.predict(pd.DataFrame(x3[max_features].median()).T)[0]
-            surv_trace, resultp = mk_surv_data(sur_model_name, x3[max_features], y2, best_esti[0], data_median)
+            surv_trace, resultp = mk_surv_data(sur_model_name, x3[max_features],y2,best_esti[0],data_median)
             surv_layout = mk_surv_layout(sur_model_name, resultp)
             surv_data = {'surv_trace': surv_trace, 'surv_layout': surv_layout}
 
             # validation
-            vsurv_trace, vresultp = mk_surv_data(sur_model_name, validation_data[max_features], validation_label,
-                                                 best_esti[0], data_median)
-            vsurv_layout = mk_surv_layout(sur_model_name, vresultp)
-            vsurv_data = {'surv_trace': vsurv_trace, 'surv_layout': vsurv_layout}
+            vsurv_data,vlinedata = {}, []
+            if len(test_set)>0:
+                vsurv_trace, vresultp = mk_surv_data(sur_model_name, validation_data[max_features],validation_label,best_esti[0],data_median)
+                vsurv_layout = mk_surv_layout(sur_model_name, vresultp)
+                vsurv_data = {'surv_trace': vsurv_trace, 'surv_layout': vsurv_layout}
 
-            vlinedata = []
-            va_times, rsf_auc, mean_auc, cindex = time_dependent_auc(best_esti[0], validation_data,
-                                                                     validation_label, y2,
-                                                                     max_features, sur_model_name)
+                vlinedata = []
+                va_times, rsf_auc, mean_auc, cindex = time_dependent_auc(best_esti[0], validation_data,
+                                                                         validation_label, y2,
+                                                                         max_features, sur_model_name)
 
-            vlinetrace = mk_auc_line(sur_model_name, va_times, rsf_auc, mean_auc, cindex)
-            vlinedata.append(vlinetrace)
+                vlinetrace = mk_auc_line(sur_model_name, va_times, rsf_auc, mean_auc, cindex)
+                vlinedata.append(vlinetrace)
             # pickle
             surv_pickle = {
                 'sur_model_name': sur_model_name,
@@ -331,12 +183,17 @@ def survival_cp_result(request, projectid):
                 'final_reports_dict': final_reports_dict,
                 'surv_data': surv_data,
                 'vsurv_data': vsurv_data,
-                'vlinedata': vlinedata
+                'vlinedata': vlinedata,
+                'ifval': ifval
             }
+            # make cache
+            cp_cache = {}
             para_str = feature_select_method + final_reports['Method'][0] + str(final_reports['parameter'][0])
             para_md5 = md5_convert(para_str)[:6]
-            final_reports = pd.concat([cp_cache['reports'], final_reports], axis=0).drop_duplicates(keep='last')
+            # add parameter md5 and feature select method
+            final_reports['md5'], final_reports['fsm'] = para_md5, feature_select_method
             final_reports_dict = final_reports.to_dict('records')
+
             cp_cache[para_md5] = surv_pickle
             cp_cache['reports'] = final_reports
 
@@ -344,35 +201,226 @@ def survival_cp_result(request, projectid):
                       'wb') as f:
                 pickle.dump(cp_cache, f)
 
+            #单个模型下载
+            model_info = {}
+            model_info['name'], model_info['model'], model_info['feature_names'] = sur_model_name, tmodels, max_features
+
+            with open(STATIC_ROOT + '/cache/' + projectid + '/' + para_md5 + '.pkl',
+                      'wb') as f:
+                pickle.dump(model_info, f)
+
         else:
-            final_reports_dict = cp_cache['reports'].to_dict('records')
-            sur_model_name = cp_cache[select_md5]['sur_model_name']
-            line_chart_data = cp_cache[select_md5]['line_chart_data']
-            test_acc_reports_dict = cp_cache[select_md5]['test_acc_reports_dict']
-            test_acc_describe_dict = cp_cache[select_md5]['test_acc_describe_dict']
-            surv_data = cp_cache[select_md5]['surv_data']
-            vsurv_data = cp_cache[select_md5]['vsurv_data']
-            vlinedata = cp_cache[select_md5]['vlinedata']
+            # 存在缓存时
+            print('存在缓存！！！')
+            # load pickle 加载缓存数据
+            with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+                cp_cache = pickle.load(f)
+            # 判断是否已经跑过该数据,如果是直接返回数据
+            pd_reports = pd.DataFrame(cp_cache['reports'])
+            for i in range(len(pd_reports.index)):
+                select_md5 = 0
+                pd_report = pd_reports.iloc[i, :]
+                if (pd_report['parameter'] + pd_report['fsm']) == (
+                        str(sur_model.get_params()) + feature_select_method):
+                    select_md5 = pd_report['md5']
+                    print('using cache!!!')
+                    break
+            if select_md5 != 0:
+                final_reports_dict = cp_cache['reports'].to_dict('records')
+                sur_model_name = cp_cache[select_md5]['sur_model_name']
+                line_chart_data = cp_cache[select_md5]['line_chart_data']
+                test_acc_reports_dict = cp_cache[select_md5]['test_acc_reports_dict']
+                test_acc_describe_dict = cp_cache[select_md5]['test_acc_describe_dict']
+                surv_data = cp_cache[select_md5]['surv_data']
+                vsurv_data = cp_cache[select_md5]['vsurv_data']
+                vlinedata = cp_cache[select_md5]['vlinedata']
+                if len(cp_cache[select_md5]['vsurv_data']) != 0:
+                    ifval = True
+                else:
+                    ifval = False
+            else:
+                print('using cache fail ! ')
+                with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl', 'rb') as f:
+                    cp_cache = pickle.load(f)
+
+                inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0).T
+                train_set, test_set, blind_set = split_train_test(inputdata, datatype='survival')
+
+                x2, y2 = sur_data_process(train_set)
+                if len(test_set) > 0:
+                    validation_data, validation_label = sur_data_process(test_set)
+                    ifval = True
+                else:
+                    ifval = False
+                # x2, vaildation_data, y2, vaildation_label = train_test_split(x, y, random_state=10, train_size=0.7,
+                #                                                              stratify=y['Status'])
+                cv = KFold(n_splits=5, shuffle=True, random_state=10)
+                features = cox_selection(x2, y2)
+                # features,ss2 = cox_selection(x2,y2)
+                x3 = x2[features]
+                train_index, test_index = sur_RSKFold(x3, y2)
+                if feature_select_method != 'TopK':
+                    if feature_select_method == 'FSS':
+                        sf, ms = FSS_fun(features, sur_model, x3, y2, cv, n_jobs=1)
+                    else:
+                        sf, ms = BSS_fun(features, sur_model, x3, y2, cv, n_jobs=1)
+                    max_index = np.array(ms).argmax()
+                    max_score = max(ms)
+                    max_features = (sf[:max_index + 1])
+
+                    preds, tests, res = [], [], []
+                    for i in range(len(train_index)):
+                        xtrain, ytrain = x3.iloc[train_index[i], :], y2[train_index[i]]
+                        xtest, ytest = x3.iloc[test_index[i], :], y2[test_index[i]]
+                        xtrain, xtest = xtrain[max_features], xtest[max_features]
+                        estimator, test_acc, predict = train_estimator(sur_model, xtrain, ytrain, xtest, ytest)
+                        tests.append(test_acc), res.append(estimator), preds.append(predict)
+                else:
+                    clf_num, ms = pre_screening(x3, y2, sur_model, features)
+                    tests, estimators, mean_accs, preds, res = train_top3(sur_model, x3, y2, clf_num, train_index,
+                                                                          test_index, features)
+                    max_features = res
+
+                tmodels = copy.deepcopy(sur_model)
+                tmodels.fit(x3[max_features], y2)
+
+                select_str = feature_select_method + sur_model_name + str(tmodels.get_params())
+                select_md5 = md5_convert(select_str)[:6]
+
+                if select_md5 not in cp_cache.keys():
+
+                    test_acc_reports = pd.DataFrame(data=tests)
+                    test_acc_reports.columns = [sur_model_name]
+                    test_acc_reports_dict = df2bp(test_acc_reports)
+                    test_acc_describe = np.round(test_acc_reports.describe().loc[("mean", 'min', 'max', 'std'), :],
+                                                 3)
+                    test_acc_describe_ = test_acc_describe.reset_index().rename(columns={'index': 'Method'})  # 测试集准确率指数
+                    test_acc_describe_dict = test_acc_describe_.to_dict('records')
+
+                    line_chart_data = []
+                    line_trace = {
+                        'mode': 'lines+markers',
+                        'name': sur_model_name,
+                        'type': 'scatter',
+                        'x': list(range(1, len(ms)+1)),
+                        'y': ms
+                    }
+                    line_chart_data.append(line_trace)
+
+                    parameter, test_acc, best_esti = [], [], []
+                    feature_names = []
+                    best_esti.append(tmodels)
+                    parameter.append(str(tmodels.get_params()))
+                    test_acc.append(test_acc_describe.iloc[0, 0])
+                    feature_names.append(str(max_features))
+                    final_reports = {'Mean C-index': test_acc,
+                                     'parameter': parameter,
+                                     'feature_names': feature_names, }
+                    final_reports = pd.DataFrame(final_reports, index=[sur_model_name]).reset_index().rename(
+                        columns={'index': 'Method'})
+                    final_reports['md5'], final_reports['fsm'] = select_md5, feature_select_method
+                    final_reports_dict = final_reports.to_dict('records')
+
+                    data_median = tmodels.predict(pd.DataFrame(x3[max_features].median()).T)[0]
+                    surv_trace, resultp = mk_surv_data(sur_model_name, x3[max_features], y2, best_esti[0], data_median)
+                    surv_layout = mk_surv_layout(sur_model_name, resultp)
+                    surv_data = {'surv_trace': surv_trace, 'surv_layout': surv_layout}
+
+                    # validation
+                    vsurv_data,vlinedata = {}, []
+                    if len(test_set)>0:
+                        vsurv_trace, vresultp = mk_surv_data(sur_model_name, validation_data[max_features], validation_label,
+                                                             best_esti[0], data_median)
+                        vsurv_layout = mk_surv_layout(sur_model_name, vresultp)
+                        vsurv_data = {'surv_trace': vsurv_trace, 'surv_layout': vsurv_layout}
+
+                        vlinedata = []
+                        va_times, rsf_auc, mean_auc, cindex = time_dependent_auc(best_esti[0], validation_data,
+                                                                                 validation_label, y2,
+                                                                                 max_features, sur_model_name)
+
+                        vlinetrace = mk_auc_line(sur_model_name, va_times, rsf_auc, mean_auc, cindex)
+                        vlinedata.append(vlinetrace)
+                    # pickle
+                    surv_pickle = {
+                        'sur_model_name': sur_model_name,
+                        'line_chart_data': line_chart_data,
+                        'test_acc_reports_dict': test_acc_reports_dict,
+                        'test_acc_describe_dict': test_acc_describe_dict,
+                        'final_reports_dict': final_reports_dict,
+                        'surv_data': surv_data,
+                        'vsurv_data': vsurv_data,
+                        'vlinedata': vlinedata
+                    }
+                    para_str = feature_select_method + final_reports['Method'][0] + str(final_reports['parameter'][0])
+                    para_md5 = md5_convert(para_str)[:6]
+                    final_reports = pd.concat([cp_cache['reports'], final_reports], axis=0).drop_duplicates(keep='last')
+                    final_reports_dict = final_reports.to_dict('records')
+                    cp_cache[para_md5] = surv_pickle
+                    cp_cache['reports'] = final_reports
+
+                    with open(STATIC_ROOT + '/cache/' + projectid + '/cp_cache.pkl',
+                              'wb') as f:
+                        pickle.dump(cp_cache, f)
+                    model_info = {}
+                    model_info['name'], model_info['model'], model_info[
+                        'feature_names'] = sur_model_name, tmodels, max_features
+                    with open(STATIC_ROOT + '/cache/' + projectid + '/' + para_md5 + '.pkl',
+                              'wb') as f:
+                        pickle.dump(model_info, f)
+
+                else:
+                    final_reports_dict = cp_cache['reports'].to_dict('records')
+                    sur_model_name = cp_cache[select_md5]['sur_model_name']
+                    line_chart_data = cp_cache[select_md5]['line_chart_data']
+                    test_acc_reports_dict = cp_cache[select_md5]['test_acc_reports_dict']
+                    test_acc_describe_dict = cp_cache[select_md5]['test_acc_describe_dict']
+                    surv_data = cp_cache[select_md5]['surv_data']
+                    vsurv_data = cp_cache[select_md5]['vsurv_data']
+                    vlinedata = cp_cache[select_md5]['vlinedata']
 
 
-    #send email
-    to_mail = request.POST.get('to_mail')
-    print('mail: ',to_mail)
-    url = 'maler/survival_cp_result/prev/'+ projectid + '_' + para_md5
-    if to_mail != '':
-        if re.match('^.*?@.*', to_mail):
-            task_sendmail(to_mail, url)
-    return render(request, 'survival_cp_result.html', {
-        'projectid': projectid,
-        'sur_model_name': sur_model_name,
-        'line_chart_data': json.dumps(line_chart_data),
-        'test_acc_reports_dict': json.dumps(test_acc_reports_dict),
-        'test_acc_describe_dict': json.dumps(test_acc_describe_dict),
-        'final_reports_dict': json.dumps(final_reports_dict),
-        'surv_data': json.dumps(surv_data),
-        'vsurv_data': json.dumps(vsurv_data),
-        'vlinedata': json.dumps(vlinedata),
-    })
+        #send email
+        # to_mail = request.POST.get('to_mail')
+        to_mail =client_msg['to_mail']
+        print('mail: ',to_mail)
+        if 'para_md5' in locals():  # 判断是否使用缓存，已有数据的变量名是select_md5
+            url = 'maler/survival_cp_result/prev/'+ projectid + '_' + para_md5
+            if to_mail != '':
+                if re.match('^.*?@.*', to_mail):
+                    task_sendmail(to_mail, url)
+        analysis_results = {
+            'projectid': projectid,
+            'sur_model_name': sur_model_name,
+            'line_chart_data': line_chart_data,
+            'test_acc_reports_dict': test_acc_reports_dict,
+            'test_acc_describe_dict': test_acc_describe_dict,
+            'final_reports_dict': final_reports_dict,
+            'surv_data': surv_data,
+            'vsurv_data': vsurv_data,
+            'vlinedata': vlinedata,
+            'ifval': ifval,
+        }
+        return analysis_results
+    # return render(request, 'survival_cp_result.html', {
+    #     'projectid': projectid,
+    #     'sur_model_name': sur_model_name,
+    #     'line_chart_data': json.dumps(line_chart_data),
+    #     'test_acc_reports_dict': json.dumps(test_acc_reports_dict),
+    #     'test_acc_describe_dict': json.dumps(test_acc_describe_dict),
+    #     'final_reports_dict': json.dumps(final_reports_dict),
+    #     'surv_data': json.dumps(surv_data),
+    #     'vsurv_data': json.dumps(vsurv_data),
+    #     'vlinedata': json.dumps(vlinedata),
+    # })
+    except Exception as e:
+        print(repr(e))
+        print('线程池任务报错！！！')
+        analysis_results = {
+            "error": repr(e)
+        }
+        return analysis_results
+
 
 def show_prev_page(request, projectid_paramd5):
     if len(projectid_paramd5.split('-')[2]) != 4:
