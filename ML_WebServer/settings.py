@@ -137,10 +137,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'mlserver\\static').replace('\\','/')
 # WEBSOCKET_FACTORY_CLASS='dwebsocket.backends.uwsgi.factory.uWsgiWebSocketFactory' #uwsgi
 
 #email
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.163.com'      #163邮箱的邮箱服务地址
-EMAIL_PORT = 25  # 端口为465或587
-# EMAIL_USE_SSL = True  # SSL加密方式设置为True
-# EMAIL_USE_TLS = False
+EMAIL_PORT = 465  # 端口为465或587
+EMAIL_USE_SSL = True  # SSL加密方式设置为True
+EMAIL_USE_TLS = False
 EMAIL_HOST_USER = 'linzhewei1999@163.com'    #这里是你的邮箱账号
 EMAIL_HOST_PASSWORD = 'ZPFKAPUKPWDTXTTZ'   #注意这里不能用你邮箱账号的密码，而要用申请的设备授权码。

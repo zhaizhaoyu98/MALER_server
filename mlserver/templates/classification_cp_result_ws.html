@@ -127,19 +127,6 @@
 			@keyframes p4 {
 			    100% {background-size:120%}
 			}
-			.progress-2 {
-			  width:120px;
-			  height:20px;
-			  border-radius: 20px;
-			  background:
-			   linear-gradient(orange 0 0) 0/0% no-repeat
-			   lightblue;
-			  animation:p2 2s infinite steps(10);
-			}
-			@keyframes p2 {
-			    100% {background-size:110%}
-			}
-
 			
 		</style>
 		<script>
@@ -163,7 +150,7 @@
 							<tr><th> ProjectID:&nbsp;&nbsp;{{projectid}}</th></tr>
 							<tr><th id="time"> Submitted time: </th></tr>
 							<tr><th>Status: Running &nbsp;&nbsp;&nbsp;&nbsp; <div class="progress-6" style="display: inline-block;"></div></th></tr>
-							<tr><th id="analysis_time"> Analysis time:&nbsp;&nbsp;{{projectid}}</th></tr>
+							<!-- <tr><th id="analysis_time"> Analysis time:&nbsp;&nbsp;{{projectid}}</th></tr> -->
 							<tr><th> The project has been submitted, please wait... </th></tr>
 						</pre>
 						

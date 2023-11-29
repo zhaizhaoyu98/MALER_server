@@ -77,8 +77,37 @@
 				color: #17a2b8; margin-bottom: 20px;
 				font-weight: bolder;
 			}
-			
-
+			.table
+			{
+			border-collapse: collapse;
+			/* margin: 1px,1px,1px,1px; */
+			margin: auto;
+			text-align: center;
+			}
+			.table td, .table th
+			{
+			border: 1px solid rgba(0,0,0,.1);
+			color: #666;
+			height: 45px;
+			}
+			.table .thead th
+			{
+			background-color: rgba(0,0,0,.03);
+			width: 35px;
+			height: 45px;
+			}
+			.progress-4 {
+			  width:200px;
+			  height:10px;
+			  -webkit-mask:linear-gradient(90deg,#17a2b8 70%,#0000 0) 0/10%;
+			  background:
+			   linear-gradient(#17a2b8 0 0) 0/0% no-repeat
+			   #ddd;
+			  animation:p4 5s infinite steps(12);
+			}
+			@keyframes p4 {
+			    100% {background-size:120%}
+			}
 		</style>
 		<script>
 			$(document).ready(function(){
@@ -95,14 +124,14 @@
 		{% include 'public_templates/nav_tem.html' %}
 		<div id= running>
 			<br>
-				<table id="running_table"  style="width: 50%;" lazyload="True">
+				<table id="running_table"  style="width: 50%;" lazyload="True" class="table">
 					 <thead>
 						 <pre>
 							<tr><th> Project Details</th></tr>
 							<tr><th> ProjectID:&nbsp;&nbsp;{{projectid}}</th></tr>
 							<tr><th id="time"> Submitted time: </th></tr>
 							<tr><th>Status: Running &nbsp;&nbsp;&nbsp;&nbsp; <div class="progress-6" style="display: inline-block;"></div></th></tr>
-							<tr><th id="analysis_time"> Analysis time:&nbsp;&nbsp;{{projectid}}</th></tr>
+							<!-- <tr><th id="analysis_time"> Analysis time:&nbsp;&nbsp;{{projectid}}</th></tr> -->
 							<tr><th> The project has been submitted, please wait... </th></tr>
 						</pre>
 						
