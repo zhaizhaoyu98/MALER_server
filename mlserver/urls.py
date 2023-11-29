@@ -2,11 +2,8 @@ from django.urls import path
 from django.conf import settings ##new add
 from django.conf.urls. static import static ## new add
 # from . import views
-from .views import home_views, analysis_views, predict_views, \
-    classification_oc_result_views, classification_cp_result_views, \
-    survival_oc_result_views, survival_cp_result_views, \
-    regression_oc_result_views, regression_cp_result_views, help_views, \
-    download_views, preview_views, predict_result,websocket,classification_cp_result_view_websocket, \
+from .views import home_views, analysis_views, predict_views,help_views, \
+    download_views, preview_views, predict_result,classification_cp_result_view_websocket, \
     classification_oc_result_view_webscoket,regression_cp_result_view_websocket, \
     regression_oc_result_view_websocket,survival_cp_result_view_websocket,survival_oc_result_view_websocket
 

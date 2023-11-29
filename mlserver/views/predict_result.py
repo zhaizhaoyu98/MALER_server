@@ -7,9 +7,9 @@ import os, shutil, pickle
 import numpy as np
 import pandas as pd
 
-from mlserver.views.classification_oc_result_views import JsonEncoder
+from mlserver.views.classification_oc_result_view_webscoket import JsonEncoder
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_views import get_file_md5
+from mlserver.views.classification_oc_result_view_webscoket import get_file_md5
 from django.contrib import messages
 from mlserver.views.predict_views import pred_val_split, sur_pred_plot
 from mlserver.views.classification_oc_result_view_webscoket import classification_process, JsonEncoder
