@@ -96,17 +96,25 @@
 			width: 35px;
 			height: 45px;
 			}
-			.progress-4 {
+			.progress-6 {
 			  width:200px;
 			  height:10px;
-			  -webkit-mask:linear-gradient(90deg,#17a2b8 70%,#0000 0) 0/10%;
-			  background:
-			   linear-gradient(#17a2b8 0 0) 0/0% no-repeat
-			   #ddd;
-			  animation:p4 5s infinite steps(12);
+			  border-radius: 20px;
+			  color: #17a2b8;
+			  border:2px solid;
+			  position: relative;
 			}
-			@keyframes p4 {
-			    100% {background-size:120%}
+			.progress-6::before {
+			  content:"";
+			  position: absolute;
+			  margin:1px;
+			  inset:0 100% 0 0;
+			  border-radius: inherit;
+			  background: #17a2b8;
+			  animation:p6 5s infinite;
+			}
+			@keyframes p6 {
+			    100% {inset:0}
 			}
 		</style>
 		<script>
@@ -224,13 +232,16 @@
 						<div id="vlineplotDiv"></div>
 						<br />
 					</div>
-					<h3 class="panel-heading" id="list-item-5" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-						Report
-					</h3>
+					<div class="btnGroups">
+						<h3 class="panel-heading" id="list-item-5" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Report  <button id="export" class="btn btn-primary" style="position:absolute;right:30px;background: #17a2b8;border: 0px;">Download</button>
+						</h3>  
+					</div>
 					<table id="reporttable" class="display" style="width: 100%;" lazyload="True">
 						 <thead>
 							<tr>
 								<th></th>
+								<th>Normalization method</th>
 								<th class="none">Feature Names</th>
 								<th>Mean C-index</th>
 								<th>Feature_names/Parameter</th>
@@ -268,7 +279,8 @@
 					model_md5: "{{model_md5}}",
 					fsm: "{{fsm}}",
 					form_action: "{{form_action}}",
-					to_mail: '{{to_mail}}'
+					to_mail: '{{to_mail}}',
+					feature_norm: '{{feature_norm}}'
 				}
 				var s = new WebSocket("ws://" + window.location.host + "/maler/survival_oc_result_ws/{{projectid}}");
 				window.s = s;
@@ -549,8 +561,8 @@
 						  				  xanchor: 'middle',
 						  				  yanchor: 'right',
 						  				  valign: 'middle',
-						  				  x: 0.05,
-						  				  y: 1.03
+						  				  x: 0.3,
+						  				  y: 0.25
 						  },
 						};
 						var linechart_layout = {
@@ -594,15 +606,30 @@
 							columnDefs: [ {
 								className: 'control',
 								orderable: false,
-								targets:   3,
+								targets:   4,
 							} ],
 							data: report_data,
 							searching: false, 
 							paging: false, 
 							info: false,
 							sort: false,
+							"dom":'Blfrtip',
+							buttons: [{
+								extend: 'csv',
+								text: "",
+								className: "icon_",
+								filename:'Report',
+								}],
+							initComplete: function() {
+									var $buttons = $('.dt-buttons').hide();
+									$('#export').on('click', function() {
+										var btnClass = ".buttons-csv";
+										if (btnClass) $buttons.find(btnClass).click();
+									})
+									},
 							columns: [
 								{ data: 'Method' },
+								{ data: 'scaler'},
 								{ data: 'feature_names' },
 								{ data: 'Mean C-index' },
 								{ 

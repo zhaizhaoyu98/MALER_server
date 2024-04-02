@@ -129,7 +129,7 @@
 							XGBoost, lightGBM, Adaboost, DecisionTree, GBDT
 						</td>
 						<td rowspan="2">Accuracy, Recall, Precision, F1-score, AUC</td>
-						<td rowspan="2">ANOVA(f_classif from sklearn)</td>
+						<td rowspan="2">ANOVA(f_classif from sklearn), MRMR(Maximum relevance and minimum redundancy)</td>
 						<td rowspan="4">Top K, FSS(SFS), BSS</td>
 					</tr>
 					<tr>
@@ -141,7 +141,7 @@
 							XGBoost, AdaBoost, Random Forest, Gradient Boosting Regressor
 						</td>
 						<td>R-Squared, MAE, MSE</td>
-						<td>Pearson's correlation (f_regression from sklearn)</td>
+						<td>Pearson's correlation (f_regression from sklearn), MRMR(Maximum relevance and minimum redundancy)</td>
 					</tr>
 					<tr>
 						<td style="font-weight: bold;">Survival Analysis</td>
@@ -214,7 +214,7 @@
                 <p><b>Module selection</b></p>
 				
 				
-				<p style="text-align: center"><img src='/mlserver_static/img/help_analysis.png' width="1300" height="400"></p>
+				<p style="text-align: center"><img src='/mlserver_static/img/help_analysis.png' width="960" height="400"></p>
 				<p>
                     MALER provides four modules including binary classification, multi-class classification, regression
                     and survival analysis. Classification is a supervised process that involves predicting the class of
@@ -223,7 +223,7 @@
                 </p>
 				<!-- <img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/gen_tab.png" alt="general tab img"/> -->
 				<p><b>Data submit</b></p>
-				<p style="text-align: center"><img src='/mlserver_static/img/help_submit.png' width="1300" height="520"></p>
+				<p style="text-align: center"><img src='/mlserver_static/img/help_submit.png' width="960" height="480"></p>
 
 				<p>When the module is selected, the user should submit the corresponding data format as following. Example
                     data was also provided in “Example Data”.</p>
@@ -233,7 +233,7 @@
 				<!-- <img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/general_home.PNG" alt="general overview img"/> -->
 				<br>
 				<p><b>Preview</b></p>
-				<p style="text-align: center"><img src='/mlserver_static/img/help_preview.png' width="1300" height="1150"></p>
+				<p style="text-align: center"><img src='/mlserver_static/img/help_preview.png' width="900" height="1400"></p>
 				<p>In the preview page, users can view the information and distribution about the uploaded data.
 					After checking the data, click the 'Analysis' button to analyze the input data.
 				</p>
@@ -309,23 +309,6 @@
 				<br></br>
             <h3 id='browse'>Feature Selection Methods</h3>
 				<hr>
-<!--            <h5 id='one_click'>One-click Modeling</h5>
-				<hr>
-				<p>
-                    One-click Modeling allows users run multiple models within the same process. The default parameters
-                    would be set for each ML model.
-				</p> -->
-				
-                <!-- <img style="width: 100%; padding-left: 10%; padding-right: 10%" src="/organoidb_static/img/help_img/Detailed_information_page.PNG" alt="Detailed information img"/> -->
-<!--            <h5 id='cus_model'>Customized Modeling</h5>
-				<hr>
-				<p>
-                    Users can customized the machine learning algorithm using different parameters. The Customized
-                    modeling will be stored in the server and could be compared with other modelings derived from the
-                    same data under the same study ID.
-				</p> -->
-                <!-- <img style="width: 75%; padding-left: 25%;" src="/organoidb_static/img/statistics_table.PNG" alt="Statistics img"/> -->
-				
             <h5>Feature Selection</h5>
             	<hr>
             	<p>
@@ -338,6 +321,12 @@
             		Pearson's correlation between each feature and the target is caculated using f_regression from scikit-learn 
             		selectKBeset package. The resulting F-statistics and P-values are used for ranking and filtering features.
             	</p>
+				<p>
+					<b>Multivariate feature selection algorithm: MRMR</b>
+					The MRMR method aims to identify features with the maximum correlation to the target labels while maintaining minimal redundancy among the selected features.
+					Here, we use the F-statistic to assess the correlation between features and the label, while employing Pearson correlation to evaluate redundancy among features.
+					 
+				</p>
 				<p>
 					<b>survival analysis: univariate Cox regression</b>
 					Univariate Cox regression analysis is performed by lifeline package to evaluate the correlation between each 

@@ -191,6 +191,8 @@
 						<input name="fsm" id="fsm" style="display: none;" value="{{ fsm }}"/>
 						<input name="form_action" id="form_action" style="display: none;" value="{{ form_action }}"/>
 						<input name="to_mail" id="to_mail" style="display: none;" value="{{ to_mail }}"/>
+						<input name="gridsearch_para" id="gridsearch_para" style="display: none;" value="{{ gridsearch_para }}"/>
+						<input name="feature_norm" id="feature_norm" style="display: none;" value="{{ feature_norm }}"/>
 					
 					<br />
 					<br />
@@ -324,14 +326,18 @@
 				columns: {{inputdata_columns|safe}}
 			});
 			var hist_layout = {
-				plot_bgcolor: '#f8f9fa',
-				paper_bgcolor: '#f8f9fa',
+				plot_bgcolor: '#ffffff',
+				paper_bgcolor: '#ffffff',
+				height: 550,
 				margin: {
-				  'b': 30,
-				  'l': 60,
-				  'r': 60,
+				  'b': 40,
+				  'l': 50,
+				  'r': 30,
 				  't': 30
 				},
+				bargap: 0.01,
+				xaxis: {title: 'Bins', standoff:10}, 
+				yaxis: {title: 'Density', standoff:10}, 
 			}
 			$('#inputdata_display').wrapAll("<div style='overflow-x:auto;width:100%;overflow-y:auto;height:500px'>");
 			Plotly.react('histplotDiv', {{ hist_trace|safe }},hist_layout);

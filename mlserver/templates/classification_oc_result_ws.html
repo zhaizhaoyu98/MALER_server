@@ -98,18 +98,27 @@
 			width: 35px;
 			height: 45px;
 			}
-			.progress-4 {
+			.progress-6 {
 			  width:200px;
 			  height:10px;
-			  -webkit-mask:linear-gradient(90deg,#17a2b8 70%,#0000 0) 0/10%;
-			  background:
-			   linear-gradient(#17a2b8 0 0) 0/0% no-repeat
-			   #ddd;
-			  animation:p4 5s infinite steps(12);
+			  border-radius: 20px;
+			  color: #17a2b8;
+			  border:2px solid;
+			  position: relative;
 			}
-			@keyframes p4 {
-			    100% {background-size:120%}
+			.progress-6::before {
+			  content:"";
+			  position: absolute;
+			  margin:1px;
+			  inset:0 100% 0 0;
+			  border-radius: inherit;
+			  background: #17a2b8;
+			  animation:p6 5s infinite;
 			}
+			@keyframes p6 {
+			    100% {inset:0}
+			}
+			
 
 		</style>
 		<script>
@@ -337,14 +346,20 @@
 						<div id="vrocplotDiv" style="margin-right: 0px;"></div>
 					</div>
 					
-					<h3 class="panel-heading" id="list-item-10" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-						Report
-					</h3>
+					<div class="btnGroups">
+						<h3 class="panel-heading" id="list-item-10" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Report  <button id="export" class="btn btn-primary" style="position:absolute;right:30px;background: #17a2b8;border: 0px;">Download</button>
+						</h3>  
+					</div>
 					<table id="finaltable" class="display" style="width: 100%;" lazyload="True">
 						 <thead>
 							<tr>
 								<th></th>
+								<th>Normalization Method</th>
+								<th>Feature Selection Method</th>
+								<!-- <th>Optimal Feature Subset Search Methods</th> -->
 								<th class="none">Feature Names</th>
+								
 								<th>Mean Accuracy</th>
 									<th id="th1">Mean Precision</th>
 									<th id="th2">Mean AUC</th>
@@ -383,7 +398,8 @@
 					model_md5: "{{model_md5}}",
 					fsm: "{{fsm}}",
 					form_action: "{{form_action}}",
-					to_mail: '{{to_mail}}'
+					to_mail: '{{to_mail}}',
+					feature_norm: '{{feature_norm}}'
 				}
 				var s = new WebSocket("ws://" + window.location.host + "/maler/classification_oc_result_ws/{{projectid}}");
 				window.s = s;
@@ -406,8 +422,8 @@
 							document.getElementById('test_plot').style.display = "block"
 							
 						};
-						
-						if (results_data.ifmarco != true) {
+						console.log(results_data.ifmarco)
+						if (results_data.ifmarco == true) {
 							for (var i=2;i<7;i++){
 								$("*[id^=list-item-]")[i].innerHTML = 'Marco ' + $("*[id^=list-item-]")[i].innerHTML
 							}
@@ -434,6 +450,7 @@
 							xaxis: {
 							  title: 'Number of features', 
 							  anchor: 'y', 
+
 							}, 
 							yaxis: {
 							  title: 'Accuracy', 
@@ -444,7 +461,8 @@
 							}
 						}
 						var acc_layout = {
-							title: 'Boxplot of accuracy'
+							title: 'Boxplot of accuracy',
+
 						};
 						var auc_layout = {
 							title: 'Boxplot of AUC'
@@ -599,111 +617,112 @@
 						
 						var multi_roc_layout = {
 							title: 'ROC',
+							hoverlabel: {'namelength':50},
 							margin: {
 							  'b': 50,
 							  'l': 60,
 							  'r': 60,
-							  't': 75
+							  't': 100
 							},
 							showlegend: false,
-							height: 900,
+							height: 1200,
 							xaxis1: {
-							  title: xtitle, 
+							  title: 'FPR', 
 							  anchor: 'y1', 
-							  domain: [0.0, 0.2]
+							  domain: [0.0, 0.2],
 							}, 
 							xaxis2: {
-							  title: xtitle, 
+							  title: 'FPR', 
 							  anchor: 'y2', 
 							  domain: [0.266, 0.466]
 							}, 
 							xaxis3: {
-							  title: xtitle, 
+							  title: 'FPR', 
 							  anchor: 'y3', 
 							  domain: [0.532, 0.732] 
 							}, 
 							xaxis4: {
-							  title: xtitle, 
+							  title: 'FPR', 
 							  anchor: 'y4', 
 							  domain: [0.798, 0.998]
 							}, 
 							xaxis5: {
-							  title: xtitle, 
+							  title: 'FPR', 
 							  anchor: 'y5', 
 							  domain: [0.0, 0.2]
 							}, 
 							xaxis6: {
-							  title: xtitle, 
+							  title: 'FPR', 
 							  anchor: 'y6', 
 							  domain: [0.266, 0.466]
 							},
 							xaxis7: {
-							  title: xtitle, 
+							  title: 'FPR', 
 							  anchor: 'y7', 
 							  domain: [0.532, 0.732]
 							},
 							xaxis8: {
-							  title: xtitle, 
+							  title: 'FPR', 
 							  anchor: 'y8', 
 							  domain: [0.798, 0.998]
 							},
 							xaxis9: {
-							  title: xtitle, 
+							  title: 'FPR', 
 							  anchor: 'y9', 
 							  domain: [0.0, 0.2]
 							},
 							xaxis10: {
-							  title: xtitle, 
+							  title: 'FPR', 
 							  anchor: 'y10', 
 							  domain: [0.266, 0.466]
 							},
 							yaxis1: {
-							  title: ytitle, 
+							  title: 'TPR', 
 							  anchor: 'x1', 
 							  domain: [0.75, 1.0]
 							}, 
 							yaxis2: {
-							  title: ytitle, 
+							  title: 'TPR', 
 							  anchor: 'x2', 
 							  domain: [0.75, 1.0]
 							}, 
 							yaxis3: {
-							  title: ytitle, 
+							  title: 'TPR', 
 							  anchor: 'x3', 
 							  domain: [0.75, 1.0]
 							}, 
 							yaxis4: {
-							  title: ytitle, 
+							  title: 'TPR', 
 							  anchor: 'x4', 
 							  domain: [0.75, 1]
 							},
 							yaxis5: {
-							  title: ytitle, 
+							  title: 'TPR', 
 							  anchor: 'x5', 
 							  domain: [0.375, 0.625]
 							}, 
 							yaxis6: {
-							  title: ytitle, 
+							  title: 'TPR', 
 							  anchor: 'x6', 
 							  domain: [0.375, 0.625]
 							}, 
 							yaxis7: {
-							  title: ytitle, 
+							  title: 'TPR', 
 							  anchor: 'x7', 
 							  domain: [0.375, 0.625]
 							}, 
 							yaxis8: {
-							  title: ytitle, 
+							  title: 'TPR', 
 							  anchor: 'x8', 
 							  domain: [0.375, 0.625]
 							}, 
 							yaxis9: {
-							  title: ytitle, 
+							  title: 'TPR', 
 							  anchor: 'x9', 
 							  domain: [0.0, 0.25]
 							},
 							yaxis10: {
-							  title: ytitle, 
+							  title: 'TPR', 
 							  anchor: 'x10', 
 							  domain: [0.0, 0.25]
 							},
@@ -711,6 +730,7 @@
 						}
 						var roc_layout = {
 							title: 'ROC curve', 
+							hoverlabel: {'namelength':50},
 							  xaxis: {
 								type: 'linear', 
 								range: [0, 1], 
@@ -741,6 +761,7 @@
 							}, 
 							showlegend: true
 						}
+						// 绘图小标题，for循环
 						for(var i=0;i<model.length;i++){
 							var subtitle = {
 								text: model[i],
@@ -750,9 +771,24 @@
 								 y: 1.15,
 								 yref: "y"+(i+1)+" domain"
 							};
-							inside_num.push(subtitle) 
-							multi_annotations.push(subtitle) 
+							inside_num.push(subtitle)
+							if (results_data.ifmarco == true) {
+								var mauc = results_data.roc_aucs[i].toFixed(3)
+								var mult_subtitle = {
+									// text: model[i]+i,
+									text:'<span style="font-size: 10pt;">'+model[i]+'<br>'+ 'Macro-average AUC: ' + mauc + '</span>', 
+									showarrow: false,
+									x: 0.5,
+									xref: "x"+(i+1)+" domain",
+									y: 1.20,
+									yref: "y"+(i+1)+" domain"
+								};
+								multi_annotations.push(mult_subtitle)
+								 }
 						};
+						
+						
+						
 						<!--第三步：初始化Datatables-->
 						$('#acctable').DataTable({
 							data: acc_data,
@@ -866,15 +902,32 @@
 							columnDefs: [ {
 								className: 'control',
 								orderable: false,
-								targets:   7,
+								targets:   9,
 							} ],
 							data: final_data,
 							searching: false, 
 							paging: false, 
 							info: false,
 							sort: false,
+							"dom":'Blfrtip',
+							buttons: [{
+								extend: 'csv',
+								text: "",
+								className: "icon_",
+								filename:'Report',
+								}],
+							initComplete: function() {
+									var $buttons = $('.dt-buttons').hide();
+									$('#export').on('click', function() {
+										var btnClass = ".buttons-csv";
+										if (btnClass) $buttons.find(btnClass).click();
+									})
+									},
 							columns: [
 								{ data: 'Method' },
+								{ data: 'scaler'},
+								{ data: 'Fsm' },
+								// { data: 'fsm'},
 								{ data: 'feature_names' },
 								{ data: 'test_acc' },
 								{ data: 'precision' },
@@ -910,13 +963,18 @@
 						Plotly.newPlot('radarplotDiv', results_data.radar_dict, radar_layout);
 						Plotly.newPlot('vbarplotDiv', results_data.vbar_trace,hist_layout);
 						Plotly.newPlot('heatmapDiv', results_data.heatmap_data, heatmap_layout);
-						{% if ifmarco != True %}
-						Plotly.newPlot('vrocplotDiv', results_data.valid_roc_traces, roc_layout);
-						{% else %}
-						Plotly.newPlot('vrocplotDiv', results_data.valid_roc_traces, multi_roc_layout);
-						{% endif %}
+						// {% if ifmarco != True %}
+						// Plotly.newPlot('vrocplotDiv', results_data.valid_roc_traces, roc_layout);
+						// {% else %}
+						// Plotly.newPlot('vrocplotDiv', results_data.valid_roc_traces, multi_roc_layout);
+						// {% endif %}
 						
-
+						console.log(results_data.valid_roc_traces[1]['name'])
+						if (results_data.ifmarco == true) {
+							Plotly.newPlot('vrocplotDiv', results_data.valid_roc_traces, multi_roc_layout);
+						}else{
+							Plotly.newPlot('vrocplotDiv', results_data.valid_roc_traces, roc_layout);
+						}
 					};
 				};
 				setInterval(() => {

@@ -94,17 +94,25 @@
 			width: 35px;
 			height: 45px;
 			}
-			.progress-4 {
+			.progress-6 {
 			  width:200px;
 			  height:10px;
-			  -webkit-mask:linear-gradient(90deg,#17a2b8 70%,#0000 0) 0/10%;
-			  background:
-			   linear-gradient(#17a2b8 0 0) 0/0% no-repeat
-			   #ddd;
-			  animation:p4 5s infinite steps(12);
+			  border-radius: 20px;
+			  color: #17a2b8;
+			  border:2px solid;
+			  position: relative;
 			}
-			@keyframes p4 {
-			    100% {background-size:120%}
+			.progress-6::before {
+			  content:"";
+			  position: absolute;
+			  margin:1px;
+			  inset:0 100% 0 0;
+			  border-radius: inherit;
+			  background: #17a2b8;
+			  animation:p6 5s infinite;
+			}
+			@keyframes p6 {
+			    100% {inset:0}
 			}
 		</style>
 		<script>
@@ -159,7 +167,7 @@
 			
 			<div class='col-2 d-none d-xl-block' style="">
 				<div id="list-example" class="list-group "
-					style="position: fixed; width:270px;height: 500px;margin-left: 20px;padding-left: 0;margin-top:30px">
+					style="position: fixed; width:270px;height: 400px;margin-left: 0px;padding-left: 0;margin-top:30px">
 					<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
 					<a class="list-group-item list-group-item-action" href="#list-item-2">R-square</a>
 					<a class="list-group-item list-group-item-action" href="#list-item-3">MAE</a>
@@ -283,13 +291,17 @@
 						</table>
 						<br />
 					</div>
-					<h3 class="panel-heading" id="list-item-6" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-						Report
-					</h3>
+					<div class="btnGroups">
+						<h3 class="panel-heading" id="list-item-6" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Report  <button id="export" class="btn btn-primary" style="position:absolute;right:30px;background: #17a2b8;border: 0px;">Download</button>
+						</h3>  
+					</div>
 					<table id="reporttable" class="display" style="width: 100%;" lazyload="True">
 						 <thead>
 							<tr>
 								<th></th>
+								<th>Normalization method</th>
+								<th>Feature Select Method</th>
 								<th>Mean R-square</th>
 								<th>Mean MAE</th>
 								<th>Mean MSE</th>
@@ -326,7 +338,8 @@
 					// model_md5: "{{model_md5}}",
 					fsm: "{{fsm}}",
 					form_action: "{{form_action}}",
-					to_mail: '{{to_mail}}'
+					to_mail: '{{to_mail}}',
+					feature_norm: '{{feature_norm}}'
 				}
 				var s = new WebSocket("ws://" + window.location.host + "/maler/regression_oc_result_ws/{{projectid}}");
 				window.s = s;
@@ -1007,15 +1020,32 @@
 							columnDefs: [ {
 								className: 'control',
 								orderable: false,
-								targets:   5,
+								targets:   7,
 							} ],
 							data: report_data,
 							searching: false, 
 							paging: false, 
 							info: false,
 							sort: false,
+							"dom":'Blfrtip',
+							buttons: [{
+								extend: 'csv',
+								text: "",
+								className: "icon_",
+								filename:'Report',
+								}],
+							
+							initComplete: function() {
+									var $buttons = $('.dt-buttons').hide();
+									$('#export').on('click', function() {
+										var btnClass = ".buttons-csv";
+										if (btnClass) $buttons.find(btnClass).click();
+									})
+									},
 							columns: [
 								{ data: 'Method' },
+								{ data: 'scaler'},
+								{ data: 'Fsm'},
 								{ data: 'Mean R-square' },
 								{ data: 'Mean MAE' },
 								{ data: 'Mean MSE' },

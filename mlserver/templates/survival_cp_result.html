@@ -175,23 +175,30 @@
 					<div id="vsurvplotDiv"></div>
 					<div id="vlineplotDiv"></div>
 					<br />
-					<h3 class="panel-heading" id="list-item-5" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-						Report
-					</h3>
+					<div class="btnGroups">
+						<h3 class="panel-heading" id="list-item-5" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Report  <button id="export" class="btn btn-primary" style="position:absolute;right:30px;background: #17a2b8;border: 0px;">Download</button>
+						</h3>  
+					</div>
 					<table id="reporttable" class="display" style="width: 100%;" lazyload="True">
 						 <thead>
 							<tr>
 								<th></th>
-								<th>Feature Select Method</th>
+								<th>Index</th>
+								<th>Normalization method</th>
+								<th>Optimal Feature Subset Search Method</th>
 								<th class="none">Feature Names</th>
 								<th>Mean C-index</th>
 								<th>Feature_names/Parameter</th>
 								<th class="none">Parameter</th>
+								<th class="none">GridSearch Parameter</th>
 								<th>View</th>
+								<th>Download</th>
 							</tr>
 						</thead>
 					</table>
 				</div>
+				<br />
 			</div>
 			
 			
@@ -199,14 +206,7 @@
 			<br />
 			<br />
 			<br />
-			<!-- <div class="row">
-				<div class="col-6">
-					<button type="button" onclick="window.location.href='/mlserver/analysis_oneclick'" class="btn btn-info" style="width: 100%;">One-click Analysis</button>
-				</div>
-				<div class="col-6">
-					<button type="button" onclick="window.location.href='/mlserver/analysis_perpara'" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">Personalized Parameters Analysis</button>
-				</div>				
-			</div> -->
+
 		</div>
 		<!-- 底部 -->
 		{% include 'public_templates/footer.html' %}
@@ -215,6 +215,10 @@
 			var csrftoken = $("input[name='csrfmiddlewaretoken']").attr('value');
 			var acc_data = {{ test_acc_describe_dict|safe }};
 			var report_data = {{ final_reports_dict|safe }};
+			// 删除 scaler中带的括号
+			report_data[0]['scaler'] = report_data[0]['scaler'].split('()')[0]
+			var url = this.location.pathname
+			var arr= url.split("/")
 			// plotly layout
 			var acc_layout = {
 				title: 'Boxplot of C-index'
@@ -300,15 +304,31 @@
 					columnDefs: [ {
 					    className: 'control',
 					    orderable: false,
-					    targets:   4,
+					    targets:   6,
 					} ],
 					data: report_data,
 					searching: false, 
 					paging: false, 
 					info: false,
 					sort: false,
+					"dom":'Blfrtip',
+					buttons: [{
+						extend: 'csv',
+						text: "",
+						className: "icon_",
+						filename:'Report',
+						}],
+					initComplete: function() {
+							var $buttons = $('.dt-buttons').hide();
+							$('#export').on('click', function() {
+								var btnClass = ".buttons-csv";
+								if (btnClass) $buttons.find(btnClass).click();
+							})
+							},
 					columns: [
 						{ data: 'Method' },
+						{ data: 'md5'},
+						{ data: 'scaler'},
 						{ data: 'fsm' },
 						{ data: 'feature_names' },
 						{ data: 'Mean C-index' },
@@ -319,6 +339,7 @@
 							}
 						 },
 						{ data: 'parameter' },
+						{ data: 'grid_para'},
 						{ 
 							data: 'md5' ,
 							"render": function(data, type, row, meta){
@@ -330,6 +351,20 @@
 									data = '<a value="' + data + '" href="{{projectid}}_' + data + '">view</a>'
 									{% endif %}
 								}
+								return data;
+							},
+						},
+						{
+							data: 'md5' ,
+							"render": function(data, type, row, meta){
+								// if(type === 'display'){
+									if( arr[3] == 'prev'){
+										data = '<a value="' + $('#projectid').val() + '_' + data + '" href="../../model_download/' + $('#projectid').val() + '_' + data + '">Download</a>'
+									}else{
+										data = '<a value="' + $('#projectid').val() + '_' + data + '" href="../model_download/' + $('#projectid').val() + '_' + data + '">Download</a>'
+									}
+									
+								// }
 								return data;
 							},
 						},

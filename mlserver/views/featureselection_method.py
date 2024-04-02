@@ -20,9 +20,9 @@ def mrmr_fs(data,label,info,k=50):
     from mrmr import mrmr_classif, mrmr_regression
     k = min(len(data.columns),k)
     if info.split(",")[0] == 'classification':
-        selected_id = mrmr_classif(X=data, y=label, K=k,n_jobs=1)
+        selected_id = mrmr_classif(X=data, y=label, K=k,n_jobs=4)
     else:
-        selected_id = mrmr_regression(X=data, y=label, K=k,n_jobs=1)
+        selected_id = mrmr_regression(X=data, y=label, K=k,n_jobs=4)
     feature_names = list(data.loc[:,selected_id].columns)
     return feature_names
 
@@ -87,6 +87,17 @@ def train_estimator(clf,xtrain,ytrain,xtest,ytest):
     test_acc = accuracy_score(ytest,predict,normalize=True,)
     return res,test_acc,predict
 
+def train_estimator_reg(clf, xtrain, ytrain, xtest, ytest):
+    clf2 = copy.deepcopy(clf)
+    # print(xtrain.dtypes)
+    # print(xtrain, ytrain)
+    res = clf2.fit(xtrain, ytrain)
+    predict = res.predict(xtest)
+    test_acc = res.score(xtest, ytest)
+    # print('test_acc: ',test_acc)
+    return res, test_acc, predict
+
+
 def train_top3(clf,data,label,clf_num,train_index,test_index,feature_names):
     test_accs,estimators,predicts,f_names = {},{},{},{}
     mean_accs = []
@@ -111,6 +122,30 @@ def train_top3(clf,data,label,clf_num,train_index,test_index,feature_names):
     f_names = f_names[topk]
     return test_accs,estimators,mean_accs,predicts,f_names
 
+def train_top3_reg(clf, data, label, clf_num, train_index, test_index, feature_names):
+    test_accs, estimators, predicts, f_names = {}, {}, {}, {}
+    mean_accs = []
+    for j in range(len(clf_num)):  # top3分类器
+        preds, tests, res, f_name = [], [], [], []
+        for i in range(len(train_index)):
+            xtrain, ytrain = data.iloc[train_index[i], :], label[train_index[i]]
+            xtest, ytest = data.iloc[test_index[i], :], label[test_index[i]]
+            xtrain, xtest = xtrain.loc[:, feature_names[:clf_num[j]]], xtest.loc[:, feature_names[:clf_num[j]]]
+            estimator, test_acc, predict = train_estimator_reg(clf, xtrain, ytrain, xtest, ytest)
+            tests.append(test_acc), res.append(estimator), preds.append(predict)
+        mean_accs.append(np.mean(tests))
+        test_accs[clf_num[j]] = tests
+        estimators[clf_num[j]] = res
+        predicts[clf_num[j]] = preds
+        f_names[clf_num[j]] = feature_names[:clf_num[j]]
+    # 选择得分最高的topk
+    topk = clf_num[mean_accs.index(max(mean_accs))]
+    test_accs = test_accs[topk]
+    estimators = estimators[topk]
+    predicts = predicts[topk]
+    f_names = f_names[topk]
+    return test_accs, estimators, mean_accs, predicts, f_names
+
 def pre_screening(data2,label,model,features,cv=5):
     #第一步筛选
     feature_names = features
@@ -120,5 +155,5 @@ def pre_screening(data2,label,model,features,cv=5):
     # cv_scores = [cross_val_score(clf,data2[:,:i],label,cv=cv,).mean() for i in range(1,21)]
     features_num = min([len(features), 20])
     cv_scores = [cross_val_score(clf, data2[:, :i], label, cv=cv, n_jobs=4).mean() for i in range(1, features_num + 1)]
-    clf_num = list(pd.DataFrame(cv_scores).iloc[:,0].sort_values(ascending=False).index[:3]+1)
+    clf_num = list(pd.DataFrame(cv_scores).iloc[:,0].sort_values(ascending=False).index[:5]+1)
     return clf_num, cv_scores

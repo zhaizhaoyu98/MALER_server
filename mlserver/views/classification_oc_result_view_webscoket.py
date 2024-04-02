@@ -37,6 +37,7 @@ def return_running_page(request,projectid):
     # model_md5 = request.POST.get('model_md5')
     feature_select_method = request.POST.get('feature_select_method')
     to_mail = request.POST.get('to_mail')
+    fn = request.POST.get('feature_norm')
     return render(request, 'classification_oc_result_ws.html', {
         'fsm': fsm,
         'form_action': form_action,
@@ -44,6 +45,7 @@ def return_running_page(request,projectid):
         # 'model_md5': model_md5,
         'feature_select_method': feature_select_method,
         'to_mail': to_mail,
+        'feature_norm': fn,
     })
 
 def data_analysis(WebSocket,client_msg,projectid):
@@ -61,6 +63,9 @@ def oc_analysis(client_msg, projectid):
              XGBClassifier(n_jobs=njobs, random_state=10),
              LGBMClassifier(importance_type='gain', n_jobs=njobs), AdaBoostClassifier(),
              DecisionTreeClassifier(random_state=10), GradientBoostingClassifier(random_state=10)]
+    fsm = client_msg['fsm']
+    form_action = client_msg['form_action']
+    fn = client_msg['feature_norm']
 
     # feature_select_method = request.POST.get('feature_select_method')
     feature_select_method = client_msg['feature_select_method']
@@ -104,28 +109,35 @@ def oc_analysis(client_msg, projectid):
 
         # fsm = request.POST.get("fsm")
         # form_action = request.POST.get("form_action")
-        fsm = client_msg['fsm']
-        form_action = client_msg['form_action']
-
-        inputdata = pd.read_csv(
-            STATIC_ROOT + '/cache/' + projectid + '/' + 'data.csv',
-            header=0, index_col=0).T
-
-        train_set, test_set, blind_set = split_train_test(inputdata)
-        data, label = classification_process(train_set)
-        label3, classes = label_pre(label)
-
-        validation_data = []  # 预先定义
-        if len(test_set) > 0:
-            ifval = True
-            validation_data, validation_label = classification_process(test_set)
-            validation_label, ll = label_pre(validation_label)
+        if fn == 'N':
+            scaler = None
+            inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/' + 'data.csv',
+                header=0, index_col=0).T
+            train_set, test_set, blind_set = split_train_test(inputdata)
+            data, label = classification_process(train_set)
+            label3, classes = label_pre(label)
+            validation_data = []  # 预先定义
+            if len(test_set) > 0:
+                ifval = True
+                validation_data, validation_label = classification_process(test_set)
+                validation_label, ll = label_pre(validation_label)
+            else:
+                ifval = False
         else:
-            ifval = False
+            with open(STATIC_ROOT + '/cache/' + projectid + '/normalization_data.pkl', 'rb') as f:
+                norm_info = pickle.load(f)
+            data, label3, classes = norm_info['train_set'], norm_info['train_set_label'], norm_info['classes']
+            ifval = norm_info['ifval']
+            validation_data, validation_label = norm_info['test_set'], norm_info['test_set_label']
+            scaler = norm_info['scaler']
+            print('using normalized data to analysis!')
+
         if fsm == 'A':
             features = selectkbest_top20(data, label3, k=50)
+            Fsm = 'ANOVA'
         elif fsm == 'M':
             features = mrmr_fs(data, label3, form_action)
+            Fsm = 'MRMR'
 
         data3 = data.loc[:, features]
         if feature_select_method == 'TopK':
@@ -209,7 +221,6 @@ def oc_analysis(client_msg, projectid):
             parameter, train_acc, test_acc, best_esti = [], [], [], []
             precision, AUC, recall, f1_score = [], [], [], []
             feature_names = []
-            cv
             for i in range(len(title)):
                 best_esti.append(tmodels[i])
                 parameter.append(str(tmodels[i].get_params()))
@@ -227,7 +238,9 @@ def oc_analysis(client_msg, projectid):
                              'precision': precision,
                              'AUC': AUC,
                              'recall': recall,
-                             'f1-score': f1_score}
+                             'f1-score': f1_score,
+                             'Fsm': Fsm,
+                             'scaler': str(scaler).split('(')[0]}
             final_reports = pd.DataFrame(final_reports, index=title)
             final_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']] = np.round(
                 final_reports[['test_acc', 'precision', 'AUC', 'recall', 'f1-score']], 3)
@@ -248,10 +261,11 @@ def oc_analysis(client_msg, projectid):
                                                                                            feature_names,
                                                                                            ifmarco)
                     valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=title)
+                    roc_aucs = 'None' #多分类的平均auc结果
                 else:
                     validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label,
                                                                           feature_names, ifmarco)
-                    valid_roc_traces = multi_valid_roc_info(best_esti, validation_data, validation_label, feature_names,
+                    valid_roc_traces, roc_aucs = multi_valid_roc_info(best_esti, validation_data, validation_label, feature_names,
                                                             classes, title=title)
 
                 vbar_trace = mkvbartrace(validate_reports)
@@ -285,7 +299,9 @@ def oc_analysis(client_msg, projectid):
                                      'heatmap_anno': heatmap_anno,
                                      'valid_roc_traces': valid_roc_traces,
                                      'radar_range': radar_range,
-                                     'ifval': ifval}
+                                     'ifval': ifval,
+                                     'roc_aucs':roc_aucs,
+                                     }
 
             with open(STATIC_ROOT + '/cache/' + projectid + '/classification_pickle.pkl',
                       'wb') as f:
@@ -299,7 +315,6 @@ def oc_analysis(client_msg, projectid):
             #         pickle.dump(model, f)
 
             print('analysis time: ', time.time() - start_time)
-
 
         elif feature_select_method == 'FSS' or feature_select_method == 'BSS':
             '''
@@ -444,7 +459,9 @@ def oc_analysis(client_msg, projectid):
                              'precision': precision,
                              'AUC': AUC,
                              'recall': recall,
-                             'f1-score': f1_score}
+                             'f1-score': f1_score,
+                             'Fsm': Fsm,
+                             'scaler': str(scaler).split('(')[0]}
             final_reports = pd.DataFrame(final_reports, index=title)
             print(final_reports)
 
@@ -466,11 +483,12 @@ def oc_analysis(client_msg, projectid):
                                                                                            validation_label,
                                                                                            feature_names, ifmarco)
                     valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=title)
+                    roc_aucs = 'None'
                 else:
                     validate_reports, validate_predicts = validate_result(best_esti, validation_data, validation_label,
                                                                           feature_names, ifmarco)
-                    valid_roc_traces = multi_valid_roc_info(best_esti, validation_data, validation_label, feature_names,
-                                                            classes, title=title)
+                    valid_roc_traces, roc_aucs = multi_valid_roc_info(best_esti, validation_data, validation_label,
+                                                                     feature_names,classes, title=title)
 
                 vbar_trace = mkvbartrace(validate_reports)
 
@@ -483,7 +501,6 @@ def oc_analysis(client_msg, projectid):
                     num += 1
             # else:
             #     ifval = False
-
             classification_pickle = {'test_acc_reports_dict': test_acc_reports_dict,
                                      'test_acc_describe_dict': test_acc_describe_dict,
                                      'df_AUCs_dict': df_AUCs_dict,
@@ -504,11 +521,16 @@ def oc_analysis(client_msg, projectid):
                                      'heatmap_anno': heatmap_anno,
                                      'valid_roc_traces': valid_roc_traces,
                                      'radar_range': radar_range,
-                                     'ifval': ifval}
+                                     'ifval': ifval,
+                                     'roc_aucs': roc_aucs,
+                                     }
 
             with open(STATIC_ROOT + '/cache/' + projectid + '/classification_pickle.pkl',
                       'wb') as f:
                 pickle.dump(classification_pickle, f)
+            print(final_reports_dict)
+
+
 
         # generate model pickle files
         for i in range(final_reports.shape[0]):
@@ -528,7 +550,7 @@ def oc_analysis(client_msg, projectid):
             classification_pickle = pickle.load(f)
 
         test_acc_reports_dict, df_AUCs_dict, precision_reports_dict, \
-        recall_reports_dict, f1_score_reports_dict, roc_traces, ifmarco, ifval \
+        recall_reports_dict, f1_score_reports_dict, roc_traces, ifmarco, ifval,roc_aucs \
             = classification_pickle['test_acc_reports_dict'], \
               classification_pickle['df_AUCs_dict'], \
               classification_pickle['precision_reports_dict'], \
@@ -536,7 +558,9 @@ def oc_analysis(client_msg, projectid):
               classification_pickle['f1_score_reports_dict'], \
               classification_pickle['roc_traces'], \
               classification_pickle['ifmarco'], \
-              classification_pickle['ifval'],
+              classification_pickle['ifval'], \
+              classification_pickle['roc_aucs']
+
 
         test_acc_describe_dict, df_AUCs_describe_dict, precision_describe_dict, \
         recall_describe_dict, f1_score_describe_dict, final_reports_dict, line_chart_data, radar_dict \
@@ -563,7 +587,6 @@ def oc_analysis(client_msg, projectid):
     url = 'maler/classification_oc_result/' + projectid
     if to_mail != '' and to_mail != None:
         task_sendmail(to_mail, url)
-
     analysis_results = {
         'projectid': projectid,
         'test_acc_reports_dict': test_acc_reports_dict,
@@ -587,6 +610,7 @@ def oc_analysis(client_msg, projectid):
         'heatmap_anno': heatmap_anno,
         'valid_roc_traces': valid_roc_traces,
         'ifval': ifval,
+        'roc_aucs':roc_aucs,
     }
     return analysis_results
 
@@ -625,7 +649,8 @@ def result_ws(request, projectid):
                 client_msg = json.loads(WebSocket.wait())
                 if client_msg != 'heartbeat':
                     print(client_msg)
-                    task1 = pools.submit(data_analysis,WebSocket,client_msg,projectid)
+                    # task1 = pools.submit(data_analysis,WebSocket,client_msg,projectid)
+                    data_analysis(WebSocket, client_msg, projectid)
                 elif client_msg == 'heartbeat':
                     messages = {
                         'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
@@ -639,6 +664,13 @@ def result_ws(request, projectid):
 '''
 file preprocess
 '''
+def fillnull(df): #没用上
+    if df.isnull().any().any():
+        print('存在缺失值！')
+        df2 = df.fillna(df.mean(axis=0), inplace=False)
+    else:
+         print('不存在缺失值！')
+    return df2
 def split_train_test(data,datatype='other'):
     train_set,test_set,blind_set = pd.DataFrame(),pd.DataFrame(),pd.DataFrame()
     num = (1,2)[datatype == 'survival']  #datatype == 'survival'时选第三列，否则为第二列
@@ -948,7 +980,7 @@ def get_ROC_info(estimators, data, label, f_names, test_index, df_AUC, title=tit
             mean_TPR_df[title[j]] = mean_tpr
             auc_mean_std[title[j]] = [mean_auc, std_auc]
     else:
-        for j in range(len(estimators)):  # 6分类器
+        for j in range(len(estimators)):
             tprs = []
             for i in range(len(estimators[0])):  # 50重复次数
                 xtest = data[f_names[j]].iloc[test_index[i]]
@@ -1007,8 +1039,6 @@ def macro_roc(estimator,xtest,ytest,proba,n_classes):
     for i in range(n_classes):
         fpr[i], tpr[i], _ = roc_curve(ytest[:,i], proba[:,i])
         roc_auc[i] = auc(fpr[i], tpr[i])
-#         plt.plot(fpr[i], tpr[i],label ='ROC of {}(AUC={})'.format(list(classes2.keys())[i],np.round(roc_auc[i],3)) )
-#         plt.legend()
     # First aggregate all false positive rates
     all_fpr = np.unique(np.concatenate([fpr[i] for i in range(n_classes)]))
     # Then interpolate all ROC curves at this points
@@ -1020,7 +1050,6 @@ def macro_roc(estimator,xtest,ytest,proba,n_classes):
     macro_fpr = (all_fpr)
     macro_tpr = (mean_tpr)
     macro_roc_auc = (auc(all_fpr,mean_tpr))
-#     print(mean_tpr)
     return macro_fpr,macro_tpr,macro_roc_auc,fpr,tpr,roc_auc
 
 # def multi_label_get_TopK_ROC_info(estimators, data, label, f_names, test_index, df_AUC, df_AUCs_describe, title=title):
@@ -1387,6 +1416,7 @@ def valid_roc_info(title,best_esti,vdata,vlabel,feature_names,ifmarco):
 
 def multi_valid_roc_info(estimators,vdata,vlabel,features,classes,title=title):
     data = []
+    roc_aucs = []
     for num in range(len(estimators)):
         if num == 1:
             proba = estimators[num].decision_function(vdata[features[num]])
@@ -1395,8 +1425,8 @@ def multi_valid_roc_info(estimators,vdata,vlabel,features,classes,title=title):
         y = label_binarize(vlabel, classes=np.unique(vlabel))
         fpr, tpr, roc_auc, cfpr, ctpr, croc_auc = macro_roc(estimators[0], vdata[features[0]], y, proba,
                                                             len(np.unique(vlabel)))
+        roc_aucs.append(roc_auc)
         for i in range(len(cfpr)):
-
             chance = {
                 'line': {
                     'dash': 'dash',
@@ -1421,10 +1451,10 @@ def multi_valid_roc_info(estimators,vdata,vlabel,features,classes,title=title):
                     'x': list(cfpr[c]),
                     'y': list(ctpr[c]),
                     'xaxis': 'x' + str(num + 1),
-                    'yaxis': 'y' + str(num + 1)
+                    'yaxis': 'y' + str(num + 1),
                 }
                 data.append(trace)
-    return data
+    return data, roc_aucs
 
 class JsonEncoder(json.JSONEncoder):
     """Convert numpy classes to JSON serializable objects."""

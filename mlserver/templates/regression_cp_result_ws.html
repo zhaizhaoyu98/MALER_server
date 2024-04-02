@@ -123,17 +123,25 @@
 			width: 35px;
 			height: 45px;
 			}
-			.progress-4 {
+			.progress-6 {
 			  width:200px;
 			  height:10px;
-			  -webkit-mask:linear-gradient(90deg,#17a2b8 70%,#0000 0) 0/10%;
-			  background:
-			   linear-gradient(#17a2b8 0 0) 0/0% no-repeat
-			   #ddd;
-			  animation:p4 5s infinite steps(12);
+			  border-radius: 20px;
+			  color: #17a2b8;
+			  border:2px solid;
+			  position: relative;
 			}
-			@keyframes p4 {
-			    100% {background-size:120%}
+			.progress-6::before {
+			  content:"";
+			  position: absolute;
+			  margin:1px;
+			  inset:0 100% 0 0;
+			  border-radius: inherit;
+			  background: #17a2b8;
+			  animation:p6 5s infinite;
+			}
+			@keyframes p6 {
+			    100% {inset:0}
 			}
 
 		</style>
@@ -258,14 +266,17 @@
 						</table>
 						<br />
 						
-						<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-							Report
-						</h3>
+						<div class="btnGroups">
+							<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+							Report  <button id="export" class="btn btn-primary" style="position:absolute;right:30px;background: #17a2b8;border: 0px;">Download</button>
+							</h3>  
+						</div>
 						<table id="reporttable" class="display" style="width: 100%;" lazyload="True">
 							 <thead>
 								<tr>
 									<th></th>
 									<th>Index</th>
+									<th>Normalization method</th>
 									<th>Feature Select Method</th>
 									<th>Optimal Feature Subset Search Methods</th>
 									<th>Mean R-square</th>
@@ -274,6 +285,7 @@
 									<th class="none">Feature Names</th>
 									<th>Feature_names/Parameter</th>
 									<th class="none">Parameter</th>
+									<th class="none">GridSearch Parameter</th>
 									<th>View</th>
 									<th>Model Download</th>
 								</tr>
@@ -306,7 +318,8 @@
 					model_md5: "{{model_md5}}",
 					fsm: "{{fsm}}",
 					form_action: "{{form_action}}",
-					to_mail: '{{to_mail}}'
+					to_mail: '{{to_mail}}',
+					feature_norm: '{{feature_norm}}'
 				}
 				var s = new WebSocket("ws://" + window.location.host + "/maler/regression_cp_result_ws/{{projectid}}");
 				window.s = s;
@@ -336,6 +349,7 @@
 						var raw_report = results_data.final_reports_dict
 						
 						var report_data = JSON.parse(results_data.final_reports_dict);
+						report_data[0]['scaler'] = report_data[0]['scaler'].split('()')[0]
 						
 						var vregpred_anno = JSON.parse(results_data.vregpred_trace)[1]['text']
 						
@@ -393,22 +407,31 @@
 							columnDefs: [ {
 								className: 'control',
 								orderable: false,
-								targets:   8,
+								targets:   9,
 							} ],
 							data: report_data,
 							searching: false, 
 							paging: false, 
 							info: false,
 							sort: false,
+							"dom":'Blfrtip',
 							buttons: [{
 								extend: 'csv',
 								text: "",
 								className: "icon_",
-								filename:'Validation',
+								filename:'report',
 								}],
+							initComplete: function() {
+									var $buttons = $('.dt-buttons').hide();
+									$('#export').on('click', function() {
+										var btnClass = ".buttons-csv";
+										if (btnClass) $buttons.find(btnClass).click();
+									})
+									},
 							columns: [
 								{ data: 'Method' },
 								{ data: 'md5' },
+								{ data: 'scaler'},
 								{ data: 'Fsm' },
 								{ data: 'fsm' },
 								{ data: 'Mean R-square' },
@@ -422,6 +445,7 @@
 									}
 								 },
 								{ data: ('parameter') },
+								{data: 'grid_para'},
 								{ 
 									data: 'md5' ,
 									"render": function(data, type, row, meta){

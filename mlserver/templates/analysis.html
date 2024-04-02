@@ -11,6 +11,8 @@
 		<script src="https://unpkg.com/element-ui@2.15.13/lib/index.js"></script>
 		<script src="https://cdn.bootcdn.net/ajax/libs/axios/1.3.6/axios.min.js"></script>
 		<script src="https://unpkg.com/element-ui@2.15.13/lib/locale/lang/en.js"></script>
+
+		
 		{% include 'public_templates/bootstrap.html' %}
 		<style type="text/css">
 			#home span {
@@ -47,7 +49,6 @@
 			.hidden {
 				display: none;
 			}
-
 			.card:hover {
 				border: 2px solid #17a2b8;
 			}
@@ -224,177 +225,200 @@
 			</div>
 			</el-card>
 			</div>
-
+			
 			<form action="preview" method="POST" id="form_step23" enctype="multipart/form-data">
 			<div class="col-12">
-				<br />
+			<br />
 			<el-card shadow="never">
 				<div slot="header" >
 					<h4>Step2: Please upload the files.</h4>
 				</div>
-			<div>
-				<div class="row">
-					<div class="col-3" id="data_up_select">
-						<label style="font-weight: bold; color: #666;font-size: 20px;">Choose data to upload: </label>
-						<div class="form-check">
-							<label class="form-check-label" for="usr_up">
-								<input type="radio" id='usr_up' value="usr_data" name="data_up" checked>
-								Upload Your Own Data
-							</label>
+				
+				<div>
+					<div class="row">
+						<div class="col-3" id="data_up_select">
+							<label style="font-weight: bold; color: #666;font-size: 20px;">Choose data to upload: </label>
+							<div class="form-check">
+								<br>
+								<label class="form-check-label" for="usr_up">
+									<input type="radio" id='usr_up' value="usr_data" name="data_up" checked>
+									Upload Your Own Data
+								</label>
+							</div>
+							<br>
+							<div class="form-check">
+								<label class="form-check-label" for="samp_up">
+									<input type="radio" id='samp_up' value="samp_data" name="data_up">
+									Choose Example Data
+								</label>
+										
+							</div>
 						</div>
-						<div class="form-check">
-							<label class="form-check-label" for="samp_up">
-								<input type="radio" id='samp_up' value="samp_data" name="data_up">
-								Choose Example Data
-							</label>
+						<div class="col-9">
+							<div id="usr_data" class="row">
+								{% csrf_token %}
+								<h6 style="position: absolute;top: 10px;">File:&nbsp;</h6>
+								<input type="file" id="upload_file" name="upload_file" style="display: none" accept=".csv" />
+								<button id="upfile" type="button" class="btn btn-info" style="position: absolute;left: 40px;">Upload</button>
+								<!-- <h6>Label: <input type="file" name="upload_label" /></h6> -->
+								<div class="row">
+									<h5 style="position: relative;left: 360px;">OR</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<h6 style="position: relative;left: 560px;">ProjectID:&nbsp;<input type="text" id="projectid" name="projectid"></h6>
+								</div>
+								<div class="showFileName"style="position: absolute;left: 130px;top: 10px;"></div>
+								</br>
+								</br>
+								</br>
+								<div style="position: relative;">
+									<p><div> <b> File: </b>  Please upload a csv file with features
+									 in rows and samples in columns and no larger than 200MB. Please refer to the sample file for the exact format of the file.</div></p>
+									<p><b> ProjectID: </b>  A unique identifier for each task, which can be used to access the results of analyzed tasks.</p>
+								</div>
+							</div>
+							<div id="samp_data" class='row' style="display: none;">
+								<div class="col-12" id="sample_select" display="none">
+									<!-- <table border="1" style="border: #000000;background-color: #f8f9fa;"> -->
+									<b>Please click the 'Submit' button to make predictions on the sample data.</b>
+									<table width="100%" class="" border="1" style="border: #000000;background-color: #f8f9fa;text-align: center;">
+										<thead>
+										<tr>
+											<th>Example</th>
+											<th>Description</th>
+											<th>Source</th>
+											<th>Download data</th>
+										</tr>
+										</thead>
+										<tr>
+											<td>Binary Classfication</td>
+											<td>LUAD and LUSC are classified based on gene expression profiles</td>
+											<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
+											<td><a href="download/binary_classification_example.csv">download</a></td>
+										</tr>
+										<tr>
+											<td>Multiclass Classfication</td>
+											<td>LUAD, LUSC and KIRC are classified based on gene expression profiles</td>
+											<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
+											<td><a href="download/multiclass_classification_example.csv">download</a></td>
+										</tr>
+										<tr>
+											<td>Regression</td>
+											<td>Tumor purity of KIRC is predicted based on gene expression profiles</td>
+											<td>
+												<a href="https://xenabrowser.net/">UCSC Xena</a><br />
+												<a href="https://pubmed.ncbi.nlm.nih.gov/26634437/">PMID: 26634437</a>
+											</td>
+											<td><a href="download/regression_example.csv">download</a></td>
+										</tr>
+										<tr>
+											<td>Survival</td>
+											<td>Survival in GBM is predicted based on gene expression profiles</td>
+											<td>
+												<a href="https://xenabrowser.net/">UCSC Xena</a><br />
+												<a href="http://www.cgga.org.cn">CGGA</a>
+											</td>
+											<td><a href="download/survival_example.csv">download</a></td>
+										</tr>
+									</table>
+									<br>
 									
-						</div>
-					</div>
-					<div class="col-9">
-						
-						<div id="usr_data" class="row">
-					
-							{% csrf_token %}
-							<!-- <div class="custom-file mb-3">
-								  <input type="file" class="custom-file-input" id="customFile" name="filename">
-								  <label class="custom-file-label" for="customFile">Choose Profile</label>
-							</div> -->
-							<h6 style="position: absolute;top: 10px;">File:&nbsp;</h6>
-							<input type="file" id="upload_file" name="upload_file" style="display: none;" accept=".csv" />
-							<button id="upfile" type="button" class="btn btn-info" style="position: absolute;left: 40px;">Upload</button>
-							<!-- <h6>Label: <input type="file" name="upload_label" /></h6> -->
-					
-					
-							<div class="row">
-								<h5 style="position: absolute;left: 360px;">OR</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<h6 style="position: absolute;left: 560px;">ProjectID:&nbsp;<input type="text" id="projectid" name="projectid"></h6>
-							</div>
-							<div class="showFileName"style="position: absolute;left: 130px;top: 10px;"></div>
-							<!-- <input type="submit" value="submit" />
-							<input type="submit" value="EXAMPLE(ZIP)" /> -->
-							<br />
-							<br />
-							<br />
-							<div>
-							<p><b> File: </b>  Please upload a csv file with features in rows and samples in columns and no larger than 200MB. Please refer to the sample file for the exact format of the file.</p>
-							<p><b> ProjectID: </b>  A unique identifier for each task, which can be used to access the results of analyzed tasks.</p>
-							</div>
-						</div>
-						
-						
-						
-						
-						<div id="samp_data" class='row' style="display: none;">
-							<div class="col-12" id="sample_select" display="none">
-								<!-- <table border="1" style="border: #000000;background-color: #f8f9fa;"> -->
-								<b>Please click the 'Submit' button to make predictions on the sample data.</b>
-								<table width="100%" class="" border="1" style="border: #000000;background-color: #f8f9fa;text-align: center;">
-									<thead>
-									<tr>
-										<th>Example</th>
-										<th>Description</th>
-										<th>Source</th>
-										<th>Download data</th>
-									</tr>
-									</thead>
-									<tr>
-										<td>Binary Classfication</td>
-										<td>LUAD and LUSC are classified based on gene expression profiles</td>
-										<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
-										<td><a href="download/binary_classification_example.csv">download</a></td>
-									</tr>
-									<tr>
-										<td>Multiclass Classfication</td>
-										<td>LUAD, LUSC and KIRC are classified based on gene expression profiles</td>
-										<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
-										<td><a href="download/multiclass_classification_example.csv">download</a></td>
-									</tr>
-									<tr>
-										<td>Regression</td>
-										<td>Tumor purity of KIRC is predicted based on gene expression profiles</td>
-										<td>
-											<a href="https://xenabrowser.net/">UCSC Xena</a><br />
-											<a href="https://pubmed.ncbi.nlm.nih.gov/26634437/">PMID: 26634437</a>
-										</td>
-										<td><a href="download/regression_example.csv">download</a></td>
-									</tr>
-									<tr>
-										<td>Survival</td>
-										<td>Survival in GBM is predicted based on gene expression profiles</td>
-										<td>
-											<a href="https://xenabrowser.net/">UCSC Xena</a><br />
-											<a href="http://www.cgga.org.cn">CGGA</a>
-										</td>
-										<td><a href="download/survival_example.csv">download</a></td>
-									</tr>
-								</table>
-								<br>
+									<br>
+								</div>
 								
-								<br>
+								<!-- <div class="col-6" id="sample_select" display="none">
+									<label style="font-weight: bold; color: #666">Example Data: </label>
+									<div class="form-check">
+										<label class="form-check-label" for="bin_class">
+											<input type="radio" id='bin_class' value="binary_classification_example.csv" name="samp_data" checked data-target='#bin_descrpt'>
+											Binary Classfication Example
+										</label>
+									</div>
+									<div class="form-check">
+										<label class="form-check-label" for="multi_class">
+											<input type="radio" id='multi_class' value="multiclass_classification_example.csv" name="samp_data" data-target='#multi_descrpt'>
+											Multiclass Classfication Example
+										</label>
+												
+									</div>
+									<div class="form-check">
+										<label class="form-check-label" for="regres">
+											<input type="radio" id='regres' value="regression_example.csv" name="samp_data" data-target='#regr_descrpt'>
+											Regression Example
+										</label>
+									</div>
+									<div class="form-check">
+										<label class="form-check-label" for="survival">
+											<input type="radio" id='survival' value="survival_example.csv" name="samp_data" data-target='#surv_descrpt'>
+											Survival Analysis Example
+										</label>
+												
+									</div>
+								</div>
+								<div class="col-6 tab-content">
+									<div id="bin_descrpt" class="tab-pane active">
+										<p>LUAD and LUSC are classified based on gene expression profiles</p>
+										<p>Source: <a href="https://xenabrowser.net/">UCSC Xena</a></p>
+									</div>
+									<div id="multi_descrpt" class="tab-pane">
+										<p>LUAD, LUSC, KIRP and KIRC are classified based on gene expression profiles</p>
+										<p>Source: <a href="https://xenabrowser.net/">UCSC Xena</a></p>
+									</div>
+									<div id="regr_descrpt" class="tab-pane">
+										<p>Tumor purity of KIRC is predicted based on gene expression profile</p>
+										<p>Source: <a href="https://xenabrowser.net/">UCSC Xena</a> | 
+										<a href="https://pubmed.ncbi.nlm.nih.gov/26634437/">PMID: 26634437</a> </p>
+									</div>
+									<div id="surv_descrpt" class="tab-pane">
+										<p>Survival in GBM is predicted based on gene expression profile</p>
+										<p>Source: <a target="_blank" href="https://xenabrowser.net/">UCSC Xena</a> | 
+										<a href="http://www.cgga.org.cn">CGGA</a></p>
+									</div>
+									<button id="dl_sample" class="btn btn-info">Download</button>
+								</div> -->
 							</div>
-							
-							<!-- <div class="col-6" id="sample_select" display="none">
-								<label style="font-weight: bold; color: #666">Example Data: </label>
-								<div class="form-check">
-									<label class="form-check-label" for="bin_class">
-										<input type="radio" id='bin_class' value="binary_classification_example.csv" name="samp_data" checked data-target='#bin_descrpt'>
-										Binary Classfication Example
-									</label>
-								</div>
-								<div class="form-check">
-									<label class="form-check-label" for="multi_class">
-										<input type="radio" id='multi_class' value="multiclass_classification_example.csv" name="samp_data" data-target='#multi_descrpt'>
-										Multiclass Classfication Example
-									</label>
-											
-								</div>
-								<div class="form-check">
-									<label class="form-check-label" for="regres">
-										<input type="radio" id='regres' value="regression_example.csv" name="samp_data" data-target='#regr_descrpt'>
-										Regression Example
-									</label>
-								</div>
-								<div class="form-check">
-									<label class="form-check-label" for="survival">
-										<input type="radio" id='survival' value="survival_example.csv" name="samp_data" data-target='#surv_descrpt'>
-										Survival Analysis Example
-									</label>
-											
-								</div>
-							</div>
-							<div class="col-6 tab-content">
-								<div id="bin_descrpt" class="tab-pane active">
-									<p>LUAD and LUSC are classified based on gene expression profiles</p>
-									<p>Source: <a href="https://xenabrowser.net/">UCSC Xena</a></p>
-								</div>
-								<div id="multi_descrpt" class="tab-pane">
-									<p>LUAD, LUSC, KIRP and KIRC are classified based on gene expression profiles</p>
-									<p>Source: <a href="https://xenabrowser.net/">UCSC Xena</a></p>
-								</div>
-								<div id="regr_descrpt" class="tab-pane">
-									<p>Tumor purity of KIRC is predicted based on gene expression profile</p>
-									<p>Source: <a href="https://xenabrowser.net/">UCSC Xena</a> | 
-									<a href="https://pubmed.ncbi.nlm.nih.gov/26634437/">PMID: 26634437</a> </p>
-								</div>
-								<div id="surv_descrpt" class="tab-pane">
-									<p>Survival in GBM is predicted based on gene expression profile</p>
-									<p>Source: <a target="_blank" href="https://xenabrowser.net/">UCSC Xena</a> | 
-									<a href="http://www.cgga.org.cn">CGGA</a></p>
-								</div>
-								<button id="dl_sample" class="btn btn-info">Download</button>
-							</div> -->
 						</div>
 					</div>
 				</div>
-			</div>
 			</el-card>
 			</div>
+				
+				<br />
+					<div class="col-12">
+					<el-card shadow="never">
+						<div slot="header" >
+							<h4>Step3: Please select a feature normalization method. (Optional)</h4>
+						</div>
+					<div>
+					<!-- <hr> -->
+					<div class="col-12">
+						<div>
+							{% csrf_token %}
+							<div id="fn_radio">
+								<div class="row">
+								<label style="font-weight: bold; color: #666;font-size: 20px;">Feature Normalization Methods: </label>
+								</div>
+								<br />
+								<div class="row" >
+									<input type="radio" id="feature_norm" name="feature_norm" value="MM" />&nbsp;MinMax&emsp;&emsp;
+									<input type="radio" id="feature_norm" name="feature_norm" value="Z" />&nbsp;Z-Score&emsp;&emsp;
+									<input type="radio" id="feature_norm" name="feature_norm" value="MA" />&nbsp;MaxAbs&emsp;&emsp;
+									<input type="radio" id="feature_norm" name="feature_norm" value="N" checked />&nbsp;None&emsp;&emsp;
+								</div>
+							</div>
+						</div>
+					</div>
+					</div>
+					<br>
+				</el-card>
+				</div>
+				
+				
+				
 				
 				<br />
 				<div class="col-12">
 				<el-card shadow="never">
 					<div slot="header" >
-						<h4>Step3: Please select a feature selection method.</h4>
+						<h4>Step4: Please select a feature selection method.</h4>
 					</div>
 				<div>
 				<!-- <hr> -->
@@ -408,19 +432,22 @@
 						<input name="random_token" id="random_token" onclick="randomString()" style="display: none;" value=""/>
 						<input name="file_md5" id="file_md5" style="display: none;" value=""/>
 						<input name="strategy" id="strategy" style="display: none;" value=""/>
+						<input name="usr_grid" id="usr_grid" style="display: none;" value=""/>
+						<!-- <input name="feature_norm" id="feature_norm" style="display: none;" value=""/> -->
 						<!-- <input name="fsm" id="fsm" style="display: none;" value=""/> -->
 						<!-- 新增特征筛选方法 anova mrmr-->
 						
 						<div id="fsm_radio">
 							<div class="row">
-							<label style="font-weight: bold; color: #666;font-size: 20px;">Feature Selsection Methods: </label>
+							<label style="font-weight: bold; color: #666;font-size: 20px;">Feature Ranking Methods: </label>
 							</div>
-							
+							<br>
 							<div class="row" >
-								<input type="radio" id="fsm" name="fsm" value="A" checked />&nbsp;ANOVA&nbsp;
-								<input type="radio" id="fsm" name="fsm" value="M" />&nbsp;MRMR&nbsp;
+								<input type="radio" id="fsm" name="fsm" value="A" checked />&nbsp;ANOVA&emsp;&emsp;
+								<input type="radio" id="fsm" name="fsm" value="M" />&nbsp;MRMR&emsp;&emsp;
 								<input type="radio" id="fsm" name="fsm" value="C" style="display: none;" />
 							</div>
+							<br>
 							<hr>
 						</div>
 						<!-- <br /> -->
@@ -428,13 +455,14 @@
 						<div class="row">
 							<label style="font-weight: bold; color: #666;font-size: 20px;">Optimal Feature Subset Search Methods: </label>
 						</div>
-						
+						<br>
 						<div class="row">
-							<input type="radio" name="feature_select_method" value="TopK" checked />&nbsp;TopK&nbsp;
-							<input type="radio" name="feature_select_method" value="FSS" />&nbsp;FSS&nbsp;
-							<input type="radio" name="feature_select_method" value="BSS" />&nbsp;BSS&nbsp;
+							<input type="radio" name="feature_select_method" value="TopK" checked />&nbsp;TopK&emsp;&emsp;
+							<input type="radio" name="feature_select_method" value="FSS" />&nbsp;FSS&emsp;&emsp;
+							<input type="radio" name="feature_select_method" value="BSS" />&nbsp;BSS&emsp;&emsp;
 						</div>
 					</div>
+					<br>
 					
 				</div>
 				</div>
@@ -445,12 +473,12 @@
 				<br />
 			<el-card shadow="never">
 				<div slot="header" >
-					<h4>Step4: Please choose a processing method.</h4>
+					<h4>Step5: Please choose a processing method.</h4>
 				</div>
 			<div>
 			<div class="row">
 				<div class="col-6">
-					<button type="button" id="button_oc" onclick="" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">One-click
+					<button type="button" id="button_oc" onclick="" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">One-Click
 						Analysis</button>
 				</div>
 				<div class="col-6">
@@ -458,6 +486,19 @@
 						Analysis</button>
 				</div>
 			</div>
+			<p></p>
+<!-- 			<div class="row" id="cp_search" style="display: none;">
+				<div class="col-6"></div>
+				<div class="col-3">
+					<button type="button" id="usr_define" onclick="" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">
+						User defined parameters</button>
+				</div>
+				<div class="col-3">
+					<button type="button" id="grid_search" onclick="" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">
+						Automatic optimization(GridSearch)</button>
+				</div>
+			</div>	 -->
+			
 			<br />
 
 			<div id="cp_model_select">
@@ -833,30 +874,52 @@
 			
 			<div id="cp_model_detail" class="cp_model_detail">
 				<hr />
+				
+				<div class="row" id="cp_search" style="display: none;">
+					<div class="col-7"><h5 id="para_modelname">Parameters of </h5> </div>
+					<div class="col-2">
+						<button type="button" id="usr_define" class="btn btn-info" onclick="grid_inputdisabled(this.id)" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 35px;font-size: 15px;" >
+							User defined parameters</button>
+					</div>
+					<div class="col-3">
+						<button type="button" id="grid_search" class="btn btn-info" onclick="grid_inputdisabled(this.id)" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 35px;font-size: 15px;">
+							Automatic optimization(GridSearch)</button>
+					</div>
+				</div>
+				<br>
 				<!-- classification -->
 				<div id="detail_naivebayes">
-					<h5>Parameters of Naive Bayes</h5>
 					<div class="row">
 						<div class="col-6">
 							<label for="exampleFormControlSelect1">name</label>
-							<select name="naivebayes_name" class="form-control" id="naivebayes_name" required="required" onchange="">
+							<select name="naivebayes_name" class="form-control" id="naivebayes_name" required="required" onchange="bayes_select()">
 								<option selected value="GaussianNB">GaussianNB</option>
 								<option value="BernoulliNB">BernoulliNB</option>
 								<option value="ComplementNB">ComplementNB</option>
 								<option value="MultinomialNB">MultinomialNB</option>
 							</select>
 						</div>
-						<div class="col-6">
-							<label for="exampleFormControlSelect1">alpha</label>
+						<div class=" usrElement col-6">
+							<label for="exampleFormControlSelect1">alpha range (from:to:step)</label>
 							<input name="naivebayes_alpha" type="text" class="form-control" id="naivebayes_alpha" onblur='data_check(this)' 
-							placeholder="" value="1.0">
+							placeholder="" value="1.0" disabled='disabled'>
 						</div>
 					</div>
+					<hr />
+					
+					<div class="row gridElement">
+						<div class="col-6">
+							<label for="exampleFormControlSelect1">alpha</label>
+							<input name="naivebayes_alpha_grid" type="text" class="form-control" id="naivebayes_alpha_grid" onblur='data_check(this)' 
+							placeholder="" value="0.0:1.0:0.1" disabled='disabled'>
+						</div>
+					</div>
+					
 				</div>
 				<div id="detail_svm">
-					<h5>Parameters of SVM</h5>
-					<div class="row">
-						<div class="col-4">
+					<!-- <h5>Parameters of SVM</h5> -->
+					<div class="row col-12">
+						<div class="col">
 							<label for="exampleFormControlSelect1">kernels</label>
 							<select name="svm_kernel" class="form-control" id="svm_kernel" required="required" onchange="svm_select()">
 								<option value="linear">linear</option>
@@ -865,74 +928,128 @@
 								<option selected value="rbf">rbf</option>
 							</select>
 						</div>
-						<div class="col-2">
-							<label for="exampleFormControlSelect1">c</label>
-							<input name="svm_c" type="text" class="form-control" id="svm_c" onblur='data_check(this)' 
-							placeholder="" value="1">
-						</div>
-						<div class="col-2">
-							<label for="exampleFormControlSelect1">degree</label>
-							<input name="svm_degree" type="text" class="form-control" id="svm_degree" onblur='data_check(this)' 
-							placeholder="" disabled="disabled" value="">
-						</div>
-						<div class="col-2">
-							<label for="exampleFormControlSelect1">coef</label>
-							<input name="svm_coef" type="text" class="form-control" id="svm_coef" onblur='data_check(this)' placeholder=""
-							 disabled="disabled" value="">
-						</div>
-						<div class="col-2">
-							<label for="exampleFormControlSelect1">gamma</label>
-							<input name="svm_gamma" type="text" class="form-control" id="svm_gamma" onblur='data_check(this)' 
-							placeholder="scale" value="scale">
+						<div class="row usrElement col-8">
+							<div class="col-3">
+								<label for="exampleFormControlSelect1">c</label>
+								<input name="svm_c" type="text" class="form-control" id="svm_c" onblur='data_check(this)' 
+								placeholder="" value="1">
+							</div>
+							<div class="col-3">
+								<label for="exampleFormControlSelect1">degree</label>
+								<input name="svm_degree" type="text" class="form-control" id="svm_degree" onblur='data_check(this)' 
+								placeholder="" disabled="disabled" value="3">
+							</div>
+							<div class="col-3">
+								<label for="exampleFormControlSelect1">coef</label>
+								<input name="svm_coef" type="text" class="form-control" id="svm_coef" onblur='data_check(this)' placeholder=""
+								 disabled="disabled" value="0">
+							</div>
+							<div class="col-3">
+								<label for="exampleFormControlSelect1">gamma</label>
+								<input name="svm_gamma" type="text" class="form-control" id="svm_gamma" onblur='data_check(this)' 
+								placeholder="scale" value="scale">
+							</div>
 						</div>
 					</div>
+					<hr />
+					<div class="row gridElement col-12">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">c range (from:to:step)</label>
+							<input name="svm_c_grid" type="text" class="grid form-control" id="svm_c_grid" onblur='data_check(this)' 
+							placeholder="" value="1.0:15.0:1.0" disabled="disabled">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">gamma range (from:to:step)</label>
+							<input name="svm_gamma_grid" type="text" class="grid form-control" id="svm_gamma_grid" onblur='data_check(this)' 
+							placeholder="" value="-10.0:5.0:1.0" disabled="disabled">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">degree range(from:to:step)</label>
+							<input name="svm_degree_grid" type="text" class="grid form-control" id="svm_degree_grid" onblur='data_check(this)' 
+							placeholder="" disabled="disabled" value="2.0:8.0:1.0">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">coef range(from:to:step)</label>
+							<input name="svm_coef_grid" type="text" class="grid form-control" id="svm_coef_grid" onblur='data_check(this)' placeholder=""
+							 disabled="disabled" value="0:10.0:1.0">
+						</div>
+					</div>
+					
+					
 				</div>
 				<div id="detail_randomforest">
-					<h5>Parameters of RandomForest</h5>
+					<!-- <h5>Parameters of RandomForest</h5> -->
 					<div class="row">
-						<div class="col-4">
+						<div class="col-6">
 							<label for="exampleFormControlSelect1">criterion</label>
 							<select name="randomforest_criterion" class="form-control" id="randomforest_criterion" required="required" onchange="">
 								<option selected value="gini">gini</option>
 								<option value="entropy">entropy</option>
 							</select>
 						</div>
-						<div class="col-4">
-							<label for="exampleFormControlSelect1">max_depth</label>
-							<input name="randomforest_max_depth" type="text" class="form-control" id="randomforest_max_depth" onblur='data_check(this)' placeholder=""
-							 value="">
-						</div>
-						<div class="col-4">
+						<div class="col-6">
 							<label for="exampleFormControlSelect1">max_features</label>
-<!-- 							<input name="randomforest_max_features" type="text" class="form-control" id="randomforest_max_features" onblur='data_check(this)' placeholder=""
-							 value="auto"> -->
 							 <select name="randomforest_max_features" class="form-control" id="randomforest_max_features" required="required" onchange="">
-							 	<option value="auto">auto</option>
-							 	<option value="sqrt">sqrt</option>
-							 	<option value="log2">log2</option>
+								<option value="auto">auto</option>
+								<option value="sqrt">sqrt</option>
+								<option value="log2">log2</option>
 							</select>
 						</div>
+						
+						<div class="row usrElement col-12">
+							<div class="col-3">
+								<label for="exampleFormControlSelect1">max_depth</label>
+								<input name="randomforest_max_depth" type="text" class="form-control" id="randomforest_max_depth" onblur='data_check(this)' placeholder=""
+								 value="">
+							</div>
+						
+							<div class="col-3">
+								<label for="exampleFormControlSelect1">min_samples_split</label>
+								<input name="randomforest_min_samples_split" type="text" class="form-control" id="randomforest_min_samples_split" onblur='data_check(this)' placeholder=""
+								 value="2">
+							</div>
+							<div class="col-3">
+								<label for="exampleFormControlSelect1">min_samples_leaf</label>
+								<input name="randomforest_min_samples_leaf" type="text" class="form-control" id="randomforest_min_samples_leaf" onblur='data_check(this)' placeholder=""
+								 value="1">
+							</div>
+							<div class="col-3">
+								<label for="exampleFormControlSelect1">n_estimators</label>
+								<input name="randomforest_n_estimators" type="text" class="form-control" id="randomforest_n_estimators" onblur='data_check(this)' placeholder=""
+								 value="100">
+							</div>
+						</div>
 					</div>
-					<div class="row">
-						<div class="col-4">
-							<label for="exampleFormControlSelect1">min_samples_split</label>
-							<input name="randomforest_min_samples_split" type="text" class="form-control" id="randomforest_min_samples_split" onblur='data_check(this)' placeholder=""
-							 value="2">
+					
+					<hr />
+					<div class="row gridElement">
+						<div class="col-3">
+								<label for="exampleFormControlSelect1">max_depth range (from:to:step)</label>
+								<input name="randomforest_max_depth_grid" type="text" class="form-control" id="randomforest_max_depth_grid" onblur='data_check(this)' placeholder=""
+								 value="3:10:1">
+							</div>
+					
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_split range (from:to:step)</label>
+							<input name="randomforest_min_samples_split_grid" type="text" class="form-control" id="randomforest_min_samples_split_grid" onblur='data_check(this)' placeholder=""
+							 value="2:10:2">
 						</div>
-						<div class="col-4">
-							<label for="exampleFormControlSelect1">min_samples_leaf</label>
-							<input name="randomforest_min_samples_leaf" type="text" class="form-control" id="randomforest_min_samples_leaf" onblur='data_check(this)' placeholder=""
-							 value="1">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_leaf range (from:to:step)</label>
+							<input name="randomforest_min_samples_leaf_grid" type="text" class="form-control" id="randomforest_min_samples_leaf_grid" onblur='data_check(this)' placeholder=""
+							 value="1:11:2">
 						</div>
-						<div class="col-4">
-							<label for="exampleFormControlSelect1">n_estimators</label>
-							<input name="randomforest_n_estimators" type="text" class="form-control" id="randomforest_n_estimators" onblur='data_check(this)' placeholder=""
-							 value="100">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">n_estimators range (from:to:step)</label>
+							<input name="randomforest_n_estimators_grid" type="text" class="form-control" id="randomforest_n_estimators_grid" onblur='data_check(this)' placeholder=""
+							 value="40:200:20">
 						</div>
 					</div>
+					
 				</div>
+
 				<div id="detail_logistic">
-					<h5>Parameters of Logistic</h5>
+					<!-- <h5>Parameters of Logistic</h5> -->
 					<div class="row">
 						<div class="col-3">
 							<label for="exampleFormControlSelect1">penalty</label>
@@ -954,29 +1071,37 @@
 								<option value="saga">saga</option>
 							</select>
 						</div>
-						<div class="col-2">
+						<div class="col-3">
 							<label for="exampleFormControlSelect1">fit_intercept</label>
 							<select name="logistic_fit_intercept" class="form-control" id="logistic_fit_intercept" required="required" onchange="">
 								<option selected value="True">True</option>
 								<option value="False">False</option>
 							</select>
 						</div>
-						<div class="col-2">
+						<div class="usrElement col-3">
 							<label for="exampleFormControlSelect1">C</label>
 							<input name="logistic_C" id="logistic_C" type="text" class="form-control" onblur='data_check(this)' placeholder=""
 							 value="1.0">
 						</div>
-						<div class="col-2">
+<!-- 						<div class="col-2">
 							<label for="exampleFormControlSelect1">l1_ratio</label>
 							<input name="logistic_l1_ratio" id="logistic_l1_ratio" type="text" class="form-control" onblur='data_check(this)' placeholder=""
 							 disabled value="">
-						</div>
+						</div> -->
 					</div>
+					<hr />
+					<div class="row gridElement col-6">
+						<label for="exampleFormControlSelect1">C range (from:to:step)</label>
+						<input name="logistic_C_grid" id="logistic_C_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+						 value="0.05:1.0:0.05">
+					</div>
+					
+					
 				</div>
 				<div id="detail_knn">
-					<h5>Parameters of KNN</h5>
+					<!-- <h5>Parameters of KNN</h5> -->
 					<div class="row">
-						<div class="col-2">
+						<div class="col-3">
 							<label for="exampleFormControlSelect1">algorithm</label>
 							<select name="knn_algorithm" id="knn_algorithm" class="form-control" required="required" onchange="knn_select()">
 								<option selected value="auto">auto</option>
@@ -985,7 +1110,7 @@
 								<option value="brute">brute</option>
 							</select>
 						</div>
-						<div class="col-2">
+						<div class="col-3">
 							<label for="exampleFormControlSelect1">metric</label>
 							<select name="knn_metric" id="knn_metric" class="form-control" required="required" onchange="knn_select()">
 								<option selected value="minkowski">minkowski</option>
@@ -996,19 +1121,19 @@
 								<option value="manhattan">manhattan</option>
 							</select>
 						</div>
-						<div class="col-2">
+						<div class="col-3">
 							<label for="exampleFormControlSelect1">weights</label>
 							<select name="knn_weights" id="knn_weights" class="form-control" required="required" onchange="">
 								<option selected value="uniform">uniform</option>
 								<option value="distance">distance</option>
 							</select>
 						</div>
-						<div class="col-2">
+						<div class="usrElement col-3">
 							<label for="exampleFormControlSelect1">n_neighbors</label>
 							<input name="knn_n_neighbors" id="knn_n_neighbors" type="text" class="form-control" onblur='data_check(this)' placeholder=""
 							 value="5">
 						</div>
-						<div class="col-2">
+<!-- 						<div class="col-2">
 							<label for="exampleFormControlSelect1">leaf_size</label>
 							<input name="knn_leaf_size" id="knn_leaf_size" type="text" class="form-control" onblur='data_check(this)' placeholder=""
 							 disabled value="">
@@ -1017,16 +1142,24 @@
 							<label for="exampleFormControlSelect1">p</label>
 							<input name="knn_p" id="knn_p" type="text" class="form-control" onblur='data_check(this)' placeholder=""
 							 value="2">
-						</div>
+						</div> -->
 					</div>
+					<hr />
+					<div class="row gridElement col-6">
+						<label for="exampleFormControlSelect1">n_neighbors range (from:to:step)</label>
+						<input name="knn_n_neighbors_grid" id="knn_n_neighbors_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+						 value="2:15:1">
+					</div>
+					
+					
 				</div>
 				<div id="detail_xgboost">
-					<h5>Parameters of XGBoost</h5>
-					<div class="row">
+					<!-- <h5>Parameters of XGBoost</h5> -->
+					<div class="row usrElement">
 						<div class="col-3">
 							<label for="exampleFormControlSelect1">learning_rate</label>
 							<input name="xgboost_learning_rate" id="xgboost_learning_rate" type="text" class="form-control" onblur='data_check(this)' placeholder=""
-							 value="0.3">
+							 value="0.2">
 						</div>
 						<div class="col-3">
 							<label for="exampleFormControlSelect1">n_estimators</label>
@@ -1039,21 +1172,21 @@
 							 value="1">
 						</div>
 						<div class="col-3">
-							<label for="exampleFormControlSelect1">subsample</label>
-							<input name="xgboost_subsample" id="xgboost_subsample" type="text" class="form-control" onblur='data_check(this)' placeholder=""
-							 value="1">
+							<label for="exampleFormControlSelect1">Gamma</label>
+							<input name="xgboost_Gamma" id="xgboost_Gamma" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="0">
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-3">
 							<label for="exampleFormControlSelect1">colsample_bytree</label>
 							<input name="xgboost_colsample_bytree" id="xgboost_colsample_bytree" type="text" class="form-control" onblur='data_check(this)' placeholder=""
-							 value="1">
+							 value="0.8">
 						</div>
 						<div class="col-3">
-							<label for="exampleFormControlSelect1">Gamma</label>
-							<input name="xgboost_Gamma" id="xgboost_Gamma" type="text" class="form-control" onblur='data_check(this)' placeholder=""
-							 value="0">
+							<label for="exampleFormControlSelect1">subsample</label>
+							<input name="xgboost_subsample" id="xgboost_subsample" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="0.8">
 						</div>
 						<div class="col-3">
 							<label for="exampleFormControlSelect1">reg_alpha</label>
@@ -1066,9 +1199,33 @@
 							 value="1">
 						</div>
 					</div>
+					<hr />
+					<div class="row gridElement">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">learning_rate range (from:to:step)</label>
+							<input name="xgboost_learning_rate_grid" id="xgboost_learning_rate_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="0.05:0.2:0.05">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">n_estimators range (from:to:step)</label>
+							<input name="xgboost_n_estimators_grid" id="xgboost_n_estimators_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="50:300:50">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_child_weight range (from:to:step)</label>
+							<input name="xgboost_min_child_weight_grid" id="xgboost_min_child_weight_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="1:6:1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">Gamma range (from:to:step)</label>
+							<input name="xgboost_Gamma_grid" id="xgboost_Gamma_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="0:0.5:0.1">
+						</div>
+					</div>
+					
 				</div>
 				<div id="detail_lightgbm">
-					<h5>Parameters of lightGBM</h5>
+					<!-- <h5>Parameters of lightGBM</h5> -->
 					<div class="row">
 						<div class="col">
 							<label for="exampleFormControlSelect1">boosting_type</label>
@@ -1100,7 +1257,7 @@
 							 value="1">
 						</div>
 					</div>
-					<div class="row">
+					<div class="row usrElement">
 						<div class="col">
 							<label for="exampleFormControlSelect1">colsample_bytree</label>
 							<input name="lightgbm_colsample_bytree" id="lightgbm_colsample_bytree" type="text" class="form-control" onblur='data_check(this)' placeholder=""
@@ -1122,42 +1279,91 @@
 							 value="31">
 						</div>
 						<div class="col">
-							<label for="exampleFormControlSelect1">max_bin</label>
-							<input name="lightgbm_max_bin" id="lightgbm_max_bin" type="text" class="form-control" onblur='data_check(this)' placeholder=""
-							 value="255">
+							<label for="exampleFormControlSelect1">max_depth</label>
+							<input name="lightgbm_max_depth" id="lightgbm_max_depth" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="3">
+						</div>
+					</div>
+					<hr />
+					<div class="row gridElement">
+						<div class="col">
+							<label for="exampleFormControlSelect1">colsample_bytree range</label>
+							<input name="lightgbm_colsample_bytree_grid" id="lightgbm_colsample_bytree_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="0.8:1:0.1">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">learning_rate range</label>
+							<input name="lightgbm_learning_rate_grid" id="lightgbm_learning_rate_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="0.05:0.2:0.05">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">n_estimators range</label>
+							<input name="lightgbm_n_estimators_grid" id="lightgbm_n_estimators_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="50:200:50">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">num_leaves range</label>
+							<input name="lightgbm_num_leaves_grid" id="lightgbm_num_leaves_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="30:120:30">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">max_depth range</label>
+							<input name="lightgbm_max_depth_grid" id="lightgbm_max_depth_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="3:8:1">
 						</div>
 					</div>
 				</div>
 				<div id="detail_adaboost">
-					<h5>Parameters of Adaboost</h5>
-					<div class="row">
-						<div class="col">
+					<!-- <h5>Parameters of Adaboost</h5> -->
+					<div class="row col-12">		
+						<div class="row col">
 							<label for="exampleFormControlSelect1">algorithm</label>
 							<select name="adaboost_algorithm" id="adaboost_algorithm" class="form-control" required="required" onchange="">
 								<option value="SAMME">SAMME</option>
 								<option selected value="SAMME.R">SAMME.R</option>
 							</select>
 						</div>
+						<div class="row usrElement col-8">
+							<div class="col-4">
+								<label for="exampleFormControlSelect1">n_estimators</label>
+								<input name="adaboost_n_estimators" id="adaboost_n_estimators" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+								 value="100">
+							</div>
+							<div class="col-4">
+								<label for="exampleFormControlSelect1">learning_rate</label>
+								<input name="adaboost_learning_rate" id="adaboost_learning_rate" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+								 value="0.1">
+							</div>
+							<div class="col-4">
+								<label for="exampleFormControlSelect1">max_depth</label>
+								<input name="adaboost_max_depth" id="adaboost_max_depth" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+								 value="3">
+							</div>
+						</div>
+					</div>
+					<hr />
+					<div class="row gridElement">
 						<div class="col">
-							<label for="exampleFormControlSelect1">n_estimators</label>
-							<input name="adaboost_n_estimators" id="adaboost_n_estimators" type="text" class="form-control" onblur='data_check(this)' placeholder=""
-							 value="50">
+							<label for="exampleFormControlSelect1">n_estimators range (from:to:step)</label>
+							<input name="adaboost_n_estimators_grid" id="adaboost_n_estimators_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="50:300:50">
 						</div>
 						<div class="col">
-							<label for="exampleFormControlSelect1">learning_rate</label>
-							<input name="adaboost_learning_rate" id="adaboost_learning_rate" type="text" class="form-control" onblur='data_check(this)' placeholder=""
-							 value="1.0">
+							<label for="exampleFormControlSelect1">learning_rate range (from:to:step)</label>
+							<input name="adaboost_learning_rate_grid" id="adaboost_learning_rate_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="0.05:0.2:0.05">
 						</div>
 						<div class="col">
-							<label for="exampleFormControlSelect1">max_depth</label>
-							<input name="adaboost_max_depth" id="adaboost_max_depth" type="text" class="form-control" onblur='data_check(this)' placeholder=""
-							 value="1">
+							<label for="exampleFormControlSelect1">max_depth range (from:to:step)</label>
+							<input name="adaboost_max_depth_grid" id="adaboost_max_depth_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="2:10:2">
 						</div>
 					</div>
 				</div>
+				
 				<div id="detail_decisiontree">
-					<h5>Parameters of DecisionTree</h5>
-					<div class="row">
+					<!-- <h5>Parameters of DecisionTree</h5> -->
+					<div class="row usrElement">
 						<div class="col">
 							<label for="exampleFormControlSelect1">criterion</label>
 							<select name="decisiontree_criterion" id="decisiontree_criterion" class="form-control" required="required" onchange="">
@@ -1198,9 +1404,29 @@
 							</select>
 						</div>
 					</div>
+					<hr />
+					<div class="row gridElement">
+						<div class="col">
+							<label for="exampleFormControlSelect1">max_depth range (from:to:step)</label>
+							<input name="decisiontree_max_depth_grid" id="decisiontree_max_depth_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="3:10:1">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">min_samples_split range (from:to:step)</label>
+							<input name="decisiontree_min_samples_split_grid" id="decisiontree_min_samples_split_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="2:10:1">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">min_samples_leaf range (from:to:step)</label>
+							<input name="decisiontree_min_samples_leaf_grid" id="decisiontree_min_samples_leaf_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="1:10:1">
+						</div>
+					</div>
+					
+					
 				</div>
 				<div id="detail_gbdt">
-					<h5>Parameters of GBDT</h5>
+					<!-- <h5>Parameters of GBDT</h5> -->
 					<div class="row">
 						<div class="col">
 							<label for="exampleFormControlSelect1">criterion</label>
@@ -1219,22 +1445,30 @@
 							</select>
 						</div>
 						<div class="col">
-							<label for="exampleFormControlSelect1">learning_rate</label>
-							<input name="gbdt_learning_rate" id="gbdt_learning_rate" type="text" class="form-control" onblur='data_check(this)' placeholder=""
-							 value="0.1">
+							<label for="exampleFormControlSelect1">max_features</label>
+							 <select name="gbdt_max_features" class="form-control" id="gbdt_max_features" required="required" onchange="">
+							 	<option value="auto">auto</option>
+							 	<option value="sqrt">sqrt</option>
+							 	<option value="log2">log2</option>
+							</select>
 						</div>
 						<div class="col">
 							<label for="exampleFormControlSelect1">subsample</label>
 							<input name="gbdt_subsample" id="gbdt_subsample" type="text" class="form-control" onblur='data_check(this)' placeholder=""
 							 value="1.0">
 						</div>
+					</div>
+					<div class="row usrElement">
+						<div class="col">
+							<label for="exampleFormControlSelect1">learning_rate</label>
+							<input name="gbdt_learning_rate" id="gbdt_learning_rate" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="0.1">
+						</div>
 						<div class="col">
 							<label for="exampleFormControlSelect1">min_samples_split</label>
 							<input name="gbdt_min_samples_split" id="gbdt_min_samples_split" type="text" class="form-control" onblur='data_check(this)' placeholder=""
 							 value="2">
 						</div>
-					</div>
-					<div class="row">
 						<div class="col">
 							<label for="exampleFormControlSelect1">min_samples_leaf</label>
 							<input name="gbdt_min_samples_leaf" id="gbdt_min_samples_leaf" type="text" class="form-control" onblur='data_check(this)' placeholder=""
@@ -1245,22 +1479,14 @@
 							<input name="gbdt_max_depth" id="gbdt_max_depth" type="text" class="form-control" onblur='data_check(this)' placeholder=""
 							 value="3">
 						</div>
-						<div class="col">
-							<label for="exampleFormControlSelect1">max_features</label>
-<!-- 							<input name="gbdt_max_features" id="gbdt_max_features" type="text" class="form-control" onblur='data_check(this)' placeholder=""
-							 value=""> -->
-							 <select name="gbdt_max_features" class="form-control" id="gbdt_max_features" required="required" onchange="">
-							 	<option value="auto">auto</option>
-							 	<option value="sqrt">sqrt</option>
-							 	<option value="log2">log2</option>
-							</select>
-						</div>
+
 						<div class="col">
 							<label for="exampleFormControlSelect1">n_estimators</label>
 							<input name="gbdt_n_estimators" id="gbdt_n_estimators" type="text" class="form-control" onblur='data_check(this)' placeholder=""
 							 value="100">
 						</div>
-						<div class="col">
+					</div>
+<!-- 						<div class="col">
 							<label for="exampleFormControlSelect1">validation_fraction</label>
 							<input name="gbdt_validation_fraction" id="gbdt_validation_fraction" type="text" class="form-control" onblur='data_check(this)' placeholder=""
 							 value="0.1">
@@ -1269,12 +1495,44 @@
 							<label for="exampleFormControlSelect1">n_iter_no_change</label>
 							<input name="gbdt_n_iter_no_change" id="gbdt_n_iter_no_change" type="text" class="form-control" onblur='data_check(this)' placeholder=""
 							 value="">
+						</div> -->
+						<hr />
+						
+					<div class="row gridElement">
+						<div class="col">
+							<label for="exampleFormControlSelect1">learning_rate range</label>
+							<input name="gbdt_learning_rate_grid" id="gbdt_learning_rate_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="0.05:0.5:0.05">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">min_samples_split range</label>
+							<input name="gbdt_min_samples_split_grid" id="gbdt_min_samples_split_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="2:10:2">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">min_samples_leaf range</label>
+							<input name="gbdt_min_samples_leaf_grid" id="gbdt_min_samples_leaf_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="1:10:1">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">max_depth range</label>
+							<input name="gbdt_max_depth_grid" id="gbdt_max_depth_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="3:10:1">
+						</div>
+												
+						<div class="col">
+							<label for="exampleFormControlSelect1">n_estimators range</label>
+							<input name="gbdt_n_estimators_grid" id="gbdt_n_estimators_grid" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="50:200:50">
 						</div>
 					</div>
+					
+					
+					
 				</div>
 				<!-- Regression -->
 				<div id="detail_linearregression">
-					<h5>Parameters of LinearRegression</h5>
+					<!-- <h5>Parameters of LinearRegression</h5> -->
 					<div class="row">
 						<div class="col-6">
 							<label for="exampleFormControlSelect1">fit intercept</label>
@@ -1293,8 +1551,8 @@
 					</div>
 				</div>
 				<div id="detail_regsvm">
-					<h5>Parameters of SVM</h5>
-					<div class="row">
+					<!-- <h5>Parameters of SVM</h5> -->
+					<div class="row usrElement">
 						<div class="col-4">
 							<label for="exampleFormControlSelect1">kernels</label>
 							<select name="regsvm_kernel" class="form-control" id="regsvm_kernel" required="required" onchange="regsvm_select()">
@@ -1307,7 +1565,7 @@
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">degree</label>
 							<input name="regsvm_degree" type="text" class="form-control" id="regsvm_degree" onblur='data_check(this)' placeholder=""
-							 disabled="disabled" value="">
+							 disabled="disabled" value="3">
 						</div>
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">gamma</label>
@@ -1317,7 +1575,7 @@
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">coef0</label>
 							<input name="regsvm_coef0" type="text" class="form-control" id="regsvm_coef0" onblur='data_check(this)' placeholder=""
-							 disabled="disabled" value="">
+							 disabled="disabled" value="0">
 						</div>
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">C</label>
@@ -1325,14 +1583,37 @@
 							 value="1">
 						</div>
 					</div>
+					<hr />
+					<div class="row gridElement">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">degree range (from:to:step)</label>
+							<input name="regsvm_degree_grid" type="text" class="form-control" id="regsvm_degree_grid" onblur='data_check(this)' placeholder=""
+							 disabled="disabled" value="2:8:1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">gamma range (from:to:step)</label>
+							<input name="regsvm_gamma_grid" type="text" class="form-control" id="regsvm_gamma_grid" onblur='data_check(this)' placeholder=""
+							  value="0.1:1.0:0.1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">coef0 range (from:to:step)</label>
+							<input name="regsvm_coef0_grid" type="text" class="form-control" id="regsvm_coef0_grid" onblur='data_check(this)' placeholder=""
+							 disabled="disabled" value="0:10.0:1.0">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">C range (from:to:step)</label>
+							<input name="regsvm_c_grid" type="text" class="form-control" id="regsvm_c_grid" onblur='data_check(this)' placeholder=""
+							 value="1.0:15.0:1.0">
+						</div>
+					</div>
 				</div>
 				<div id="detail_ridge">
-					<h5>Parameters of Ridge</h5>
-					<div class="row">
+					<!-- <h5>Parameters of Ridge</h5> -->
+					<div class="row usrElement">
 						<div class="col-3">
 							<label for="exampleFormControlSelect1">alphas</label>
 							<input name="ridge_alphas" type="text" class="form-control" id="ridge_alphas" onblur='data_check(this)' placeholder=""
-							 value="[0.1, 1.0, 10.0]">
+							 value="[0.01, 0.1, 1.0, 10.0]">
 						</div>
 						<div class="col-3">
 							<label for="exampleFormControlSelect1">fit intercept</label>
@@ -1356,19 +1637,28 @@
 								<option value="eigen">eigen</option>
 							</select>
 						</div>
+					</div>	
+					<hr />
+					<div class="row gridElement">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">alphas range (from:to:step)</label>
+							<input name="ridge_alphas_grid" type="text" class="form-control" id="ridge_alphas_grid" onblur='data_check(this)' placeholder=""
+							 value="0.1:1:0.1">
+						</div>
 					</div>
+					
 				</div>
 				<div id="detail_lasso">
-					<h5>Parameters of Lasso</h5>
+					<!-- <h5>Parameters of Lasso</h5> -->
 					<div class="row">
-						<div class="col-4">
+<!-- 						<div class="col-4">
 							<label for="exampleFormControlSelect1">mode</label>
 							<select name="lasso_mode" class="form-control" id="lasso_mode" required="required" onchange="l_mode_change()">
 								<option value="eps+n_alphas">eps+n_alphas</option>
 								<option value="alphas">alphas</option>
 							</select>
-						</div>
-						<div class="col-8" id="lasso_mode_change">
+						</div> -->
+<!-- 						<div class="col-8" id="lasso_mode_change">
 							<div class="row">
 								<div class="col-6">
 									<label for="exampleFormControlSelect1">eps</label>
@@ -1381,25 +1671,30 @@
 									 value="100">
 								</div>
 							</div>
-						</div>
+						</div> -->
 						
 					</div>
-					<div class="row">
-						<div class="col-4">
+					<div class="row usrElement">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">alphas</label>
+							<input name="lasso_alphas" type="text" class="form-control" id="lasso_alphas" onblur='data_check(this)' placeholder=""
+							 value="[0.01, 0.1, 1, 10]">
+						</div>
+						<div class="col-3">
 							<label for="exampleFormControlSelect1">fit intercept</label>
 							<select name="lasso_fit_intercept" class="form-control" id="lasso_fit_intercept" required="required" onchange="">
 							  	<option value="True">True</option>
 							  	<option selected value="False">False</option>
 							</select>
 						</div>
-						<div class="col-4">
+						<div class="col-3">
 							<label for="exampleFormControlSelect1">selection</label>
 							<select name="lasso_selection" class="form-control" id="lasso_selection" required="required" onchange="">
 								<option selected value="cyclic">cyclic</option>
 								<option value="random">random</option>
 							</select>
 						</div>
-						<div class="col-4">
+						<div class="col-3">
 							<label for="exampleFormControlSelect1">positive</label>
 							<select name="lasso_positive" class="form-control" id="lasso_positive" required="required" onchange="">
 							   	<option value="True">True</option>
@@ -1407,9 +1702,17 @@
 							</select>
 						</div>
 					</div>
+					<hr />
+					<div class="row gridElement">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">alphas range (from:to:step)</label>
+							<input name="lasso_alphas_grid" type="text" class="form-control" id="lasso_alphas_grid" onblur='data_check(this)' placeholder=""
+							 value="0.1:1:0.1">
+						</div>
+					</div>
 				</div>
 				<div id="detail_regdecisiontree">
-					<h5>Parameters of DecisionTree</h5>
+					<!-- <h5>Parameters of DecisionTree</h5> -->
 					<div class="row">
 						<div class="col-4">
 							<label for="exampleFormControlSelect1">criterion</label>
@@ -1428,12 +1731,21 @@
 							</select>
 						</div>
 						<div class="col-4">
+							<label for="exampleFormControlSelect1">max_features</label>
+							<select name="regdecisiontree_max_features" class="form-control" id="regdecisiontree_max_features" required="required" onchange="">
+							 	<option value="auto">auto</option>
+							 	<option value="sqrt">sqrt</option>
+							 	<option value="log2">log2</option>
+							</select>
+						</div>
+
+					</div>
+					<div class="row usrElement">
+						<div class="col-4">
 							<label for="exampleFormControlSelect1">max_depth</label>
 							<input name="regdecisiontree_max_depth" type="text" class="form-control" id="regdecisiontree_max_depth" onblur='data_check(this)' placeholder=""
 							 value="">
 						</div>
-					</div>
-					<div class="row">
 						<div class="col-4">
 							<label for="exampleFormControlSelect1">min_samples_split</label>
 							<input name="regdecisiontree_min_samples_split" type="text" class="form-control" id="regdecisiontree_min_samples_split" onblur='data_check(this)' placeholder=""
@@ -1444,21 +1756,29 @@
 							<input name="regdecisiontree_min_samples_leaf" type="text" class="form-control" id="regdecisiontree_min_samples_leaf" onblur='data_check(this)' placeholder=""
 							 value="1">
 						</div>
+					</div>
+					<hr />
+					<div class="row gridElement">
 						<div class="col-4">
-							<label for="exampleFormControlSelect1">max_features</label>
-<!-- 							<input name="regdecisiontree_max_features" type="text" class="form-control" id="regdecisiontree_max_features" onblur='data_check(this)' placeholder=""
-							 value=""> -->
-							<select name="regdecisiontree_max_features" class="form-control" id="regdecisiontree_max_features" required="required" onchange="">
-							 	<option value="auto">auto</option>
-							 	<option value="sqrt">sqrt</option>
-							 	<option value="log2">log2</option>
-							</select>
+							<label for="exampleFormControlSelect1">max_depth range (from:to:step)</label>
+							<input name="regdecisiontree_max_depth_grid" type="text" class="form-control" id="regdecisiontree_max_depth_grid" onblur='data_check(this)' placeholder=""
+							 value="3:8:1">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">min_samples_split range (from:to:step)</label>
+							<input name="regdecisiontree_min_samples_split_grid" type="text" class="form-control" id="regdecisiontree_min_samples_split_grid" onblur='data_check(this)' placeholder=""
+							 value="2:10:1">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">min_samples_leaf range (from:to:step)</label>
+							<input name="regdecisiontree_min_samples_leaf_grid" type="text" class="form-control" id="regdecisiontree_min_samples_leaf_grid" onblur='data_check(this)' placeholder=""
+							 value="1:10:1">
 						</div>
 					</div>
 				</div>
 				<div id="detail_regxgboost">
-					<h5>Parameters of XGBoost</h5>
-					<div class="row">
+					<!-- <h5>Parameters of XGBoost</h5> -->
+					<div class="row usrElement">
 						<div class="col-4">
 							<label for="exampleFormControlSelect1">booster</label>
 							<select name="regxgboost_booster" class="form-control" id="regxgboost_booster" required="required" onchange="">
@@ -1478,7 +1798,7 @@
 							 value="3">
 						</div>
 					</div>
-					<div class="row">
+					<div class="row usrElement">
 						<div class="col-4">
 							<label for="exampleFormControlSelect1">n_estimators</label>
 							<input name="regxgboost_n_estimators" type="text" class="form-control" id="regxgboost_n_estimators" onblur='data_check(this)' placeholder=""
@@ -1512,10 +1832,41 @@
 							 value="1">
 						</div>
 					</div>
+					<hr />
+					<div class="row gridElement">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">n_estimators range (from:to:step)</label>
+							<input name="regxgboost_n_estimators_grid" type="text" class="form-control" id="regxgboost_n_estimators_grid" onblur='data_check(this)' placeholder=""
+							 value="50:200:50">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">max_depth range (from:to:step)</label>
+							<input name="regxgboost_max_depth_grid" type="text" class="form-control" id="regxgboost_max_depth_grid" onblur='data_check(this)' placeholder=""
+							 value="3:8:1">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">gamma range (from:to:step)</label>
+							<input name="regxgboost_gamma_grid" type="text" class="form-control" id="regxgboost_gamma_grid" onblur='data_check(this)' placeholder=""
+							 value="0:0.5:0.1">
+						</div>
+					</div>
+					<div class="row gridElement">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">learning_rate range (from:to:step)</label>
+							<input name="regxgboost_learning_rate_grid" type="text" class="form-control" id="regxgboost_learning_rate_grid" onblur='data_check(this)' placeholder=""
+							 value="0.05:0.2:0.05">
+						</div>
+
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">min_child_weight range (from:to:step)</label>
+							<input name="regxgboost_min_child_weight_grid" type="text" class="form-control" id="regxgboost_min_child_weight_grid" onblur='data_check(this)' placeholder=""
+							 value="1:6:1">
+						</div>
+					</div>
 				</div>
 				<div id="detail_regrandomforest">
-					<h5>Parameters of RandomForest</h5>
-					<div class="row">
+					<!-- <h5>Parameters of RandomForest</h5> -->
+					<div class="row usrElement">
 						<div class="col-4">
 							<label for="exampleFormControlSelect1">criterion</label>
 							<select name="regrandomforest_criterion" class="form-control" id="regrandomforest_criterion" required="required" onchange="">
@@ -1536,7 +1887,7 @@
 							 value="">
 						</div>
 					</div>
-					<div class="row">
+					<div class="row usrElement">
 						<div class="col-4">
 							<label for="exampleFormControlSelect1">min_samples_split</label>
 							<input name="regrandomforest_min_samples_split" type="text" class="form-control" id="regrandomforest_min_samples_split" onblur='data_check(this)' placeholder=""
@@ -1558,10 +1909,34 @@
 							</select>
 						</div>
 					</div>
+					<hr />
+					<div class="row gridElement">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">n_estimators range (from:to:step)</label>
+							<input name="regrandomforest_n_estimators_grid" type="text" class="form-control" id="regrandomforest_n_estimators_grid" onblur='data_check(this)' placeholder=""
+							 value="50:200:50">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">max_depth range (from:to:step)</label>
+							<input name="regrandomforest_max_depth_grid" type="text" class="form-control" id="regrandomforest_max_depth_grid" onblur='data_check(this)' placeholder=""
+							 value="3:8:1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_split range (from:to:step)</label>
+							<input name="regrandomforest_min_samples_split_grid" type="text" class="form-control" id="regrandomforest_min_samples_split_grid" onblur='data_check(this)' placeholder=""
+							 value="2:10:1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_leaf range (from:to:step)</label>
+							<input name="regrandomforest_min_samples_leaf_grid" type="text" class="form-control" id="regrandomforest_min_samples_leaf_grid" onblur='data_check(this)' placeholder=""
+							 value="1:10:1">
+						</div>
+					</div>
 				</div>
+				
 				<div id="detail_regadaboost">
-					<h5>Parameters of Adaboost</h5>
-					<div class="row">
+					<!-- <h5>Parameters of Adaboost</h5> -->
+					<div class="row usrElement">
 						<div class="col-4">
 							<label for="exampleFormControlSelect1">loss</label>
 							<select name="regadaboost_loss" class="form-control" id="regadaboost_loss" required="required" onchange="">
@@ -1581,9 +1956,22 @@
 							 value="1.0">
 						</div>
 					</div>
+					<hr />
+					<div class="row gridElement">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">n_estimators range (from:to:step)</label>
+							<input name="regadaboost_n_estimators_grid" type="text" class="form-control" id="regadaboost_n_estimators_grid" onblur='data_check(this)' placeholder=""
+							 value="50:200:50">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">learning_rate range (from:to:step)</label>
+							<input name="regadaboost_learning_rate_grid" type="text" class="form-control" id="regadaboost_learning_rate_grid" onblur='data_check(this)' placeholder=""
+							 value="0.05:0.3:0.05">
+						</div>
+					</div>
 				</div>
 				<div id="detail_gradientboost">
-					<h5>Parameters of GradientBoost</h5>
+					<!-- <h5>Parameters of GradientBoost</h5> -->
 					<div class="row">
 						<div class="col-3">
 							<label for="exampleFormControlSelect1">loss</label>
@@ -1595,22 +1983,26 @@
 							</select>
 						</div>
 						<div class="col-3">
+							<label for="exampleFormControlSelect1">max_features</label>
+							<select name="gradientboost_max_features" class="form-control" id="gradientboost_max_features" required="required" onchange="">
+							   	<option value="auto">auto</option>
+							   	<option value="sqrt">sqrt</option>
+							   	<option value="log2">log2</option>
+							</select>
+						</div>
+						<div class="col-3">
 							<label for="exampleFormControlSelect1">learning_rate</label>
 							<input name="gradientboost_learning_rate" type="text" class="form-control" id="gradientboost_learning_rate" onblur='data_check(this)' placeholder=""
 							 value="0.1">
 						</div>
-						<div class="col-3">
-							<label for="exampleFormControlSelect1">n_estimators</label>
-							<input name="gradientboost_n_estimators" type="text" class="form-control" id="gradientboost_n_estimators" onblur='data_check(this)' placeholder=""
-							 value="100">
-						</div>
+
 						<div class="col-3">
 							<label for="exampleFormControlSelect1">subsample</label>
 							<input name="gradientboost_subsample" type="text" class="form-control" id="gradientboost_subsample" onblur='data_check(this)' placeholder=""
 							 value="1.0">
 						</div>
 					</div>
-					<div class="row">
+					<div class="row usrElement">
 						<div class="col-3">
 							<label for="exampleFormControlSelect1">min_samples_split</label>
 							<input name="gradientboost_min_samples_split" type="text" class="form-control" id="gradientboost_min_samples_split" onblur='data_check(this)' placeholder=""
@@ -1627,16 +2019,35 @@
 							 value="3">
 						</div>
 						<div class="col-3">
-							<label for="exampleFormControlSelect1">max_features</label>
-<!-- 							<input name="gradientboost_max_features" type="text" class="form-control" id="gradientboost_max_features" onblur='data_check(this)' placeholder=""
-							 value=""> -->
-							<select name="gradientboost_max_features" class="form-control" id="gradientboost_max_features" required="required" onchange="">
-							   	<option value="auto">auto</option>
-							   	<option value="sqrt">sqrt</option>
-							   	<option value="log2">log2</option>
-							</select>
+							<label for="exampleFormControlSelect1">n_estimators</label>
+							<input name="gradientboost_n_estimators" type="text" class="form-control" id="gradientboost_n_estimators" onblur='data_check(this)' placeholder=""
+							 value="100">
 						</div>
 					</div>
+					<hr />
+					<div class="row gridElement">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_split range (from:to:step)</label>
+							<input name="gradientboost_min_samples_split_grid" type="text" class="form-control" id="gradientboost_min_samples_split_grid" onblur='data_check(this)' placeholder=""
+							 value="2:10:1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_leaf range (from:to:step)</label>
+							<input name="gradientboost_min_samples_leaf_grid" type="text" class="form-control" id="gradientboost_min_samples_leaf_grid" onblur='data_check(this)' placeholder=""
+							 value="1:10:1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">max_depth range (from:to:step)</label>
+							<input name="gradientboost_max_depth_grid" type="text" class="form-control" id="gradientboost_max_depth_grid" onblur='data_check(this)' placeholder=""
+							 value="3:10:1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">n_estimators range (from:to:step)</label>
+							<input name="gradientboost_n_estimators_grid" type="text" class="form-control" id="gradientboost_n_estimators_grid" onblur='data_check(this)' placeholder=""
+							 value="50:200:50">
+						</div>
+					</div>
+					
 				</div>
 				
 				
@@ -1646,8 +2057,8 @@
 				
 				<!-- Survival -->
 				<div id="detail_survivalsvm">
-					<h5>Parameters of SurvivalSVM</h5>
-					<div class="row">
+					<!-- <h5>Parameters of SurvivalSVM</h5> -->
+					<div class="row usrElement">
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">kernels</label>
 							<select name="survivalsvm_kernel" class="form-control" id="survivalsvm_kernel" required="required" onchange="survivalsvm_select()">
@@ -1672,23 +2083,48 @@
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">degree</label>
 							<input name="survivalsvm_degree" type="text" class="form-control" id="survivalsvm_degree" onblur='data_check(this)' placeholder=""
-							 disabled="disabled" value="">
+							 disabled="disabled" value="3">
 						</div>
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">gamma</label>
 							<input name="survivalsvm_gamma" type="text" class="form-control" id="survivalsvm_gamma" onblur='data_check(this)' placeholder=""
-							 disabled="disabled" value="">
+							 disabled="disabled" value="scale">
 						</div>
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">coef0</label>
 							<input name="survivalsvm_coef0" type="text" class="form-control" id="survivalsvm_coef0" onblur='data_check(this)' placeholder=""
-							 disabled="disabled" value="">
+							 disabled="disabled" value="0">
 						</div>
 					</div>
+					<hr />
+					<div class="row gridElement">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">alpha range (from:to:step)</label>
+							<input name="survivalsvm_alpha_grid" type="text" class="form-control" id="survivalsvm_alpha_grid" onblur='data_check(this)' placeholder="" 
+							value="0.1:1:0.1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">degree range (from:to:step)</label>
+							<input name="survivalsvm_degree_grid" type="text" class="form-control" id="survivalsvm_degree_grid" onblur='data_check(this)' placeholder=""
+							 disabled="disabled" value="3:8:1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">gamma range (from:to:step)</label>
+							<input name="survivalsvm_gamma_grid" type="text" class="form-control" id="survivalsvm_gamma_grid" onblur='data_check(this)' placeholder=""
+							 disabled="disabled" value="0.1:1:0.1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">coef0 range (from:to:step)</label>
+							<input name="survivalsvm_coef0_grid" type="text" class="form-control" id="survivalsvm_coef0_grid" onblur='data_check(this)' placeholder=""
+							 disabled="disabled" value="0:10:1">
+						</div>
+					</div>
+					
+					
 				</div>
 				<div id="detail_survivaltree">
-					<h5>Parameters of SurvivalTree</h5>
-					<div class="row">
+					<!-- <h5>Parameters of SurvivalTree</h5> -->
+					<div class="row usrElement">
 						<div class="col-4">
 							<label for="exampleFormControlSelect1">splitter</label>
 							<select name="survivaltree_splitter" class="form-control" id="survivaltree_splitter" required="required" onchange="">
@@ -1718,10 +2154,28 @@
 							</select>
 						</div>
 					</div>
+					<hr />
+					<div class="row gridElement">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">max_depth range (from:to:step)</label>
+							<input name="survivaltree_max_depth_grid" type="text" class="form-control" id="survivaltree_max_depth_grid" 
+							onblur='data_check(this)' placeholder="" value="3:8:1">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">min_samples_split range (from:to:step)</label>
+							<input name="survivaltree_min_samples_split_grid" type="text" class="form-control" id="survivaltree_min_samples_split_grid" 
+							onblur='data_check(this)' placeholder="" value="2:10:1">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">min_samples_leaf range (from:to:step)</label>
+							<input name="survivaltree_min_samples_leaf_grid" type="text" class="form-control" id="survivaltree_min_samples_leaf_grid" 
+							onblur='data_check(this)' placeholder="" value="2:10:1">
+						</div>
+					</div>
 				</div>
 				<div id="detail_extrasurvivaltrees">
-					<h5>Parameters of ExtraSurvivalTrees</h5>
-					<div class="row">
+					<!-- <h5>Parameters of ExtraSurvivalTrees</h5> -->
+					<div class="row usrElement">
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">max_depth</label>
 							<input name="extrasurvivaltrees_max_depth" type="text" class="form-control" id="extrasurvivaltrees_max_depth" onblur='data_check(this)' placeholder="" value="">
@@ -1742,17 +2196,39 @@
 							   	<option selected value="sqrt">sqrt</option>
 							   	<option value="log2">log2</option>
 							</select>
-						
 						</div>
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">n_estimators</label>
 							<input name="extrasurvivaltrees_n_estimators" type="text" class="form-control" id="extrasurvivaltrees_n_estimators" onblur='data_check(this)' placeholder="" value="100">
 						</div>
 					</div>
+					<hr />
+					<div class="row gridElement">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">max_depth range (from:to:step)</label>
+							<input name="extrasurvivaltrees_max_depth_grid" type="text" class="form-control" id="extrasurvivaltrees_max_depth_grid" 
+							onblur='data_check(this)' placeholder="" value="3:8:1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_split range (from:to:step)</label>
+							<input name="extrasurvivaltrees_min_samples_split_grid" type="text" class="form-control" id="extrasurvivaltrees_min_samples_split_grid" 
+							onblur='data_check(this)' placeholder="" value="3:6:1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_leaf range (from:to:step)</label>
+							<input name="extrasurvivaltrees_min_samples_leaf_grid" type="text" class="form-control" id="extrasurvivaltrees_min_samples_leaf_grid" 
+							onblur='data_check(this)' placeholder="" value="2:6:1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">n_estimators range (from:to:step)</label>
+							<input name="extrasurvivaltrees_n_estimators_grid" type="text" class="form-control" id="extrasurvivaltrees_n_estimators_grid" 
+							onblur='data_check(this)' placeholder="" value="50:200:50">
+						</div>
+					</div>
 				</div>
 				<div id="detail_randomsurvivalforest">
-					<h5>Parameters of RandomSurvivalForest</h5>
-					<div class="row">
+					<!-- <h5>Parameters of RandomSurvivalForest</h5> -->
+					<div class="row usrElement">
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">splitter</label>
 							<select name="randomsurvivalforest_splitter" class="form-control" id="randomsurvivalforest_splitter" required="required" onchange="">
@@ -1783,40 +2259,43 @@
 						</div>
 						<div class="col-2">
 							<label for="exampleFormControlSelect1">n_estimators</label>
-							<input name="randomsurvivalforest_n_estimators" type="text" class="form-control" id="randomsurvivalforest_n_estimators" onblur='data_check(this)' placeholder="" value="100">
+							<input name="randomsurvivalforest_n_estimators_grid" type="text" class="form-control" id="randomsurvivalforest_n_estimators_grid" onblur='data_check(this)' placeholder="" value="100">
 						</div>
 					</div>
+					<hr />
+					<div class="row gridElement">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">max_depth range (from:to:step)</label>
+							<input name="randomsurvivalforest_max_depth_grid" type="text" class="form-control" id="randomsurvivalforest_max_depth_grid" 
+							onblur='data_check(this)' placeholder="" value="3:8:1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_split range (from:to:step)</label>
+							<input name="randomsurvivalforest_min_samples_split_grid" type="text" class="form-control" id="randomsurvivalforest_min_samples_split_grid" 
+							onblur='data_check(this)' placeholder="" value="3:10:1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_leaf range (from:to:step)</label>
+							<input name="randomsurvivalforest_min_samples_leaf_grid" type="text" class="form-control" id="randomsurvivalforest_min_samples_leaf_grid" 
+							onblur='data_check(this)' placeholder="" value="2:10:1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">n_estimators range (from:to:step)</label>
+							<input name="randomsurvivalforest_n_estimators_grid" type="text" class="form-control" id="randomsurvivalforest_n_estimators_grid" 
+							onblur='data_check(this)' placeholder="" value="50:200:50">
+						</div>
+					</div>
+					
+					
 				</div>
 				<div id="detail_gradientboostingsurvival">
-					<h5>Parameters of GradientBoostingSurvival</h5>
-					<div class="row">
-<!-- 						<div class="col-4">
-							<label for="exampleFormControlSelect1">loss</label>
-							<select name="gradientboostingsurvival_loss" class="form-control" id="gradientboostingsurvival_loss" required="required" onchange="">
-								<option value="coxph">coxph</option>
-								<option value="squared">squared</option>
-								<option value="ipcwls">ipcwls</option>
-							</select>
-						</div> -->
-						<div class="col-4">
-							<label for="exampleFormControlSelect1">max_depth</label>
-							<input name="gradientboostingsurvival_max_depth" type="text" class="form-control" id="gradientboostingsurvival_max_depth" onblur='data_check(this)' placeholder="" value="3">
-						</div>
-						<div class="col-4">
-							<label for="exampleFormControlSelect1">min_samples_split</label>
-							<input name="gradientboostingsurvival_min_samples_split" type="text" class="form-control" id="gradientboostingsurvival_min_samples_split" onblur='data_check(this)' placeholder="" value="2">
-						</div>
-						<div class="col-4">
-							<label for="exampleFormControlSelect1">subsample</label>
-							<input name="gradientboostingsurvival_subsample" type="text" class="form-control" id="gradientboostingsurvival_min_samples_split" onblur='data_check(this)' placeholder="" value="1.0">
-						</div>
-					</div>
+					<!-- <h5>Parameters of GradientBoostingSurvival</h5> -->
 					<div class="row">
 						<div class="col-3">
-							<label for="exampleFormControlSelect1">min_samples_leaf</label>
-							<input name="gradientboostingsurvival_min_samples_leaf" type="text" class="form-control" id="gradientboostingsurvival_min_samples_leaf" onblur='data_check(this)' placeholder="" value="1">
+							<label for="exampleFormControlSelect1">learning_rate</label>
+							<input name="gradientboostingsurvival_learning_rate" type="text" class="form-control" id="gradientboostingsurvival_learning_rate" onblur='data_check(this)' placeholder="" value="0.1">
 						</div>
-						<div class="col-3">
+						<div class="col-4">
 							<label for="exampleFormControlSelect1">max_features</label>
 							<!-- <input name="gradientboostingsurvival_max_features" type="text" class="form-control" id="gradientboostingsurvival_max_features" onblur='data_check(this)' placeholder=""> -->
 							<select name="gradientboostingsurvival_max_features" class="form-control" id="gradientboostingsurvival_max_features" required="required" onchange="">
@@ -1825,17 +2304,60 @@
 							   	<option value="log2">log2</option>
 							</select>
 						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">subsample</label>
+							<input name="gradientboostingsurvival_subsample" type="text" class="form-control" id="gradientboostingsurvival_min_samples_split" onblur='data_check(this)' placeholder="" value="1.0">
+						</div>
+					</div>
+					<div class="row usrElement">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">max_depth</label>
+							<input name="gradientboostingsurvival_max_depth" type="text" class="form-control" id="gradientboostingsurvival_max_depth" onblur='data_check(this)' placeholder="" value="3">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_leaf</label>
+							<input name="gradientboostingsurvival_min_samples_leaf" type="text" class="form-control" id="gradientboostingsurvival_min_samples_leaf" onblur='data_check(this)' placeholder="" value="1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_split</label>
+							<input name="gradientboostingsurvival_min_samples_split" type="text" class="form-control" id="gradientboostingsurvival_min_samples_split" onblur='data_check(this)' placeholder="" value="2">
+						</div>
 						<div class="col-3">
 							<label for="exampleFormControlSelect1">n_estimators</label>
 							<input name="gradientboostingsurvival_n_estimators" type="text" class="form-control" id="gradientboostingsurvival_n_estimators" onblur='data_check(this)' placeholder="" value="100">
 						</div>
+					</div>
+					<div class="row gridElement">
 						<div class="col-3">
-							<label for="exampleFormControlSelect1">learning_rate</label>
-							<input name="gradientboostingsurvival_learning_rate" type="text" class="form-control" id="gradientboostingsurvival_learning_rate" onblur='data_check(this)' placeholder="" value="0.1">
+							<label for="exampleFormControlSelect1">max_depth range (from:to:step)</label>
+							<input name="gradientboostingsurvival_max_depth_grid" type="text" class="form-control" id="gradientboostingsurvival_max_depth_grid" 
+							onblur='data_check(this)' placeholder="" value="3:8:1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_leaf range (from:to:step)</label>
+							<input name="gradientboostingsurvival_min_samples_leaf_grid" type="text" class="form-control" id="gradientboostingsurvival_min_samples_leaf_grid" 
+							onblur='data_check(this)' placeholder="" value="1:10:1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_split range (from:to:step)</label>
+							<input name="gradientboostingsurvival_min_samples_split_grid" type="text" class="form-control" id="gradientboostingsurvival_min_samples_split_grid" 
+							onblur='data_check(this)' placeholder="" value="2:10:1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">n_estimators range (from:to:step)</label>
+							<input name="gradientboostingsurvival_n_estimators_grid" type="text" class="form-control" id="gradientboostingsurvival_n_estimators_grid"
+							onblur='data_check(this)' placeholder="" value="50:200:50">
 						</div>
 					</div>
+					
 				</div>
 			</div>
+			</div>
+			<div>
+				<hr />
+				<br>
+				<p><b> One-Click Analysis: </b> The model is built with the default parameters and the data is analyzed using all the models provided.</p>
+				<p><b> Customized Analysis: </b> Users can choose to specify models and parameters to personalize the data.</p>
 			</div>
 			</el-card>
 			</div>
@@ -1846,10 +2368,10 @@
 					<br />
 					<el-card shadow="never">
 						<div slot="header" >
-							<h4>Step5：Email（Optional)</h4>
+							<h4>Step6：Email（Optional)</h4>
 						</div>
 						<div>
-							<input type="text" name="to_mail" id="to_mail" style="width: 1400px;height: 40px;"/>
+							<input type="email" name="to_mail" id="to_mail" style="width: 1400px;height: 40px;"/>
 							<br />
 							<br />
 							<p style="font-size: 14px;">Given the potential extended duration of the analysis process, we recommend 
@@ -1893,12 +2415,44 @@
 			  }
 			});
 			
+			function grid_inputdisabled(id){
+				var grid_classElements = document.getElementsByClassName('gridElement');
+				var usr_classElements = document.getElementsByClassName('usrElement');
+				// gridsearch部分可写
+				for (var i=0;i< grid_classElements.length;i++) {
+					grid_classElement = grid_classElements[i]
+					inputs = grid_classElement.getElementsByTagName('input')
+					for (var j=0;j<inputs.length;j++) {
+						if ( id == 'usr_define') {
+							inputs[j].disabled = ("disabled")
+							$("#usr_grid").val("U");
+						} else if(id == 'grid_search'){
+							inputs[j].removeAttribute("disabled")
+							$("#usr_grid").val("G");
+						}
+					}
+				}
+				// usr_define 部分不可写
+				for (var m=0;m<usr_classElements.length;m++) {
+					usr_classElement = usr_classElements[m]
+					usr_inputs = usr_classElement.getElementsByTagName('input')
+					for (var n=0;n<usr_inputs.length;n++) {
+						if ( id == 'grid_search') {
+							usr_inputs[n].disabled = ("disabled")
+						}else if ( id == 'usr_define'){
+							usr_inputs[n].removeAttribute("disabled")
+						}
+						
+					}
+				}
+			}
+			
+			
 			function model_selectactive(id) {
 				$("*[id^=model_]").attr('class','card');
 				// console.log($("*[id^=model_]").attr('class','card'));
 				document.getElementById(id).className = 'card select';
 				document.getElementById('select_model').value = id;
-				console.log(id)
 				if ( id == 'model_sur'){
 					// 隐藏anova和mrmr
 					document.getElementById('fsm_radio').style.display = 'none',
@@ -1907,8 +2461,12 @@
 					$("input[name='fsm'][value='M']").attr('disabled','true')
 					// 选择指定radio进行checked
 					$("input[name='fsm'][value='C']").prop('checked','true')
-					console.log(($("input[name='fsm']:checked").val()))
+					// console.log(($("input[name='fsm']:checked").val()))
+				}else
+				{
+					document.getElementById('fsm_radio').style.display = 'block'
 				}
+				
 			}
 			
 			function cp_model_selectactive(id) {
@@ -1920,42 +2478,66 @@
 				
 			}
 			
+			function bayes_select(){
+				var baye_select = document.getElementById('naivebayes_name').value;
+				
+				if ($("#usr_grid").val() == "G") {
+					var alpha = document.getElementById('naivebayes_alpha_grid');
+				}else{
+					var alpha = document.getElementById('naivebayes_alpha');
+				}
+				
+				if (baye_select == "GaussianNB") {
+					alpha.setAttribute("disabled", "disabled")
+				}else{
+					alpha.removeAttribute("disabled")
+				}
+			}
+			
+			
 			function svm_select() {
 				var select = document.getElementById("svm_kernel").value;
-				var degree = document.getElementById("svm_degree");
-				var coef = document.getElementById("svm_coef");
-				var gamma = document.getElementById("svm_gamma");
+				if ($("#usr_grid").val() == "G") {
+					var degree = document.getElementById("svm_degree_grid");
+					var coef = document.getElementById("svm_coef_grid");
+					var gamma = document.getElementById("svm_gamma_grid");
+				}else{
+					var degree = document.getElementById("svm_degree");
+					var coef = document.getElementById("svm_coef");
+					var gamma = document.getElementById("svm_gamma");
+				}
+				// console.log($("#usr_grid").val())
 				switch (select) {
 					
 					case "linear":
 						degree.setAttribute("disabled", "disabled")
 						coef.setAttribute("disabled", "disabled")
 						gamma.setAttribute("disabled", "disabled")
-						$(":disabled").val("").attr("placeholder","");
+						// $(":disabled").val("").attr("placeholder","");
 						break;
 					case "poly":
 						degree.removeAttribute("disabled")
 						coef.removeAttribute("disabled")
 						gamma.removeAttribute("disabled")
-						$(":disabled").val("").attr("placeholder","");
-						degree.value = 3
-						coef.value = 0
-						gamma.value = 'scale'
+						// $(":disabled").val("").attr("placeholder","");
+						// degree.value = 3
+						// coef.value = 0
+						// gamma.value = 'scale'
 						break;
 					case "sigmoid":
 						degree.setAttribute("disabled", "disabled")
 						coef.removeAttribute("disabled")
 						gamma.removeAttribute("disabled")
-						$(":disabled").val("")
-						coef.value = 0
-						gamma.value = 'scale'
+						// $(":disabled").val("")
+						// coef.value = 0
+						// gamma.value = 'scale'
 						break;
 					case "rbf":
 						degree.setAttribute("disabled", "disabled")
 						coef.setAttribute("disabled", "disabled")
 						gamma.removeAttribute("disabled")
-						$(":disabled").val("")
-						gamma.value = 'scale'
+						// $(":disabled").val("")
+						// gamma.value = 'scale'
 						break;
 					default:
 						alert("error");
@@ -2037,39 +2619,45 @@
 			}
 			function regsvm_select() {
 				var kernel = document.getElementById("regsvm_kernel").value;
-				var degree = document.getElementById("regsvm_degree");
-				var gamma = document.getElementById("regsvm_gamma");
-				var coef = document.getElementById("regsvm_coef0");
+				if ($("#usr_grid").val() == "G") {
+					var degree = document.getElementById("regsvm_degree_grid");
+					var gamma = document.getElementById("regsvm_gamma_grid");
+					var coef = document.getElementById("regsvm_coef0_grid");
+				}else{
+					var degree = document.getElementById("regsvm_degree");
+					var gamma = document.getElementById("regsvm_gamma");
+					var coef = document.getElementById("regsvm_coef0");
+				}
 				switch (kernel) {
 					case "linear":
 						degree.setAttribute("disabled", "disabled")
 						gamma.setAttribute("disabled", "disabled")
 						coef.setAttribute("disabled", "disabled")
-						$(":disabled").val("")
+						// $(":disabled").val("")
 						break;
 					case "poly":
 						degree.removeAttribute("disabled")
 						gamma.removeAttribute("disabled")
 						coef.removeAttribute("disabled")
-						$(":disabled").val("")
-						degree.value = 3
-						gamma.value = 'scale'
-						coef.value = 0
+						// $(":disabled").val("")
+						// degree.value = 3
+						// gamma.value = 'scale'
+						// coef.value = 0
 						break;
 					case "rbf":
 						degree.setAttribute("disabled", "disabled")
 						gamma.removeAttribute("disabled")
 						coef.setAttribute("disabled", "disabled")
-						$(":disabled").val("")
-						gamma.value = "scale"
+						// $(":disabled").val("")
+						// gamma.value = "scale"
 						break;
 					case "sigmoid":
 						degree.setAttribute("disabled", "disabled")
 						gamma.removeAttribute("disabled")
 						coef.removeAttribute("disabled")
-						$(":disabled").val("")
-						gamma.value = 'scale'
-						coef.value = 0
+						// $(":disabled").val("")
+						// gamma.value = 'scale'
+						// coef.value = 0
 						break;
 					default:
 						alert("error");
@@ -2079,10 +2667,17 @@
 			function survivalsvm_select() {
 				var kernel = document.getElementById("survivalsvm_kernel").value;
 				var optimizer = document.getElementById("survivalsvm_optimizer");
-				var alpha = document.getElementById("survivalsvm_alpha");
-				var degree = document.getElementById("survivalsvm_degree");
-				var gamma = document.getElementById("survivalsvm_gamma");
-				var coef = document.getElementById("survivalsvm_coef");
+				if ($("#usr_grid").val() == "G") {
+					var alpha = document.getElementById("survivalsvm_alpha_grid");
+					var degree = document.getElementById("survivalsvm_degree_grid");
+					var gamma = document.getElementById("survivalsvm_gamma_grid");
+					var coef = document.getElementById("survivalsvm_coef0_grid");
+				}else{
+					var alpha = document.getElementById("survivalsvm_alpha");
+					var degree = document.getElementById("survivalsvm_degree");
+					var gamma = document.getElementById("survivalsvm_gamma");
+					var coef = document.getElementById("survivalsvm_coef0");
+				}
 				switch (kernel) {
 					case "linear":
 						optimizer.removeAttribute("disabled")
@@ -2090,8 +2685,8 @@
 						degree.setAttribute("disabled", "disabled")
 						gamma.setAttribute("disabled", "disabled")
 						coef.setAttribute("disabled", "disabled")
-						$(":disabled").val("")
-						optimizer.value = "avltree"
+						// $(":disabled").val("")
+						// optimizer.value = "avltree"
 						break;
 					case "poly":
 						optimizer.setAttribute("disabled", "disabled")
@@ -2099,9 +2694,9 @@
 						degree.removeAttribute("disabled")
 						gamma.removeAttribute("disabled")
 						coef.removeAttribute("disabled")
-						$(":disabled").val("")
-						degree.value = 3
-						coef.value = 1
+						// $(":disabled").val("")
+						// degree.value = 3
+						// coef.value = 1
 						break;
 					case "sigmoid":
 						optimizer.setAttribute("disabled", "disabled")
@@ -2109,8 +2704,8 @@
 						degree.setAttribute("disabled", "disabled")
 						gamma.setAttribute("disabled", "disabled")
 						coef.removeAttribute("disabled")
-						$(":disabled").val("")
-						coef.value = 1
+						// $(":disabled").val("")
+						// coef.value = 1
 						break;
 					case "rbf":
 						optimizer.setAttribute("disabled", "disabled")
@@ -2118,7 +2713,7 @@
 						degree.setAttribute("disabled", "disabled")
 						gamma.removeAttribute("disabled")
 						coef.setAttribute("disabled", "disabled")
-						$(":disabled").val("")
+						// $(":disabled").val("")
 						break;
 					case "cosine":
 						optimizer.setAttribute("disabled", "disabled")
@@ -2126,7 +2721,7 @@
 						degree.setAttribute("disabled", "disabled")
 						gamma.setAttribute("disabled", "disabled")
 						coef.setAttribute("disabled", "disabled")
-						$(":disabled").val("")
+						// $(":disabled").val("")
 						break;
 					default:
 						alert("error");
@@ -2206,6 +2801,9 @@
 					$("#cp_model_select").hide()
 					$("#button_submit").show()
 					$(".cp_model_detail").hide()
+					// 隐藏cp部分内容
+					// document.getElementById('para_modelname').innerHTML = 'Parameters of ' + $(this).children()[0].innerText
+					document.getElementById('cp_search').style.display = 'none'
 				})
 
 				$("#button_cp").click(function() {
@@ -2290,7 +2888,42 @@
 				$(detail_id).show();
 				$("#select_child_model").val(a);
 				$("#button_submit").show();
+				// 获取某个id下的子集内容,选择展示
+				document.getElementById('para_modelname').innerHTML = 'Parameters of ' + $(this).children()[0].innerText 
+				document.getElementById('cp_search').style.display = 'flex'
+				// 默认选择usr_define
+				$("#usr_define").attr("style", "width: 100%;height: 35px;font-size: 15px;");
+				$("#grid_search").attr("style", "width: 100%;background: #99c3c7;border: #99c3c7;height: 35px;font-size: 15px;");
+				grid_inputdisabled('usr_define')
+				svm_select()
+				bayes_select()
+				regsvm_select()
+				survivalsvm_select()
 			})
+			
+			// grid_search相关
+			$("#usr_define").click(function() {
+				$("#strategy").val("C");
+				$(this).attr("style", "width: 100%;height: 35px;font-size: 15px;");
+				$("#grid_search").attr("style", "width: 100%;background: #99c3c7;border: #99c3c7;height: 35px;font-size: 15px;");
+				// 点击user define 改回不可写状态
+				svm_select()
+				bayes_select()
+				regsvm_select()
+				survivalsvm_select()
+			});
+			
+			$("#grid_search").click(function() {
+				$("#strategy").val("C");
+				$(this).attr("style", "width: 100%;height: 35px;font-size: 15px;");
+				$("#usr_define").attr("style", "width: 100%;background: #99c3c7;border: #99c3c7;height: 35px;font-size: 15px;");
+				// 提取对应class下的input信息修改disable属性
+				svm_select()
+				bayes_select()
+				regsvm_select()
+				survivalsvm_select()
+			});
+			
 			
 			$("#button_submit").click(function () {
 				var random_token = randomString()
@@ -2307,6 +2940,7 @@
 				// }
 				
 				var fsm = ($("input[name='fsm']:checked").val())
+				var fn = ($("input[name='feature_norm']:checked").val())
 
 				// var form_action = $("#form_step23").attr("action")
 				if(select_model == "model_bclass"){
@@ -2326,14 +2960,16 @@
 				// 	prefix = "M" + prefix
 				// }
 				
+				console.log('$("#upload_file").val(): '+ $("#upload_file").val())
 				if($("#upload_file").val() != ""){
 					if(prefix.charAt(prefix.length-1) == 'C') {
-						var projectid = prefix + '-' + fsm + '-' + md5.slice(0,6) + '-' + $("#random_token").val();
+						var projectid = prefix + '-' + fsm  + fn + '-' + md5.slice(0,6) + '-' + $("#random_token").val();
 					} else {
-						var projectid = prefix + '-' + fsm + '-' + md5.slice(0,6) + '-' + $('input:radio[name="feature_select_method"]:checked').val();
+						var projectid = prefix + '-' + fsm  + fn + '-' + md5.slice(0,6) + '-' + $('input:radio[name="feature_select_method"]:checked').val();
 					}
 					$("#projectid").val(projectid)
-					// alert(projectid);
+					
+					// alert();
 				}
 				
 				if ($("#file_upload_type").val() == 'user_data'){

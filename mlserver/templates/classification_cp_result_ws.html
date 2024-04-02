@@ -6,12 +6,19 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		{% include 'public_templates/bootstrap.html' %}
 		<script src="https://cdn.plot.ly/plotly-2.8.3.min.js"></script>
+				 <!-- DataTables -->
 		 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"> 
 		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
 		 <script type="text/javascript" charset="utf8" src="https://cdn.bootcdn.net/ajax/libs/datatables-buttons/2.2.3/js/dataTables.buttons.js"></script>
 		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>		
+
+		 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		 
 		 <!-- responsive -->
-		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>		 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css">
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>		 
+		 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css">
+		 
+		 
 		<style type="text/css">
 			
 			.dataTable {
@@ -34,17 +41,16 @@
 				height: 40px;
 			}
 
-			/* table tbody {
+/* 			table tbody {
 				font-size: 5px;
 			} */
-/* 			table * {
+			table * {
 				font-size: 15px;
-			} */
+			}
 			
 			.table
 			{
 			border-collapse: collapse;
-			/* margin: 1px,1px,1px,1px; */
 			margin: auto;
 			text-align: center;
 			}
@@ -99,7 +105,6 @@
 			  border-radius: 20px;
 			  color: #17a2b8;
 			  border:2px solid;
-			  /* position: relative; */
 			  position: relative;
 			}
 			.progress-6::before {
@@ -114,19 +119,33 @@
 			@keyframes p6 {
 			    100% {inset:0}
 			}
-			
-			.progress-4 {
-			  width:200px;
-			  height:10px;
-			  -webkit-mask:linear-gradient(90deg,#17a2b8 70%,#0000 0) 0/10%;
-			  background:
-			   linear-gradient(#17a2b8 0 0) 0/0% no-repeat
-			   #ddd;
-			  animation:p4 5s infinite steps(12);
-			}
-			@keyframes p4 {
-			    100% {background-size:120%}
-			}
+			/* datatable button */
+			     .dt-button.icon_:before {
+			      color: #fff;
+			      padding-top: 10px;
+			      content: "\f019";
+			      font-family: FontAwesome;
+			      font-size: 20px;
+			     }
+			     .dt-button.icon_{
+			      background-color: #17a2b8;
+			      border-color: #17a2b8;
+			     }
+			     .dt-button {
+			      margin-top: 5px;
+			     }
+			     /* datatable search */
+			     .dataTables_filter {
+			      margin-top: 5px;
+			     }
+			     /* datatable info */
+			     .dataTables_info {
+			      margin-left: -30px;
+			     }
+			     
+			     .dataTables_length {
+			      margin-top: 5px;
+			     }
 			
 		</style>
 		<script>
@@ -143,19 +162,22 @@
 		{% include 'public_templates/nav_tem.html' %}
 		<div id= running>
 			<br>
-				<table id="running_table"  style="width: 50%;" lazyload="True" class="table">
-					 <thead>
-						 <pre>
-							<tr><th> Project Details</th></tr>
-							<tr><th> ProjectID:&nbsp;&nbsp;{{projectid}}</th></tr>
-							<tr><th id="time"> Submitted time: </th></tr>
-							<tr><th>Status: Running &nbsp;&nbsp;&nbsp;&nbsp; <div class="progress-6" style="display: inline-block;"></div></th></tr>
-							<!-- <tr><th id="analysis_time"> Analysis time:&nbsp;&nbsp;{{projectid}}</th></tr> -->
-							<tr><th> The project has been submitted, please wait... </th></tr>
-						</pre>
+			
+			<table id="running_table"  style="width: 50%;" lazyload="True" class="table">
+				 <thead>
+					 <pre>
+						<tr><th> Project Details</th></tr>
+						<tr><th> ProjectID:&nbsp;&nbsp;{{projectid}}</th></tr>
+						<tr><th id="time"> Submitted time: </th></tr>
+						<tr><th>Status: Running &nbsp;&nbsp;&nbsp;&nbsp; <div class="progress-6" style="display: inline-block;"></div></th></tr>
+						<!-- <tr><th id="analysis_time"> Analysis time:&nbsp;&nbsp;{{projectid}}</th></tr> -->
+						<tr><th> The project has been submitted, please wait... </th></tr>
 						
-					</thead>
-				</table>
+					</pre>
+					
+				</thead>
+			</table>
+			<div id="messagecontainer" style="text-align: center;"></div>
 		</div>
 		<script>
 			// var localtime = new Date().toLocaleTimeString();
@@ -182,9 +204,9 @@
 		</script>
 		<div id=show_data style="display: none;">
 
-				<div class="col-1 d-none d-xl-block">
+				<div class="col-2 d-none d-xl-block">
 					<div id="list-example" class="list-group abc "
-						style="position: fixed; width:270px;height: 500px;margin-left: 20px;padding-left: 0;margin-top:30px;">
+						style="position: fixed; width:270px;height: 400px;margin-left: 0px;padding-left: 0;margin-top:30px;">
 						<a class="list-group-item list-group-item-action" href="#list-item-1">Optimal feature subset result</a>
 						<a class="list-group-item list-group-item-action" href="#list-item-2">Evaluation indices</a>
 						<a class="list-group-item list-group-item-action" href="#list-item-3" id="ifmarco_roc">ROC curve</a>
@@ -215,15 +237,15 @@
 						<h3 class="panel-heading" id="list-item-2" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;"><!-- {{model_name}} --></h3>
 						<div id="accboxplotDiv"></div>
 						
-						<table id="ftable" class="display" style="width: 100%;" lazyload="True">
+						<table id="ftable" class="display" style="width: 95%;" lazyload="True">
 							 <thead>
 								<tr>
 									<th></th>
-									<th>Accuracy</th>
 									<th>Precision</th>
-									<th>AUC</th>
 									<th>Recall</th>
 									<th>F1-score</th>
+									<th>Accuracy</th>
+									<th>AUC</th>
 								</tr>
 							</thead>
 						</table>
@@ -255,26 +277,31 @@
 							</div>
 						</div>
 						
+						<div class="btnGroups">
+							<h3 class="panel-heading" id="list-item-5" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+							Report  <button id="export" class="btn btn-primary" style="position:absolute;right:30px;background: #17a2b8;border: 0px;">Download</button>
+							</h3>  
+						</div>
 						
-						<h3 class="panel-heading" id="list-item-5" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-							Report
-						</h3>
-						<table id="paratable" class="display" style="width: 100%;" lazyload="True">
+						
+						
+						<table id="paratable" class="display" style="width: 70%;" lazyload="True">
 							 <thead>
 								<tr>
 									<th></th>
 									<th>Index</th>
+									<th>Normalization method</th>
 									<th>Feature Select Method</th>
 									<th>Optimal Feature Subset Search Methods</th>
 									<th class="none">Feature Names</th>
-									
 									<th>Mean Accuracy</th>
 									<th id="th1">Mean Precision</th>
 									<th id="th2">Mean AUC</th>
 									<th id="th3">Mean Recall</th>
 									<th id="th4">Mean F1-score</th>
-									<th>Feature_names/Parameter</th>
+									<th>Feature Names/Parameter</th>
 									<th class="none">Parameter</th>
+									<th class="none">GridSearch Parameter</th>
 									<th>View</th>
 									<th>Model Download</th>
 									
@@ -290,6 +317,10 @@
 				</div>
 				</div>
 		</div>
+		<br>
+		<br>
+		<br>
+		
 		<!-- <hr> -->
 		<!-- 底部 -->
 		{% include 'public_templates/footer.html' %}
@@ -330,7 +361,9 @@
 				model_md5: "{{model_md5}}",
 				fsm: "{{fsm}}",
 				form_action: "{{form_action}}",
-				to_mail: '{{to_mail}}'
+				to_mail: '{{to_mail}}',
+				gridsearch_para: '{{gridsearch_para}}',
+				feature_norm: '{{feature_norm}}'
 			}
 			var s = new WebSocket("ws://" + window.location.host + "/maler/classification_cp_result_ws/{{projectid}}");
 			window.s = s;
@@ -343,21 +376,31 @@
 			    // 接收服务端发送过来的数据，在浏览器上刷新
 			    s.onmessage = function (msg) {
 					// heartCheck.reset();
-			        console.log('raw message: ' + msg.data)//打印出服务端返回过来的数据
-			        // $('#messagecontainer').prepend('<p>' + msg.data + '</p>');
 					var results_data = JSON.parse(msg.data)
+					if (results_data['status'] == 0){
+						console.log('raw message: ' + msg.data)	//打印出服务端返回过来的数据
+					}else if (results_data['status'] == 2){		//特征筛选完成
+						console.log(results_data['info'])
+						console.log(results_data['time'])
+						$('#messagecontainer').prepend('<span style="text-align: center;">' + results_data['time'] + ': ' + results_data['info'] + '</span><br>');
+					} 
+			        
+					
+					
 					if (results_data['status'] == 1){
 						window.s.close();
 						console.log('websocket is closed!');
 						document.getElementById('running').style.display = "none"
 						document.getElementById('show_data').style.display = "block"
 						document.getElementById('list-item-2').innerHTML = results_data.model_name
+						// 是否有测试集
 						if (results_data.ifval == true) {
 							document.getElementById('test').style.display = "block"
 							document.getElementById('test_plot').style.display = "block"
 							
 						};
-						if (results_data.ifmarco != true) {
+						// 是否是多分类
+						if (results_data.ifmarco == true) {
 							document.getElementById('list-item-3').innerHTML = 'Marco ' + document.getElementById('list-item-3').innerHTML
 							document.getElementById('ifmarco_roc').innerHTML = 'Marco ' + document.getElementById('ifmarco_roc').innerHTML
 							
@@ -367,8 +410,13 @@
 							}
 						}
 						
+						
 						var f_data = results_data.f_describe_dict;
 						var max_reports_data = results_data.max_reports_dict;
+						// 删除 scaler中带的括号
+						max_reports_data[0]['scaler'] = max_reports_data[0]['scaler'].split('()')[0]
+						
+						
 						// poltly layout
 						var acc_layout = {
 							title: 'Boxplot of '+ results_data.model_name
@@ -396,6 +444,7 @@
 						<!--第三步：初始化Datatables-->
 						$(document).ready( function () {
 							$('#ftable').DataTable({
+
 								data: f_data,
 								searching: false, 
 								paging: false, 
@@ -403,13 +452,12 @@
 								sort: false,
 								columns: [
 									{ data: 'Method' },
-									{ 
-										data: 'test_accuracy' ,
-									},
 									{ data: 'precision' },
-									{ data: 'AUC' },
 									{ data: 'recall' },
 									{ data: 'f1-score' },
+									{ data: 'test_accuracy'},
+									{ data: 'AUC' },
+
 								]
 							});
 							$('#paratable').DataTable({
@@ -422,16 +470,35 @@
 								columnDefs: [ {
 									className: 'control',
 									orderable: false,
-									targets:   10,
+									targets:   11,
 								} ],
 								data: max_reports_data,
 								searching: false, 
 								paging: false, 
 								info: false,
 								sort: false,
+								// "dom": "<'row'<'col-sm-12 col-md-1'B><'col-sm-12 col-md-8'i><'col-sm-12 col-md-3'f>>" +
+								// 	"<'row'<'col-sm-12'tr>>" +
+								// 	"<'row'<'col-sm-12 col-md-5'l><'col-sm-12 col-md-7'p>>",
+								"dom":'Blfrtip',
+								buttons: [{
+									extend: 'csv',
+									text: "",
+									className: "icon_",
+									filename:'Report',
+									}],
+
+								initComplete: function() {
+										var $buttons = $('.dt-buttons').hide();
+										$('#export').on('click', function() {
+											var btnClass = ".buttons-csv";
+											if (btnClass) $buttons.find(btnClass).click();
+										})
+										},
 								columns: [
 									{ data: 'Method' },
-									{ data: 'md5' },	
+									{ data: 'md5' },
+									{data: 'scaler'},
 									{ data: 'Fsm' },
 									{ data: 'fsm'},
 									{ data: 'feature_names' },
@@ -447,6 +514,7 @@
 										}
 									 },
 									{ data: 'parameter' },
+									{data: 'grid_para'},
 									{ 
 										data: 'md5' ,
 										"render": function(data, type, row, meta){
@@ -478,24 +546,66 @@
 									
 								]
 							});
+							
+
+							console.log(results_data.roc_auc)
 							Plotly.newPlot('linechartDiv',results_data.line_chart_data, linechart_layout);
 							Plotly.newPlot('rocplotDiv', results_data.roc_traces , roc_layout2);
 							Plotly.newPlot('rocplotDiv', results_data.roc_traces, roc_layout2);
 							Plotly.newPlot('accboxplotDiv',results_data.final_reports_dict, acc_layout);
 							Plotly.newPlot('barplotDiv', results_data.bar_dict, bar_layout);
 							Plotly.newPlot('heatmapDiv', results_data.heatmap_dict, heatmap_layout);
-							Plotly.newPlot('validrocDiv', results_data.valid_roc_traces, roc_layout);
+							// Plotly.newPlot('validrocDiv', results_data.valid_roc_traces, roc_layout);
+							if (results_data.ifmarco == true) {
+								Plotly.newPlot('validrocDiv', results_data.valid_roc_traces, multi_roc_layout);
+							}else{
+								Plotly.newPlot('validrocDiv', results_data.valid_roc_traces, roc_layout);
+							}
+							
 							});
-						
-						
 					}
-					
+					multi_roc_layout = {
+						title: 'ROC curve',
+						  hoverlabel: {'namelength':50},
+						  xaxis: {
+							type: 'linear', 
+							range: [0, 1], 
+							title: 'FPR', 
+							autorange: true
+						  }, 
+						  yaxis: {
+							type: 'linear', 
+							range: [-0.05555555555555555, 1.0555555555555556], 
+							title: 'TPR', 
+							autorange: true
+						  }, 
+						  height:550,
+						  legend: {
+							x: 1,
+							y: 0.1, 
+							xanchor: 'right', 
+							orientation: 'v'
+						  }, 
+						  titlefont: {size: 18},
+						annotations: [
+						  {
+						    x: 0.5, 
+						    y: 1.0, 
+						    font: {size: 13}, 
+						    text: '<span style="font-size: 10pt;">Marco-average AUC: ' + results_data.roc_auc.toFixed(3) + '</span>',
+						    xref: 'paper', 
+						    yref: 'paper', 
+						    xanchor: 'center', 
+						    yanchor: 'bottom', 
+						    showarrow: false
+						  }, ]
+					}
 			    };
 			    setInterval(() => {
 			      if (window.s.readyState === WebSocket.OPEN) {
 			        window.s.send(JSON.stringify("heartbeat"));
 			      }
-			    }, 5000);
+			    }, 30000);
 			});
 			// plotly layout
 			var linechart_layout = {
@@ -515,6 +625,7 @@
 			var roc_layout = {
 				title: 'ROC curve', 
 				  // width: 1000, 
+				  hoverlabel: {'namelength':50},
 				  xaxis: {
 					type: 'linear', 
 					range: [0, 1], 
@@ -534,10 +645,14 @@
 					xanchor: 'right', 
 					orientation: 'v'
 				  }, 
-				  titlefont: {size: 18}
+				  titlefont: {size: 18},
+
 			};
+
+			
 			var roc_layout2 = {
 				title: 'ROC curve', 
+				hoverlabel: {'namelength':50},
 				  margin: {
 								  'b': 60,
 								  'l': 150,
@@ -563,7 +678,8 @@
 					xanchor: 'right', 
 					orientation: 'v'
 				  }, 
-				  titlefont: {size: 18}
+				  titlefont: {size: 18},
+				  
 			};
 			
 			var bar_layout = {

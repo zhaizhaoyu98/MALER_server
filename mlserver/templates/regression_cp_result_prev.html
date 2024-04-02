@@ -211,14 +211,17 @@
 					</div>
 					
 					
-					<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
-						Report
-					</h3>
+					<div class="btnGroups">
+						<h3 class="panel-heading" id="list-item-4" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+						Report  <button id="export" class="btn btn-primary" style="position:absolute;right:30px;background: #17a2b8;border: 0px;">Download</button>
+						</h3>  
+					</div>
 					<table id="reporttable" class="display" style="width: 100%;" lazyload="True">
 						 <thead>
 							<tr>
 								<th></th>
 								<th>Index</th>
+								<th>Normalization method</th>
 								<th>Feature Select Method</th>
 								<th>Optimal Feature Subset Search Methods</th>
 								<th>Mean R-square</th>
@@ -227,6 +230,7 @@
 								<th class="none">Feature Names</th>
 								<th>Feature_names/Parameter</th>
 								<th class="none">Parameter</th>
+								<th class="none">GridSearch Parameter</th>
 								<th>View</th>
 								<th>Model Download</th>
 							</tr>
@@ -261,6 +265,7 @@
 			var csrftoken = $("input[name='csrfmiddlewaretoken']").attr('value');
 			var acc_data = {{ cust_reports_describe_dict|safe }};
 			var report_data = {{ final_reports_dict|safe }};
+			report_data[0]['scaler'] = report_data[0]['scaler'].split('()')[0]
 			// 获取当前url
 			var url = this.location.pathname
 			var arr= url.split("/")
@@ -474,13 +479,27 @@
 					columnDefs: [ {
 					    className: 'control',
 					    orderable: false,
-					    targets:   8,
+					    targets:   9,
 					} ],
 					data: report_data,
 					searching: false, 
 					paging: false, 
 					info: false,
 					sort: false,
+					"dom":'Blfrtip',
+					buttons: [{
+						extend: 'csv',
+						text: "",
+						className: "icon_",
+						filename:'Report',
+						}],
+					initComplete: function() {
+							var $buttons = $('.dt-buttons').hide();
+							$('#export').on('click', function() {
+								var btnClass = ".buttons-csv";
+								if (btnClass) $buttons.find(btnClass).click();
+							})
+							},
 					buttons: [{
 						extend: 'csv',
 						text: "",
@@ -490,6 +509,7 @@
 					columns: [
 						{ data: 'Method' },
 						{ data: 'md5' },
+						{ data: 'scaler'},
 						{ data: 'Fsm' },
 						{ data: 'fsm' },
 						{ data: 'Mean R-square' },
@@ -503,6 +523,7 @@
 							}
 						 },
 						{ data: 'parameter' },
+						{data: 'grid_para'},
 						{ 
 							data: 'md5' ,
 							"render": function(data, type, row, meta){

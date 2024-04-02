@@ -29,6 +29,7 @@ def return_running_page(request,projectid):
     # model_md5 = request.POST.get('model_md5')
     feature_select_method = request.POST.get('feature_select_method')
     to_mail = request.POST.get('to_mail')
+    fn = request.POST.get('feature_norm')
     return render(request, 'survival_oc_result_ws.html', {
         'fsm': fsm,
         'form_action': form_action,
@@ -36,6 +37,8 @@ def return_running_page(request,projectid):
         # 'model_md5': model_md5,
         'feature_select_method': feature_select_method,
         'to_mail': to_mail,
+        'feature_norm': fn,
+
     })
 
 def data_analysis(WebSocket,client_msg,projectid):
@@ -55,8 +58,8 @@ def result_ws(request, projectid):
                 client_msg = json.loads(WebSocket.wait())
                 if client_msg != 'heartbeat':
                     print(client_msg)
-                    task1 = pools.submit(data_analysis,WebSocket,client_msg,projectid)
-                    # data_analysis(WebSocket,client_msg,projectid)
+                    # task1 = pools.submit(data_analysis,WebSocket,client_msg,projectid)
+                    data_analysis(WebSocket,client_msg,projectid)
                 elif client_msg == 'heartbeat':
                     messages = {
                         'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
@@ -79,7 +82,7 @@ def oc_sur_analysis(client_msg,projectid):
         feature_select_method = projectid.split('-')[3]
         print(feature_select_method)
         select_model = 'model_sur'
-
+        fn = client_msg['feature_norm']
         if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'surv_pickle.pkl')):
             with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'rb') as f:
                 preview_pickle = pickle._load(f)
@@ -108,17 +111,27 @@ def oc_sur_analysis(client_msg,projectid):
             #         'inputdata_columns': json.dumps(inputdata_columns),
             #         'title_str': title_str,
             #     })
-            inputdata = pd.read_csv(
-                STATIC_ROOT + '/cache/' + projectid + '/' + 'data.csv',
-                header=0, index_col=0).T
-            train_set, test_set, blind_set = split_train_test(inputdata, datatype='survival')
-            x2, y2 = sur_data_process(train_set)
-            # x2, validation_data, y2, validation_label = train_test_split(x, y, random_state=10, train_size=0.7,stratify=y['Status'])
-            if len(test_set) > 0:
-                validation_data, validation_label = sur_data_process(test_set)
-                ifval = True
+            if fn == 'N':
+                scaler = None
+                inputdata = pd.read_csv(
+                    STATIC_ROOT + '/cache/' + projectid + '/' + 'data.csv',
+                    header=0, index_col=0).T
+                train_set, test_set, blind_set = split_train_test(inputdata, datatype='survival')
+                x2, y2 = sur_data_process(train_set)
+                # x2, validation_data, y2, validation_label = train_test_split(x, y, random_state=10, train_size=0.7,stratify=y['Status'])
+                if len(test_set) > 0:
+                    validation_data, validation_label = sur_data_process(test_set)
+                    ifval = True
+                else:
+                    ifval = False
             else:
-                ifval = False
+                with open(STATIC_ROOT + '/cache/' + projectid + '/normalization_data.pkl', 'rb') as f:
+                    norm_info = pickle.load(f)
+                x2, y2 = norm_info['train_set'], norm_info['train_set_label']
+                ifval = norm_info['ifval']
+                validation_data, validation_label = norm_info['test_set'], norm_info['test_set_label']
+                scaler = norm_info['scaler']
+                print('using normalized data to analysis!')
 
             cv = KFold(n_splits=5, shuffle=True, random_state=10)
             features = cox_selection(x2, y2)
@@ -203,7 +216,8 @@ def oc_sur_analysis(client_msg,projectid):
 
             max_reports = {'Mean C-index': test_acc,
                            'parameter': parameter,
-                           'feature_names': [str(list(f)) for f in feature_names], }
+                           'feature_names': [str(list(f)) for f in feature_names],
+                           'scaler': str(scaler).split('(')[0]}
             max_reports = pd.DataFrame(max_reports, index=sur_names).reset_index().rename(
                 columns={'index': 'Method'})
             max_reports_dict = max_reports.to_dict('records')
@@ -228,7 +242,7 @@ def oc_sur_analysis(client_msg,projectid):
             # validation
             vsurv_dict, vpara_dict = {}, {}
             vsubplot_sur, vlinedata = [], []
-            if len(test_set) > 0:
+            if len(validation_data) > 0:
                 for i in range(len(sur_names)):
                     vsurv_trace, vresultp = mk_surv_data(str(i+1), validation_data[max_features[i]], validation_label, best_esti[i],
                                                 data_medians_dict[i])

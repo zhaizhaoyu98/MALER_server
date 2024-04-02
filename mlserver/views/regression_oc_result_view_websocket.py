@@ -36,6 +36,7 @@ def return_running_page(request,projectid):
     # model_md5 = request.POST.get('model_md5')
     feature_select_method = request.POST.get('feature_select_method')
     to_mail = request.POST.get('to_mail')
+    fn = request.POST.get('feature_norm')
     return render(request, 'regression_oc_result_ws.html', {
         'fsm': fsm,
         'form_action': form_action,
@@ -43,6 +44,7 @@ def return_running_page(request,projectid):
         # 'model_md5': model_md5,
         'feature_select_method': feature_select_method,
         'to_mail': to_mail,
+        'feature_norm': fn,
     })
 def data_analysis(WebSocket,client_msg,projectid):
     print('start analysis')
@@ -62,7 +64,8 @@ def result_ws(request, projectid):
                 client_msg = json.loads(WebSocket.wait())
                 if client_msg != 'heartbeat':
                     print(client_msg)
-                    task1 = pools.submit(data_analysis,WebSocket,client_msg,projectid)
+                    # task1 = pools.submit(data_analysis,WebSocket,client_msg,projectid)
+                    data_analysis(WebSocket, client_msg, projectid)
                 elif client_msg == 'heartbeat':
                     messages = {
                         'time': time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())),
@@ -94,6 +97,7 @@ def oc_reg_analysis(client_msg,projectid):
     feature_select_method = client_msg['feature_select_method']
     fsm = client_msg['fsm']
     form_action = client_msg['form_action']
+    fn = client_msg['feature_norm']
 
     if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'regression_pickle.pkl')):
         with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'rb') as f:
@@ -122,21 +126,33 @@ def oc_reg_analysis(client_msg,projectid):
         #         'inputdata_columns': json.dumps(inputdata_columns),
         #         'title_str': title_str,
         #     })
-        inputdata = pd.read_csv(
-            STATIC_ROOT + '/cache/' + projectid + '/' + 'data.csv',header=0, index_col=0).T
+        if fn == 'N':
+            scaler = None
+            inputdata = pd.read_csv(
+                STATIC_ROOT + '/cache/' + projectid + '/' + 'data.csv',header=0, index_col=0).T
 
-        train_set, test_set, blind_set = split_train_test(inputdata)
-        nordata4, nor_age4 = regression_preprocess(train_set)
-        if len(test_set) > 0:
-            ifval = True
-            validation_data, validation_label = regression_preprocess(test_set)
+            train_set, test_set, blind_set = split_train_test(inputdata)
+            nordata4, nor_age4 = regression_preprocess(train_set)
+            if len(test_set) > 0:
+                ifval = True
+                validation_data, validation_label = regression_preprocess(test_set)
+            else:
+                ifval = False
         else:
-            ifval = False
+            with open(STATIC_ROOT + '/cache/' + projectid + '/normalization_data.pkl', 'rb') as f:
+                norm_info = pickle.load(f)
+            nordata4, nor_age4 = norm_info['train_set'], norm_info['train_set_label']
+            ifval = norm_info['ifval']
+            validation_data, validation_label = norm_info['test_set'], norm_info['test_set_label']
+            scaler = norm_info['scaler']
+            print('using normalized data to analysis!')
 
         if fsm == 'A':
             features = selectkbest_top20(nordata4, nor_age4, k=50)
+            Fsm = 'ANOVA'
         elif fsm == 'M':
             features = mrmr_fs(nordata4, nor_age4,form_action,k=50)
+            Fsm = 'MRMR'
 
         nordata4 = nordata4[features]
         train_index, test_index = RegressionKFold(nordata4, nor_age4)
@@ -307,7 +323,9 @@ def oc_reg_analysis(client_msg,projectid):
                          'feature_names': [str(f) for f in feature_names],
                          'Mean R-square': R2,
                          'Mean MAE': Mae,
-                         'Mean MSE': Mse}
+                         'Mean MSE': Mse,
+                         'Fsm': Fsm,
+                         'scaler': str(scaler).split('(')[0]}
         final_reports = pd.DataFrame(final_reports, index=models_str).reset_index().rename(
             columns={'index': 'Method'})
         final_reports_dict = final_reports.to_dict('records')

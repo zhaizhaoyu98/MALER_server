@@ -7,10 +7,11 @@ import numpy as np
 import pandas as pd
 
 from ML_WebServer.settings import STATIC_ROOT
-from mlserver.views.classification_oc_result_view_webscoket import get_file_md5, split_train_test, JsonEncoder
+from mlserver.views.classification_oc_result_view_webscoket import get_file_md5, split_train_test, JsonEncoder,\
+    classification_process,label_pre
 from mlserver.views.classification_cp_result_view_websocket import select_class_model, md5_convert
-from mlserver.views.regression_cp_result_view_websocket import select_reg_model
-from mlserver.views.survival_cp_result_view_websocket import select_sur_model
+from mlserver.views.regression_cp_result_view_websocket import select_reg_model,regression_preprocess
+from mlserver.views.survival_cp_result_view_websocket import select_sur_model,sur_data_process
 from django.contrib import messages
 import re
 
@@ -22,38 +23,39 @@ def preview_result(request):
     select_model = request.POST.get('select_model')
     strategy = request.POST.get('strategy')
     to_mail = request.POST.get('to_mail')
+    fn = request.POST.get('feature_norm')
     print('to_mail ',to_mail)
 
     model_md5 = None
     print(projectid,file_upload_type, strategy)
 
-
     if file_upload_type == 'example_data':
         if select_model == 'model_bclass':
             prefix, example_name = 'BC', 'binary_classification_example.csv'
             if strategy == 'C':
-                model, model_name = select_class_model(request)
+                model, model_name, gridsearch_para = select_class_model(request)
         elif select_model == 'model_mclass':
             prefix, example_name = 'MC', 'multiclass_classification_example.csv'
             if strategy == 'C':
-                model, model_name = select_class_model(request)
+                model, model_name, gridsearch_para = select_class_model(request)
         elif select_model == 'model_reg':
             prefix, example_name = 'R', 'regression_example.csv'
             if strategy == 'C':
-                model, model_name = select_reg_model(request)
+                model, model_name, gridsearch_para = select_reg_model(request)
         else:
             prefix, example_name = 'S', 'survival_example.csv'
             if strategy == 'C':
-                model, model_name = select_sur_model(request)
+                model, model_name, gridsearch_para = select_sur_model(request)
         if strategy != None:
             prefix = prefix + strategy
         upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/', example_name))
 
         if strategy == 'O':
-            projectid = prefix + '-' + fsm + '-' + upload_file_md5[:6] + '-' + feature_select_method
+            gridsearch_para = {}
+            projectid = prefix + '-' + fsm + fn + '-' + upload_file_md5[:6] + '-' + feature_select_method
         else:
             token = request.POST.get('random_token')
-            projectid = prefix + '-' + fsm + '-' + upload_file_md5[:6] + '-' + token
+            projectid = prefix + '-' + fsm + fn + '-' + upload_file_md5[:6] + '-' + token
 
         print(projectid)
 
@@ -74,11 +76,12 @@ def preview_result(request):
                     model_set = pickle.load(f)
             submodel = {
                 'model': model,
-                'model_name': model_name
+                'model_name': model_name,
+                'gridsearch_para': gridsearch_para
             }
             model_md5 = md5_convert(str(model.get_params()) + str(submodel) + feature_select_method)
             model_set[model_md5] = submodel
-            print(model_set)
+
             with open(STATIC_ROOT + '/cache/' + projectid + '/model_pickle.pkl', 'wb') as f:
                 pickle.dump(model_set, f)
 
@@ -97,13 +100,13 @@ def preview_result(request):
 
         if strategy == 'C':
             if select_model == 'model_bclass':
-                model, model_name = select_class_model(request)
+                model, model_name, gridsearch_para = select_class_model(request)
             elif select_model == 'model_mclass':
-                model, model_name = select_class_model(request)
+                model, model_name, gridsearch_para = select_class_model(request)
             elif select_model == 'model_reg':
-                model, model_name = select_reg_model(request)
+                model, model_name, gridsearch_para = select_reg_model(request)
             else:
-                model, model_name = select_sur_model(request)
+                model, model_name, gridsearch_para = select_sur_model(request)
 
             if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid, 'model_pickle.pkl')):
                 model_set = {}
@@ -112,7 +115,8 @@ def preview_result(request):
                     model_set = pickle.load(f)
             submodel = {
                 'model': model,
-                'model_name': model_name
+                'model_name': model_name,
+                'gridsearch_para': gridsearch_para
             }
             model_md5 = md5_convert(str(model.get_params()) + str(submodel) + feature_select_method)
             model_set[model_md5] = submodel
@@ -127,6 +131,7 @@ def preview_result(request):
         form_action_p = 'survival'
 
     if projectid.split('-')[0][-1] == 'O':
+        gridsearch_para = {}
         form_action_s = '_oc_result'
     else:
         form_action_s = '_cp_result'
@@ -135,6 +140,10 @@ def preview_result(request):
 
     ''' preview '''
     inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0, sep=r'/|,|\t').T
+
+
+
+
 
     ''' check '''
     if to_mail != '':
@@ -164,19 +173,29 @@ def preview_result(request):
     # sample table display
     if form_action_p == 'survival':
         train_set, test_set, blind_set = split_train_test(inputdata, datatype='survival')
-        hist_data = data_hist(inputdata, datatype='survival')
+        hist_values, bin_edges, bins_centers = data_hist(inputdata, datatype='survival')
     else:
         train_set, test_set, blind_set = split_train_test(inputdata)
-        hist_data = data_hist(inputdata)
+        hist_values, bin_edges, bins_centers = data_hist(inputdata)
     display_samples = pd.DataFrame({'Train': train_set.shape, 'Test': test_set.shape, 'Blind': blind_set.shape},
                                    index=['Samples', 'Features'])
     display_samples_dict = display_samples.reset_index().rename(columns={'index': 'class'}).to_dict('records')
 
+    ''' normalization '''
+
+    if fn != 'N':
+
+        norm_pickle = data_normalization(train_set, test_set, fn,projectid)
+        with open(STATIC_ROOT + '/cache/' + projectid + '/normalization_data.pkl', 'wb') as f:
+            pickle.dump(norm_pickle, f)
+
+
     # histogram
     hist_trace = [{
-        'x': hist_data,
-        'type': "histogram",
-        'opacity': 0.5
+        'x': bin_edges,
+        'y': hist_values,
+        'type': "bar",
+        'opacity': 0.9,
     }]
     # data short view
     inputdata_display = inputdata.T.head(50).reset_index().rename(columns={'index': 'features'})
@@ -194,6 +213,7 @@ def preview_result(request):
         'inputdata_columns': inputdata_columns,
         'title_str': title_str,
         'to_mail': to_mail,
+        'gridsearch_para': gridsearch_para,
     }
     with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'wb') as f:
         pickle.dump(preview_pickle, f)
@@ -210,7 +230,10 @@ def preview_result(request):
         'inputdata_columns': json.dumps(inputdata_columns),
         'title_str': title_str,
         'fsm': fsm,
-        'to_mail': to_mail
+        'to_mail': to_mail,
+        'gridsearch_para': gridsearch_para,
+        'feature_norm': fn
+
     })
 
 def data_hist(data, datatype='other'):
@@ -225,8 +248,10 @@ def data_hist(data, datatype='other'):
     # data2 = (data2).apply(pd.to_numeric, errors='ignore')
     drop_X_train = data2.select_dtypes(include=['object'])
     data3 = data2.loc[:, ~data2.columns.isin(drop_X_train.columns)]
-    data_all = np.round(np.array(data3).ravel())
-    return data_all
+    data_all = np.array(data3).ravel()
+    hist_values, bin_edges = np.histogram(data_all, bins=20, density=True)
+    bins_centers = 0.5 * (bin_edges[1:] + bin_edges[:-1])
+    return hist_values, bin_edges, bins_centers
 
 def mkcol(data):
     col_data, title_str = [], ''
@@ -237,3 +262,60 @@ def mkcol(data):
         col_data.append(subcol)
         title_str = title_str + '<th>' + col + '</th>'
     return col_data, title_str
+
+def data_normalization(train_set, test_set, fn, projectid):
+    from sklearn.preprocessing import MinMaxScaler, MaxAbsScaler, StandardScaler,RobustScaler
+    print('fn: ',fn)
+    if fn == 'MM':
+        scaler = MinMaxScaler()
+    elif fn == 'Z':
+        scaler = StandardScaler()
+    elif fn == 'MA':
+        scaler = MaxAbsScaler()
+    elif fn == 'R':
+        scaler = RobustScaler()
+
+    print('projectid: ',projectid)
+    classes = None
+    X_test_scaled = []
+    validation_label = None
+    if projectid.split("-")[0][0] == 'B' or projectid.split("-")[0][0] == 'M':
+        data, label = classification_process(train_set)
+        label, classes = label_pre(label)
+        validation_data = []  # 预先定义
+        ifval = False
+        if len(test_set) > 0:
+            validation_data, validation_label = classification_process(test_set)
+            validation_label, classes = label_pre(validation_label)
+            ifval = True
+    elif projectid.split("-")[0][0] == 'R':
+        data, label = regression_preprocess(train_set)
+        ifval = False
+        if len(test_set) > 0:
+            validation_data, validation_label = regression_preprocess(test_set)
+            ifval = True
+    elif projectid.split("-")[0][0] == 'S':
+        data, label = sur_data_process(train_set)
+        ifval = False
+        if len(test_set) > 0:
+            validation_data, validation_label = sur_data_process(test_set)
+            ifval = True
+
+    X_train_scaled = scaler.fit_transform(data)
+    X_train_scaled = pd.DataFrame(X_train_scaled,index=data.index,columns=data.columns)
+
+    if len(test_set) > 0:
+        X_test_scaled = scaler.transform(validation_data)
+        X_test_scaled = pd.DataFrame(X_test_scaled, index=validation_data.index, columns=validation_data.columns)
+
+    norm_data = {'train_set': X_train_scaled,
+                 'test_set': X_test_scaled,
+                 'train_set_label': label,
+                 'test_set_label': validation_label,
+                 'scaler': scaler,
+                 'classes': classes,
+                 'ifval': ifval
+                 }
+    print('normalization!')
+    return norm_data
+

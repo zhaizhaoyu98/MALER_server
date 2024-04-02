@@ -135,18 +135,19 @@ def predict_preview(request):
 
     if select_model == 'model_sur':
         blind_set,validation_set = pred_val_split(inputdata, datatype='survival')
-        hist_data = data_hist(inputdata, datatype='survival')
+        hist_values, bin_edges, bins_centers = data_hist(inputdata, datatype='survival')
     else:
         blind_set,validation_set = pred_val_split(inputdata)
-        hist_data = data_hist(inputdata)
+        hist_values, bin_edges, bins_centers = data_hist(inputdata)
     display_samples = pd.DataFrame({'Validation': validation_set.shape, 'Blind': blind_set.shape},
                                    index=['Samples', 'Features'])
     display_samples_dict = display_samples.reset_index().rename(columns={'index': 'class'}).to_dict('records')
     # histogram
     hist_trace = [{
-        'x': hist_data,
-        'type': "histogram",
-        'opacity': 0.5
+        'x': bin_edges,
+        'y': hist_values,
+        'type': "bar",
+        'opacity': 0.9
     }]
     # data short view
     inputdata_display = inputdata.T.head(50).reset_index().rename(columns={'index': 'features'})
@@ -332,7 +333,8 @@ def pred_val_split(data,datatype='other'):
         # if data.columns[0].lower() == 'label':
         # 类别数，是否为数字判断是否存在label列
         # if len(np.unique(data.iloc[:,0])) < 30 and (not (np.issubdtype(data.iloc[0,0],np.integer) or np.issubdtype(data.iloc[0,0],np.floating))):
-        if len(np.unique(data.iloc[:, 0])) < 30 and (isinstance(data.iloc[0,0],str)):
+        # if len(np.unique(data.iloc[:, 0])) < 30 and (isinstance(data.iloc[0,0],str)):
+        if data.iloc[:, 0].nunique() < 30 and (isinstance(data.iloc[0, 0], str)):
             blind_set = data[data.iloc[:,:1].isna().T.any()]
             if len(blind_set)>0:
                 blind_set = blind_set.drop(labels=blind_set.columns[0], axis=1)
