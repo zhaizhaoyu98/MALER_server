@@ -352,7 +352,7 @@
 						report_data[0]['scaler'] = report_data[0]['scaler'].split('()')[0]
 						
 						var vregpred_anno = JSON.parse(results_data.vregpred_trace)[1]['text']
-						
+						console.log(vregpred_anno)
 						var vlinelayout = {
 						  title: 'Scatter plot for predicted value<br>' + vregpred_anno,  
 						  margin: {

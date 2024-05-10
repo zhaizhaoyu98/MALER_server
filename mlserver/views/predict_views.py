@@ -137,7 +137,7 @@ def predict_preview(request):
         blind_set,validation_set = pred_val_split(inputdata, datatype='survival')
         hist_values, bin_edges, bins_centers = data_hist(inputdata, datatype='survival')
     else:
-        blind_set,validation_set = pred_val_split(inputdata)
+        blind_set,validation_set = pred_val_split(inputdata,datatype=method)
         hist_values, bin_edges, bins_centers = data_hist(inputdata)
     display_samples = pd.DataFrame({'Validation': validation_set.shape, 'Blind': blind_set.shape},
                                    index=['Samples', 'Features'])
@@ -329,18 +329,28 @@ def make_surv_text(x, y):
 def pred_val_split(data,datatype='other'):
     blind_set, val_set = pd.DataFrame(),pd.DataFrame()
     data = data.apply(pd.to_numeric, errors='ignore')
+    print('datatype:',datatype)
     if datatype != 'survival':
         # if data.columns[0].lower() == 'label':
         # 类别数，是否为数字判断是否存在label列
         # if len(np.unique(data.iloc[:,0])) < 30 and (not (np.issubdtype(data.iloc[0,0],np.integer) or np.issubdtype(data.iloc[0,0],np.floating))):
         # if len(np.unique(data.iloc[:, 0])) < 30 and (isinstance(data.iloc[0,0],str)):
-        if data.iloc[:, 0].nunique() < 30 and (isinstance(data.iloc[0, 0], str)):
-            blind_set = data[data.iloc[:,:1].isna().T.any()]
-            if len(blind_set)>0:
-                blind_set = blind_set.drop(labels=blind_set.columns[0], axis=1)
-            val_set = data[~data.index.isin(blind_set.index)]
-        else:
-            blind_set = data
+        if datatype== 'model_bclass' or datatype== 'model_mclass': #分类标签为字符串，回归只能设置行名为label
+            if data.iloc[:, 0].nunique() < 30 and (isinstance(data.iloc[0, 0], str)):
+                blind_set = data[data.iloc[:,:1].isna().T.any()]
+                if len(blind_set)>0:
+                    blind_set = blind_set.drop(labels=blind_set.columns[0], axis=1)
+                val_set = data[~data.index.isin(blind_set.index)]
+            else:
+                blind_set = data
+        elif datatype == 'model_reg':
+            if data.columns[0].lower() == 'label':
+                blind_set = data[data.iloc[:,:1].isna().T.any()]
+                if len(blind_set)>0:
+                    blind_set = blind_set.drop(labels=blind_set.columns[0], axis=1)
+                val_set = data[~data.index.isin(blind_set.index)]
+            else:
+                blind_set = data
     else:
         if data.columns[0] == 'Status' and data.columns[1] == 'time':
             blind_set = data[data.iloc[:,:2].isna().T.any()]

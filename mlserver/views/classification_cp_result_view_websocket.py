@@ -1354,6 +1354,8 @@ def cp_analysis(client_msg,projectid,WebSocket):
         model_info['name'], model_info['model'], model_info['feature_names'] = clf_name, tmodels, max_features
         model_info['classes'] = classes
         model_info['scaler'] = str(scaler)
+        model_method = "model_bclass" if len(np.unique(label3))<=2 else "model_mclass"
+        model_info['method'] = model_method
         print('model_info', model_info)
         with open(STATIC_ROOT + '/cache/' + projectid + '/' + para_md5 + '.pkl',
                   'wb') as f:
@@ -1776,6 +1778,8 @@ def cp_analysis(client_msg,projectid,WebSocket):
                     max_features)
                 model_info['classes'] = classes
                 model_info['scaler'] = str(scaler)
+                model_method = "model_bclass" if np.unique(label3) <= 2 else "model_mclass"
+                model_info['method'] = model_method
                 with open(STATIC_ROOT + '/cache/' + projectid + '/' + para_md5 + '.pkl',
                           'wb') as f:
                     pickle.dump(model_info, f)

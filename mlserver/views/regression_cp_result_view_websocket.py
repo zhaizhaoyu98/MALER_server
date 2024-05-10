@@ -319,7 +319,8 @@ def cp_analysis(client_msg,projectid):
         #保存单个模型信息
         model_info = {}
         model_info['name'], model_info['model'], model_info['feature_names'] = reg_model_name, tmodels, max_features
-        model_info['scaler'] = scaler
+        model_info['scaler'] = str(scaler)
+        model_info['method'] = 'model_reg'
         print(model_info)
         with open(STATIC_ROOT + '/cache/' + projectid + '/' + para_md5 + '.pkl','wb') as f:
             pickle.dump(model_info, f)
@@ -572,6 +573,8 @@ def cp_analysis(client_msg,projectid):
                 model_info = {}
                 print('mame:',reg_model_name,' model:::',tmodels)
                 model_info['name'], model_info['model'], model_info['feature_names'] = reg_model_name, tmodels, max_features
+                model_info['method'] = 'model_reg'
+                model_info['scaler'] = str(scaler)
                 with open(STATIC_ROOT + '/cache/' + projectid + '/' + select_md5 + '.pkl', 'wb') as f:
                     pickle.dump(model_info, f)
             else:
