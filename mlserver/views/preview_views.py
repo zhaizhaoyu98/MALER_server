@@ -16,6 +16,9 @@ from django.contrib import messages
 import re
 
 def preview_result(request):
+    # projectid='BCO-AN-c319b6-TopK';feature_select_method='TopK';
+    # fsm='A';file_upload_type='example_data';select_model='model_bclass'
+    # strategy='0';to_mail='';fn='N'
     projectid = request.POST.get('projectid')
     feature_select_method = request.POST.get('feature_select_method')
     fsm = request.POST.get('fsm')
@@ -24,10 +27,11 @@ def preview_result(request):
     strategy = request.POST.get('strategy')
     to_mail = request.POST.get('to_mail')
     fn = request.POST.get('feature_norm')
-    print('to_mail ',to_mail)
 
     model_md5 = None
-    print(projectid,file_upload_type, strategy)
+    print('projectid: ',projectid,'feature_select_method: ',feature_select_method,
+          'fsm: ',fsm,'file_upload_type: ',file_upload_type,'select_model: ',select_model,
+          'strategy: ',strategy,'to_mail: ',to_mail,'fn: ',fn)
 
     if file_upload_type == 'example_data':
         if select_model == 'model_bclass':
