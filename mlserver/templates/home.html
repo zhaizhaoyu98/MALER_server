@@ -14,9 +14,14 @@
 	</script>
 </head>
 <style>
+	body{
+		font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+		line-height: 1.55;
+	}
 	.card-header{
 		text-align: center;
-		font-style: oblique;
+		font-style: normal;
+		font-weight: 600;
 	}
 	.addborder {
 		border-radius: unset;
@@ -65,7 +70,7 @@
 		<div class="card col-12">
 			<div class="card-body">
 				<h4 style="margin: 0 0 10px 0;">Welcome to MALER</h4>
-				<p>A web server to build, evaluate, and apply machine learning models for biological and biomedical data analysis.</p>
+				<p>A web server to build, evaluate, and apply machine learning models for numerical biological and biomedical data analysis.</p>
 			</div>
 			<div class="row no-gutters">
 				<div class="col-lg-7 col-sm-12 mb-12">
@@ -83,13 +88,13 @@
                     major obstacle for biologists to apply ML widely.
 				</p>
                 <p class="card-text">
-                    We developed a user-friendly and easy-to-use web application called <b>MALER</b> (machine learning server)
-                    that helps biologists apply ML models to biological and biomedical data. MALER provides modules for
+                    We developed <b>MALER</b> (Machine Learning Evaluation and Reporting server), a guided web application
+                    that helps biologists apply ML models to biological and biomedical data without writing code. MALER provides modules for
                     (i) binary and (ii) multi-class classification, and (iii) regression and (iv) survival analysis that
                     allow users to build, quantitatively evaluate, and compare the performance of ML models using
                     visualizations (10, 9, 5 ML algorithms and 2, 3, 4 evaluation indices are available for classification,
                     and regression and survival analysis, respectively). MALER supports the whole process from feature
-                    selection (5 methods), training/testing, to external validations and blind test, and provides
+                    selection (5 methods), training/testing, to external validation and blind prediction, and provides
                     downloadable models for future predictions using other data in the server.
                 </p>
                 <p class="card-text">
@@ -165,7 +170,7 @@
 
                         <div class="col-4">
                             <p class="card-text" style="text-align:center">
-								TopK, FSS(SFS), BSS
+								ANOVA, MRMR, Cox ranking; TopK, FSS, BSS subset search
 								<br></br>
 								<p ><img src='/mlserver_static/img/home2.png' width="320" height="180"></p>
 							</p>
@@ -173,7 +178,7 @@
                         </div>
 						<div class="col-4">
 							<p class="card-text" style="text-align:center">
-								Run ML models within the same process.
+								Compare multiple ML models in one guided workflow.
 								<p ><img src='/mlserver_static/img/home3.png' width="320" height="260"></p>
 								<!-- <p ><img src='/mlserver_static/img/home3.png' width="320" height="120"></p> -->
 
@@ -189,7 +194,7 @@
                         <div class="row col-12">
                              <div class="col-4">
                             <p class="card-text" style="text-align:center">
-								Customize the ML analysis by selecting the different parameters.
+								Customize the ML analysis by selecting models and parameters.
 								<!-- <br></br> -->
 								<p ><img src='/mlserver_static/img/home4.png' width="320" height="240"></p>
 							</p>
@@ -212,7 +217,7 @@
 						<div class="col-4">
                             <p class="card-text" style="text-align:center">
 								<!-- make predictions -->
-								Download the model to predict external dataset.
+								Download the model to predict external datasets.
 								
 								<p ><img src='/mlserver_static/img/home6.png' width="320" height="200"></p>
 							</p>

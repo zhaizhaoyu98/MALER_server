@@ -15,6 +15,10 @@
 		
 		{% include 'public_templates/bootstrap.html' %}
 		<style type="text/css">
+			body{
+				font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+				line-height: 1.55;
+			}
 			#home span {
 				background-color: aliceblue;
 			}
@@ -145,7 +149,7 @@
 			<div class="col-12">
 				<el-card shadow="never">
 					<div slot="header" >
-						<h4>Step5：Email（Optional)</h4>
+						<h4>Step 5: Email (Optional)</h4>
 					</div>
 					<div>
 						<p style="font-size: 14px;">Given the potential extended duration of the analysis process, we recommend 
@@ -165,7 +169,7 @@
 			<div class="col-12">
 			<el-card shadow="never">
 				<div slot="header" >
-					<h4>Step1: Please select an analysis mode.</h4>
+					<h4>Step 1: Please select an analysis task.</h4>
 				</div>
 			
 			<div>
@@ -231,7 +235,7 @@
 			<br />
 			<el-card shadow="never">
 				<div slot="header" >
-					<h4>Step2: Please upload the files.</h4>
+					<h4>Step 2: Please upload the data file.</h4>
 				</div>
 				
 				<div>
@@ -249,7 +253,7 @@
 							<div class="form-check">
 								<label class="form-check-label" for="samp_up">
 									<input type="radio" id='samp_up' value="samp_data" name="data_up">
-									Choose Example Data
+									Use Example/Template Data
 								</label>
 										
 							</div>
@@ -270,15 +274,15 @@
 								</br>
 								</br>
 								<div style="position: relative;">
-									<p><div> <b> File: </b>  Please upload a csv file with features
-									 in rows and samples in columns and no larger than 200MB. Please refer to the sample file for the exact format of the file.</div></p>
+									<p><div> <b> File: </b>  Upload a CSV file with features in rows and samples in columns. The file must be no larger than 200MB. Example/template files are provided to illustrate the required input format.</div></p>
+									<p><b> Template: </b> Classification and regression files use the first three rows for sample name, label, and train/test set. Survival files use the first four rows for sample name, status, time, and train/test set. Example files can be downloaded below.</p>
 									<p><b> ProjectID: </b>  A unique identifier for each task, which can be used to access the results of analyzed tasks.</p>
 								</div>
 							</div>
 							<div id="samp_data" class='row' style="display: none;">
 								<div class="col-12" id="sample_select" display="none">
 									<!-- <table border="1" style="border: #000000;background-color: #f8f9fa;"> -->
-									<b>Please click the 'Submit' button to make predictions on the sample data.</b>
+									<b>Download an example file as a template, or click Submit to run MALER with the selected example data.</b>
 									<table width="100%" class="" border="1" style="border: #000000;background-color: #f8f9fa;text-align: center;">
 										<thead>
 										<tr>
@@ -289,13 +293,13 @@
 										</tr>
 										</thead>
 										<tr>
-											<td>Binary Classfication</td>
+											<td>Binary Classification</td>
 											<td>LUAD and LUSC are classified based on gene expression profiles</td>
 											<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
 											<td><a href="download/binary_classification_example.csv">download</a></td>
 										</tr>
 										<tr>
-											<td>Multiclass Classfication</td>
+											<td>Multiclass Classification</td>
 											<td>LUAD, LUSC and KIRC are classified based on gene expression profiles</td>
 											<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
 											<td><a href="download/multiclass_classification_example.csv">download</a></td>
@@ -314,7 +318,7 @@
 											<td>Survival in GBM is predicted based on gene expression profiles</td>
 											<td>
 												<a href="https://xenabrowser.net/">UCSC Xena</a><br />
-												<a href="http://www.cgga.org.cn">CGGA</a>
+												<a href="https://www.cgga.org.cn">CGGA</a>
 											</td>
 											<td><a href="download/survival_example.csv">download</a></td>
 										</tr>
@@ -385,7 +389,7 @@
 					<div class="col-12">
 					<el-card shadow="never">
 						<div slot="header" >
-							<h4>Step3: Please select a feature normalization method. (Optional)</h4>
+							<h4>Step 3: Please select a feature scaling method. (Optional)</h4>
 						</div>
 					<div>
 					<!-- <hr> -->
@@ -394,15 +398,16 @@
 							{% csrf_token %}
 							<div id="fn_radio">
 								<div class="row">
-								<label style="font-weight: bold; color: #666;font-size: 20px;">Feature Normalization Methods: </label>
+								<label style="font-weight: bold; color: #666;font-size: 20px;">Feature Scaling Methods: </label>
 								</div>
 								<br />
-								<div class="row" >
-									<input type="radio" id="feature_norm" name="feature_norm" value="MM" />&nbsp;MinMax&emsp;&emsp;
-									<input type="radio" id="feature_norm" name="feature_norm" value="Z" />&nbsp;Z-Score&emsp;&emsp;
-									<input type="radio" id="feature_norm" name="feature_norm" value="MA" />&nbsp;MaxAbs&emsp;&emsp;
-									<input type="radio" id="feature_norm" name="feature_norm" value="N" checked />&nbsp;None&emsp;&emsp;
-								</div>
+							<div class="row" >
+								<input type="radio" id="feature_norm" name="feature_norm" value="MM" />&nbsp;MinMax&emsp;&emsp;
+								<input type="radio" id="feature_norm" name="feature_norm" value="Z" />&nbsp;Z-Score&emsp;&emsp;
+								<input type="radio" id="feature_norm" name="feature_norm" value="MA" />&nbsp;MaxAbs&emsp;&emsp;
+								<input type="radio" id="feature_norm" name="feature_norm" value="N" checked />&nbsp;None&emsp;&emsp;
+							</div>
+							<p style="margin-top: 10px;color: #666;">MinMax and MaxAbs are normalization methods that rescale feature ranges. Z-Score is a standardization method that centers and scales features by mean and standard deviation.</p>
 							</div>
 						</div>
 					</div>
@@ -418,7 +423,7 @@
 				<div class="col-12">
 				<el-card shadow="never">
 					<div slot="header" >
-						<h4>Step4: Please select a feature selection method.</h4>
+						<h4>Step 4: Please select feature ranking and subset search methods.</h4>
 					</div>
 				<div>
 				<!-- <hr> -->
@@ -447,13 +452,14 @@
 								<input type="radio" id="fsm" name="fsm" value="M" />&nbsp;MRMR&emsp;&emsp;
 								<input type="radio" id="fsm" name="fsm" value="C" style="display: none;" />
 							</div>
+							<p style="margin-top: 10px;color: #666;">ANOVA is suitable for fast univariate ranking in classification or regression tasks. MRMR considers relevance and redundancy and is useful when many correlated features are expected. Cox ranking is used for survival analysis.</p>
 							<br>
 							<hr>
 						</div>
 						<!-- <br /> -->
 						
 						<div class="row">
-							<label style="font-weight: bold; color: #666;font-size: 20px;">Optimal Feature Subset Search Methods: </label>
+							<label style="font-weight: bold; color: #666;font-size: 20px;">Subset Search Methods: </label>
 						</div>
 						<br>
 						<div class="row">
@@ -473,7 +479,7 @@
 				<br />
 			<el-card shadow="never">
 				<div slot="header" >
-					<h4>Step5: Please choose a processing method.</h4>
+					<h4>Step 5: Please choose an analysis strategy.</h4>
 				</div>
 			<div>
 			<div class="row">
@@ -2368,7 +2374,7 @@
 					<br />
 					<el-card shadow="never">
 						<div slot="header" >
-							<h4>Step6：Email（Optional)</h4>
+							<h4>Step 6: Email (Optional)</h4>
 						</div>
 						<div>
 							<input type="email" name="to_mail" id="to_mail" style="width: 1400px;height: 40px;"/>

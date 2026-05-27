@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import sys
 
 
 
@@ -21,13 +22,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'vby80#mfvs6nykjojeaazgbuh=ah!5k*x%+_4sq%sc8d=8u7n@'
+# SECURITY WARNING: keep the secret key used in production secret.
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'change-me-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'True' if 'runserver' in sys.argv else 'False').lower() == 'true'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost,www.inbirg.com').split(',')
+    if host.strip()
+]
 
 
 # Application definition
@@ -56,6 +61,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = os.environ.get('DJANGO_SECURE_SSL', 'False').lower() == 'true'
+CSRF_COOKIE_SECURE = os.environ.get('DJANGO_SECURE_SSL', 'False').lower() == 'true'
+SECURE_SSL_REDIRECT = os.environ.get('DJANGO_SECURE_SSL', 'False').lower() == 'true'
 
 ROOT_URLCONF = 'ML_WebServer.urls'
 
@@ -127,7 +141,8 @@ USE_TZ = True
 
 # STATIC_URL = '/static/'
 STATIC_URL = '/mlserver_static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'mlserver\\static').replace('\\','/')
+MLSERVER_STATIC_DIR = os.path.join(BASE_DIR, 'mlserver', 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 #dwebSocket uwsgi
@@ -143,5 +158,5 @@ EMAIL_HOST = 'smtp.163.com'      #163邮箱的邮箱服务地址
 EMAIL_PORT = 465  # 端口为465或587
 EMAIL_USE_SSL = True  # SSL加密方式设置为True
 EMAIL_USE_TLS = False
-EMAIL_HOST_USER = 'linzhewei1999@163.com'    #这里是你的邮箱账号
-EMAIL_HOST_PASSWORD = 'ZPFKAPUKPWDTXTTZ'   #注意这里不能用你邮箱账号的密码，而要用申请的设备授权码。
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
