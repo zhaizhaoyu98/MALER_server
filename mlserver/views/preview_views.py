@@ -16,6 +16,9 @@ from django.contrib import messages
 import re
 
 def preview_result(request):
+    cache_dir = os.path.join(STATIC_ROOT, 'cache')
+    os.makedirs(cache_dir, exist_ok=True)
+
     # projectid='BCO-AN-c319b6-TopK';feature_select_method='TopK';
     # fsm='A';file_upload_type='example_data';select_model='model_bclass'
     # strategy='0';to_mail='';fn='N'
@@ -67,7 +70,7 @@ def preview_result(request):
 
 
         if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
-            os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+            os.makedirs(os.path.join(STATIC_ROOT, 'cache', projectid), exist_ok=True)
             shutil.copy(example_file, os.path.join(STATIC_ROOT, 'cache', projectid))
             os.rename(os.path.join(STATIC_ROOT, 'cache', projectid, example_name),  \
                       os.path.join(STATIC_ROOT, 'cache', projectid, 'data.csv'))
@@ -95,7 +98,7 @@ def preview_result(request):
             # file load
             upload_file = request.FILES.get('upload_file')
             if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
-                os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+                os.makedirs(os.path.join(STATIC_ROOT, 'cache', projectid), exist_ok=True)
             f = open(os.path.join(STATIC_ROOT, 'cache', projectid, upload_file.name), 'wb')
             for line in upload_file.chunks():
                 f.write(line)

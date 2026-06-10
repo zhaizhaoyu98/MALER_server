@@ -19,6 +19,9 @@ def get_predict_page(request):
         return render(request, 'predict.html')
 
 def predict_preview(request):
+    cache_dir = os.path.join(STATIC_ROOT, 'cache')
+    os.makedirs(cache_dir, exist_ok=True)
+
     select_model = request.POST.get('select_model')
     file_upload_type = request.POST.get('file_upload_type')
     print('select_model:',select_model)
@@ -55,7 +58,7 @@ def predict_preview(request):
         projectid = 'PRED' + '-' + select_model.replace('model_', '').upper() + '-' + modelmd5[:6] + '-' + filemd5[:6]
         # blind_set = pd.read_csv(STATIC_ROOT + '/cache/' + 'example/' + example_name, header=0, index_col=0).T
         if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
-            os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+            os.makedirs(os.path.join(STATIC_ROOT, 'cache', projectid), exist_ok=True)
             newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
             shutil.copy(example_file, newpath)
             shutil.copy(example_model_file, newpath)
@@ -84,7 +87,7 @@ def predict_preview(request):
 
             newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
             print(newpath)
-            os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
+            os.makedirs(os.path.join(STATIC_ROOT, 'cache', projectid), exist_ok=True)
             shutil.move(STATIC_ROOT + '/cache/' + obj_model.name, newpath)
             shutil.move(STATIC_ROOT + '/cache/' + obj_file.name, newpath)
 
