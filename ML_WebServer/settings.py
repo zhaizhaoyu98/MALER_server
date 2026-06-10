@@ -26,14 +26,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'change-me-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', 'True' if 'runserver' in sys.argv else 'False').lower() == 'true'
-
-ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost,www.inbirg.com').split(',')
-    if host.strip()
-]
-
+# DEBUG = os.environ.get('DJANGO_DEBUG', 'True' if 'runserver' in sys.argv else 'False').lower() == 'true'
+#
+# ALLOWED_HOSTS = [
+#     host.strip()
+#     for host in os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost,www.inbirg.com').split(',')
+#     if host.strip()
+# ]
+DEBUG = True
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
