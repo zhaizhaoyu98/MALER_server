@@ -6,7 +6,7 @@ import os, shutil, pickle
 import numpy as np
 import pandas as pd
 
-from ML_WebServer.settings import STATIC_ROOT
+from ML_WebServer.settings import MLSERVER_STATIC_DIR, STATIC_ROOT
 from mlserver.views.classification_oc_result_view_webscoket import get_file_md5, split_train_test, JsonEncoder,\
     classification_process,label_pre
 from mlserver.views.classification_cp_result_view_websocket import select_class_model, md5_convert
@@ -52,7 +52,8 @@ def preview_result(request):
                 model, model_name, gridsearch_para = select_sur_model(request)
         if strategy != None:
             prefix = prefix + strategy
-        upload_file_md5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/', example_name))
+        example_file = os.path.join(MLSERVER_STATIC_DIR, 'cache', 'example', example_name)
+        upload_file_md5 = get_file_md5(example_file)
 
         if strategy == 'O':
             gridsearch_para = {}
@@ -67,7 +68,7 @@ def preview_result(request):
 
         if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
             os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
-            shutil.copy(STATIC_ROOT + '/cache/example/' + example_name, os.path.join(STATIC_ROOT, 'cache', projectid))
+            shutil.copy(example_file, os.path.join(STATIC_ROOT, 'cache', projectid))
             os.rename(os.path.join(STATIC_ROOT, 'cache', projectid, example_name),  \
                       os.path.join(STATIC_ROOT, 'cache', projectid, 'data.csv'))
 

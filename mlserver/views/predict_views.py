@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 from mlserver.views.classification_oc_result_view_webscoket import JsonEncoder
-from ML_WebServer.settings import STATIC_ROOT
+from ML_WebServer.settings import MLSERVER_STATIC_DIR, STATIC_ROOT
 from mlserver.views.classification_oc_result_view_webscoket import get_file_md5
 from django.contrib import messages
 from mlserver.views.preview_views import data_hist, mkcol
@@ -46,16 +46,19 @@ def predict_preview(request):
         # for line in obj_model.chunks():
         #     f.write(line)
         # f.close()
-        filemd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/', example_name))
+        example_dir = os.path.join(MLSERVER_STATIC_DIR, 'cache', 'example')
+        example_file = os.path.join(example_dir, example_name)
+        example_model_file = os.path.join(example_dir, example_model_name)
+        filemd5 = get_file_md5(example_file)
         # modelmd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache', obj_model.name))
-        modelmd5 = get_file_md5(os.path.join(STATIC_ROOT, 'cache/example/', example_model_name))
+        modelmd5 = get_file_md5(example_model_file)
         projectid = 'PRED' + '-' + select_model.replace('model_', '').upper() + '-' + modelmd5[:6] + '-' + filemd5[:6]
         # blind_set = pd.read_csv(STATIC_ROOT + '/cache/' + 'example/' + example_name, header=0, index_col=0).T
         if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
             os.mkdir(os.path.join(STATIC_ROOT, 'cache', projectid))
             newpath = os.path.join(STATIC_ROOT, 'cache', projectid)
-            shutil.copy(STATIC_ROOT + '/cache/example/' + example_name, newpath)
-            shutil.copy(STATIC_ROOT + '/cache/example/' + example_model_name, newpath)
+            shutil.copy(example_file, newpath)
+            shutil.copy(example_model_file, newpath)
             os.rename(os.path.join(STATIC_ROOT, 'cache', projectid, example_name),  \
                       os.path.join(STATIC_ROOT, 'cache', projectid, 'data.csv'))
             os.rename(os.path.join(STATIC_ROOT, 'cache', projectid, example_model_name), \
