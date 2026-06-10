@@ -1097,9 +1097,9 @@ def cp_analysis(client_msg,projectid,WebSocket):
             cv2 = RepeatedStratifiedKFold(n_splits=5, n_repeats=1, random_state=10)
             start = time.perf_counter()
             if feature_select_method == 'FSS':
-                selected_feature, max_scores = FSS_fun(features, svc, data3, label3, cv2, n_jobs=5)  # njobs修改
+                selected_feature, max_scores = FSS_fun(features, svc, data3, label3, cv2, n_jobs=1)  # njobs修改
             else:
-                selected_feature, max_scores = BSS_fun(features, svc, data3, label3, cv2, n_jobs=5)  # njobs修改
+                selected_feature, max_scores = BSS_fun(features, svc, data3, label3, cv2, n_jobs=1)  # njobs修改
             # 得到最值
             max_index = max_scores.index(np.nanmax(max_scores))
             max_score = max(max_scores)
@@ -2951,7 +2951,7 @@ def gridsearch_bulid(svc, gridsearch_para, clf_name):
     grid_cv = RepeatedStratifiedKFold(n_splits=5, n_repeats=1, random_state=10)
     grid_model = copy.deepcopy(svc)
     param_grid = grid_space(svc, gridsearch_para, clf_name)
-    grid_search = GridSearchCV(grid_model, param_grid, cv=grid_cv, scoring='accuracy', n_jobs=5)
+    grid_search = GridSearchCV(grid_model, param_grid, cv=grid_cv, scoring='accuracy', n_jobs=1)
     return grid_search
 
 def grid_space(model, gridsearch_para, clf_name):

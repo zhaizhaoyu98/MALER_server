@@ -150,9 +150,9 @@ def cp_analysis(client_msg,projectid):
         # fss,bss
         if feature_select_method == 'FSS' or feature_select_method == 'BSS':
             if feature_select_method == 'BSS':
-                sf, ms = BSS_fun(features, reg_cust_model, nordata4, nor_age4, cv, n_jobs=5)
+                sf, ms = BSS_fun(features, reg_cust_model, nordata4, nor_age4, cv, n_jobs=1)
             else:
-                sf, ms = FSS_fun(features, reg_cust_model, nordata4, nor_age4, cv, n_jobs=5)
+                sf, ms = FSS_fun(features, reg_cust_model, nordata4, nor_age4, cv, n_jobs=1)
             max_index = np.array(ms).argmax()
             # max_index = ms.index(np.nanmax(ms))
             max_score = max(ms)
@@ -816,7 +816,7 @@ def regression_xgboost(Max_depth = 6,Learning_rate=0.3,N_estimators=100,Booster=
 
 def regression_randomforest(N_estimators = 100,Criterion='squared_error',Max_depth=None,Min_samples_split=2,
                             Min_samples_leaf=1,Max_features=1.0):
-    reg_rf = RandomForestRegressor(n_jobs=5,random_state=10,n_estimators = N_estimators,criterion=Criterion,max_depth=Max_depth,
+    reg_rf = RandomForestRegressor(n_jobs=1,random_state=10,n_estimators = N_estimators,criterion=Criterion,max_depth=Max_depth,
                                   min_samples_split=Min_samples_split,min_samples_leaf=Min_samples_leaf,max_features=Max_features)
     return reg_rf
 
@@ -1243,7 +1243,7 @@ def gridsearch_bulid(svc, gridsearch_para, clf_name):
     grid_cv = RepeatedKFold(n_splits=5, n_repeats=1, random_state=10)
     grid_model = copy.deepcopy(svc)
     param_grid = grid_space(svc, gridsearch_para, clf_name)
-    grid_search = GridSearchCV(grid_model, param_grid, cv=grid_cv, scoring='r2', n_jobs=5)
+    grid_search = GridSearchCV(grid_model, param_grid, cv=grid_cv, scoring='r2', n_jobs=1)
     return grid_search
 
 def grid_space(model, gridsearch_para, clf_name):
