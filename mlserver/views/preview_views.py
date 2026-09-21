@@ -2,11 +2,11 @@ import json
 
 from django.shortcuts import render
 
-import os, shutil, pickle
+import os, shutil, pickle, secrets
 import numpy as np
 import pandas as pd
 
-from ML_WebServer.settings import MLSERVER_STATIC_DIR, STATIC_ROOT
+from django.conf import settings
 from mlserver.views.classification_oc_result_view_webscoket import get_file_md5, split_train_test, JsonEncoder,\
     classification_process,label_pre
 from mlserver.views.classification_cp_result_view_websocket import select_class_model, md5_convert
@@ -14,8 +14,13 @@ from mlserver.views.regression_cp_result_view_websocket import select_reg_model,
 from mlserver.views.survival_cp_result_view_websocket import select_sur_model,sur_data_process
 from django.contrib import messages
 import re
+from django.core.exceptions import SuspiciousOperation
+from mlserver.security import validated_project_id
+from mlserver.task_access import issue_task_token
 
 def preview_result(request):
+    STATIC_ROOT = settings.STATIC_ROOT
+    MLSERVER_STATIC_DIR = settings.MLSERVER_STATIC_DIR
     cache_dir = os.path.join(STATIC_ROOT, 'cache')
     os.makedirs(cache_dir, exist_ok=True)
 
@@ -23,13 +28,18 @@ def preview_result(request):
     # fsm='A';file_upload_type='example_data';select_model='model_bclass'
     # strategy='0';to_mail='';fn='N'
     projectid = request.POST.get('projectid')
-    feature_select_method = request.POST.get('feature_select_method')
-    fsm = request.POST.get('fsm')
+    feature_select_method = request.POST.get('feature_select_method') or 'TopK'
+    fsm = request.POST.get('fsm') or 'A'
     file_upload_type = request.POST.get('file_upload_type')
     select_model = request.POST.get('select_model')
     strategy = request.POST.get('strategy')
-    to_mail = request.POST.get('to_mail')
-    fn = request.POST.get('feature_norm')
+    to_mail = request.POST.get('to_mail') or ''
+    fn = request.POST.get('feature_norm') or 'Z'
+
+    if strategy not in ('O', 'C'):
+        raise SuspiciousOperation('Unsupported analysis strategy.')
+    if select_model not in ('model_bclass', 'model_mclass', 'model_reg', 'model_sur'):
+        raise SuspiciousOperation('Unsupported analysis type.')
 
     model_md5 = None
     print('projectid: ',projectid,'feature_select_method: ',feature_select_method,
@@ -62,9 +72,10 @@ def preview_result(request):
             gridsearch_para = {}
             projectid = prefix + '-' + fsm + fn + '-' + upload_file_md5[:6] + '-' + feature_select_method
         else:
-            token = request.POST.get('random_token')
+            token = request.POST.get('random_token') or secrets.token_hex(8)
             projectid = prefix + '-' + fsm + fn + '-' + upload_file_md5[:6] + '-' + token
 
+        projectid = validated_project_id(projectid + '-' + secrets.token_hex(4))
         print(projectid)
 
 
@@ -94,17 +105,22 @@ def preview_result(request):
                 pickle.dump(model_set, f)
 
     else:
+        if request.POST.get('data_consent') != 'confirmed':
+            raise SuspiciousOperation('Data authorization and privacy confirmation is required.')
+        projectid = validated_project_id(projectid)
+        projectid = validated_project_id(projectid + '-' + secrets.token_hex(4))
         if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
             # file load
             upload_file = request.FILES.get('upload_file')
+            if upload_file is None:
+                raise SuspiciousOperation('No upload was provided.')
             if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
                 os.makedirs(os.path.join(STATIC_ROOT, 'cache', projectid), exist_ok=True)
-            f = open(os.path.join(STATIC_ROOT, 'cache', projectid, upload_file.name), 'wb')
-            for line in upload_file.chunks():
-                f.write(line)
-            f.close()
-            os.rename(os.path.join(STATIC_ROOT, 'cache', projectid, upload_file.name), \
-                      os.path.join(STATIC_ROOT, 'cache', projectid, 'data.csv'))
+            # Never place the client-supplied filename into a filesystem path.
+            destination = os.path.join(STATIC_ROOT, 'cache', projectid, 'data.csv')
+            with open(destination, 'wb') as handle:
+                for line in upload_file.chunks():
+                    handle.write(line)
 
         if strategy == 'C':
             if select_model == 'model_bclass':
@@ -131,6 +147,7 @@ def preview_result(request):
             with open(STATIC_ROOT + '/cache/' + projectid + '/model_pickle.pkl', 'wb') as f:
                 pickle.dump(model_set, f)
 
+    projectid = validated_project_id(projectid)
     if projectid[0] == 'B' or projectid[0] == 'M':
         form_action_p = 'classification'
     elif projectid[0] == 'R':
@@ -147,7 +164,9 @@ def preview_result(request):
     status = 'Preview'
 
     ''' preview '''
-    inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0, sep=r'/|,|\t').T
+    inputdata = pd.read_csv(
+        STATIC_ROOT + '/cache/' + projectid + '/data.csv',
+        header=0, index_col=0, sep=None, engine='python').T
 
 
 
@@ -189,13 +208,8 @@ def preview_result(request):
                                    index=['Samples', 'Features'])
     display_samples_dict = display_samples.reset_index().rename(columns={'index': 'class'}).to_dict('records')
 
-    ''' normalization '''
-
-    if fn != 'N':
-
-        norm_pickle = data_normalization(train_set, test_set, fn,projectid)
-        with open(STATIC_ROOT + '/cache/' + projectid + '/normalization_data.pkl', 'wb') as f:
-            pickle.dump(norm_pickle, f)
+    # Normalization is intentionally not fitted during preview.  The validated
+    # analysis service fits it independently inside every CV training fold.
 
 
     # histogram
@@ -222,10 +236,14 @@ def preview_result(request):
         'title_str': title_str,
         'to_mail': to_mail,
         'gridsearch_para': gridsearch_para,
+        'fsm': fsm,
+        'feature_norm': fn,
+        'validation_mode': 'nested_fold_local',
     }
     with open(STATIC_ROOT + '/cache/' + projectid + '/preview_pickle.pkl', 'wb') as f:
         pickle.dump(preview_pickle, f)
 
+    access_token = issue_task_token(projectid)
     return render(request, 'status.html', {
         'projectid': projectid,
         'form_action': form_action,
@@ -240,7 +258,8 @@ def preview_result(request):
         'fsm': fsm,
         'to_mail': to_mail,
         'gridsearch_para': gridsearch_para,
-        'feature_norm': fn
+        'feature_norm': fn,
+        'access_token': access_token
 
     })
 

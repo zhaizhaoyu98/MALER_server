@@ -1,0 +1,65 @@
+{
+  "scope": "simulated production configuration and application-control audit",
+  "not_in_scope": [
+    "live Aliyun host",
+    "TLS certificate/chain",
+    "network access control",
+    "penetration testing",
+    "backup restore"
+  ],
+  "passed_checks": 10,
+  "total_checks": 10,
+  "all_passed": true,
+  "checks": [
+    {
+      "check": "debug_disabled",
+      "passed": true,
+      "evidence": "DEBUG=False"
+    },
+    {
+      "check": "strong_nondefault_secret",
+      "passed": true,
+      "evidence": "Secret is non-default, >=50 characters, and diverse"
+    },
+    {
+      "check": "restricted_allowed_hosts",
+      "passed": true,
+      "evidence": "ALLOWED_HOSTS is explicit"
+    },
+    {
+      "check": "secure_cookies",
+      "passed": true,
+      "evidence": "Session and CSRF cookies require HTTPS"
+    },
+    {
+      "check": "https_redirect",
+      "passed": true,
+      "evidence": "HTTP-to-HTTPS redirect enabled"
+    },
+    {
+      "check": "hsts",
+      "passed": true,
+      "evidence": "One-year HSTS with subdomains and preload"
+    },
+    {
+      "check": "proxy_ssl_header",
+      "passed": true,
+      "evidence": "Reverse-proxy HTTPS header configured"
+    },
+    {
+      "check": "model_signing_key",
+      "passed": true,
+      "evidence": "Independent strong model-signing key present"
+    },
+    {
+      "check": "bounded_uploads",
+      "passed": true,
+      "evidence": "Positive bounded data/model limits and smaller memory threshold"
+    },
+    {
+      "check": "project_path_control",
+      "passed": true,
+      "evidence": "Strict project-ID middleware registered and traversal token rejected"
+    }
+  ]
+}

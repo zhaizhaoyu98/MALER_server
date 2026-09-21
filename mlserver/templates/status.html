@@ -114,6 +114,11 @@
 					
 					<form action="{{form_action}}/{{ projectid }}" id="status_form" method="POST" >
 						{% csrf_token %}
+						<div class="alert alert-info">
+							<strong>Validated workflow:</strong> imputation, scaling, feature selection and
+							hyperparameter tuning will be learned within training folds only. The testing
+							cohort will remain untouched until final evaluation.
+						</div>
 						<div class="col">
 							<div style="text-align: center;">
 								<h3>&nbsp;PROJECTID: {{ projectid }}</h3>
@@ -193,6 +198,7 @@
 						<input name="to_mail" id="to_mail" style="display: none;" value="{{ to_mail }}"/>
 						<input name="gridsearch_para" id="gridsearch_para" style="display: none;" value="{{ gridsearch_para }}"/>
 						<input name="feature_norm" id="feature_norm" style="display: none;" value="{{ feature_norm }}"/>
+						<input name="access_token" id="access_token" type="hidden" value="{{ access_token }}"/>
 					
 					<br />
 					<br />
@@ -237,12 +243,9 @@
 				$("#data_display_cols")[0].innerHTML = '{{title_str|safe}}'
 				$("#link").hide();
 				$("#button_submit").click(function () {
-					window.location.replace(sublink);
-					$("#status").innerHTML = 'STATUS: Running'
-					$("#button_submit").hide();
-					$("#link").show();
+					$("#status").text('STATUS: Running validated analysis');
+					$("#button_submit").prop('disabled', true).text('Running...');
 					$("#status_form").submit();
-					console.log(sublink);
 					
 				});
 				
@@ -251,9 +254,9 @@
 				// console.log(sublink.split('_')[1] == 'cp')
 				var sublink2 =''
 				if (sublink.split('_')[1] == 'cp') {
-					sublink2 = sublink + '/prev/' + '{{projectid}}'
+					sublink2 = sublink + '/' + '{{projectid}}' + '?token=' + encodeURIComponent('{{access_token|escapejs}}')
 				} else {
-					sublink2 = sublink + '/' + '{{projectid}}'
+					sublink2 = sublink + '/' + '{{projectid}}' + '?token=' + encodeURIComponent('{{access_token|escapejs}}')
 				};
 				// console.log(sublink);
 				$("#link1").attr('href', sublink2);

@@ -1,0 +1,63 @@
+{
+  "checks": [
+    {
+      "check": "archive_integrity",
+      "evidence": "ZIP CRC passed; 196 members; 243291768 uncompressed bytes",
+      "passed": true
+    },
+    {
+      "check": "archive_sha256",
+      "evidence": "3B331E2A531B314B503D0E65D6D2F2259AD32FDE1F40C0F3271998DC38753B27",
+      "passed": true
+    },
+    {
+      "check": "sdrf_grain",
+      "evidence": "196 SDRF rows; 196 unique source names",
+      "passed": true
+    },
+    {
+      "check": "sdrf_archive_coverage",
+      "evidence": "196 unique derived files; 0 missing from archive",
+      "passed": true
+    },
+    {
+      "check": "analysis_matrix_grain",
+      "evidence": "172 samples x 43 unique features",
+      "passed": true
+    },
+    {
+      "check": "analysis_matrix_completeness_validity",
+      "evidence": "0 missing cells; all finite=True",
+      "passed": true
+    },
+    {
+      "check": "sample_metadata_alignment",
+      "evidence": "172 expression IDs; 172 metadata IDs; exact match=True",
+      "passed": true
+    },
+    {
+      "check": "target_domain",
+      "evidence": "{\"LUAD\": 106, \"LUSC\": 66}",
+      "passed": true
+    },
+    {
+      "check": "platform_mapping_coverage",
+      "evidence": "43 of 50 internal candidates mapped to GPL570 (86.0%)",
+      "passed": true
+    },
+    {
+      "check": "locked_feature_availability",
+      "evidence": "20 locked features; 0 unavailable",
+      "passed": true
+    }
+  ],
+  "dataset": "GSE37745 / E-GEOD-37745",
+  "intended_grain": "one tumor array per included patient/sample",
+  "intended_use": "retrospective locked LUAD-versus-LUSC external validation",
+  "limitations": [
+    "Submitter-processed log2 RMA expression may retain study/platform effects.",
+    "The audit verifies file/sample/feature integrity, not clinical representativeness.",
+    "Threshold transport remains weak despite strong ROC-AUC."
+  ],
+  "passed": true
+}

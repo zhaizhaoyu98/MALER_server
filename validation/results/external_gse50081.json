@@ -1,0 +1,342 @@
+{
+  "elapsed_seconds": 12.7307398,
+  "external_dataset": {
+    "accession": "GSE50081",
+    "class_counts": {
+      "LUAD": 127,
+      "LUSC": 42
+    },
+    "design": "independent UHN181 Stage I/II NSCLC cohort; GPL570",
+    "excluded_histology_counts": {
+      "adenosquamous carcinoma": 2,
+      "large cell carcinoma": 7,
+      "nsclarge cell carcinoma-mixed": 1,
+      "nsclc-favor adenocarcinoma": 1,
+      "squamous cell carcinoma x2": 1
+    },
+    "included_samples": 169,
+    "matrix_bytes": 53819644,
+    "matrix_probe_rows": 54675,
+    "matrix_samples": 181,
+    "matrix_sha256": "6f987e2f59a4542cbb563fa6cbd289b7f7ae35d034fd64abb2735c844cea99a3",
+    "normalization_from_submitter": "log2 RMA",
+    "source_page": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE50081",
+    "source_url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE50nnn/GSE50081/matrix/GSE50081_series_matrix.txt.gz"
+  },
+  "gse37745_calibration": {
+    "balanced_accuracy_at_selected_threshold": 0.9479702687249857,
+    "samples": 172,
+    "selected_threshold": 0.9411943424217819
+  },
+  "gse50081_default_threshold": {
+    "bootstrap": {
+      "accuracy": {
+        "bootstrap_95_ci": [
+          0.40236686390532544,
+          0.5562130177514792
+        ],
+        "estimate": 0.47928994082840237,
+        "n_bootstrap": 2000
+      },
+      "balanced_accuracy": {
+        "bootstrap_95_ci": [
+          0.5731589147286822,
+          0.6828240584822272
+        ],
+        "estimate": 0.6296400449943758,
+        "n_bootstrap": 2000
+      },
+      "f1": {
+        "bootstrap_95_ci": [
+          0.36600908656145387,
+          0.5586678927096707
+        ],
+        "estimate": 0.4698795180722892,
+        "n_bootstrap": 2000
+      },
+      "mcc": {
+        "bootstrap_95_ci": [
+          0.14614757299832593,
+          0.35072313873686767
+        ],
+        "estimate": 0.2535003568159504,
+        "n_bootstrap": 2000
+      },
+      "pr_auc": {
+        "bootstrap_95_ci": [
+          0.5937075406592957,
+          0.8947938622807787
+        ],
+        "estimate": 0.7373640865931328,
+        "n_bootstrap": 2000
+      },
+      "precision": {
+        "bootstrap_95_ci": [
+          0.23007022813996914,
+          0.3970899800598203
+        ],
+        "estimate": 0.31451612903225806,
+        "n_bootstrap": 2000
+      },
+      "recall_sensitivity": {
+        "bootstrap_95_ci": [
+          0.8461538461538461,
+          1.0
+        ],
+        "estimate": 0.9285714285714286,
+        "n_bootstrap": 2000
+      },
+      "roc_auc": {
+        "bootstrap_95_ci": [
+          0.8189318969640973,
+          0.9538572298033187
+        ],
+        "estimate": 0.891451068616423,
+        "n_bootstrap": 2000
+      },
+      "specificity": {
+        "bootstrap_95_ci": [
+          0.2481188436206796,
+          0.4148444444444443
+        ],
+        "estimate": 0.33070866141732286,
+        "n_bootstrap": 2000
+      }
+    },
+    "confusion_matrix": [
+      [
+        42,
+        85
+      ],
+      [
+        3,
+        39
+      ]
+    ],
+    "metrics": {
+      "accuracy": 0.47928994082840237,
+      "balanced_accuracy": 0.6296400449943758,
+      "f1": 0.4698795180722892,
+      "mcc": 0.2535003568159504,
+      "per_class": {
+        "LUAD": {
+          "sensitivity": 0.33070866141732286,
+          "specificity": 0.9285714285714286
+        },
+        "LUSC": {
+          "sensitivity": 0.9285714285714286,
+          "specificity": 0.33070866141732286
+        }
+      },
+      "pr_auc": 0.7373640865931328,
+      "precision": 0.31451612903225806,
+      "recall_sensitivity": 0.9285714285714286,
+      "roc_auc": 0.891451068616423,
+      "specificity": 0.33070866141732286
+    }
+  },
+  "gse50081_gse37745_calibrated_threshold": {
+    "bootstrap": {
+      "accuracy": {
+        "bootstrap_95_ci": [
+          0.8402366863905325,
+          0.9349112426035503
+        ],
+        "estimate": 0.8875739644970414,
+        "n_bootstrap": 2000
+      },
+      "balanced_accuracy": {
+        "bootstrap_95_ci": [
+          0.8185455833352439,
+          0.9329385788290316
+        ],
+        "estimate": 0.8773903262092237,
+        "n_bootstrap": 2000
+      },
+      "f1": {
+        "bootstrap_95_ci": [
+          0.6856947162426614,
+          0.8737864077669903
+        ],
+        "estimate": 0.7912087912087913,
+        "n_bootstrap": 2000
+      },
+      "mcc": {
+        "bootstrap_95_ci": [
+          0.5987176709282427,
+          0.8298724211399833
+        ],
+        "estimate": 0.7188836426048905,
+        "n_bootstrap": 2000
+      },
+      "pr_auc": {
+        "bootstrap_95_ci": [
+          0.5937075406592957,
+          0.8947938622807787
+        ],
+        "estimate": 0.7373640865931328,
+        "n_bootstrap": 2000
+      },
+      "precision": {
+        "bootstrap_95_ci": [
+          0.5998936170212765,
+          0.8541666666666666
+        ],
+        "estimate": 0.7346938775510204,
+        "n_bootstrap": 2000
+      },
+      "recall_sensitivity": {
+        "bootstrap_95_ci": [
+          0.75,
+          0.9523809523809523
+        ],
+        "estimate": 0.8571428571428571,
+        "n_bootstrap": 2000
+      },
+      "roc_auc": {
+        "bootstrap_95_ci": [
+          0.8189318969640973,
+          0.9538572298033187
+        ],
+        "estimate": 0.891451068616423,
+        "n_bootstrap": 2000
+      },
+      "specificity": {
+        "bootstrap_95_ci": [
+          0.8396946564885496,
+          0.9469043309198176
+        ],
+        "estimate": 0.8976377952755905,
+        "n_bootstrap": 2000
+      }
+    },
+    "confusion_matrix": [
+      [
+        114,
+        13
+      ],
+      [
+        6,
+        36
+      ]
+    ],
+    "metrics": {
+      "accuracy": 0.8875739644970414,
+      "balanced_accuracy": 0.8773903262092237,
+      "f1": 0.7912087912087913,
+      "mcc": 0.7188836426048905,
+      "per_class": {
+        "LUAD": {
+          "sensitivity": 0.8976377952755905,
+          "specificity": 0.8571428571428571
+        },
+        "LUSC": {
+          "sensitivity": 0.8571428571428571,
+          "specificity": 0.8976377952755905
+        }
+      },
+      "pr_auc": 0.7373640865931328,
+      "precision": 0.7346938775510204,
+      "recall_sensitivity": 0.8571428571428571,
+      "roc_auc": 0.891451068616423,
+      "specificity": 0.8976377952755905
+    }
+  },
+  "model_reconstruction": {
+    "best_params": {
+      "model__C": 10.0,
+      "selector__k": 20
+    },
+    "mapped_input_features": [
+      "DSC3",
+      "RORC",
+      "TPRXL",
+      "ALDH3B1",
+      "KRT6B",
+      "SERPINB13",
+      "CALML3",
+      "SPDEF",
+      "ATP1B3",
+      "XXYLT1",
+      "JAG1",
+      "NECTIN1",
+      "KRT5",
+      "KRT14",
+      "CLCA2",
+      "KRT6C",
+      "BNC1",
+      "FAT2",
+      "DSG3",
+      "S1PR5",
+      "HR",
+      "KCNG1",
+      "GABRQ",
+      "FMO5",
+      "DDAH1",
+      "LONRF3",
+      "LOC105378231",
+      "BCL2L15",
+      "A2ML1",
+      "VSNL1",
+      "TP63",
+      "HAP1",
+      "DLX5",
+      "CDHR1",
+      "YEATS2",
+      "ARHGEF38",
+      "MIR205HG",
+      "DAPL1",
+      "HNF1B",
+      "PARD6G",
+      "CERS3",
+      "EN1",
+      "PNCK"
+    ],
+    "matches_gse37745_locked_model": true,
+    "selected_features": [
+      "DSC3",
+      "RORC",
+      "ALDH3B1",
+      "KRT6B",
+      "SERPINB13",
+      "CALML3",
+      "SPDEF",
+      "KRT5",
+      "CLCA2",
+      "KRT6C",
+      "BNC1",
+      "DSG3",
+      "FMO5",
+      "DDAH1",
+      "LONRF3",
+      "BCL2L15",
+      "TP63",
+      "ARHGEF38",
+      "HNF1B",
+      "CERS3"
+    ],
+    "training_path": "E:\\CodeProject\\Server\\MLSERVER\\mlserver\\static\\cache\\example\\binary_classification_example.csv"
+  },
+  "protocol": {
+    "cohort_rule_locked_before_download_analysis": "include only exact adenocarcinoma and squamous cell carcinoma histology",
+    "feature_mapping": "same outcome-blind GPL570 mapping used for GSE37745",
+    "final_validation": "GSE50081 used once; no feature, model, or threshold tuning",
+    "locked_protocol_path": "E:\\CodeProject\\Server\\MLSERVER\\validation\\external_data\\GSE50081_protocol.json",
+    "locked_protocol_sha256": "7d8a3fc1cbed1ee69df676f207d3e86e1786c59dd9a44413fdde288df701f770",
+    "model_selection": "TCGA training partition only",
+    "positive_class": "LUSC",
+    "threshold_calibration": "single balanced-accuracy threshold selected on GSE37745 only"
+  },
+  "quality_checks": {
+    "all_43_locked_input_genes_mapped": true,
+    "all_included_labels_complete": true,
+    "all_passed": true,
+    "expression_all_finite": true,
+    "gse50081_not_used_for_threshold_selection": true,
+    "gzip_and_matrix_parse_complete": true,
+    "locked_model_reconstruction_identical": true,
+    "metadata_expression_order_identical": true,
+    "unique_probe_identifiers": true,
+    "unique_sample_identifiers": true
+  }
+}

@@ -265,7 +265,7 @@
 								<input type="file" id="upload_file" name="upload_file" style="display: none" accept=".csv" />
 								<button id="upfile" type="button" class="btn btn-info" style="position: absolute;left: 40px;">Upload</button>
 								<!-- <h6>Label: <input type="file" name="upload_label" /></h6> -->
-								<div class="row">
+								<div class="row" style="display: none;">
 									<h5 style="position: relative;left: 360px;">OR</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 									<h6 style="position: relative;left: 560px;">ProjectID:&nbsp;<input type="text" id="projectid" name="projectid"></h6>
 								</div>
@@ -276,7 +276,11 @@
 								<div style="position: relative;">
 									<p><div> <b> File: </b>  Upload a CSV file with features in rows and samples in columns. The file must be no larger than 200MB. Example/template files are provided to illustrate the required input format.</div></p>
 									<p><b> Template: </b> Classification and regression files use the first three rows for sample name, label, and train/test set. Survival files use the first four rows for sample name, status, time, and train/test set. Example files can be downloaded below.</p>
-									<p><b> ProjectID: </b>  A unique identifier for each task, which can be used to access the results of analyzed tasks.</p>
+									<p><b> Project access: </b> MALER generates a random project suffix and a separate access token. Keep the result link private; the project ID alone is not sufficient to retrieve data or results.</p>
+									<div class="form-check alert alert-warning">
+										<input class="form-check-input" type="checkbox" id="data_consent" name="data_consent" value="confirmed">
+										<label class="form-check-label" for="data_consent">I confirm that this upload contains no directly identifying information and that I am authorized to process these data.</label>
+									</div>
 								</div>
 							</div>
 							<div id="samp_data" class='row' style="display: none;">
@@ -402,12 +406,12 @@
 								</div>
 								<br />
 							<div class="row" >
-								<input type="radio" id="feature_norm" name="feature_norm" value="MM" />&nbsp;MinMax&emsp;&emsp;
-								<input type="radio" id="feature_norm" name="feature_norm" value="Z" />&nbsp;Z-Score&emsp;&emsp;
-								<input type="radio" id="feature_norm" name="feature_norm" value="MA" />&nbsp;MaxAbs&emsp;&emsp;
-								<input type="radio" id="feature_norm" name="feature_norm" value="N" checked />&nbsp;None&emsp;&emsp;
+								<input type="radio" id="feature_norm_mm" name="feature_norm" value="MM" />&nbsp;<label for="feature_norm_mm">MinMax</label>&emsp;&emsp;
+								<input type="radio" id="feature_norm_z" name="feature_norm" value="Z" checked />&nbsp;<label for="feature_norm_z">Z-Score</label>&emsp;&emsp;
+								<input type="radio" id="feature_norm_ma" name="feature_norm" value="MA" />&nbsp;<label for="feature_norm_ma">MaxAbs</label>&emsp;&emsp;
+								<input type="radio" id="feature_norm_none" name="feature_norm" value="N" />&nbsp;<label for="feature_norm_none">None</label>&emsp;&emsp;
 							</div>
-							<p style="margin-top: 10px;color: #666;">MinMax and MaxAbs are normalization methods that rescale feature ranges. Z-Score is a standardization method that centers and scales features by mean and standard deviation.</p>
+							<p style="margin-top: 10px;color: #666;">Z-Score is the recommended default for fair comparison of scale-sensitive SVM, KNN and penalized linear models. Tree-based models are generally less scale sensitive. The reviewer-validation reference pipeline fits scaling inside every training fold; historical interactive scores should be treated as exploratory model-development results.</p>
 							</div>
 						</div>
 					</div>
@@ -448,9 +452,9 @@
 							</div>
 							<br>
 							<div class="row" >
-								<input type="radio" id="fsm" name="fsm" value="A" checked />&nbsp;ANOVA&emsp;&emsp;
-								<input type="radio" id="fsm" name="fsm" value="M" />&nbsp;MRMR&emsp;&emsp;
-								<input type="radio" id="fsm" name="fsm" value="C" style="display: none;" />
+								<input type="radio" id="fsm_anova" name="fsm" value="A" checked />&nbsp;<label for="fsm_anova">ANOVA</label>&emsp;&emsp;
+								<input type="radio" id="fsm_mrmr" name="fsm" value="M" />&nbsp;<label for="fsm_mrmr">MRMR</label>&emsp;&emsp;
+								<input type="radio" id="fsm_cox" name="fsm" value="C" style="display: none;" />
 							</div>
 							<p style="margin-top: 10px;color: #666;">ANOVA is suitable for fast univariate ranking in classification or regression tasks. MRMR considers relevance and redundancy and is useful when many correlated features are expected. Cox ranking is used for survival analysis.</p>
 							<br>
@@ -463,10 +467,13 @@
 						</div>
 						<br>
 						<div class="row">
-							<input type="radio" name="feature_select_method" value="TopK" checked />&nbsp;TopK&emsp;&emsp;
-							<input type="radio" name="feature_select_method" value="FSS" />&nbsp;FSS&emsp;&emsp;
-							<input type="radio" name="feature_select_method" value="BSS" />&nbsp;BSS&emsp;&emsp;
+							<input type="radio" id="subset_topk" name="feature_select_method" value="TopK" checked />&nbsp;<label for="subset_topk">TopK</label>&emsp;&emsp;
+							<input type="radio" id="subset_fss" name="feature_select_method" value="FSS" />&nbsp;<label for="subset_fss">FSS</label>&emsp;&emsp;
+							<input type="radio" id="subset_bss" name="feature_select_method" value="BSS" />&nbsp;<label for="subset_bss">BSS</label>&emsp;&emsp;
+							<input type="radio" id="subset_pca" name="feature_select_method" value="PCA" />&nbsp;<label for="subset_pca">PCA</label>&emsp;&emsp;
+							<input type="radio" id="subset_none" name="feature_select_method" value="None" />&nbsp;<label for="subset_none">No reduction</label>
 						</div>
+						<p style="margin-top: 10px;color: #666;">TopK tunes the retained feature count. FSS and BSS use task-specific sequential selection after a fold-local prescreen capped at 50 candidates. PCA is unsupervised and returns components rather than a gene signature. Every option is refit independently inside each training fold.</p>
 					</div>
 					<br>
 					
@@ -2364,6 +2371,8 @@
 				<br>
 				<p><b> One-Click Analysis: </b> The model is built with the default parameters and the data is analyzed using all the models provided.</p>
 				<p><b> Customized Analysis: </b> Users can choose to specify models and parameters to personalize the data.</p>
+				<p><b> Validation: </b> The default design uses repeated 5-fold outer validation (2 repeats) and 3-fold inner tuning. Classification is optimized by balanced accuracy, regression by R², and survival by concordance index. Splits are reduced automatically only when the cohort is too small.</p>
+				<p><b> Complete parameter record: </b> All estimator classes, defaults, scaling requirements and searched values are available in the versioned <a href="analysis/methods.json" target="_blank" rel="noopener">machine-readable method registry</a>.</p>
 			</div>
 			</el-card>
 			</div>
@@ -2380,9 +2389,7 @@
 							<input type="email" name="to_mail" id="to_mail" style="width: 1400px;height: 40px;"/>
 							<br />
 							<br />
-							<p style="font-size: 14px;">Given the potential extended duration of the analysis process, we recommend 
-							submitting your email address above. This will enable us to notify you via email once the analysis is completed, 
-							providing you with access to your result page.</p>
+							<p style="font-size: 14px;">If server SMTP is configured, MALER can send the private result link to this address after completion. The result is also returned directly in the browser; email is never required.</p>
 						</div>
 					</el-card>
 				</div>
@@ -2979,6 +2986,10 @@
 				}
 				
 				if ($("#file_upload_type").val() == 'user_data'){
+					if (!$("#data_consent").is(":checked")) {
+						alert("Please confirm data authorization and privacy before uploading.");
+						return;
+					}
 					if ($("#upload_file").val() == "" && $("#projectid").val() == "") {
 					    
 						alert("Please select a file and upload!");

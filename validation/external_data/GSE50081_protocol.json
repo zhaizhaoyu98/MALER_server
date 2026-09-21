@@ -1,0 +1,38 @@
+{
+  "accession": "GSE50081",
+  "cohort_selection_reason": "Independent GPL570 NSCLC cohort with explicit histology; selected before outcome analysis because it matches the locked LUAD/LUSC target and GSE37745 platform.",
+  "eligibility": {
+    "include_exact_histology": [
+      "adenocarcinoma",
+      "squamous cell carcinoma"
+    ],
+    "exclude": "All other histology labels, including adenosquamous and large-cell carcinoma.",
+    "missing_data": "No outcome-based filtering or feature substitution is permitted."
+  },
+  "locked_model": {
+    "development_data": "TCGA training partition only",
+    "pipeline": "Within-sample percentile-rank transform, fold-local feature selection, balanced logistic regression",
+    "input_feature_mapping": "Same outcome-blind GPL570 probe mapping used for GSE37745",
+    "best_params_expected": {
+      "model__C": 10.0,
+      "selector__k": 20
+    }
+  },
+  "threshold_design": {
+    "calibration_cohort": "GSE37745 only",
+    "selection_metric": "balanced accuracy",
+    "tie_break": "threshold closest to 0.5, then lower threshold",
+    "final_cohort": "GSE50081 is not used for feature, parameter, or threshold selection"
+  },
+  "reported_metrics": [
+    "balanced_accuracy",
+    "ROC-AUC",
+    "PR-AUC",
+    "sensitivity",
+    "specificity",
+    "MCC",
+    "confusion matrix"
+  ],
+  "uncertainty": "2000 nonparametric bootstrap resamples on GSE50081",
+  "protocol_locked_before_matrix_parse": true
+}

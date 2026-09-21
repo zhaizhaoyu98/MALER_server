@@ -17,6 +17,15 @@ from mlserver.views.regression_oc_result_view_websocket import regression_prepro
 from mlserver.views.classification_cp_result_view_websocket import pre_valid, mkbar, mkheatmap, valid_roc_info, mkroc
 from mlserver.views.regression_cp_result_view_websocket import reg_cust_val, mkvregpredplot, mkvreportbarplot
 from mlserver.views.survival_oc_result_view_websocket import sur_data_process, mk_surv_data, time_dependent_auc, mk_auc_line, mk_surv_layout
+from mlserver.views.predict_views import _bundle_as_legacy_dict
+from mlserver.safe_ml import DataValidationError, ModelBundleError, align_prediction_frame
+
+
+def _display_class(value, reverse_mapping):
+    """Return a human-readable class without failing on string-trained models."""
+    return reverse_mapping.get(value, value)
+
+
 def predict_results(request, projectid):
     # predict
     # if request.method == "POST":
@@ -49,12 +58,22 @@ def predict_results(request, projectid):
         #         'title_str': title_str,
         #         'status': status,
         #     })
-        with open(STATIC_ROOT + '/cache/' + projectid + '/' + 'pickle.pkl', 'rb') as f:
-            model_pickle = pickle.load(f)
+        bundle_path = os.path.join(STATIC_ROOT, 'cache', projectid, 'model.maler')
+        is_signed_bundle = os.path.exists(bundle_path)
+        try:
+            if is_signed_bundle:
+                model_pickle = _bundle_as_legacy_dict(bundle_path)
+            else:
+                # Application-controlled legacy examples only. Arbitrary user
+                # pickle uploads are rejected by predict_preview.
+                with open(STATIC_ROOT + '/cache/' + projectid + '/' + 'pickle.pkl', 'rb') as f:
+                    model_pickle = pickle.load(f)
+        except (OSError, ModelBundleError) as exc:
+            messages.error(request, str(exc))
+            return HttpResponseRedirect("/maler/predict")
         # model
         method, model_name, model, feature_names = \
             model_pickle['method'], model_pickle['name'], model_pickle['model'], model_pickle['feature_names']
-        f.close()
         inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0, sep=r'/|,|\t').T
         print('projectid:', projectid)
         print('p:', STATIC_ROOT + '/cache/' + projectid + '/data.csv')
@@ -70,16 +89,15 @@ def predict_results(request, projectid):
                 mapping = dict(zip(classes.values(), classes.keys()))  # 键值对翻转
                 # print(blind_set[feature_names])
                 try:
-                    predict_reports[model_name] = model.predict(blind_set[feature_names])
-                except:
-                    bli_id = blind_set.columns.to_list()
-                    diff_feature_names = set(list(map(str, feature_names))) - set(map(str,bli_id))
-                    title = 'feature names: ' + " , ".join(map(str, diff_feature_names)) + ' are not involved in the inputdata!'
-                    messages.success(request, title)
+                    aligned_blind, unexpected_features = align_prediction_frame(blind_set, feature_names)
+                    predict_reports[model_name] = model.predict(aligned_blind)
+                except DataValidationError as exc:
+                    messages.error(request, str(exc))
                     return HttpResponseRedirect("/maler/predict")
                 # predict_reports[model_name] = model.predict(blind_set[feature_names])
 
-                predict_reports = pd.DataFrame(predict_reports, index=blind_set.index).applymap(lambda x: mapping[x])
+                predict_reports = pd.DataFrame(predict_reports, index=blind_set.index).applymap(
+                    lambda x: _display_class(x, mapping))
                 predict_reports_dict = predict_reports.reset_index().rename(
                     columns={'index': 'Name', model_name: 'Label'}).to_dict('records')
                 showtable = True
@@ -90,12 +108,10 @@ def predict_results(request, projectid):
                 print('reg!!')
                 predict_reports = {}
                 try:
-                    predict_reports[model_name] = model.predict(blind_set[feature_names])
-                except:
-                    bli_id = blind_set.columns.to_list()
-                    diff_feature_names = set(list(map(str, feature_names))) - set(map(str,bli_id))
-                    title = 'feature names: ' + " , ".join(map(str, diff_feature_names)) + ' are not involved in the inputdata!'
-                    messages.success(request, title)
+                    aligned_blind, unexpected_features = align_prediction_frame(blind_set, feature_names)
+                    predict_reports[model_name] = model.predict(aligned_blind)
+                except DataValidationError as exc:
+                    messages.error(request, str(exc))
                     # return render(request, "predict.html")
                     return HttpResponseRedirect("/maler/predict")
 
@@ -107,16 +123,14 @@ def predict_results(request, projectid):
                 surv_plot = None
             else:
                 try:
+                    aligned_blind, unexpected_features = align_prediction_frame(blind_set, feature_names)
                     if model_name != 'SurvivalSVM':
-                        surv_plot = sur_pred_plot(model, blind_set, feature_names)
+                        surv_plot = sur_pred_plot(model, aligned_blind, feature_names)
                     else:
                         surv_plot = None
                         print('The svm model does not support the prediction function')
-                except:
-                    bli_id = blind_set.columns.to_list()
-                    diff_feature_names = set(list(map(str, feature_names))) - set(map(str,bli_id))
-                    title = 'feature names: ' + " , ".join(map(str, diff_feature_names)) + ' are not involved in the inputdata!'
-                    messages.success(request, title)
+                except DataValidationError as exc:
+                    messages.error(request, str(exc))
                     # return render(request, "predict.html")
                     return HttpResponseRedirect("/maler/predict")
                 showtable = False
@@ -136,35 +150,46 @@ def predict_results(request, projectid):
                 method = 'Classification'
                 classes = model_pickle['classes']
                 mapping = dict(zip(classes.values(), classes.keys()))  # 键值对翻转
-                validation_data, validation_label = classification_process(validation_set)
                 try:
-                    validation_reports[model_name] = model.predict(validation_data[feature_names])
-                except:
-                    # title = 'feature names: ' + ", ".join(feature_names) + ' are not involved in the inputdata!'
-                    val_id = validation_data.columns.to_list()
-                    diff_feature_names = set(list(map(str,feature_names))) - set(map(str,val_id))
-                    title = 'feature names: ' + " , ".join(map(str,diff_feature_names)) + ' are not involved in the inputdata!'
-
-                    messages.success(request, title)
+                    if is_signed_bundle:
+                        validation_label = np.asarray(validation_set.iloc[:, 0]).ravel()
+                        validation_data = validation_set.iloc[:, 1:]
+                    else:
+                        validation_data, validation_label = classification_process(validation_set)
+                    validation_data, unexpected_features = align_prediction_frame(
+                        validation_data, feature_names)
+                    validation_reports[model_name] = model.predict(validation_data)
+                except DataValidationError as exc:
+                    messages.error(request, str(exc))
                     return HttpResponseRedirect("/maler/predict")
-                validation_reports[model_name] = model.predict(validation_data[feature_names])
                 validation_reports = pd.DataFrame(validation_reports, index=validation_data.index).applymap(
-                    lambda x: mapping[x])
+                    lambda x: _display_class(x, mapping))
                 validation_reports = pd.concat(
                     [validation_reports, pd.DataFrame(validation_label, index=validation_data.index)], axis=1)
                 validation_reports_dict = validation_reports.reset_index().rename(
                     columns={'index': 'Name', model_name: 'Label', 0: 'Label2'}).to_dict('records')
                 # validation chart
-                validation_label2 = list(map(lambda y: classes[y], validation_label))
+                if is_signed_bundle:
+                    validation_label2 = list(validation_label)
+                    plot_classes = list(np.unique(np.concatenate([
+                        np.asarray(validation_label2),
+                        np.asarray(model.predict(validation_data)),
+                    ])))
+                else:
+                    validation_label2 = list(map(lambda y: classes[y], validation_label))
+                    plot_classes = list(classes)
                 validate_predict, validate_report = pre_valid(model, validation_data, validation_label2, feature_names)
 
                 bar_dict = mkbar(validate_report)
-                heatmap_dict, heatmap_anno = mkheatmap(validation_label2, validate_predict, classes)
-                valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info('validation', model,
-                                                                                       validation_data,
-                                                                                       validation_label2,
-                                                                                       feature_names)
-                valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std, title=['validation'])
+                heatmap_dict, heatmap_anno = mkheatmap(validation_label2, validate_predict, plot_classes)
+                if len(plot_classes) == 2:
+                    valid_mean_FPR, valid_mean_TPR_df, valid_auc_mean_std = valid_roc_info(
+                        model_name, model, validation_data, validation_label2, feature_names)
+                    valid_roc_traces = mkroc(valid_mean_FPR, valid_mean_TPR_df,
+                                             valid_auc_mean_std, title=['validation'])
+                else:
+                    # The legacy plotting helper only implements binary ROC.
+                    valid_roc_traces = []
                 val_describe_roc = {
                     # validation
                     "bar_dict": (bar_dict),
@@ -175,14 +200,18 @@ def predict_results(request, projectid):
                 }
             elif select_model == 'model_reg':
                 method = 'Regression'
-                validation_data, validation_label = regression_preprocess(validation_set)
                 try:
-                    validation_reports[model_name] = model.predict(validation_data[feature_names])
-                except:
-                    val_id = validation_data.columns.to_list()
-                    diff_feature_names = set(list(map(str, feature_names))) - set(map(str,val_id))
-                    title = 'feature names: ' + " , ".join(map(str, diff_feature_names)) + ' are not involved in the inputdata!'
-                    messages.success(request, title)
+                    if is_signed_bundle:
+                        validation_label = pd.to_numeric(
+                            validation_set.iloc[:, 0], errors='raise').to_numpy()
+                        validation_data = validation_set.iloc[:, 1:]
+                    else:
+                        validation_data, validation_label = regression_preprocess(validation_set)
+                    validation_data, unexpected_features = align_prediction_frame(
+                        validation_data, feature_names)
+                    validation_reports[model_name] = model.predict(validation_data)
+                except (DataValidationError, ValueError) as exc:
+                    messages.error(request, str(exc))
                     return HttpResponseRedirect("/maler/predict")
                 validation_reports = pd.concat(
                     [pd.DataFrame(validation_reports, index=validation_data.index), pd.DataFrame(validation_label, index=validation_data.index)], axis=1)
@@ -210,15 +239,20 @@ def predict_results(request, projectid):
             else:
                 method = 'Survival'
                 name = model_pickle['name']
-                ytrain = model_pickle['ytrain']
+                ytrain = model_pickle.get('ytrain', getattr(model, 'maler_ytrain_', None))
                 validation_data, validation_label = sur_data_process(validation_set)
                 try:
-                    data_median = model.predict(pd.DataFrame(inputdata[feature_names].median()).T)[0]
-                except:
-                    val_id = validation_data.columns.to_list()
-                    diff_feature_names = set(list(map(str, feature_names))) - set(map(str,val_id))
-                    title = 'feature names: ' + " , ".join(map(str, diff_feature_names)) + ' are not involved in the inputdata!'
-                    messages.success(request, title)
+                    validation_data, unexpected_features = align_prediction_frame(
+                        validation_data, feature_names)
+                    aligned_input, unexpected_features = align_prediction_frame(
+                        inputdata, feature_names)
+                    data_median = model.predict(pd.DataFrame(aligned_input.median()).T)[0]
+                    if ytrain is None:
+                        raise DataValidationError(
+                            'The survival bundle does not contain the training outcome '
+                            'required for time-dependent AUC validation.')
+                except DataValidationError as exc:
+                    messages.error(request, str(exc))
                     return HttpResponseRedirect("/maler/predict")
                 vsurv_trace, vresultp = mk_surv_data(name, validation_data[feature_names], validation_label,
                                                      model, data_median)

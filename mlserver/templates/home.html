@@ -73,7 +73,7 @@
 				<p>A web server to build, evaluate, and apply machine learning models for numerical biological and biomedical data analysis.</p>
 			</div>
 			<div class="row no-gutters">
-				<div class="col-lg-7 col-sm-12 mb-12">
+				<div class="col-lg-6 col-sm-12 mb-12">
 				<div class="card-body" >
 				<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bolder;">
 				What is MALER?
@@ -91,11 +91,10 @@
                     We developed <b>MALER</b> (Machine Learning Evaluation and Reporting server), a guided web application
                     that helps biologists apply ML models to biological and biomedical data without writing code. MALER provides modules for
                     (i) binary and (ii) multi-class classification, and (iii) regression and (iv) survival analysis that
-                    allow users to build, quantitatively evaluate, and compare the performance of ML models using
-                    visualizations (10, 9, 5 ML algorithms and 2, 3, 4 evaluation indices are available for classification,
-                    and regression and survival analysis, respectively). MALER supports the whole process from feature
-                    selection (5 methods), training/testing, to external validation and blind prediction, and provides
-                    downloadable models for future predictions using other data in the server.
+                    allow users to build, quantitatively evaluate, and compare multiple ML models with task-appropriate
+                    metrics. The validated workflow fits imputation, scaling, feature ranking or reduction, and model
+                    tuning within training folds; evaluates the declared test partition only after model development;
+                    and supports identifier-aligned external prediction with a signed, downloadable model bundle.
                 </p>
                 <p class="card-text">
 					In the <a href="analysis" style="font-weight: bold">ANALYSIS</a> page, users can upload their omics
@@ -108,14 +107,14 @@
 				</div>
 				</div>
 				</div>
-				<div class="col-lg-5 col-sm-12 mb-12">
+				<div class="col-lg-6 col-sm-12 mb-12">
 					<div class="card-body" style="padding-bottom: 0;">
 					<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bolder;">
 					MALER Workflow
 					</nav>
 					<div class="card mb-3" style="border-radius: unset;border: 1px solid #ababab">
 					<div class="card-body">
-						<img src="/mlserver_static/img/workflow.png" style="width: 100%;" alt="MLSERVER workflow">
+						<img src="/mlserver_static/img/workflow_validated.svg?v=20260826.3" style="display: block; width: 100%; height: auto;" alt="MALER leakage-controlled model development, independent held-out evaluation, signed export, and external-application workflow">
 <!-- 					<table id='stats_table'>
 						<tbody>
 						</tbody>

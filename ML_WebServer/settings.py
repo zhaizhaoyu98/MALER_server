@@ -26,15 +26,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'change-me-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = os.environ.get('DJANGO_DEBUG', 'True' if 'runserver' in sys.argv else 'False').lower() == 'true'
-#
-# ALLOWED_HOSTS = [
-#     host.strip()
-#     for host in os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost,www.inbirg.com').split(',')
-#     if host.strip()
-# ]
-DEBUG = True
-ALLOWED_HOSTS = ['*']
+DEBUG = os.environ.get(
+    'DJANGO_DEBUG', 'True' if 'runserver' in sys.argv else 'False'
+).lower() == 'true'
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.environ.get(
+        'DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost,www.inbirg.com'
+    ).split(',')
+    if host.strip()
+]
 
 # Application definition
 
@@ -49,14 +50,17 @@ INSTALLED_APPS = [
     'mlserver.apps.MlserverConfig',
     #websocket
     'dwebsocket',
-    'gunicorn',
 
 ]
+
+# Gunicorn/uWSGI is a Linux process manager, not a Django application.  It is
+# intentionally absent from INSTALLED_APPS and from the Windows test environment.
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'mlserver.middleware.ProjectIdentifierMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -68,9 +72,37 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_SECURE = os.environ.get('DJANGO_SECURE_SSL', 'False').lower() == 'true'
 CSRF_COOKIE_SECURE = os.environ.get('DJANGO_SECURE_SSL', 'False').lower() == 'true'
 SECURE_SSL_REDIRECT = os.environ.get('DJANGO_SECURE_SSL', 'False').lower() == 'true'
+SECURE_HSTS_SECONDS = int(os.environ.get('DJANGO_HSTS_SECONDS', '0'))
+SECURE_HSTS_INCLUDE_SUBDOMAINS = SECURE_HSTS_SECONDS > 0
+SECURE_HSTS_PRELOAD = SECURE_HSTS_SECONDS > 0
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',')
+    if origin.strip()
+]
+
+# Upload and model-artifact limits.  Nginx/reverse-proxy limits must be set to
+# the same or smaller values in production.
+MALER_MAX_DATA_UPLOAD_BYTES = int(os.environ.get('MALER_MAX_DATA_UPLOAD_BYTES', 200 * 1024 * 1024))
+MALER_MAX_MODEL_UPLOAD_BYTES = int(os.environ.get('MALER_MAX_MODEL_UPLOAD_BYTES', 100 * 1024 * 1024))
+DATA_UPLOAD_MAX_MEMORY_SIZE = MALER_MAX_DATA_UPLOAD_BYTES
+FILE_UPLOAD_MAX_MEMORY_SIZE = int(os.environ.get('MALER_FILE_MEMORY_LIMIT_BYTES', 5 * 1024 * 1024))
+MALER_MODEL_SIGNING_KEY = os.environ.get('MALER_MODEL_SIGNING_KEY', '')
+MALER_ALLOW_LEGACY_MODEL_UPLOAD = False
+MALER_CACHE_RETENTION_HOURS = int(os.environ.get('MALER_CACHE_RETENTION_HOURS', '24'))
+MALER_WEB_OUTER_SPLITS = int(os.environ.get('MALER_WEB_OUTER_SPLITS', '5'))
+MALER_WEB_OUTER_REPEATS = int(os.environ.get('MALER_WEB_OUTER_REPEATS', '2'))
+MALER_WEB_INNER_SPLITS = int(os.environ.get('MALER_WEB_INNER_SPLITS', '3'))
+MALER_WEB_N_JOBS = int(os.environ.get('MALER_WEB_N_JOBS', '1'))
+# Historical websocket endpoints bypassed fold-local preprocessing and are kept
+# disabled.  All public result URLs now use the validated nested-CV service.
+MALER_ENABLE_LEGACY_EXPLORATORY = False
 
 ROOT_URLCONF = 'ML_WebServer.urls'
 

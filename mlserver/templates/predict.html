@@ -218,41 +218,27 @@
 			
 			
 			<div class="col-9">
-			<div class="col-9" style="vertical-align: middle;">
-				<form action="predict_preview" method="POST" enctype="multipart/form-data" id="form_data">
-					<!-- <div class="row"> -->
-					<div id="pred_usr_data" class="row">
-						{% csrf_token %}
-						<input name="select_model" id="select_model" style="display: none;" value=""/>
-						<!-- <div class="custom-file mb-3">
-						      <input type="file" class="custom-file-input" id="customFile" name="filename">
-						      <label class="custom-file-label" for="customFile">Choose Profile</label>
-						</div> -->
-
-						<h6 style="position: absolute;top: 10px;">Model:</h6> 
-						<input type="file" name="upload_model" id="upload_model" style="display: none;" />
-						<button id="upmodel" type="button" class="btn btn-info" style="position: absolute;left: 60px;">Upload</button>
-						<!-- <div class="showModelName"style="position: absolute;left: 150px;top: 10px;"></div> -->
-						<p id="showModelName" style="position: absolute;left: 150px;top: 10px;">
-						
-						<h6 style="position: absolute;margin: 10px;left: 450px;">File:</h6> 
-						<input type="file" name="upload_file" id="upload_file" accept=".csv" style="display: none;" value="12345"/>
-						<button id="upfile" type="button" class="btn btn-info" style="position: absolute;left: 500px;">Upload</button>
-						<div class="showFileName"style="position: absolute;left: 590px;top: 10px;"></div>
-						
-
-						<p style="position: absolute;top: 70px;"><b> Model: </b> Please upload the pickle file model downloaded from ML Analysis. </p>
-						<p style="position: absolute;top: 110px;"><b> File: </b>  Please upload a csv file with features in rows and samples in columns and no larger than 200MB.</p>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						<br/>
-						
+				<div id="pred_usr_data">
+					{% csrf_token %}
+					<input name="select_model" id="select_model" style="display: none;" value=""/>
+					<input type="file" name="upload_model" id="upload_model" accept=".maler" style="display: none;" />
+					<input type="file" name="upload_file" id="upload_file" accept=".csv,.tsv,.txt" style="display: none;" />
+					<div class="row align-items-center mb-3">
+						<div class="col-md-6 col-12 mb-2">
+							<b>Model:</b>
+							<button id="upmodel" type="button" class="btn btn-info ml-2">Upload .maler</button>
+							<span id="showModelName" class="ml-2 text-muted"></span>
+						</div>
+						<div class="col-md-6 col-12 mb-2">
+							<b>Data:</b>
+							<button id="upfile" type="button" class="btn btn-info ml-2">Upload CSV</button>
+							<span class="showFileName ml-2 text-muted"></span>
+						</div>
 					</div>
-				</form>
-						<br/>
-					</div>
+					<div class="alert alert-light border mb-2"><b>Model:</b> Upload a signed <code>.maler</code> model bundle downloaded from MALER Analysis.</div>
+					<div class="alert alert-light border mb-2"><b>File:</b> Upload a CSV file with features in rows and samples in columns, no larger than 200 MB.</div>
+					<div class="alert alert-warning mb-0"><b>Privacy:</b> Do not upload direct identifiers. Uploaded data and derived cache files are temporary and are deleted according to the deployment retention policy (24 hours by default).</div>
+				</div>
 					
 			<!-- </div> -->
 
@@ -279,14 +265,14 @@
 							<td>LUAD and LUSC are classified based on gene expression profiles</td>
 							<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
 							<td><a href="download/binary_pred.csv">download</a></td>
-							<td><a href="download/Binary_RandomForest.pkl">RandomForest</a></td>
+							<td><a href="download/Binary_RandomForest.maler">RandomForest</a></td>
 						</tr>
 						<tr>
 							<td>Multiclass Classfication</td>
 							<td>LUAD, LUSC and KIRC are classified based on gene expression profiles</td>
 							<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
 							<td><a href="download/multi_pred.csv">download</a></td>
-							<td><a href="download/Multiclass_XGBoost.pkl">XGBoost</a></td>
+							<td><a href="download/Multiclass_XGBoost.maler">XGBoost</a></td>
 						</tr>
 						<tr>
 							<td>Regression</td>
@@ -295,7 +281,7 @@
 								<a href="https://xenabrowser.net/">UCSC Xena</a><br />
 							</td>
 							<td><a href="download/reg_pred.csv">download</a></td>
-							<td><a href="download/Regression_Lasso.pkl">Lasso</a></td>
+							<td><a href="download/Regression_Lasso.maler">Lasso</a></td>
 						</tr>
 						<tr>
 							<td>Survival</td>
@@ -304,7 +290,7 @@
 								<a href="http://www.cgga.org.cn">CGGA</a>
 							</td>
 							<td><a href="download/survival_pred.csv">download</a></td>
-							<td><a href="download/Survival_ExtraSurvivalTrees.pkl">ExtraSurvivalTrees</a></td>
+							<td><a href="download/Survival_ExtraSurvivalTrees.maler">ExtraSurvivalTrees</a></td>
 						</tr>
 					</table>
 					<br/>
@@ -314,7 +300,7 @@
 			</div>
 		</div>
 	</div>
-	</div>
+	</form>
 	</el-card>
 	</div>
 	</div>
@@ -448,8 +434,8 @@
 							if ($("#upload_file").val() == "" || $("#upload_model").val() == "") {
 								alert("Please select a file and a model to upload!");
 								location.reload();
-							} else if ($("#upload_model").val().split(".")[1] != "pkl"){
-								alert("Please select a pickle file and upload in the Model module !");
+							} else if (!$("#upload_model").val().toLowerCase().endsWith(".maler")){
+								alert("Please select a signed .maler model bundle downloaded from MALER Analysis.");
 							}else {
 							    $("#form_data").submit();
 							}

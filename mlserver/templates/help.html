@@ -128,9 +128,9 @@
 						<td rowspan="2">Naive Bayes, SVM, Random Forest, Logistic Regression, KNN, 
 							XGBoost, lightGBM, Adaboost, DecisionTree, GBDT
 						</td>
-						<td rowspan="2">Accuracy, Recall, Precision, F1-score, AUC</td>
-						<td rowspan="2">ANOVA(f_classif from sklearn), MRMR(Maximum relevance and minimum redundancy)</td>
-						<td rowspan="4">Top K, FSS(SFS), BSS</td>
+					<td rowspan="2">Balanced accuracy, precision, recall, F1, MCC, ROC-AUC, PR-AUC, and per-class sensitivity/specificity</td>
+					<td rowspan="2">ANOVA and MRMR (maximum relevance and minimum redundancy)</td>
+					<td rowspan="4">TopK, FSS, BSS, PCA, or no reduction; each option is fitted within training folds</td>
 					</tr>
 					<tr>
 						<td style="font-weight: bold;">Multiclass Classification</td>
@@ -140,16 +140,16 @@
 						<td>Linear Regression, SVM, Ridge, Lasso, Decision Tree,
 							XGBoost, AdaBoost, Random Forest, Gradient Boosting Regressor
 						</td>
-						<td>R-Squared, MAE, MSE</td>
-						<td>Pearson's correlation (f_regression from sklearn), MRMR(Maximum relevance and minimum redundancy)</td>
+					<td>R-squared, MAE, MSE, and RMSE</td>
+					<td>ANOVA (f_regression) or MRMR</td>
 					</tr>
 					<tr>
 						<td style="font-weight: bold;">Survival Analysis</td>
 						<td>SurvivalSVM, SurvivalTree, ExtraSurvivialTrees, RandomSurvivalForest, 
 							GradientBoostingSurivival
 						</td>
-						<td>C-index</td>
-						<td>Univariate Cox regression</td>
+					<td>C-index, cumulative/dynamic time AUC, and integrated Brier score when estimable</td>
+					<td>Censoring-aware univariate Cox ranking</td>
 					</tr>
 				</table>
 				<br>
@@ -328,9 +328,9 @@
 					 
 				</p>
 				<p>
-					<b>survival analysis: univariate Cox regression</b>
-					Univariate Cox regression analysis is performed by lifeline package to evaluate the correlation between each 
-					feature and survival. And the top 50 features with the lowest P-value were used for follow-up training.
+					<b>Survival analysis: univariate Cox ranking</b>
+					A censoring-aware univariate Cox score is used for training-fold feature ranking. Sequential selection may use a
+					fold-local prescreen capped at 50 candidates as a computational guardrail.
 				</p>
 				<hr>
             <h5>Optimal Feature Subset Selection</h5>
@@ -340,20 +340,18 @@
             		feature selection to create the model.
             	</p>
             	<p>
-            		<b>SFS (Sequential Forward Selection): </b>Also called Forward Stepwise Selection (FSS). The method starts with an 
-            		empty subset of features and appends feature one at a time. During one step, all the features that have not yet 
-            		been selected are considered for selection, and their evaluation indicator(accuracy) are recorded. At the end of 
-            		the step, the feature that yielded the best score is included in the subset.Then,a new step is started, and the 
-            		remaining features are considered. This is repeated this operation until the subset contains 20 variables. Finally, 
-            		the top k features in the subset with the best performance are selected as the optimal feature subset.
+					<b>FSS (Forward Stepwise Selection): </b>The method starts with an empty subset and adds the candidate that most
+					improves the task-specific training score at each step. Prescreening and subset search are refitted independently
+					inside each training fold.
             	</p>
             	<p>
-            		<b>BSS (Backward Stepwise Selection): </b>This method starts with all features included in the model and eliminates one at 
-            		a time. For each cycle, all the features that have not been eliminated are considered for selection, the feature that 
-            		yielded the worst score is excluded in the subset. Then, a cycle is started, and the remaining features are considered. 
-            		This process of deletion and selection is repeated until only one feature is left in the model. Finally, the top k features 
-            		in the subset with the best performance are selected as the optimal feature subset.
-            	</p>
+					<b>BSS (Backward Stepwise Selection): </b>The method starts with the fold-local candidate set and removes the
+					feature whose exclusion gives the best task-specific training score at each step. Selection is not fitted on a held-out
+					test or external cohort.
+				</p>
+				<p><b>PCA:</b> Principal component analysis is an unsupervised optional reduction branch. Components and loadings are
+				fitted within training folds and are exported with the complete pipeline; PCA components are not reported as genes.</p>
+				<p><b>No reduction:</b> All validated input features are retained as an equal-budget reference branch.</p>
 				<br></br>
 			
 			<h3 id='one_click'>One-click Modeling</h3>

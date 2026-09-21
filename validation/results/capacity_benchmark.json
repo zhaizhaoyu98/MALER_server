@@ -1,0 +1,128 @@
+{
+  "cases": [
+    {
+      "analysis_seconds": 0.05960510000000008,
+      "case": "classification_small",
+      "csv_parse_seconds": 0.006498400000000015,
+      "csv_size_mb": 0.3748798370361328,
+      "csv_write_seconds": 0.020688800000000063,
+      "input_matrix_mb": 0.152587890625,
+      "n_features": 100,
+      "n_samples": 200,
+      "parsed_shape": [
+        200,
+        100
+      ],
+      "peak_pagefile_mb": 96.796875,
+      "peak_working_set_mb": 108.7734375,
+      "primary_metric": 0.7901069518716577,
+      "private_mb": 82.859375,
+      "task": "classification",
+      "total_seconds": 0.08830989999999994,
+      "working_set_mb": 103.0
+    },
+    {
+      "analysis_seconds": 0.35456850000000006,
+      "case": "classification_medium",
+      "csv_parse_seconds": 0.08432649999999997,
+      "csv_size_mb": 9.365955352783203,
+      "csv_write_seconds": 0.34926959999999996,
+      "input_matrix_mb": 3.814697265625,
+      "n_features": 1000,
+      "n_samples": 500,
+      "parsed_shape": [
+        500,
+        1000
+      ],
+      "peak_pagefile_mb": 132.43359375,
+      "peak_working_set_mb": 134.46484375,
+      "primary_metric": 0.8578839166188564,
+      "private_mb": 91.734375,
+      "task": "classification",
+      "total_seconds": 0.7983998999999999,
+      "working_set_mb": 111.86328125
+    },
+    {
+      "analysis_seconds": 3.0739582,
+      "case": "classification_large",
+      "csv_parse_seconds": 0.9409456999999994,
+      "csv_size_mb": 93.63681602478027,
+      "csv_write_seconds": 3.6098036000000002,
+      "input_matrix_mb": 38.14697265625,
+      "n_features": 5000,
+      "n_samples": 1000,
+      "parsed_shape": [
+        1000,
+        5000
+      ],
+      "peak_pagefile_mb": 325.7109375,
+      "peak_working_set_mb": 344.6015625,
+      "primary_metric": 0.8800290984296467,
+      "private_mb": 165.62890625,
+      "task": "classification",
+      "total_seconds": 7.717911599999999,
+      "working_set_mb": 185.46484375
+    },
+    {
+      "analysis_seconds": 0.6151713000000001,
+      "case": "regression_medium",
+      "csv_parse_seconds": 0.17175019999999996,
+      "csv_size_mb": 18.732784271240234,
+      "csv_write_seconds": 0.7101854999999999,
+      "input_matrix_mb": 7.62939453125,
+      "n_features": 2000,
+      "n_samples": 500,
+      "parsed_shape": [
+        500,
+        2000
+      ],
+      "peak_pagefile_mb": 190.01171875,
+      "peak_working_set_mb": 162.16015625,
+      "primary_metric": 0.9032243264649101,
+      "private_mb": 118.74609375,
+      "task": "regression",
+      "total_seconds": 1.5165783000000002,
+      "working_set_mb": 121.9375
+    },
+    {
+      "analysis_seconds": 0.48539450000000006,
+      "case": "survival_medium",
+      "csv_parse_seconds": 0.05726949999999986,
+      "csv_size_mb": 5.6219987869262695,
+      "csv_write_seconds": 0.20851569999999997,
+      "input_matrix_mb": 2.288818359375,
+      "n_features": 1000,
+      "n_samples": 300,
+      "parsed_shape": [
+        300,
+        1000
+      ],
+      "peak_pagefile_mb": 118.07421875,
+      "peak_working_set_mb": 125.53515625,
+      "primary_metric": 0.630532064226076,
+      "private_mb": 90.359375,
+      "task": "survival",
+      "total_seconds": 0.7591619000000001,
+      "working_set_mb": 109.01171875
+    },
+    {
+      "analysis_seconds": 0.011917999999999984,
+      "case": "prediction_throughput",
+      "input_matrix_mb": 7.62939453125,
+      "model_file_mb": 0.007940292358398438,
+      "n_features": 100,
+      "n_samples": 10000,
+      "peak_pagefile_mb": 104.57421875,
+      "peak_working_set_mb": 124.328125,
+      "predictions_per_second": 839066.957543213,
+      "private_mb": 89.2734375,
+      "task": "prediction",
+      "total_seconds": 0.04045409999999994,
+      "working_set_mb": 109.125
+    }
+  ],
+  "interpretation": "Observed single-process Windows performance; not a universal maximum.",
+  "platform": "Windows-10-10.0.26100-SP0",
+  "protocol": "fresh subprocess per case; 3-fold outer and 2-fold inner for training cases",
+  "python": "3.7.11"
+}
