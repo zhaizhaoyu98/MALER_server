@@ -8,9 +8,14 @@ _记录本机 conda 环境 `maler` 的最小安装方案与验收证据 · 2026-
 
 - **环境**：conda 环境 `maler`，`Python 3.7.12`，48 个包，全部锁定版本。
 - **选择 3.7 的原因**：Django 2.1.8 官方仅支持 Python 3.5–3.7[^2]，且既有验证证据产生于 Python 3.7.11。
-- **实测结果**：`manage.py check` 无问题，**36/36 测试通过**，5 条公开路由全部返回 200，生产口径安全审计 **10/10**。
+- **实测结果**：`manage.py check` 无问题，**46/46 测试通过**，5 条公开路由全部返回 200，生产口径安全审计 **10/10**。
 - **两处与预期不同**：`python=3.7.11` 已从 conda-forge 下架（改用 `3.7.12`）；MRMR 必须用 `mrmr-selection`，服务器文件中记录的 `mrmr==0.9.2` 不满足代码调用。
 - **本地仍无法覆盖**：外部队列与容量基准脚本依赖仓库外原始数据或 Windows 专用 API。
+
+> 2026-09-22 更新：Windows `gene_edit` 环境使用 Python 3.7.11，并通过
+> `conda run -p D:\software\miniforge3\envs\gene_edit python manage.py test`
+> 完成 46 项测试。下文 `maler`/Python 3.7.12 记录保留为 Linux 最小环境的
+> 独立复现证据。
 
 ---
 
@@ -20,7 +25,7 @@ _记录本机 conda 环境 `maler` 的最小安装方案与验收证据 · 2026-
 
 | 在范围内 | 不在范围内 |
 | --- | --- |
-| 启动 Django 站点、跑通 36 项测试 | 阿里云部署栈（`gunicorn`、`gevent`、Nginx） |
+| 启动 Django 站点、跑通 46 项测试 | 阿里云部署栈（`gunicorn`、`gevent`、Nginx） |
 | 运行不依赖外部数据的验证脚本 | 重跑外部队列验证（原始矩阵未入库） |
 | 复现证据环境的关键版本 | MySQL 相关包（项目实际使用 sqlite3） |
 
@@ -200,7 +205,7 @@ mrmr_classif : (X, y, K, relevance='f', redundancy='c', denominator='mean', cat_
 | --- | --- | --- |
 | Django 系统检查 | `manage.py check` | 无问题（0 silenced） |
 | 导入探针 | 13 个第三方包 + `django.setup()` | 全部成功，版本与上表一致 |
-| 自动化测试 | `manage.py test mlserver -v 1` | **Ran 36 tests — OK** |
+| 自动化测试 | `manage.py test mlserver -v 1` | **Ran 46 tests — OK** |
 | 安全审计（本地口径） | `manage.py audit_security_configuration --strict` | 4/10（缺 TLS/HSTS 类设置，属预期） |
 | 安全审计（生产口径） | 同上，附 `DJANGO_SECURE_SSL=true`、`DJANGO_HSTS_SECONDS=31536000`、强密钥 | **10/10** |
 | 路由冒烟 | `runserver 127.0.0.1:8971` + `curl` | `/maler/home`、`/maler/analysis`、`/maler/analysis/methods.json`、`/maler/predict`、`/maler/help` 全部 200 |

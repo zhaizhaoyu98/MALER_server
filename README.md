@@ -11,6 +11,11 @@ contains the web application, leakage-controlled validation code, declared
 example train/test matrices, machine-readable result files, external-cohort
 provenance records, deployment examples, and figure-generation scripts.
 
+Public mirrors:
+
+- GitHub: <https://github.com/zhaizhaoyu98/MALER_server>
+- Gitee: <https://gitee.com/zhaoyuzhai/MLSERVER>
+
 ## Public instance
 
 The maintained HTTP endpoint is:
@@ -36,6 +41,7 @@ mamba run -n gene_edit python manage.py runserver 127.0.0.1:8000
 
 Then open <http://127.0.0.1:8000/maler/home>. Gunicorn and uWSGI are excluded
 from the Windows environment because they are Linux deployment components.
+The release test suite contains 46 tests.
 
 ## Validation design
 
@@ -92,6 +98,6 @@ secrets outside the repository and follow [`deployment/README.md`](deployment/RE
 
 ## Version and license
 
-The peer-review release is tagged `v1.0.0-review1`. Source code is distributed
+The peer-review release is tagged `v1.0.0-review2`. Source code is distributed
 under the [MIT License](LICENSE). Third-party assets retain their respective
 licenses.

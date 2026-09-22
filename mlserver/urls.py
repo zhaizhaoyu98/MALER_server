@@ -2,11 +2,16 @@ from django.urls import path
 from django.conf import settings ##new add
 from django.conf.urls. static import static ## new add
 # from . import views
-from .views import home_views, analysis_views, predict_views,help_views, \
-    download_views, preview_views, predict_result,classification_cp_result_view_websocket, \
-    classification_oc_result_view_webscoket,regression_cp_result_view_websocket, \
-    regression_oc_result_view_websocket,survival_cp_result_view_websocket,survival_oc_result_view_websocket, \
-    validated_analysis_views
+from .views import (
+    analysis_views,
+    download_views,
+    help_views,
+    home_views,
+    predict_result,
+    predict_views,
+    preview_views,
+    validated_analysis_views,
+)
 
 
 urlpatterns=[
@@ -63,10 +68,6 @@ urlpatterns=[
     path('task/<str:projectid>/model/<str:filename>', validated_analysis_views.model_bundle),
     path('task/<str:projectid>/artifact/<str:filename>', validated_analysis_views.prediction_artifact),
     path('task/<str:projectid>/delete', validated_analysis_views.delete_project),
-
-    # ajax get combination
-    # path('get_model',result_views.get_model),
-    path('get_cp_combination', classification_cp_result_view_websocket.get_cp_combination),
 
     #websocket test
     # path('vue_analysis', websocket.get_vue_analysis_page), ####vue

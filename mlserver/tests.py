@@ -496,6 +496,9 @@ class AutomatedUsabilityTests(unittest.TestCase):
             self.assertEqual(response.status_code, 200, path)
             self.assertIn(marker.lower(), response.content.lower(), path)
 
+        # The last legacy calculation helper is intentionally no longer routed.
+        self.assertEqual(self.client.get("/maler/get_cp_combination").status_code, 404)
+
     def test_predict_page_warns_about_privacy_and_retention(self):
         response = self.client.get("/maler/predict")
         content = response.content.lower()

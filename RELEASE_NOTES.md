@@ -1,7 +1,7 @@
-# MALER v1.0.0-review1
+# MALER v1.0.0-review2
 
-This release freezes the code and evidence prepared for the first peer-review
-revision.
+This release freezes the merged code, reproducibility evidence, and publication
+statements prepared for the current peer-review revision.
 
 ## Main changes
 
@@ -18,6 +18,12 @@ revision.
 - Added reproducible internal, external-cohort, survival, PCA, equal-budget,
   capacity, and configuration-security evidence.
 - Added publication-quality figure generation with hash and metric checks.
+- Added result-page notices for reordered prediction features and ignored
+  unexpected features without changing prediction values.
+- Removed the final routed legacy calculation helper; all public calculation
+  routes now use the validated engine.
+- Expanded the Django suite from 36 to 46 passing tests and reconciled the
+  manuscript, response letter, tables, supplement, and repository documentation.
 
 ## Compatibility
 
