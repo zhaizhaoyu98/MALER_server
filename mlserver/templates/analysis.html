@@ -390,7 +390,7 @@
 			</div>
 				
 				<br />
-					<div class="col-12">
+					<div class="col-12" id="scaling-guidance-panel">
 					<el-card shadow="never">
 						<div slot="header" >
 							<h4>Step 3: Please select a feature scaling method. (Optional)</h4>
@@ -405,11 +405,11 @@
 								<label style="font-weight: bold; color: #666;font-size: 20px;">Feature Scaling Methods: </label>
 								</div>
 								<br />
-							<div class="row" >
-								<input type="radio" id="feature_norm_mm" name="feature_norm" value="MM" />&nbsp;<label for="feature_norm_mm">MinMax</label>&emsp;&emsp;
-								<input type="radio" id="feature_norm_z" name="feature_norm" value="Z" checked />&nbsp;<label for="feature_norm_z">Z-Score</label>&emsp;&emsp;
-								<input type="radio" id="feature_norm_ma" name="feature_norm" value="MA" />&nbsp;<label for="feature_norm_ma">MaxAbs</label>&emsp;&emsp;
-								<input type="radio" id="feature_norm_none" name="feature_norm" value="N" />&nbsp;<label for="feature_norm_none">None</label>&emsp;&emsp;
+							<div class="row" style="display: flex; flex-wrap: wrap; gap: 10px 28px; align-items: center;">
+								<span><input type="radio" id="feature_norm_mm" name="feature_norm" value="MM" />&nbsp;<label for="feature_norm_mm">MinMax</label></span>
+								<span><input type="radio" id="feature_norm_z" name="feature_norm" value="Z" checked />&nbsp;<label for="feature_norm_z">Z-Score</label></span>
+								<span><input type="radio" id="feature_norm_ma" name="feature_norm" value="MA" />&nbsp;<label for="feature_norm_ma">MaxAbs</label></span>
+								<span><input type="radio" id="feature_norm_none" name="feature_norm" value="N" />&nbsp;<label for="feature_norm_none">None</label></span>
 							</div>
 							<p style="margin-top: 10px;color: #666;">Z-Score is the recommended default for fair comparison of scale-sensitive SVM, KNN and penalized linear models. Tree-based models are generally less scale sensitive. The reviewer-validation reference pipeline fits scaling inside every training fold; historical interactive scores should be treated as exploratory model-development results.</p>
 							</div>

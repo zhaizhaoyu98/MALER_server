@@ -8,30 +8,29 @@ until that branch has been migrated and integration-tested.
 ## Windows environment
 
 The tested environment is `gene_edit` under Miniforge. The minimal Windows
-specification is:
-
-`E:\CodeProject\Server\gene_edit_environment_windows.yml`
+specification is `environment_windows.yml` in the repository root.
 
 Install/update with Mamba. Gunicorn is intentionally excluded on Windows; it is
 only relevant to the Linux deployment path.
 
 ## Reproduce the checks
 
-From `E:\CodeProject\Server\MLSERVER` in PowerShell:
+From the repository root in PowerShell:
 
 ```powershell
-& 'D:\software\miniforge3\condabin\conda.bat' run -n gene_edit python manage.py test mlserver -v 1
-& 'D:\software\miniforge3\condabin\conda.bat' run -n gene_edit python validation\run_reviewer_validation.py
-& 'D:\software\miniforge3\condabin\conda.bat' run -n gene_edit python validation\run_external_gse37745.py
-& 'D:\software\miniforge3\condabin\conda.bat' run -n gene_edit python validation\run_external_gse50081.py
-& 'D:\software\miniforge3\condabin\conda.bat' run -n gene_edit python validation\audit_external_data_quality.py
-& 'D:\software\miniforge3\condabin\conda.bat' run -n gene_edit python validation\audit_survival_data_quality.py
-& 'D:\software\miniforge3\condabin\conda.bat' run -n gene_edit python validation\run_survival_expanded_validation.py
-& 'D:\software\miniforge3\condabin\conda.bat' run -n gene_edit python validation\run_pca_sensitivity.py
-& 'D:\software\miniforge3\condabin\conda.bat' run -n gene_edit python validation\run_equal_budget_baselines.py
-& 'D:\software\miniforge3\condabin\conda.bat' run -n gene_edit python validation\benchmark_capacity.py
-& 'D:\software\miniforge3\condabin\conda.bat' run -n gene_edit python validation\audit_production_security.py
-& 'D:\software\miniforge3\condabin\conda.bat' run -n gene_edit python validation\make_validation_figures.py
+mamba run -n gene_edit python manage.py test mlserver -v 1
+mamba run -n gene_edit python validation/run_reviewer_validation.py
+mamba run -n gene_edit python validation/run_external_gse37745.py
+mamba run -n gene_edit python validation/run_external_gse50081.py
+mamba run -n gene_edit python validation/audit_external_data_quality.py
+mamba run -n gene_edit python validation/audit_survival_data_quality.py
+mamba run -n gene_edit python validation/run_survival_expanded_validation.py
+mamba run -n gene_edit python validation/run_pca_sensitivity.py
+mamba run -n gene_edit python validation/run_equal_budget_baselines.py
+mamba run -n gene_edit python validation/benchmark_capacity.py
+mamba run -n gene_edit python validation/audit_production_security.py
+mamba run -n gene_edit python validation/make_validation_figures.py
+mamba run -n gene_edit python validation/make_main_figure3.py
 ```
 
 Set `MALER_MODEL_SIGNING_KEY` to a strong secret before generating signed model
@@ -48,7 +47,9 @@ bundles. Do not commit the key. Completed task JSON files are reused unless
   repeated outer validation and 3-fold inner tuning budget as the primary
   classification/regression analyses. TCGA survival aliquots are first
   collapsed to one sample per patient.
-- Test and external confidence intervals use 2,000 bootstrap resamples.
+- Declared internal held-out confidence intervals use 1,000 bootstrap
+  resamples; independent external-cohort and expanded-survival intervals use
+  2,000 bootstrap resamples.
 - GSE37745 histology filtering and GPL570 feature availability are determined
   without external outcomes.
 - GSE50081 eligibility, model reconstruction, calibration-cohort use, metrics,

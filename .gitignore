@@ -213,3 +213,21 @@ fabric.properties
 !/mlserver/static/cache/example/regression_example.csv
 
 !/mlserver/static/cache/example/survival_example.csv
+
+# MALER local review/development artefacts
+article-review.zip
+validation/external_data/*.zip
+validation/external_data/*.gz
+validation/external_data/*.tar.gz
+validation/external_data/*.txt
+validation/external_data/hgu133plus2.db/
+validation/results/*.partial
+validation/results/*.maler
+validation/results/survival_candidate_cache/
+
+# Generated publication figures are tracked selectively when needed.
+validation/figures/*
+!validation/figures/Figure_3_results.png
+!validation/figures/Figure_3_results.pdf
+!validation/figures/Figure_3_heldout_predictions.csv
+!validation/figures/Figure_3_generation_audit.json
