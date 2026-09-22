@@ -213,3 +213,5 @@ fabric.properties
 !/mlserver/static/cache/example/regression_example.csv
 
 !/mlserver/static/cache/example/survival_example.csv
+
+temp/
