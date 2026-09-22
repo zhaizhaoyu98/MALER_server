@@ -18,12 +18,32 @@ from mlserver.views.classification_cp_result_view_websocket import pre_valid, mk
 from mlserver.views.regression_cp_result_view_websocket import reg_cust_val, mkvregpredplot, mkvreportbarplot
 from mlserver.views.survival_oc_result_view_websocket import sur_data_process, mk_surv_data, time_dependent_auc, mk_auc_line, mk_surv_layout
 from mlserver.views.predict_views import _bundle_as_legacy_dict
-from mlserver.safe_ml import DataValidationError, ModelBundleError, align_prediction_frame
+from mlserver.safe_ml import DataValidationError, ModelBundleError, align_prediction_frame, alignment_report
 
 
 def _display_class(value, reverse_mapping):
     """Return a human-readable class without failing on string-trained models."""
     return reverse_mapping.get(value, value)
+
+
+def _note_alignment(notices, cohort, frame, feature_names):
+    """记录预测矩阵相对于训练特征契约的偏差.
+
+    Args:
+        notices (list, 必填): 收集偏差报告的列表.
+        cohort (str, 必填): 数据来源标签, 例如 blind 或 validation.
+        frame (pandas.DataFrame, 必填): 待检查的预测矩阵.
+        feature_names (iterable, 必填): 训练时固定的特征名与顺序.
+
+    Returns:
+        Not Available
+
+    See Also:
+        alignment_report
+    """
+    report = alignment_report(frame, feature_names, cohort=cohort)
+    if report:
+        notices.append(report)
 
 
 def predict_results(request, projectid):
@@ -75,6 +95,8 @@ def predict_results(request, projectid):
         method, model_name, model, feature_names = \
             model_pickle['method'], model_pickle['name'], model_pickle['model'], model_pickle['feature_names']
         inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0, sep=r'/|,|\t').T
+        # 预测矩阵与训练特征契约的偏差报告
+        alignment_notices = []
         print('projectid:', projectid)
         print('p:', STATIC_ROOT + '/cache/' + projectid + '/data.csv')
         if select_model == 'model_sur':
@@ -90,6 +112,7 @@ def predict_results(request, projectid):
                 # print(blind_set[feature_names])
                 try:
                     aligned_blind, unexpected_features = align_prediction_frame(blind_set, feature_names)
+                    _note_alignment(alignment_notices, "blind", blind_set, feature_names)
                     predict_reports[model_name] = model.predict(aligned_blind)
                 except DataValidationError as exc:
                     messages.error(request, str(exc))
@@ -109,6 +132,7 @@ def predict_results(request, projectid):
                 predict_reports = {}
                 try:
                     aligned_blind, unexpected_features = align_prediction_frame(blind_set, feature_names)
+                    _note_alignment(alignment_notices, "blind", blind_set, feature_names)
                     predict_reports[model_name] = model.predict(aligned_blind)
                 except DataValidationError as exc:
                     messages.error(request, str(exc))
@@ -124,6 +148,7 @@ def predict_results(request, projectid):
             else:
                 try:
                     aligned_blind, unexpected_features = align_prediction_frame(blind_set, feature_names)
+                    _note_alignment(alignment_notices, "blind", blind_set, feature_names)
                     if model_name != 'SurvivalSVM':
                         surv_plot = sur_pred_plot(model, aligned_blind, feature_names)
                     else:
@@ -156,6 +181,7 @@ def predict_results(request, projectid):
                         validation_data = validation_set.iloc[:, 1:]
                     else:
                         validation_data, validation_label = classification_process(validation_set)
+                    _note_alignment(alignment_notices, "validation", validation_data, feature_names)
                     validation_data, unexpected_features = align_prediction_frame(
                         validation_data, feature_names)
                     validation_reports[model_name] = model.predict(validation_data)
@@ -207,6 +233,7 @@ def predict_results(request, projectid):
                         validation_data = validation_set.iloc[:, 1:]
                     else:
                         validation_data, validation_label = regression_preprocess(validation_set)
+                    _note_alignment(alignment_notices, "validation", validation_data, feature_names)
                     validation_data, unexpected_features = align_prediction_frame(
                         validation_data, feature_names)
                     validation_reports[model_name] = model.predict(validation_data)
@@ -242,8 +269,10 @@ def predict_results(request, projectid):
                 ytrain = model_pickle.get('ytrain', getattr(model, 'maler_ytrain_', None))
                 validation_data, validation_label = sur_data_process(validation_set)
                 try:
+                    _note_alignment(alignment_notices, "validation", validation_data, feature_names)
                     validation_data, unexpected_features = align_prediction_frame(
                         validation_data, feature_names)
+                    _note_alignment(alignment_notices, "input", inputdata, feature_names)
                     aligned_input, unexpected_features = align_prediction_frame(
                         inputdata, feature_names)
                     data_median = model.predict(pd.DataFrame(aligned_input.median()).T)[0]
@@ -279,6 +308,7 @@ def predict_results(request, projectid):
             'surv_plot': surv_plot,
             'validation_reports_dict': validation_reports_dict,
             'val_describe_roc': val_describe_roc,
+            'alignment_notices': alignment_notices,
         }
 
         with open(STATIC_ROOT + '/cache/' + projectid + '/predict_pickle.pkl',
@@ -293,6 +323,7 @@ def predict_results(request, projectid):
             'surv_plot': json.dumps(surv_plot),
             'validation_reports_dict': json.dumps(validation_reports_dict),
             'val_describe_roc': json.dumps(val_describe_roc, ensure_ascii=False, cls=JsonEncoder),
+            'alignment_notices': alignment_notices,
         })
     else:
         with open(STATIC_ROOT + '/cache/' + projectid + '/predict_pickle.pkl', 'rb') as f:
@@ -305,6 +336,7 @@ def predict_results(request, projectid):
               predict_pickle['surv_plot'], \
               predict_pickle['validation_reports_dict'], \
               predict_pickle['val_describe_roc']
+        alignment_notices = predict_pickle.get('alignment_notices', [])
         return render(request, 'predict_result.html', {
             'projectid': projectid,
             'method': method,
@@ -313,6 +345,7 @@ def predict_results(request, projectid):
             'surv_plot': json.dumps(surv_plot),
             'validation_reports_dict': json.dumps(validation_reports_dict),
             'val_describe_roc': json.dumps(val_describe_roc, ensure_ascii=False, cls=JsonEncoder),
+            'alignment_notices': alignment_notices,
         })
     # else:
     #     print('get!!!')

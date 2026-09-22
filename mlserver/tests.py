@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import os
+import shutil
 import json
 import pickle
 import tempfile
@@ -23,6 +24,7 @@ from .safe_ml import (
     DataValidationError,
     ModelBundleError,
     align_prediction_frame,
+    alignment_report,
     build_classification_pipeline,
     build_cross_platform_classification_pipeline,
     build_regression_pipeline,
@@ -43,6 +45,7 @@ from .model_registry import FEATURE_REDUCTION, MODEL_REGISTRY, build_estimator
 from .views.download_views import download_model, download_sample_data
 from .security import validated_project_id
 from .task_access import issue_task_token
+from .views import predict_result as predict_result_view
 
 
 class SafeMLValidationTests(unittest.TestCase):
@@ -61,6 +64,45 @@ class SafeMLValidationTests(unittest.TestCase):
         aligned, unexpected = align_prediction_frame(frame, ["A", "B"])
         self.assertEqual(aligned.columns.tolist(), ["A", "B"])
         self.assertEqual(unexpected, ["extra"])
+
+    def test_alignment_report_is_silent_when_order_matches(self):
+        frame = pd.DataFrame({"A": [1.0], "B": [2.0]})
+        self.assertIsNone(alignment_report(frame, ["A", "B"]))
+
+    def test_alignment_report_detects_reordered_features(self):
+        frame = pd.DataFrame({"B": [2.0], "A": [1.0]})
+        report = alignment_report(frame, ["A", "B"], cohort="blind")
+        self.assertEqual(report["reordered"], ["B", "A"])
+        self.assertEqual(report["unexpected"], [])
+        self.assertEqual(report["n_reordered"], 2)
+        self.assertEqual(report["cohort"], "blind")
+
+    def test_alignment_report_detects_unexpected_features(self):
+        frame = pd.DataFrame({"A": [1.0], "B": [2.0], "extra": [9.0]})
+        report = alignment_report(frame, ["A", "B"])
+        self.assertEqual(report["unexpected"], ["extra"])
+        self.assertEqual(report["reordered"], [])
+        self.assertEqual(report["n_unexpected"], 1)
+
+    def test_alignment_report_combines_reordering_and_unexpected_features(self):
+        frame = pd.DataFrame({"B": [2.0], "extra": [9.0], "A": [1.0]})
+        report = alignment_report(frame, ["A", "B"])
+        self.assertEqual(report["reordered"], ["B", "A"])
+        self.assertEqual(report["unexpected"], ["extra"])
+
+    def test_alignment_report_accepts_numeric_column_names(self):
+        frame = pd.DataFrame({1: [1.0], 2: [2.0]})
+        self.assertIsNone(alignment_report(frame, ["1", "2"]))
+
+    def test_alignment_report_ignores_duplicate_columns(self):
+        frame = pd.DataFrame([[1.0, 2.0]], columns=["A", "A"])
+        self.assertIsNone(alignment_report(frame, ["A"]))
+
+    def test_alignment_report_defers_missing_features_to_alignment(self):
+        frame = pd.DataFrame({"A": [1.0]})
+        self.assertIsNone(alignment_report(frame, ["A", "B"]))
+        with self.assertRaises(DataValidationError):
+            align_prediction_frame(frame, ["A", "B"])
 
 
 class SafeMLPipelineTests(unittest.TestCase):
@@ -374,6 +416,68 @@ class SecurityConfigurationTests(unittest.TestCase):
             output = StringIO()
             call_command("audit_security_configuration", strict=True, stdout=output)
         self.assertIn("10/10 checks passed", output.getvalue())
+
+
+class PredictionAlignmentNoticeTests(unittest.TestCase):
+    """The predict route must report feature-order and extra-column deviations."""
+
+    def setUp(self):
+        self.client = Client()
+        self.directory = tempfile.mkdtemp()
+        self._original_root = predict_result_view.STATIC_ROOT
+        predict_result_view.STATIC_ROOT = self.directory
+
+    def tearDown(self):
+        predict_result_view.STATIC_ROOT = self._original_root
+        shutil.rmtree(self.directory, ignore_errors=True)
+
+    def _write_project(self, project_id, matrix):
+        directory = os.path.join(self.directory, "cache", project_id)
+        os.makedirs(directory)
+        with open(os.path.join(directory, "data.csv"), "w") as handle:
+            handle.write(matrix)
+        rng = np.random.RandomState(0)
+        features = pd.DataFrame(rng.normal(size=(40, 3)), columns=["A", "B", "C"])
+        outcome = np.array([0, 1] * 20)
+        features.loc[outcome == 1, "A"] += 1.5
+        model = build_classification_pipeline(
+            LogisticRegression(solver="liblinear", random_state=10), k=3, scaler="standard"
+        )
+        model.fit(features, outcome)
+        payload = {
+            "method": "Classification",
+            "name": "logistic_regression",
+            "model": model,
+            "feature_names": ["A", "B", "C"],
+            "classes": {0: "class0", 1: "class1"},
+        }
+        with open(os.path.join(directory, "pickle.pkl"), "wb") as handle:
+            pickle.dump(payload, handle)
+
+    def test_reordered_matrix_reports_order_difference(self):
+        project_id = "PRED-BCLASS-aaaaaa-bbbbbb"
+        self._write_project(project_id, ",s1,s2\nC,0.30,0.32\nA,0.10,0.12\nB,0.20,0.22\n")
+        response = self.client.get("/maler/predict_result/%s" % project_id)
+        self.assertEqual(response.status_code, 200)
+        body = response.content.decode("utf-8")
+        self.assertIn("Feature alignment notice", body)
+        self.assertIn("Order differed for", body)
+
+    def test_unexpected_columns_are_reported(self):
+        project_id = "PRED-BCLASS-cccccc-dddddd"
+        self._write_project(
+            project_id, ",s1,s2\nA,0.10,0.12\nB,0.20,0.22\nC,0.30,0.32\nD,0.40,0.42\n"
+        )
+        response = self.client.get("/maler/predict_result/%s" % project_id)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("Unexpected columns ignored", response.content.decode("utf-8"))
+
+    def test_correct_matrix_is_silent(self):
+        project_id = "PRED-BCLASS-eeeeee-ffffff"
+        self._write_project(project_id, ",s1,s2\nA,0.10,0.12\nB,0.20,0.22\nC,0.30,0.32\n")
+        response = self.client.get("/maler/predict_result/%s" % project_id)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn("Feature alignment notice", response.content.decode("utf-8"))
 
 
 class AutomatedUsabilityTests(unittest.TestCase):

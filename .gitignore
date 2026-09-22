@@ -231,3 +231,7 @@ validation/figures/*
 !validation/figures/Figure_3_results.pdf
 !validation/figures/Figure_3_heldout_predictions.csv
 !validation/figures/Figure_3_generation_audit.json
+
+# Local scratch and hidden directories
+temp/
+.*/

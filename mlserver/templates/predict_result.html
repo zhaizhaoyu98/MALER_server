@@ -137,6 +137,19 @@
 				Test Accuracy
 			</h3>
 			<div id="accboxplotDiv"></div> -->
+			{% if alignment_notices %}
+			<div class="alert alert-warning">
+				<b>Feature alignment notice:</b> the uploaded matrix was reordered or contained extra columns. Predictions follow the training feature contract and are unaffected.
+				<ul>
+				{% for notice in alignment_notices %}
+					<li><b>{{ notice.cohort }}</b>: {{ notice.n_input }} input columns vs {{ notice.n_expected }} expected.
+					{% if notice.reordered %} Order differed for: {{ notice.reordered|join:', ' }}.{% endif %}
+					{% if notice.unexpected %} Unexpected columns ignored: {{ notice.unexpected|join:', ' }}.{% endif %}
+					</li>
+				{% endfor %}
+				</ul>
+			</div>
+			{% endif %}
 			{% if showtable == True %}
 			<h3 class="panel-heading" id="list-item-1" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
 				<!-- {{method|safe}} -->
