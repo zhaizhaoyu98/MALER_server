@@ -609,6 +609,52 @@ def align_prediction_frame(X, expected_features, reject_unexpected=False):
     return aligned, unexpected
 
 
+def alignment_report(frame, expected_features, cohort=None):
+    """报告预测矩阵相对于训练特征契约的偏差.
+
+    Args:
+        frame (pandas.DataFrame, 必填): 待检查的预测矩阵.
+        expected_features (iterable, 必填): 训练时固定的特征名与顺序.
+        cohort (str, 可选): 区分盲集与验证集等来源的标签, 缺省 None.
+
+    Returns:
+        dict: 含 reordered, unexpected, n_input, n_expected 的报告; 无偏差时返回 None.
+
+    Note:
+        只报告偏差, 不改动数据也不拒绝输入; 重复列名仍由 align_prediction_frame 抛出.
+
+    See Also:
+        align_prediction_frame
+
+    Example:
+        alignment_report(frame, ["A", "B"], cohort="blind")
+    """
+    checked = _as_frame(frame)
+    expected = [str(name) for name in expected_features]
+    columns = [str(name) for name in checked.columns]
+    if len(set(columns)) != len(columns):
+        return None
+    expected_set = set(expected)
+    # 输入中属于期望特征的那些列, 其相对顺序即为实际生效的顺序
+    present = [name for name in columns if name in expected_set]
+    reference = [name for name in expected if name in set(columns)]
+    reordered = present if present != reference else []
+    unexpected = sorted(set(columns) - expected_set)
+    if not reordered and not unexpected:
+        return None
+    report = {
+        "reordered": reordered[:20],
+        "unexpected": unexpected[:20],
+        "n_reordered": len(reordered),
+        "n_unexpected": len(unexpected),
+        "n_input": len(columns),
+        "n_expected": len(expected),
+    }
+    if cohort:
+        report["cohort"] = str(cohort)
+    return report
+
+
 def _manifest_for_model(model, task, feature_names, metadata=None):
     return {
         "bundle_version": MODEL_BUNDLE_VERSION,
