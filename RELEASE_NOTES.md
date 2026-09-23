@@ -20,6 +20,12 @@ statements prepared for the current peer-review revision.
 - Added publication-quality figure generation with hash and metric checks.
 - Added result-page notices for reordered prediction features and ignored
   unexpected features without changing prediction values.
+- Restored ANOVA/MRMR controls when switching from survival back to another
+  task and removed horizontal overflow from the analysis form.
+- Made preview charts responsive, added a site icon, and removed unused
+  third-party scripts that generated browser errors.
+- Verified the local signed-model round trip from validated analysis export to
+  external prediction upload using browser-driven controls.
 - Removed the final routed legacy calculation helper; all public calculation
   routes now use the validated engine.
 - Expanded the Django suite from 36 to 46 passing tests and reconciled the

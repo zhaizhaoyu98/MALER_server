@@ -102,7 +102,7 @@
 	<body data-spy="scroll" data-target="#list-example" style="padding-top: 0px;">
 		<!-- 导航栏 -->
 		{% include 'public_templates/nav_tem.html' %}
-		<div class="container col-6" style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
+		<div class="container" style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
 		<div id="loading">loading...</div>
 		<!-- 主体内容 -->
 		<div class="col-12" id="main" style="display: none;">
@@ -159,8 +159,8 @@
 									<h3 class="panel-heading" id="list-item-9" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
 										Visualization of Data Distribution
 									</h3>
-									<div style="display: flex;">
-										<div id="histplotDiv" style="margin: auto;text-align:center;width: 920px;"></div>
+									<div style="display: flex; min-width: 0;">
+										<div id="histplotDiv" style="margin: auto; text-align: center; width: 100%; min-width: 0;"></div>
 									</div>
 									
 								</div>
@@ -329,6 +329,7 @@
 				columns: {{inputdata_columns|safe}}
 			});
 			var hist_layout = {
+				autosize: true,
 				plot_bgcolor: '#ffffff',
 				paper_bgcolor: '#ffffff',
 				height: 550,
@@ -343,9 +344,9 @@
 				yaxis: {title: 'Density', standoff:10}, 
 			}
 			$('#inputdata_display').wrapAll("<div style='overflow-x:auto;width:100%;overflow-y:auto;height:500px'>");
-			Plotly.react('histplotDiv', {{ hist_trace|safe }},hist_layout);
 			$("#loading").hide();
 			$("#main").attr('style','');
+			Plotly.react('histplotDiv', {{ hist_trace|safe }}, hist_layout, {responsive: true});
 			
 			
 

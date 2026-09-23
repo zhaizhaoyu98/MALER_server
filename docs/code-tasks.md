@@ -25,6 +25,8 @@ _按 `v1.0.0-review2` 代码和 46 项测试更新_
 | 访问与缓存控制 | `task_access.py`、cleanup command | 任务令牌、删除入口和保留期配置 |
 | legacy 路由收敛 | `mlserver/urls.py` | 旧 WebSocket 和 `get_cp_combination` 不再提供计算路径 |
 | 自动测试 | `mlserver/tests.py` | 46/46 通过 |
+| UI 鼠标回归 | Analysis、Predict、Preview、Help、结果页 | 27/27 交互通过，无破图、溢出或浏览器错误 |
+| 签名模型闭环 | `.maler` 下载与 Predict 上传 | 本地测试密钥下完成生成、下载、上传和 50 样本预测 |
 
 ## 仓库物料
 
@@ -52,6 +54,8 @@ _按 `v1.0.0-review2` 代码和 46 项测试更新_
 - 旧计算模块改为无公共计算路由，不再称仍可替代运行。
 - 测试数量更新为 46。
 - 预测对齐回复增加重排列与额外特征页面提示。
+- 修复 Survival 切回其他任务后 ANOVA/MRMR 仍被禁用的问题。
+- 修复 Analysis 横向溢出和 Preview 固定宽度图表越界，并移除无效第三方脚本。
 
 ## 明确保留为 future 的事项
 

@@ -10,7 +10,6 @@
 		<!-- 引入组件库 -->
 		<script src="https://unpkg.com/element-ui@2.15.13/lib/index.js"></script>
 		<script src="https://cdn.bootcdn.net/ajax/libs/axios/1.3.6/axios.min.js"></script>
-		<script src="https://unpkg.com/element-ui@2.15.13/lib/locale/lang/en.js"></script>
 
 		
 		{% include 'public_templates/bootstrap.html' %}
@@ -44,6 +43,12 @@
 			.card {
 				cursor: pointer;
 				height: 100%;
+			}
+
+			#form_step23 {
+				flex: 0 0 100%;
+				max-width: 100%;
+				min-width: 0;
 			}
 
 			.f_white {
@@ -2468,16 +2473,21 @@
 				document.getElementById('select_model').value = id;
 				if ( id == 'model_sur'){
 					// 隐藏anova和mrmr
-					document.getElementById('fsm_radio').style.display = 'none',
+					document.getElementById('fsm_radio').style.display = 'none';
 					// 不可选状态
-					$("input[name='fsm'][value='A']").attr('disabled','true')
-					$("input[name='fsm'][value='M']").attr('disabled','true')
+					$("input[name='fsm'][value='A']").prop('disabled', true);
+					$("input[name='fsm'][value='M']").prop('disabled', true);
 					// 选择指定radio进行checked
-					$("input[name='fsm'][value='C']").prop('checked','true')
+					$("input[name='fsm'][value='C']").prop('checked', true);
 					// console.log(($("input[name='fsm']:checked").val()))
 				}else
 				{
-					document.getElementById('fsm_radio').style.display = 'block'
+					document.getElementById('fsm_radio').style.display = 'block';
+					$("input[name='fsm'][value='A']").prop('disabled', false);
+					$("input[name='fsm'][value='M']").prop('disabled', false);
+					if ($("input[name='fsm']:checked").val() === 'C') {
+						$("input[name='fsm'][value='A']").prop('checked', true);
+					}
 				}
 				
 			}
