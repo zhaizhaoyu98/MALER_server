@@ -1,6 +1,6 @@
 # MALER 回复信最终一致性记录
 
-_用于核对 `v1.0.0-review2` 回复信、正文、补充材料和代码是否一致_
+_用于核对 `v1.0.0-review3` 回复信、正文、补充材料和代码是否一致_
 
 ## 已完成的关键修正
 
@@ -13,7 +13,7 @@ _用于核对 `v1.0.0-review2` 回复信、正文、补充材料和代码是否�
 | 已完成功能仍写 future | PCA、no reduction、扩展指标、完整 bundle、bootstrap CI 改为已实现 |
 | legacy 路径“不可访问”但仍有 helper | `get_cp_combination` 已取消路由，公共计算统一走验证引擎 |
 | 36 项测试 | 更新为 46 项测试全部通过 |
-| 仓库 pending | 更新为 GitHub/Gitee 公开、MIT、`v1.0.0-review2` |
+| 仓库 pending | 更新为 GitHub/Gitee 公开、MIT、`v1.0.0-review3` |
 | Figure 2 六面板 | 更新为含 scaling guidance 的七面板正式合图 |
 | Figure 3 旧页面截图 | 更新为 checksum-locked 定量验证图 |
 | 预测对齐只写“允许重排” | 增加页面报告重排列和忽略额外特征的说明 |
@@ -22,7 +22,7 @@ _用于核对 `v1.0.0-review2` 回复信、正文、补充材料和代码是否�
 
 Source code and reproducibility materials are publicly available under the MIT
 License at <https://github.com/zhaizhaoyu98/MALER_server>, mirrored at
-<https://gitee.com/zhaoyuzhai/MLSERVER>, as release `v1.0.0-review2`.
+<https://gitee.com/zhaoyuzhai/MLSERVER>, as release `v1.0.0-review3`.
 The release includes pinned Windows and Linux Conda specifications, example
 data, validation and figure-generation scripts, fixed seeds, source hashes,
 machine-readable results, deployment templates, and 46 passing Django tests.
@@ -35,10 +35,10 @@ machine-readable results, deployment templates, and 46 passing Django tests.
 可写：2026-09-22 对 `13d6b3e` 的阿里云 HTTP 部署完成主页、分析、预测、帮助和
 方法注册表冒烟检查；缓存静态路径返回 404；六项非 TLS 应用控制通过。
 
-不可写：review2 已部署、HTTPS 已完成、HSTS/secure-cookie 已实机通过、独立渗透
+不可写：review3 已部署、HTTPS 已完成、HSTS/secure-cookie 已实机通过、独立渗透
 测试完成、存储已加密、备份恢复已验证。
 
-本轮用户明确要求不更新阿里云，因此回复信必须区分“公开源码 review2”和
+本轮用户明确要求不更新阿里云，因此回复信必须区分“公开源码 review3”和
 “线上已验证版本 13d6b3e”。
 
 ## 预测特征对齐回复

@@ -1,6 +1,6 @@
 # MALER 审稿意见与实现侧最终对照
 
-_按 `v1.0.0-review2` 代码和 46 项测试更新_
+_按 `v1.0.0-review3` 代码和 46 项测试更新_
 
 ## 结论
 
@@ -39,7 +39,7 @@ _按 `v1.0.0-review2` 代码和 46 项测试更新_
 | 示例数据 | 四类任务示例位于静态示例目录 |
 | 验证脚本和结果 | `validation/` 与 `validation/results/` |
 | 公开地址 | GitHub 与 Gitee 均可匿名读取 |
-| 版本标签 | `v1.0.0-review2` |
+| 版本标签 | `v1.0.0-review3` |
 
 审稿意见使用“scripts or notebooks”。现有脚本、示例、固定随机种子、校验哈希和
 机器可读结果已经满足可复现路径，因此回复信不声称提供 notebook。
@@ -71,7 +71,7 @@ _按 `v1.0.0-review2` 代码和 46 项测试更新_
 
 ## 工程卫生后续项
 
-以下不阻塞 review2，但后续应处理：旧 `.bak` 模板、孤立 `send_email.py`、
+以下不阻塞 review3，但后续应处理：旧 `.bak` 模板、孤立 `send_email.py`、
 定时缓存清理、部署维护责任和独立参考脚本对照。
 
 相关状态见 [`revision-status.md`](revision-status.md)，最终回复口径见

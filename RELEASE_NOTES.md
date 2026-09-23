@@ -1,7 +1,12 @@
-# MALER v1.0.0-review2
+# MALER v1.0.0-review3
 
 This release freezes the merged code, reproducibility evidence, and publication
 statements prepared for the current peer-review revision.
+
+It supersedes the immutable `v1.0.0-review2` snapshot by adding the final local
+browser-acceptance fixes and synchronizing the release documentation. The
+reported validation datasets, metrics, and scientific conclusions are
+unchanged.
 
 ## Main changes
 

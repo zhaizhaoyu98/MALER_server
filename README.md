@@ -98,6 +98,6 @@ secrets outside the repository and follow [`deployment/README.md`](deployment/RE
 
 ## Version and license
 
-The peer-review release is tagged `v1.0.0-review2`. Source code is distributed
+The peer-review release is tagged `v1.0.0-review3`. Source code is distributed
 under the [MIT License](LICENSE). Third-party assets retain their respective
 licenses.
