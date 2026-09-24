@@ -74,12 +74,13 @@ alter prediction values.
 
 ## 作者仍需人工确认
 
-- Word/Zotero Refresh 不出现缺失条目。
+- Zotero Refresh 已在与正式 clean 手稿逐字节相同的副本上运行，81 条书目与字段无错误；若作者后续改引文，需重新 Refresh，勿 Unlink Citations。
 - 作者、单位、基金、通讯作者、利益冲突和伦理声明真实无误。
 - 投稿系统中的文件类别和期刊图片规范。
 - 服务器维护期限与负责人。
-- 新代码/结果版本公开、云端最终同步复测、Word 逐页视觉核对。
+- 仅作者可确认的作者与基金资料、伦理/利益冲突、期刊上传类别和图像规范；线上仍仅 HTTP，长期维护责任需真实落实。
 
 最终回复信保持 55 个 Comment、55 个 Response 和 55 个
 Changes in the manuscript 段落；本轮新增完成声明由本地代码、图和验证记录支持，
-公开仓库对应版本仍须另行发布。
+公开仓库 `v1.0.0-review4` 与后续部署状态文档已在 GitHub/Gitee 发布；
+云端应用源码为 `35aa116`，Word/LibreOffice 排版核验已完成。
