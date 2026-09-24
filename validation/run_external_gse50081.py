@@ -2,10 +2,10 @@
 
 The model family, feature mapping and selected feature count are reconstructed
 deterministically from TCGA exactly as in run_external_gse37745.py.  GSE37745
-is used only to calibrate a single probability threshold; GSE50081 is then an
-independent cohort and never enters feature, parameter or threshold choice.
-This patient-level reanalysis is not a newly untouched evaluation: earlier
-releases already reported this cohort's outcomes.
+is used only to calibrate a single probability threshold. GSE50081 is an
+independent study and its outcomes do not enter this rerun's feature, parameter,
+or threshold choice. This retrospective patient-level reanalysis is not a
+newly untouched test: earlier releases already reported the cohort's outcomes.
 """
 
 from __future__ import absolute_import, print_function

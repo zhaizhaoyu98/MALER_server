@@ -74,7 +74,7 @@
     <div class="alert alert-secondary">No validated result has been generated for this project.</div>
     {% endif %}
     <hr>
-    <p>Access tokens expire after the configured retention period (24 hours by default). Physical removal of cached files requires the operator's cleanup job; do not upload directly identifying or sensitive patient data.</p>
+    <p>Result links expire after 24 hours by default; this does not delete stored files. Physical removal of cached files requires the operator's cleanup job. Do not upload directly identifying or sensitive patient data.</p>
     <form method="post" action="/maler/task/{{ projectid }}/delete" onsubmit="return confirm('Permanently delete this project and all generated files?');">
         {% csrf_token %}
         <input type="hidden" name="access_token" value="{{ access_token }}">

@@ -18,7 +18,8 @@ Public mirrors:
 
 ## Public instance
 
-The maintained HTTP endpoint is:
+The public HTTP demonstration last verified on 22 September 2026 ran the older
+commit `13d6b3e`, not the patient-corrected `v1.0.0-review4` release:
 
 - <http://www.inbirg.com/maler/home>
 
@@ -41,7 +42,8 @@ mamba run -n gene_edit python manage.py runserver 127.0.0.1:8000
 
 Then open <http://127.0.0.1:8000/maler/home>. Gunicorn and uWSGI are excluded
 from the Windows environment because they are Linux deployment components.
-The release test suite contains 46 tests.
+The current local release test suite contains 50 Django tests, plus three
+patient-partition tests (`python -m unittest validation.test_patient_partition`).
 
 ## Validation design
 
@@ -58,10 +60,14 @@ mamba run -n gene_edit python validation/run_reviewer_validation.py
 mamba run -n gene_edit python validation/make_main_figure3.py
 ```
 
-The locked binary-classification example contains 312 development samples and
-302 held-out samples. The held-out balanced accuracy is 0.954 (95% bootstrap CI
-0.931–0.977), ROC-AUC is 0.987 (0.973–0.997), and PR-AUC is 0.989
-(0.980–0.997). These values are read from
+The source binary-classification matrix contained 312 development and 302
+held-out specimens. After an outcome-blind patient-level overlap and aliquot
+audit, the corrected analysis has 309 development and 299 internal held-out
+patients. The held-out balanced accuracy is 0.940 (95% bootstrap CI
+0.911–0.965), ROC-AUC is 0.983 (0.967–0.995), and PR-AUC is 0.987.
+The original split-generation seed and upstream filtering protocol cannot be
+reconstructed, so the internal held-out estimate is not independent external
+validation. These values are read from
 `validation/results/binary_classification.json`; the figure script verifies the
 dataset and model-bundle hashes and independently recomputes all reported test
 metrics before drawing.
@@ -69,7 +75,8 @@ metrics before drawing.
 Additional scripts cover multiclass classification, regression, survival
 analysis, feature-selection baselines, fold-local PCA sensitivity, capacity,
 configuration-level security checks, and two real independent lung-cancer
-cohorts. See [`validation/README.md`](validation/README.md) for the complete
+GEO lung-cohort reanalyses. GSE50081 was reported before this correction and
+is not a newly untouched final test. See [`validation/README.md`](validation/README.md) for the complete
 protocol, accession identifiers, checksums, commands, and limitations.
 
 ## Repository map
@@ -98,6 +105,8 @@ secrets outside the repository and follow [`deployment/README.md`](deployment/RE
 
 ## Version and license
 
-The peer-review release is tagged `v1.0.0-review3`. Source code is distributed
+The patient-corrected peer-review source release is tagged `v1.0.0-review4`;
+`v1.0.0-review3` is a historical baseline. The current local documentation
+edits are not part of that existing tag. Source code is distributed
 under the [MIT License](LICENSE). Third-party assets retain their respective
 licenses.
