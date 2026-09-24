@@ -18,8 +18,12 @@ Public mirrors:
 
 ## Public instance
 
-The public HTTP demonstration last verified on 22 September 2026 ran the older
-commit `13d6b3e`, not the patient-corrected `v1.0.0-review4` release:
+The public HTTP demonstration was updated to the patient-corrected application
+source at commit `35aa116` on 24 September 2026. The home, analysis, prediction,
+and help pages returned HTTP 200 after the worker reload; both upload pages
+displayed the authorization-confirmation field. This was a page-level smoke
+test, not an end-to-end upload or a security assessment. The reproducibility
+source and results remain tagged `v1.0.0-review4`:
 
 - <http://www.inbirg.com/maler/home>
 
