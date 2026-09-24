@@ -5,6 +5,12 @@ manuscript. It is deliberately separate from historical interactive analysis
 views: results from these scripts must not be generalized to a legacy UI branch
 until that branch has been migrated and integration-tested.
 
+The public `figures/` folder contains main Figure 1 (SVG), Figure 2
+(PNG/PDF), Figure 3 (PNG/PDF with generation audit and held-out predictions),
+and Supplementary Figures S1–S6 (PNG/PDF). Submission-format TIFF copies and
+the Word manuscript, response letter, and tables remain in the local journal
+submission package rather than this source repository.
+
 ## Windows environment
 
 The tested environment is `gene_edit` under Miniforge. The minimal Windows
