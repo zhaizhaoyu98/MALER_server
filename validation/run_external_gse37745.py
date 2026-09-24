@@ -302,7 +302,7 @@ def main():
             "feature_availability_filter": "GPL570 mapping only; no external outcome used",
             "primary_normalization": "within-sample percentile ranks; independent per sample",
             "training_selection": "TCGA training partition only, inner 5-fold CV",
-            "internal_validation": "repository-declared untouched TCGA test partition",
+            "internal_validation": "repository-declared TCGA internal held-out partition, excluded from current selection and tuning",
             "external_validation": "all adeno/squamous GSE37745 samples, evaluated once",
             "positive_class": str(final.classes_[-1]),
         },

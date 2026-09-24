@@ -1,61 +1,61 @@
 {
   "binary": {
-    "elapsed_seconds": 35.2330531,
+    "elapsed_seconds": 40.9460711,
     "final_best_params": {
       "model__C": 0.1,
       "selector__n_components": 50
     },
     "heldout_metrics": {
-      "accuracy": 0.956953642384106,
-      "balanced_accuracy": 0.956902223976839,
-      "f1": 0.9562289562289561,
-      "mcc": 0.9139046754827383,
+      "accuracy": 0.9531772575250836,
+      "balanced_accuracy": 0.9531767337807606,
+      "f1": 0.9530201342281879,
+      "mcc": 0.9063534675615212,
       "per_class": {
         "LUAD": {
-          "sensitivity": 0.9607843137254902,
+          "sensitivity": 0.9533333333333334,
           "specificity": 0.9530201342281879
         },
         "LUSC": {
           "sensitivity": 0.9530201342281879,
-          "specificity": 0.9607843137254902
+          "specificity": 0.9533333333333334
         }
       },
-      "pr_auc": 0.9893292311035373,
-      "precision": 0.9594594594594594,
+      "pr_auc": 0.9890564386382721,
+      "precision": 0.9530201342281879,
       "recall_sensitivity": 0.9530201342281879,
-      "roc_auc": 0.9861385269991665,
-      "specificity": 0.9607843137254902
+      "roc_auc": 0.9855033557046979,
+      "specificity": 0.9533333333333334
     },
     "interpretation": "PCA components are predictive dimensions, not gene-level candidate signatures.",
     "name": "binary",
     "nested_cv": {
       "folds": [
         {
-          "accuracy": 0.9682539682539683,
-          "balanced_accuracy": 0.9682459677419355,
+          "accuracy": 0.9354838709677419,
+          "balanced_accuracy": 0.934375,
           "best_params": {
             "model__C": 0.1,
-            "selector__n_components": 50
+            "selector__n_components": 10
           },
-          "f1": 0.96875,
+          "f1": 0.9393939393939394,
           "fold": 1,
-          "mcc": 0.936491935483871,
-          "n_test": 63,
-          "n_train": 249,
+          "mcc": 0.8723925736278413,
+          "n_test": 62,
+          "n_train": 247,
           "per_class": {
             "LUAD": {
-              "sensitivity": 0.967741935483871,
+              "sensitivity": 0.9,
               "specificity": 0.96875
             },
             "LUSC": {
               "sensitivity": 0.96875,
-              "specificity": 0.967741935483871
+              "specificity": 0.9
             }
           },
-          "pr_auc": 0.9950657894736842,
-          "precision": 0.96875,
+          "pr_auc": 0.9900265957446809,
+          "precision": 0.9117647058823529,
           "recall_sensitivity": 0.96875,
-          "roc_auc": 0.9939516129032258,
+          "roc_auc": 0.984375,
           "selected_features": [
             "PC1",
             "PC2",
@@ -66,62 +66,22 @@
             "PC7",
             "PC8",
             "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20",
-            "PC21",
-            "PC22",
-            "PC23",
-            "PC24",
-            "PC25",
-            "PC26",
-            "PC27",
-            "PC28",
-            "PC29",
-            "PC30",
-            "PC31",
-            "PC32",
-            "PC33",
-            "PC34",
-            "PC35",
-            "PC36",
-            "PC37",
-            "PC38",
-            "PC39",
-            "PC40",
-            "PC41",
-            "PC42",
-            "PC43",
-            "PC44",
-            "PC45",
-            "PC46",
-            "PC47",
-            "PC48",
-            "PC49",
-            "PC50"
+            "PC10"
           ],
-          "specificity": 0.967741935483871
+          "specificity": 0.9
         },
         {
           "accuracy": 1.0,
           "balanced_accuracy": 1.0,
           "best_params": {
-            "model__C": 0.1,
-            "selector__n_components": 50
+            "model__C": 10.0,
+            "selector__n_components": 10
           },
           "f1": 1.0,
           "fold": 2,
           "mcc": 1.0,
-          "n_test": 63,
-          "n_train": 249,
+          "n_test": 62,
+          "n_train": 247,
           "per_class": {
             "LUAD": {
               "sensitivity": 1.0,
@@ -146,236 +106,126 @@
             "PC7",
             "PC8",
             "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20",
-            "PC21",
-            "PC22",
-            "PC23",
-            "PC24",
-            "PC25",
-            "PC26",
-            "PC27",
-            "PC28",
-            "PC29",
-            "PC30",
-            "PC31",
-            "PC32",
-            "PC33",
-            "PC34",
-            "PC35",
-            "PC36",
-            "PC37",
-            "PC38",
-            "PC39",
-            "PC40",
-            "PC41",
-            "PC42",
-            "PC43",
-            "PC44",
-            "PC45",
-            "PC46",
-            "PC47",
-            "PC48",
-            "PC49",
-            "PC50"
+            "PC10"
           ],
           "specificity": 1.0
-        },
-        {
-          "accuracy": 0.9516129032258065,
-          "balanced_accuracy": 0.9516129032258065,
-          "best_params": {
-            "model__C": 0.1,
-            "selector__n_components": 50
-          },
-          "f1": 0.9523809523809523,
-          "fold": 3,
-          "mcc": 0.9036961141150639,
-          "n_test": 62,
-          "n_train": 250,
-          "per_class": {
-            "LUAD": {
-              "sensitivity": 0.9354838709677419,
-              "specificity": 0.967741935483871
-            },
-            "LUSC": {
-              "sensitivity": 0.967741935483871,
-              "specificity": 0.9354838709677419
-            }
-          },
-          "pr_auc": 0.9886446409989594,
-          "precision": 0.9375,
-          "recall_sensitivity": 0.967741935483871,
-          "roc_auc": 0.9864724245577524,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20",
-            "PC21",
-            "PC22",
-            "PC23",
-            "PC24",
-            "PC25",
-            "PC26",
-            "PC27",
-            "PC28",
-            "PC29",
-            "PC30",
-            "PC31",
-            "PC32",
-            "PC33",
-            "PC34",
-            "PC35",
-            "PC36",
-            "PC37",
-            "PC38",
-            "PC39",
-            "PC40",
-            "PC41",
-            "PC42",
-            "PC43",
-            "PC44",
-            "PC45",
-            "PC46",
-            "PC47",
-            "PC48",
-            "PC49",
-            "PC50"
-          ],
-          "specificity": 0.9354838709677419
-        },
-        {
-          "accuracy": 0.9032258064516129,
-          "balanced_accuracy": 0.903225806451613,
-          "best_params": {
-            "model__C": 0.1,
-            "selector__n_components": 50
-          },
-          "f1": 0.896551724137931,
-          "fold": 4,
-          "mcc": 0.8132500607904444,
-          "n_test": 62,
-          "n_train": 250,
-          "per_class": {
-            "LUAD": {
-              "sensitivity": 0.967741935483871,
-              "specificity": 0.8387096774193549
-            },
-            "LUSC": {
-              "sensitivity": 0.8387096774193549,
-              "specificity": 0.967741935483871
-            }
-          },
-          "pr_auc": 0.9696774926332314,
-          "precision": 0.9629629629629629,
-          "recall_sensitivity": 0.8387096774193549,
-          "roc_auc": 0.9625390218522373,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20",
-            "PC21",
-            "PC22",
-            "PC23",
-            "PC24",
-            "PC25",
-            "PC26",
-            "PC27",
-            "PC28",
-            "PC29",
-            "PC30",
-            "PC31",
-            "PC32",
-            "PC33",
-            "PC34",
-            "PC35",
-            "PC36",
-            "PC37",
-            "PC38",
-            "PC39",
-            "PC40",
-            "PC41",
-            "PC42",
-            "PC43",
-            "PC44",
-            "PC45",
-            "PC46",
-            "PC47",
-            "PC48",
-            "PC49",
-            "PC50"
-          ],
-          "specificity": 0.967741935483871
         },
         {
           "accuracy": 0.9193548387096774,
           "balanced_accuracy": 0.9193548387096775,
           "best_params": {
-            "model__C": 10.0,
+            "model__C": 1.0,
+            "selector__n_components": 20
+          },
+          "f1": 0.923076923076923,
+          "fold": 3,
+          "mcc": 0.8426648406178137,
+          "n_test": 62,
+          "n_train": 247,
+          "per_class": {
+            "LUAD": {
+              "sensitivity": 0.8709677419354839,
+              "specificity": 0.967741935483871
+            },
+            "LUSC": {
+              "sensitivity": 0.967741935483871,
+              "specificity": 0.8709677419354839
+            }
+          },
+          "pr_auc": 0.9895353302611367,
+          "precision": 0.8823529411764706,
+          "recall_sensitivity": 0.967741935483871,
+          "roc_auc": 0.9864724245577523,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20"
+          ],
+          "specificity": 0.8709677419354839
+        },
+        {
+          "accuracy": 0.9193548387096774,
+          "balanced_accuracy": 0.9193548387096775,
+          "best_params": {
+            "model__C": 0.1,
+            "selector__n_components": 10
+          },
+          "f1": 0.9122807017543859,
+          "fold": 4,
+          "mcc": 0.8498365855987975,
+          "n_test": 62,
+          "n_train": 247,
+          "per_class": {
+            "LUAD": {
+              "sensitivity": 1.0,
+              "specificity": 0.8387096774193549
+            },
+            "LUSC": {
+              "sensitivity": 0.8387096774193549,
+              "specificity": 1.0
+            }
+          },
+          "pr_auc": 0.9821474954042964,
+          "precision": 1.0,
+          "recall_sensitivity": 0.8387096774193549,
+          "roc_auc": 0.9781477627471384,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10"
+          ],
+          "specificity": 1.0
+        },
+        {
+          "accuracy": 0.9180327868852459,
+          "balanced_accuracy": 0.9188172043010753,
+          "best_params": {
+            "model__C": 0.1,
             "selector__n_components": 10
           },
           "f1": 0.9152542372881356,
           "fold": 5,
-          "mcc": 0.8426648406178137,
-          "n_test": 62,
-          "n_train": 250,
+          "mcc": 0.8403496001916638,
+          "n_test": 61,
+          "n_train": 248,
           "per_class": {
             "LUAD": {
-              "sensitivity": 0.967741935483871,
+              "sensitivity": 0.9666666666666667,
               "specificity": 0.8709677419354839
             },
             "LUSC": {
               "sensitivity": 0.8709677419354839,
-              "specificity": 0.967741935483871
+              "specificity": 0.9666666666666667
             }
           },
-          "pr_auc": 0.9905652176091553,
+          "pr_auc": 0.9704505708870035,
           "precision": 0.9642857142857143,
           "recall_sensitivity": 0.8709677419354839,
-          "roc_auc": 0.9895941727367326,
+          "roc_auc": 0.9655913978494624,
           "selected_features": [
             "PC1",
             "PC2",
@@ -388,34 +238,34 @@
             "PC9",
             "PC10"
           ],
-          "specificity": 0.967741935483871
+          "specificity": 0.9666666666666667
         },
         {
-          "accuracy": 0.8888888888888888,
-          "balanced_accuracy": 0.8891129032258065,
+          "accuracy": 0.9193548387096774,
+          "balanced_accuracy": 0.9208333333333334,
           "best_params": {
-            "model__C": 0.1,
+            "model__C": 10.0,
             "selector__n_components": 10
           },
-          "f1": 0.8888888888888888,
+          "f1": 0.9180327868852458,
           "fold": 6,
-          "mcc": 0.7782258064516129,
-          "n_test": 63,
-          "n_train": 249,
+          "mcc": 0.8429848611574928,
+          "n_test": 62,
+          "n_train": 247,
           "per_class": {
             "LUAD": {
-              "sensitivity": 0.9032258064516129,
+              "sensitivity": 0.9666666666666667,
               "specificity": 0.875
             },
             "LUSC": {
               "sensitivity": 0.875,
-              "specificity": 0.9032258064516129
+              "specificity": 0.9666666666666667
             }
           },
-          "pr_auc": 0.9713642175238127,
-          "precision": 0.9032258064516129,
+          "pr_auc": 0.9700912324464154,
+          "precision": 0.9655172413793104,
           "recall_sensitivity": 0.875,
-          "roc_auc": 0.9627016129032258,
+          "roc_auc": 0.9552083333333333,
           "selected_features": [
             "PC1",
             "PC2",
@@ -428,34 +278,34 @@
             "PC9",
             "PC10"
           ],
-          "specificity": 0.9032258064516129
+          "specificity": 0.9666666666666667
         },
         {
-          "accuracy": 0.9206349206349206,
-          "balanced_accuracy": 0.920866935483871,
+          "accuracy": 0.9354838709677419,
+          "balanced_accuracy": 0.9354838709677419,
           "best_params": {
             "model__C": 0.1,
             "selector__n_components": 50
           },
-          "f1": 0.9206349206349206,
+          "f1": 0.9354838709677419,
           "fold": 7,
-          "mcc": 0.8417338709677419,
-          "n_test": 63,
-          "n_train": 249,
+          "mcc": 0.8709677419354839,
+          "n_test": 62,
+          "n_train": 247,
           "per_class": {
             "LUAD": {
-              "sensitivity": 0.90625,
+              "sensitivity": 0.9354838709677419,
               "specificity": 0.9354838709677419
             },
             "LUSC": {
               "sensitivity": 0.9354838709677419,
-              "specificity": 0.90625
+              "specificity": 0.9354838709677419
             }
           },
-          "pr_auc": 0.9933808127356514,
-          "precision": 0.90625,
+          "pr_auc": 0.9868657036175552,
+          "precision": 0.9354838709677419,
           "recall_sensitivity": 0.9354838709677419,
-          "roc_auc": 0.9929435483870968,
+          "roc_auc": 0.984391259105099,
           "selected_features": [
             "PC1",
             "PC2",
@@ -507,123 +357,33 @@
             "PC48",
             "PC49",
             "PC50"
-          ],
-          "specificity": 0.90625
-        },
-        {
-          "accuracy": 1.0,
-          "balanced_accuracy": 1.0,
-          "best_params": {
-            "model__C": 0.1,
-            "selector__n_components": 10
-          },
-          "f1": 1.0,
-          "fold": 8,
-          "mcc": 1.0,
-          "n_test": 62,
-          "n_train": 250,
-          "per_class": {
-            "LUAD": {
-              "sensitivity": 1.0,
-              "specificity": 1.0
-            },
-            "LUSC": {
-              "sensitivity": 1.0,
-              "specificity": 1.0
-            }
-          },
-          "pr_auc": 0.9999999999999998,
-          "precision": 1.0,
-          "recall_sensitivity": 1.0,
-          "roc_auc": 1.0,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10"
-          ],
-          "specificity": 1.0
-        },
-        {
-          "accuracy": 0.8548387096774194,
-          "balanced_accuracy": 0.8548387096774193,
-          "best_params": {
-            "model__C": 1.0,
-            "selector__n_components": 20
-          },
-          "f1": 0.8421052631578947,
-          "fold": 9,
-          "mcc": 0.7190924955066748,
-          "n_test": 62,
-          "n_train": 250,
-          "per_class": {
-            "LUAD": {
-              "sensitivity": 0.9354838709677419,
-              "specificity": 0.7741935483870968
-            },
-            "LUSC": {
-              "sensitivity": 0.7741935483870968,
-              "specificity": 0.9354838709677419
-            }
-          },
-          "pr_auc": 0.9398525566957023,
-          "precision": 0.9230769230769231,
-          "recall_sensitivity": 0.7741935483870968,
-          "roc_auc": 0.9177939646201873,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20"
           ],
           "specificity": 0.9354838709677419
         },
         {
-          "accuracy": 1.0,
-          "balanced_accuracy": 1.0,
+          "accuracy": 0.9838709677419355,
+          "balanced_accuracy": 0.9838709677419355,
           "best_params": {
             "model__C": 0.1,
             "selector__n_components": 50
           },
-          "f1": 1.0,
-          "fold": 10,
-          "mcc": 1.0,
+          "f1": 0.9841269841269841,
+          "fold": 8,
+          "mcc": 0.9682458365518543,
           "n_test": 62,
-          "n_train": 250,
+          "n_train": 247,
           "per_class": {
             "LUAD": {
-              "sensitivity": 1.0,
+              "sensitivity": 0.967741935483871,
               "specificity": 1.0
             },
             "LUSC": {
               "sensitivity": 1.0,
-              "specificity": 1.0
+              "specificity": 0.967741935483871
             }
           },
           "pr_auc": 0.9999999999999998,
-          "precision": 1.0,
+          "precision": 0.96875,
           "recall_sensitivity": 1.0,
           "roc_auc": 1.0,
           "selected_features": [
@@ -678,34 +438,34 @@
             "PC49",
             "PC50"
           ],
-          "specificity": 1.0
+          "specificity": 0.967741935483871
         },
         {
-          "accuracy": 0.9682539682539683,
-          "balanced_accuracy": 0.96875,
+          "accuracy": 0.8870967741935484,
+          "balanced_accuracy": 0.8870967741935484,
           "best_params": {
             "model__C": 0.1,
-            "selector__n_components": 20
+            "selector__n_components": 50
           },
-          "f1": 0.967741935483871,
-          "fold": 11,
-          "mcc": 0.9384464919119354,
-          "n_test": 63,
-          "n_train": 249,
+          "f1": 0.8771929824561403,
+          "fold": 9,
+          "mcc": 0.7844645405527362,
+          "n_test": 62,
+          "n_train": 247,
           "per_class": {
             "LUAD": {
-              "sensitivity": 1.0,
-              "specificity": 0.9375
+              "sensitivity": 0.967741935483871,
+              "specificity": 0.8064516129032258
             },
             "LUSC": {
-              "sensitivity": 0.9375,
-              "specificity": 1.0
+              "sensitivity": 0.8064516129032258,
+              "specificity": 0.967741935483871
             }
           },
-          "pr_auc": 0.9937704248366013,
-          "precision": 1.0,
-          "recall_sensitivity": 0.9375,
-          "roc_auc": 0.9929435483870968,
+          "pr_auc": 0.9667932149115146,
+          "precision": 0.9615384615384616,
+          "recall_sensitivity": 0.8064516129032258,
+          "roc_auc": 0.9625390218522374,
           "selected_features": [
             "PC1",
             "PC2",
@@ -726,36 +486,146 @@
             "PC17",
             "PC18",
             "PC19",
-            "PC20"
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
           ],
-          "specificity": 1.0
+          "specificity": 0.967741935483871
         },
         {
-          "accuracy": 0.9523809523809523,
-          "balanced_accuracy": 0.952116935483871,
+          "accuracy": 0.9836065573770492,
+          "balanced_accuracy": 0.9833333333333334,
+          "best_params": {
+            "model__C": 1.0,
+            "selector__n_components": 10
+          },
+          "f1": 0.9841269841269841,
+          "fold": 10,
+          "mcc": 0.9677077726944914,
+          "n_test": 61,
+          "n_train": 248,
+          "per_class": {
+            "LUAD": {
+              "sensitivity": 0.9666666666666667,
+              "specificity": 1.0
+            },
+            "LUSC": {
+              "sensitivity": 1.0,
+              "specificity": 0.9666666666666667
+            }
+          },
+          "pr_auc": 0.9999999999999998,
+          "precision": 0.96875,
+          "recall_sensitivity": 1.0,
+          "roc_auc": 1.0,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10"
+          ],
+          "specificity": 0.9666666666666667
+        },
+        {
+          "accuracy": 0.9354838709677419,
+          "balanced_accuracy": 0.9364583333333334,
+          "best_params": {
+            "model__C": 1.0,
+            "selector__n_components": 10
+          },
+          "f1": 0.9354838709677419,
+          "fold": 11,
+          "mcc": 0.8729166666666667,
+          "n_test": 62,
+          "n_train": 247,
+          "per_class": {
+            "LUAD": {
+              "sensitivity": 0.9666666666666667,
+              "specificity": 0.90625
+            },
+            "LUSC": {
+              "sensitivity": 0.90625,
+              "specificity": 0.9666666666666667
+            }
+          },
+          "pr_auc": 0.9759425773060797,
+          "precision": 0.9666666666666667,
+          "recall_sensitivity": 0.90625,
+          "roc_auc": 0.9614583333333333,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10"
+          ],
+          "specificity": 0.9666666666666667
+        },
+        {
+          "accuracy": 0.9516129032258065,
+          "balanced_accuracy": 0.9516129032258065,
           "best_params": {
             "model__C": 0.1,
             "selector__n_components": 10
           },
           "f1": 0.9508196721311476,
           "fold": 12,
-          "mcc": 0.9051467776828023,
-          "n_test": 63,
-          "n_train": 249,
+          "mcc": 0.9036961141150639,
+          "n_test": 62,
+          "n_train": 247,
           "per_class": {
             "LUAD": {
-              "sensitivity": 0.96875,
+              "sensitivity": 0.967741935483871,
               "specificity": 0.9354838709677419
             },
             "LUSC": {
               "sensitivity": 0.9354838709677419,
-              "specificity": 0.96875
+              "specificity": 0.967741935483871
             }
           },
-          "pr_auc": 0.9851133895766822,
+          "pr_auc": 0.9911931968661668,
           "precision": 0.9666666666666667,
           "recall_sensitivity": 0.9354838709677419,
-          "roc_auc": 0.9818548387096774,
+          "roc_auc": 0.9906347554630593,
           "selected_features": [
             "PC1",
             "PC2",
@@ -768,33 +638,73 @@
             "PC9",
             "PC10"
           ],
-          "specificity": 0.96875
+          "specificity": 0.967741935483871
         },
         {
-          "accuracy": 0.967741935483871,
-          "balanced_accuracy": 0.967741935483871,
+          "accuracy": 0.9354838709677419,
+          "balanced_accuracy": 0.9354838709677419,
           "best_params": {
-            "model__C": 0.1,
-            "selector__n_components": 20
+            "model__C": 10.0,
+            "selector__n_components": 10
           },
-          "f1": 0.9666666666666666,
+          "f1": 0.9354838709677419,
           "fold": 13,
-          "mcc": 0.937436866561092,
+          "mcc": 0.8709677419354839,
           "n_test": 62,
-          "n_train": 250,
+          "n_train": 247,
           "per_class": {
             "LUAD": {
-              "sensitivity": 1.0,
+              "sensitivity": 0.9354838709677419,
               "specificity": 0.9354838709677419
             },
             "LUSC": {
               "sensitivity": 0.9354838709677419,
+              "specificity": 0.9354838709677419
+            }
+          },
+          "pr_auc": 0.9909738960972356,
+          "precision": 0.9354838709677419,
+          "recall_sensitivity": 0.9354838709677419,
+          "roc_auc": 0.9895941727367326,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10"
+          ],
+          "specificity": 0.9354838709677419
+        },
+        {
+          "accuracy": 0.9354838709677419,
+          "balanced_accuracy": 0.935483870967742,
+          "best_params": {
+            "model__C": 1.0,
+            "selector__n_components": 50
+          },
+          "f1": 0.9310344827586207,
+          "fold": 14,
+          "mcc": 0.8783100656536799,
+          "n_test": 62,
+          "n_train": 247,
+          "per_class": {
+            "LUAD": {
+              "sensitivity": 1.0,
+              "specificity": 0.8709677419354839
+            },
+            "LUSC": {
+              "sensitivity": 0.8709677419354839,
               "specificity": 1.0
             }
           },
-          "pr_auc": 0.99213217938631,
+          "pr_auc": 0.9906716680259863,
           "precision": 1.0,
-          "recall_sensitivity": 0.9354838709677419,
+          "recall_sensitivity": 0.8709677419354839,
           "roc_auc": 0.9895941727367326,
           "selected_features": [
             "PC1",
@@ -816,36 +726,66 @@
             "PC17",
             "PC18",
             "PC19",
-            "PC20"
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
           ],
           "specificity": 1.0
         },
         {
-          "accuracy": 0.9354838709677419,
-          "balanced_accuracy": 0.935483870967742,
+          "accuracy": 0.9344262295081968,
+          "balanced_accuracy": 0.9349462365591398,
           "best_params": {
             "model__C": 1.0,
             "selector__n_components": 10
           },
           "f1": 0.9333333333333333,
-          "fold": 14,
-          "mcc": 0.8727860481775684,
-          "n_test": 62,
-          "n_train": 250,
+          "fold": 15,
+          "mcc": 0.8708293527361997,
+          "n_test": 61,
+          "n_train": 248,
           "per_class": {
             "LUAD": {
-              "sensitivity": 0.967741935483871,
+              "sensitivity": 0.9666666666666667,
               "specificity": 0.9032258064516129
             },
             "LUSC": {
               "sensitivity": 0.9032258064516129,
-              "specificity": 0.967741935483871
+              "specificity": 0.9666666666666667
             }
           },
-          "pr_auc": 0.9845929763448279,
+          "pr_auc": 0.9906260839403399,
           "precision": 0.9655172413793104,
           "recall_sensitivity": 0.9032258064516129,
-          "roc_auc": 0.9802289281997918,
+          "roc_auc": 0.9881720430107526,
           "selected_features": [
             "PC1",
             "PC2",
@@ -858,20 +798,420 @@
             "PC9",
             "PC10"
           ],
-          "specificity": 0.967741935483871
+          "specificity": 0.9666666666666667
+        },
+        {
+          "accuracy": 0.9516129032258065,
+          "balanced_accuracy": 0.953125,
+          "best_params": {
+            "model__C": 0.1,
+            "selector__n_components": 50
+          },
+          "f1": 0.9508196721311475,
+          "fold": 16,
+          "mcc": 0.9076693430779935,
+          "n_test": 62,
+          "n_train": 247,
+          "per_class": {
+            "LUAD": {
+              "sensitivity": 1.0,
+              "specificity": 0.90625
+            },
+            "LUSC": {
+              "sensitivity": 0.90625,
+              "specificity": 1.0
+            }
+          },
+          "pr_auc": 0.9927623603204723,
+          "precision": 1.0,
+          "recall_sensitivity": 0.90625,
+          "roc_auc": 0.9916666666666667,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
+          ],
+          "specificity": 1.0
+        },
+        {
+          "accuracy": 1.0,
+          "balanced_accuracy": 1.0,
+          "best_params": {
+            "model__C": 0.1,
+            "selector__n_components": 10
+          },
+          "f1": 1.0,
+          "fold": 17,
+          "mcc": 1.0,
+          "n_test": 62,
+          "n_train": 247,
+          "per_class": {
+            "LUAD": {
+              "sensitivity": 1.0,
+              "specificity": 1.0
+            },
+            "LUSC": {
+              "sensitivity": 1.0,
+              "specificity": 1.0
+            }
+          },
+          "pr_auc": 0.9999999999999998,
+          "precision": 1.0,
+          "recall_sensitivity": 1.0,
+          "roc_auc": 1.0,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10"
+          ],
+          "specificity": 1.0
+        },
+        {
+          "accuracy": 0.9354838709677419,
+          "balanced_accuracy": 0.935483870967742,
+          "best_params": {
+            "model__C": 0.1,
+            "selector__n_components": 20
+          },
+          "f1": 0.9310344827586207,
+          "fold": 18,
+          "mcc": 0.8783100656536799,
+          "n_test": 62,
+          "n_train": 247,
+          "per_class": {
+            "LUAD": {
+              "sensitivity": 1.0,
+              "specificity": 0.8709677419354839
+            },
+            "LUSC": {
+              "sensitivity": 0.8709677419354839,
+              "specificity": 1.0
+            }
+          },
+          "pr_auc": 0.9915407639150865,
+          "precision": 1.0,
+          "recall_sensitivity": 0.8709677419354839,
+          "roc_auc": 0.9906347554630592,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20"
+          ],
+          "specificity": 1.0
+        },
+        {
+          "accuracy": 0.9032258064516129,
+          "balanced_accuracy": 0.9032258064516129,
+          "best_params": {
+            "model__C": 0.1,
+            "selector__n_components": 20
+          },
+          "f1": 0.9032258064516129,
+          "fold": 19,
+          "mcc": 0.8064516129032258,
+          "n_test": 62,
+          "n_train": 247,
+          "per_class": {
+            "LUAD": {
+              "sensitivity": 0.9032258064516129,
+              "specificity": 0.9032258064516129
+            },
+            "LUSC": {
+              "sensitivity": 0.9032258064516129,
+              "specificity": 0.9032258064516129
+            }
+          },
+          "pr_auc": 0.9772145417306707,
+          "precision": 0.9032258064516129,
+          "recall_sensitivity": 0.9032258064516129,
+          "roc_auc": 0.9708636836628511,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20"
+          ],
+          "specificity": 0.9032258064516129
+        },
+        {
+          "accuracy": 0.9508196721311475,
+          "balanced_accuracy": 0.9510752688172043,
+          "best_params": {
+            "model__C": 0.1,
+            "selector__n_components": 20
+          },
+          "f1": 0.9508196721311476,
+          "fold": 20,
+          "mcc": 0.9021505376344086,
+          "n_test": 61,
+          "n_train": 248,
+          "per_class": {
+            "LUAD": {
+              "sensitivity": 0.9666666666666667,
+              "specificity": 0.9354838709677419
+            },
+            "LUSC": {
+              "sensitivity": 0.9354838709677419,
+              "specificity": 0.9666666666666667
+            }
+          },
+          "pr_auc": 0.9865485145990054,
+          "precision": 0.9666666666666667,
+          "recall_sensitivity": 0.9354838709677419,
+          "roc_auc": 0.9806451612903226,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20"
+          ],
+          "specificity": 0.9666666666666667
+        },
+        {
+          "accuracy": 0.9354838709677419,
+          "balanced_accuracy": 0.9364583333333334,
+          "best_params": {
+            "model__C": 10.0,
+            "selector__n_components": 50
+          },
+          "f1": 0.9354838709677419,
+          "fold": 21,
+          "mcc": 0.8729166666666667,
+          "n_test": 62,
+          "n_train": 247,
+          "per_class": {
+            "LUAD": {
+              "sensitivity": 0.9666666666666667,
+              "specificity": 0.90625
+            },
+            "LUSC": {
+              "sensitivity": 0.90625,
+              "specificity": 0.9666666666666667
+            }
+          },
+          "pr_auc": 0.9839620357712463,
+          "precision": 0.9666666666666667,
+          "recall_sensitivity": 0.90625,
+          "roc_auc": 0.9791666666666667,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
+          ],
+          "specificity": 0.9666666666666667
+        },
+        {
+          "accuracy": 0.9193548387096774,
+          "balanced_accuracy": 0.9193548387096774,
+          "best_params": {
+            "model__C": 10.0,
+            "selector__n_components": 20
+          },
+          "f1": 0.9206349206349206,
+          "fold": 22,
+          "mcc": 0.8391463916782737,
+          "n_test": 62,
+          "n_train": 247,
+          "per_class": {
+            "LUAD": {
+              "sensitivity": 0.9032258064516129,
+              "specificity": 0.9354838709677419
+            },
+            "LUSC": {
+              "sensitivity": 0.9354838709677419,
+              "specificity": 0.9032258064516129
+            }
+          },
+          "pr_auc": 0.9706777966851491,
+          "precision": 0.90625,
+          "recall_sensitivity": 0.9354838709677419,
+          "roc_auc": 0.9614984391259105,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20"
+          ],
+          "specificity": 0.9032258064516129
         },
         {
           "accuracy": 0.9193548387096774,
           "balanced_accuracy": 0.9193548387096774,
           "best_params": {
             "model__C": 0.1,
-            "selector__n_components": 10
+            "selector__n_components": 50
           },
           "f1": 0.9206349206349206,
-          "fold": 15,
+          "fold": 23,
           "mcc": 0.8391463916782737,
           "n_test": 62,
-          "n_train": 250,
+          "n_train": 247,
           "per_class": {
             "LUAD": {
               "sensitivity": 0.9032258064516129,
@@ -882,10 +1222,10 @@
               "specificity": 0.9032258064516129
             }
           },
-          "pr_auc": 0.9840259017956459,
+          "pr_auc": 0.9841852708694001,
           "precision": 0.90625,
           "recall_sensitivity": 0.9354838709677419,
-          "roc_auc": 0.9812695109261187,
+          "roc_auc": 0.983350676378772,
           "selected_features": [
             "PC1",
             "PC2",
@@ -896,376 +1236,76 @@
             "PC7",
             "PC8",
             "PC9",
-            "PC10"
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
           ],
           "specificity": 0.9032258064516129
         },
         {
-          "accuracy": 0.9365079365079365,
-          "balanced_accuracy": 0.9375,
-          "best_params": {
-            "model__C": 1.0,
-            "selector__n_components": 10
-          },
-          "f1": 0.9333333333333333,
-          "fold": 16,
-          "mcc": 0.8803408430829505,
-          "n_test": 63,
-          "n_train": 249,
-          "per_class": {
-            "LUAD": {
-              "sensitivity": 1.0,
-              "specificity": 0.875
-            },
-            "LUSC": {
-              "sensitivity": 0.875,
-              "specificity": 1.0
-            }
-          },
-          "pr_auc": 0.974708499394612,
-          "precision": 1.0,
-          "recall_sensitivity": 0.875,
-          "roc_auc": 0.9616935483870969,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10"
-          ],
-          "specificity": 1.0
-        },
-        {
-          "accuracy": 0.9682539682539683,
-          "balanced_accuracy": 0.967741935483871,
-          "best_params": {
-            "model__C": 0.1,
-            "selector__n_components": 10
-          },
-          "f1": 0.9666666666666666,
-          "fold": 17,
-          "mcc": 0.9383258538320467,
-          "n_test": 63,
-          "n_train": 249,
-          "per_class": {
-            "LUAD": {
-              "sensitivity": 1.0,
-              "specificity": 0.9354838709677419
-            },
-            "LUSC": {
-              "sensitivity": 0.9354838709677419,
-              "specificity": 1.0
-            }
-          },
-          "pr_auc": 0.9867558353002885,
-          "precision": 1.0,
-          "recall_sensitivity": 0.9354838709677419,
-          "roc_auc": 0.9838709677419355,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10"
-          ],
-          "specificity": 1.0
-        },
-        {
-          "accuracy": 0.967741935483871,
-          "balanced_accuracy": 0.967741935483871,
+          "accuracy": 0.9354838709677419,
+          "balanced_accuracy": 0.935483870967742,
           "best_params": {
             "model__C": 0.1,
             "selector__n_components": 50
           },
-          "f1": 0.967741935483871,
-          "fold": 18,
-          "mcc": 0.9354838709677419,
+          "f1": 0.9310344827586207,
+          "fold": 24,
+          "mcc": 0.8783100656536799,
           "n_test": 62,
-          "n_train": 250,
+          "n_train": 247,
           "per_class": {
             "LUAD": {
-              "sensitivity": 0.967741935483871,
-              "specificity": 0.967741935483871
-            },
-            "LUSC": {
-              "sensitivity": 0.967741935483871,
-              "specificity": 0.967741935483871
-            }
-          },
-          "pr_auc": 0.9944791305353219,
-          "precision": 0.967741935483871,
-          "recall_sensitivity": 0.967741935483871,
-          "roc_auc": 0.9937565036420396,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20",
-            "PC21",
-            "PC22",
-            "PC23",
-            "PC24",
-            "PC25",
-            "PC26",
-            "PC27",
-            "PC28",
-            "PC29",
-            "PC30",
-            "PC31",
-            "PC32",
-            "PC33",
-            "PC34",
-            "PC35",
-            "PC36",
-            "PC37",
-            "PC38",
-            "PC39",
-            "PC40",
-            "PC41",
-            "PC42",
-            "PC43",
-            "PC44",
-            "PC45",
-            "PC46",
-            "PC47",
-            "PC48",
-            "PC49",
-            "PC50"
-          ],
-          "specificity": 0.967741935483871
-        },
-        {
-          "accuracy": 0.9193548387096774,
-          "balanced_accuracy": 0.9193548387096775,
-          "best_params": {
-            "model__C": 0.1,
-            "selector__n_components": 20
-          },
-          "f1": 0.9152542372881356,
-          "fold": 19,
-          "mcc": 0.8426648406178137,
-          "n_test": 62,
-          "n_train": 250,
-          "per_class": {
-            "LUAD": {
-              "sensitivity": 0.967741935483871,
+              "sensitivity": 1.0,
               "specificity": 0.8709677419354839
             },
             "LUSC": {
               "sensitivity": 0.8709677419354839,
-              "specificity": 0.967741935483871
-            }
-          },
-          "pr_auc": 0.976633933340453,
-          "precision": 0.9642857142857143,
-          "recall_sensitivity": 0.8709677419354839,
-          "roc_auc": 0.9698231009365245,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20"
-          ],
-          "specificity": 0.967741935483871
-        },
-        {
-          "accuracy": 0.9516129032258065,
-          "balanced_accuracy": 0.9516129032258065,
-          "best_params": {
-            "model__C": 0.1,
-            "selector__n_components": 20
-          },
-          "f1": 0.9523809523809523,
-          "fold": 20,
-          "mcc": 0.9036961141150639,
-          "n_test": 62,
-          "n_train": 250,
-          "per_class": {
-            "LUAD": {
-              "sensitivity": 0.9354838709677419,
-              "specificity": 0.967741935483871
-            },
-            "LUSC": {
-              "sensitivity": 0.967741935483871,
-              "specificity": 0.9354838709677419
-            }
-          },
-          "pr_auc": 0.9955197132616487,
-          "precision": 0.9375,
-          "recall_sensitivity": 0.967741935483871,
-          "roc_auc": 0.9947970863683663,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20"
-          ],
-          "specificity": 0.9354838709677419
-        },
-        {
-          "accuracy": 0.9523809523809523,
-          "balanced_accuracy": 0.952116935483871,
-          "best_params": {
-            "model__C": 0.1,
-            "selector__n_components": 10
-          },
-          "f1": 0.9538461538461539,
-          "fold": 21,
-          "mcc": 0.9051467776828023,
-          "n_test": 63,
-          "n_train": 249,
-          "per_class": {
-            "LUAD": {
-              "sensitivity": 0.9354838709677419,
-              "specificity": 0.96875
-            },
-            "LUSC": {
-              "sensitivity": 0.96875,
-              "specificity": 0.9354838709677419
-            }
-          },
-          "pr_auc": 0.9917844059802113,
-          "precision": 0.9393939393939394,
-          "recall_sensitivity": 0.96875,
-          "roc_auc": 0.9919354838709677,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10"
-          ],
-          "specificity": 0.9354838709677419
-        },
-        {
-          "accuracy": 0.9523809523809523,
-          "balanced_accuracy": 0.952116935483871,
-          "best_params": {
-            "model__C": 0.1,
-            "selector__n_components": 10
-          },
-          "f1": 0.9508196721311476,
-          "fold": 22,
-          "mcc": 0.9051467776828023,
-          "n_test": 63,
-          "n_train": 249,
-          "per_class": {
-            "LUAD": {
-              "sensitivity": 0.96875,
-              "specificity": 0.9354838709677419
-            },
-            "LUSC": {
-              "sensitivity": 0.9354838709677419,
-              "specificity": 0.96875
-            }
-          },
-          "pr_auc": 0.9886189079737466,
-          "precision": 0.9666666666666667,
-          "recall_sensitivity": 0.9354838709677419,
-          "roc_auc": 0.9858870967741935,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10"
-          ],
-          "specificity": 0.96875
-        },
-        {
-          "accuracy": 0.967741935483871,
-          "balanced_accuracy": 0.967741935483871,
-          "best_params": {
-            "model__C": 0.1,
-            "selector__n_components": 50
-          },
-          "f1": 0.9666666666666666,
-          "fold": 23,
-          "mcc": 0.937436866561092,
-          "n_test": 62,
-          "n_train": 250,
-          "per_class": {
-            "LUAD": {
-              "sensitivity": 1.0,
-              "specificity": 0.9354838709677419
-            },
-            "LUSC": {
-              "sensitivity": 0.9354838709677419,
               "specificity": 1.0
             }
           },
-          "pr_auc": 0.9952727813289727,
+          "pr_auc": 0.9891792162231539,
           "precision": 1.0,
-          "recall_sensitivity": 0.9354838709677419,
-          "roc_auc": 0.9947970863683663,
+          "recall_sensitivity": 0.8709677419354839,
+          "roc_auc": 0.9875130072840791,
           "selected_features": [
             "PC1",
             "PC2",
@@ -1321,71 +1361,31 @@
           "specificity": 1.0
         },
         {
-          "accuracy": 0.9354838709677419,
-          "balanced_accuracy": 0.935483870967742,
-          "best_params": {
-            "model__C": 1.0,
-            "selector__n_components": 10
-          },
-          "f1": 0.9333333333333333,
-          "fold": 24,
-          "mcc": 0.8727860481775684,
-          "n_test": 62,
-          "n_train": 250,
-          "per_class": {
-            "LUAD": {
-              "sensitivity": 0.967741935483871,
-              "specificity": 0.9032258064516129
-            },
-            "LUSC": {
-              "sensitivity": 0.9032258064516129,
-              "specificity": 0.967741935483871
-            }
-          },
-          "pr_auc": 0.9831112250745176,
-          "precision": 0.9655172413793104,
-          "recall_sensitivity": 0.9032258064516129,
-          "roc_auc": 0.980228928199792,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10"
-          ],
-          "specificity": 0.967741935483871
-        },
-        {
-          "accuracy": 0.9354838709677419,
-          "balanced_accuracy": 0.935483870967742,
+          "accuracy": 0.9836065573770492,
+          "balanced_accuracy": 0.9838709677419355,
           "best_params": {
             "model__C": 0.1,
-            "selector__n_components": 20
+            "selector__n_components": 50
           },
-          "f1": 0.9333333333333333,
+          "f1": 0.9836065573770492,
           "fold": 25,
-          "mcc": 0.8727860481775684,
-          "n_test": 62,
-          "n_train": 250,
+          "mcc": 0.967741935483871,
+          "n_test": 61,
+          "n_train": 248,
           "per_class": {
             "LUAD": {
-              "sensitivity": 0.967741935483871,
-              "specificity": 0.9032258064516129
+              "sensitivity": 1.0,
+              "specificity": 0.967741935483871
             },
             "LUSC": {
-              "sensitivity": 0.9032258064516129,
-              "specificity": 0.967741935483871
+              "sensitivity": 0.967741935483871,
+              "specificity": 1.0
             }
           },
-          "pr_auc": 0.9859563375692406,
-          "precision": 0.9655172413793104,
-          "recall_sensitivity": 0.9032258064516129,
-          "roc_auc": 0.9812695109261186,
+          "pr_auc": 0.9999999999999998,
+          "precision": 1.0,
+          "recall_sensitivity": 0.967741935483871,
+          "roc_auc": 1.0,
           "selected_features": [
             "PC1",
             "PC2",
@@ -1406,32 +1406,62 @@
             "PC17",
             "PC18",
             "PC19",
-            "PC20"
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
           ],
-          "specificity": 0.967741935483871
+          "specificity": 1.0
         }
       ],
       "summary": {
         "accuracy": {
           "max": 1.0,
-          "mean": 0.9454787506400408,
-          "min": 0.8548387096774194,
+          "mean": 0.9411422527763088,
+          "min": 0.8870967741935484,
           "n": 25,
-          "std": 0.034415995480257866
+          "std": 0.02904083769175076
         },
         "balanced_accuracy": {
           "max": 1.0,
-          "mean": 0.9455040322580647,
-          "min": 0.8548387096774193,
+          "mean": 0.9413575268817205,
+          "min": 0.8870967741935484,
           "n": 25,
-          "std": 0.03437667513970944
+          "std": 0.02898786851275586
         },
         "f1": {
           "max": 1.0,
-          "mean": 0.9438855519680903,
-          "min": 0.8421052631578947,
+          "mean": 0.9400967610432339,
+          "min": 0.8771929824561403,
           "n": 25,
-          "std": 0.036452071429124516
+          "std": 0.030215301519216343
         },
         "fold": {
           "max": 25.0,
@@ -1442,59 +1472,59 @@
         },
         "mcc": {
           "max": 1.0,
-          "mean": 0.8928772696336938,
-          "min": 0.7190924955066748,
+          "mean": 0.8851270921786137,
+          "min": 0.7844645405527362,
           "n": 25,
-          "std": 0.06725025472951693
+          "std": 0.05652200616992226
         },
         "n_test": {
-          "max": 63.0,
-          "mean": 62.4,
-          "min": 62.0,
+          "max": 62.0,
+          "mean": 61.8,
+          "min": 61.0,
           "n": 25,
-          "std": 0.5
+          "std": 0.408248290463863
         },
         "n_train": {
-          "max": 250.0,
-          "mean": 249.6,
-          "min": 249.0,
+          "max": 248.0,
+          "mean": 247.2,
+          "min": 247.0,
           "n": 25,
-          "std": 0.49999999999999994
+          "std": 0.408248290463863
         },
         "pr_auc": {
           "max": 0.9999999999999998,
-          "mean": 0.9864410547747711,
-          "min": 0.9398525566957023,
+          "mean": 0.9868555226249037,
+          "min": 0.9667932149115146,
           "n": 25,
-          "std": 0.012870286236985324
+          "std": 0.010149104922396596
         },
         "precision": {
           "max": 1.0,
-          "mean": 0.96444432213648,
-          "min": 0.9032258064516129,
+          "mean": 0.9616734608278154,
+          "min": 0.8823529411764706,
           "n": 25,
-          "std": 0.03193109774026014
+          "std": 0.036344262314259086
         },
         "recall_sensitivity": {
           "max": 1.0,
-          "mean": 0.9256451612903226,
-          "min": 0.7741935483870968,
+          "mean": 0.9218548387096774,
+          "min": 0.8064516129032258,
           "n": 25,
-          "std": 0.05383187219212869
+          "std": 0.05250419622990318
         },
         "roc_auc": {
           "max": 1.0,
-          "mean": 0.9827978668054109,
-          "min": 0.9177939646201873,
+          "mean": 0.9832607093305584,
+          "min": 0.9552083333333333,
           "n": 25,
-          "std": 0.017675815987256805
+          "std": 0.013534837286667193
         },
         "specificity": {
           "max": 1.0,
-          "mean": 0.9653629032258064,
-          "min": 0.9032258064516129,
+          "mean": 0.9608602150537635,
+          "min": 0.8709677419354839,
           "n": 25,
-          "std": 0.03192011525022401
+          "std": 0.03855254847741411
         }
       }
     },
@@ -1502,592 +1532,70 @@
     "source_sha256": "0fc172c497de44e5bed111d18464c071fda6924c6a04af38038ea31aeedd80b9"
   },
   "multiclass": {
-    "elapsed_seconds": 52.2457993,
+    "elapsed_seconds": 60.9618383,
     "final_best_params": {
       "model__C": 10.0,
       "selector__n_components": 20
     },
     "heldout_metrics": {
-      "accuracy": 0.972457627118644,
-      "balanced_accuracy": 0.9723458572249623,
-      "f1": 0.9725187782239292,
-      "mcc": 0.9587466099428924,
+      "accuracy": 0.9722222222222222,
+      "balanced_accuracy": 0.9722188392265118,
+      "f1": 0.9723428849025196,
+      "mcc": 0.9584007451105745,
       "per_class": {
         "KIRC": {
           "sensitivity": 1.0,
-          "specificity": 0.9968354430379747
+          "specificity": 0.9968152866242038
         },
         "LUAD": {
-          "sensitivity": 0.9693251533742331,
-          "specificity": 0.9741100323624595
+          "sensitivity": 0.968944099378882,
+          "specificity": 0.9739413680781759
         },
         "LUSC": {
           "sensitivity": 0.9477124183006536,
-          "specificity": 0.987460815047022
+          "specificity": 0.9873015873015873
         }
       },
-      "pr_auc_macro": 0.9930034635483912,
-      "precision": 0.9728640548600592,
-      "recall_sensitivity": 0.9723458572249623,
-      "roc_auc_ovr_macro": 0.9962081756062373,
-      "specificity": 0.986135430149152
+      "pr_auc_macro": 0.9925054445908464,
+      "precision": 0.9726407539026679,
+      "recall_sensitivity": 0.9722188392265118,
+      "roc_auc_ovr_macro": 0.9959078177221232,
+      "specificity": 0.9860194140013223
     },
     "interpretation": "PCA components are predictive dimensions, not gene-level candidate signatures.",
     "name": "multiclass",
     "nested_cv": {
       "folds": [
         {
-          "accuracy": 0.979381443298969,
-          "balanced_accuracy": 0.9782913165266107,
+          "accuracy": 0.9896907216494846,
+          "balanced_accuracy": 0.9880952380952381,
           "best_params": {
-            "model__C": 1.0,
+            "model__C": 0.1,
             "selector__n_components": 50
           },
-          "f1": 0.9782913165266107,
+          "f1": 0.9891084760649979,
           "fold": 1,
-          "mcc": 0.9689301729660474,
+          "mcc": 0.9846086047317278,
           "n_test": 97,
-          "n_train": 388,
+          "n_train": 385,
           "per_class": {
             "KIRC": {
               "sensitivity": 1.0,
               "specificity": 1.0
             },
             "LUAD": {
-              "sensitivity": 0.9705882352941176,
+              "sensitivity": 1.0,
               "specificity": 0.9841269841269841
             },
             "LUSC": {
               "sensitivity": 0.9642857142857143,
-              "specificity": 0.9855072463768116
-            }
-          },
-          "pr_auc_macro": 0.9977178247911588,
-          "precision": 0.9782913165266107,
-          "recall_sensitivity": 0.9782913165266107,
-          "roc_auc_ovr_macro": 0.9988599304456082,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20",
-            "PC21",
-            "PC22",
-            "PC23",
-            "PC24",
-            "PC25",
-            "PC26",
-            "PC27",
-            "PC28",
-            "PC29",
-            "PC30",
-            "PC31",
-            "PC32",
-            "PC33",
-            "PC34",
-            "PC35",
-            "PC36",
-            "PC37",
-            "PC38",
-            "PC39",
-            "PC40",
-            "PC41",
-            "PC42",
-            "PC43",
-            "PC44",
-            "PC45",
-            "PC46",
-            "PC47",
-            "PC48",
-            "PC49",
-            "PC50"
-          ],
-          "specificity": 0.9898780768345986
-        },
-        {
-          "accuracy": 0.9587628865979382,
-          "balanced_accuracy": 0.9534391534391534,
-          "best_params": {
-            "model__C": 10.0,
-            "selector__n_components": 20
-          },
-          "f1": 0.9558404558404558,
-          "fold": 2,
-          "mcc": 0.9381691167253974,
-          "n_test": 97,
-          "n_train": 388,
-          "per_class": {
-            "KIRC": {
-              "sensitivity": 1.0,
-              "specificity": 1.0
-            },
-            "LUAD": {
-              "sensitivity": 0.9714285714285714,
-              "specificity": 0.9516129032258065
-            },
-            "LUSC": {
-              "sensitivity": 0.8888888888888888,
-              "specificity": 0.9857142857142858
-            }
-          },
-          "pr_auc_macro": 0.9851945891244357,
-          "precision": 0.9596396396396396,
-          "recall_sensitivity": 0.9534391534391534,
-          "roc_auc_ovr_macro": 0.9920805598224952,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20"
-          ],
-          "specificity": 0.9791090629800308
-        },
-        {
-          "accuracy": 0.979381443298969,
-          "balanced_accuracy": 0.9781305114638448,
-          "best_params": {
-            "model__C": 10.0,
-            "selector__n_components": 20
-          },
-          "f1": 0.9781305114638448,
-          "fold": 3,
-          "mcc": 0.9688603531300161,
-          "n_test": 97,
-          "n_train": 388,
-          "per_class": {
-            "KIRC": {
-              "sensitivity": 1.0,
-              "specificity": 1.0
-            },
-            "LUAD": {
-              "sensitivity": 0.9714285714285714,
-              "specificity": 0.9838709677419355
-            },
-            "LUSC": {
-              "sensitivity": 0.9629629629629629,
-              "specificity": 0.9857142857142858
-            }
-          },
-          "pr_auc_macro": 0.9935268254256616,
-          "precision": 0.9781305114638448,
-          "recall_sensitivity": 0.9781305114638448,
-          "roc_auc_ovr_macro": 0.9964385276213233,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20"
-          ],
-          "specificity": 0.9898617511520738
-        },
-        {
-          "accuracy": 0.979381443298969,
-          "balanced_accuracy": 0.9783950617283951,
-          "best_params": {
-            "model__C": 10.0,
-            "selector__n_components": 20
-          },
-          "f1": 0.978128567432507,
-          "fold": 4,
-          "mcc": 0.9690159058890067,
-          "n_test": 97,
-          "n_train": 388,
-          "per_class": {
-            "KIRC": {
-              "sensitivity": 0.9722222222222222,
-              "specificity": 1.0
-            },
-            "LUAD": {
-              "sensitivity": 1.0,
-              "specificity": 0.9841269841269841
-            },
-            "LUSC": {
-              "sensitivity": 0.9629629629629629,
-              "specificity": 0.9857142857142858
-            }
-          },
-          "pr_auc_macro": 0.996303004220111,
-          "precision": 0.9781305114638448,
-          "recall_sensitivity": 0.9783950617283951,
-          "roc_auc_ovr_macro": 0.9983193277310924,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20"
-          ],
-          "specificity": 0.98994708994709
-        },
-        {
-          "accuracy": 0.9484536082474226,
-          "balanced_accuracy": 0.9438997821350762,
-          "best_params": {
-            "model__C": 1.0,
-            "selector__n_components": 20
-          },
-          "f1": 0.9448014462370491,
-          "fold": 5,
-          "mcc": 0.9221872579378951,
-          "n_test": 97,
-          "n_train": 388,
-          "per_class": {
-            "KIRC": {
-              "sensitivity": 0.9722222222222222,
-              "specificity": 0.9836065573770492
-            },
-            "LUAD": {
-              "sensitivity": 0.9705882352941176,
-              "specificity": 0.9682539682539683
-            },
-            "LUSC": {
-              "sensitivity": 0.8888888888888888,
-              "specificity": 0.9714285714285714
-            }
-          },
-          "pr_auc_macro": 0.9925581971986622,
-          "precision": 0.946052096052096,
-          "recall_sensitivity": 0.9438997821350762,
-          "roc_auc_ovr_macro": 0.9964661152864304,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20"
-          ],
-          "specificity": 0.974429699019863
-        },
-        {
-          "accuracy": 1.0,
-          "balanced_accuracy": 1.0,
-          "best_params": {
-            "model__C": 10.0,
-            "selector__n_components": 50
-          },
-          "f1": 1.0,
-          "fold": 6,
-          "mcc": 1.0,
-          "n_test": 97,
-          "n_train": 388,
-          "per_class": {
-            "KIRC": {
-              "sensitivity": 1.0,
-              "specificity": 1.0
-            },
-            "LUAD": {
-              "sensitivity": 1.0,
-              "specificity": 1.0
-            },
-            "LUSC": {
-              "sensitivity": 1.0,
               "specificity": 1.0
             }
           },
           "pr_auc_macro": 1.0,
-          "precision": 1.0,
-          "recall_sensitivity": 1.0,
-          "roc_auc_ovr_macro": 1.0,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20",
-            "PC21",
-            "PC22",
-            "PC23",
-            "PC24",
-            "PC25",
-            "PC26",
-            "PC27",
-            "PC28",
-            "PC29",
-            "PC30",
-            "PC31",
-            "PC32",
-            "PC33",
-            "PC34",
-            "PC35",
-            "PC36",
-            "PC37",
-            "PC38",
-            "PC39",
-            "PC40",
-            "PC41",
-            "PC42",
-            "PC43",
-            "PC44",
-            "PC45",
-            "PC46",
-            "PC47",
-            "PC48",
-            "PC49",
-            "PC50"
-          ],
-          "specificity": 1.0
-        },
-        {
-          "accuracy": 0.9175257731958762,
-          "balanced_accuracy": 0.9125220458553791,
-          "best_params": {
-            "model__C": 10.0,
-            "selector__n_components": 20
-          },
-          "f1": 0.9125220458553791,
-          "fold": 7,
-          "mcc": 0.8754414125200642,
-          "n_test": 97,
-          "n_train": 388,
-          "per_class": {
-            "KIRC": {
-              "sensitivity": 1.0,
-              "specificity": 1.0
-            },
-            "LUAD": {
-              "sensitivity": 0.8857142857142857,
-              "specificity": 0.9354838709677419
-            },
-            "LUSC": {
-              "sensitivity": 0.8518518518518519,
-              "specificity": 0.9428571428571428
-            }
-          },
-          "pr_auc_macro": 0.9650706861879653,
-          "precision": 0.9125220458553791,
-          "recall_sensitivity": 0.9125220458553791,
-          "roc_auc_ovr_macro": 0.9803265631222621,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20"
-          ],
-          "specificity": 0.959447004608295
-        },
-        {
-          "accuracy": 0.9484536082474226,
-          "balanced_accuracy": 0.9410934744268079,
-          "best_params": {
-            "model__C": 1.0,
-            "selector__n_components": 50
-          },
-          "f1": 0.9440978217771127,
-          "fold": 8,
-          "mcc": 0.9232017295116473,
-          "n_test": 97,
-          "n_train": 388,
-          "per_class": {
-            "KIRC": {
-              "sensitivity": 0.9714285714285714,
-              "specificity": 0.9838709677419355
-            },
-            "LUAD": {
-              "sensitivity": 1.0,
-              "specificity": 0.9516129032258065
-            },
-            "LUSC": {
-              "sensitivity": 0.8518518518518519,
-              "specificity": 0.9857142857142858
-            }
-          },
-          "pr_auc_macro": 0.9888741895502511,
-          "precision": 0.9502715121136175,
-          "recall_sensitivity": 0.9410934744268079,
-          "roc_auc_ovr_macro": 0.9946293451669795,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20",
-            "PC21",
-            "PC22",
-            "PC23",
-            "PC24",
-            "PC25",
-            "PC26",
-            "PC27",
-            "PC28",
-            "PC29",
-            "PC30",
-            "PC31",
-            "PC32",
-            "PC33",
-            "PC34",
-            "PC35",
-            "PC36",
-            "PC37",
-            "PC38",
-            "PC39",
-            "PC40",
-            "PC41",
-            "PC42",
-            "PC43",
-            "PC44",
-            "PC45",
-            "PC46",
-            "PC47",
-            "PC48",
-            "PC49",
-            "PC50"
-          ],
-          "specificity": 0.9737327188940093
-        },
-        {
-          "accuracy": 0.9896907216494846,
-          "balanced_accuracy": 0.9876543209876543,
-          "best_params": {
-            "model__C": 1.0,
-            "selector__n_components": 50
-          },
-          "f1": 0.9888797739495031,
-          "fold": 9,
-          "mcc": 0.9845667307551725,
-          "n_test": 97,
-          "n_train": 388,
-          "per_class": {
-            "KIRC": {
-              "sensitivity": 1.0,
-              "specificity": 1.0
-            },
-            "LUAD": {
-              "sensitivity": 1.0,
-              "specificity": 0.9841269841269841
-            },
-            "LUSC": {
-              "sensitivity": 0.9629629629629629,
-              "specificity": 1.0
-            }
-          },
-          "pr_auc_macro": 0.9935599596082763,
           "precision": 0.9904761904761905,
-          "recall_sensitivity": 0.9876543209876543,
-          "roc_auc_ovr_macro": 0.9966594045025418,
+          "recall_sensitivity": 0.9880952380952381,
+          "roc_auc_ovr_macro": 1.0,
           "selected_features": [
             "PC1",
             "PC2",
@@ -2143,197 +1651,35 @@
           "specificity": 0.9947089947089948
         },
         {
-          "accuracy": 0.9690721649484536,
-          "balanced_accuracy": 0.9680464778503994,
-          "best_params": {
-            "model__C": 1.0,
-            "selector__n_components": 20
-          },
-          "f1": 0.9668928086838534,
-          "fold": 10,
-          "mcc": 0.9534813527550213,
-          "n_test": 97,
-          "n_train": 388,
-          "per_class": {
-            "KIRC": {
-              "sensitivity": 1.0,
-              "specificity": 1.0
-            },
-            "LUAD": {
-              "sensitivity": 0.9411764705882353,
-              "specificity": 0.9841269841269841
-            },
-            "LUSC": {
-              "sensitivity": 0.9629629629629629,
-              "specificity": 0.9714285714285714
-            }
-          },
-          "pr_auc_macro": 0.9807117480898052,
-          "precision": 0.9660894660894662,
-          "recall_sensitivity": 0.9680464778503994,
-          "roc_auc_ovr_macro": 0.9892727461354912,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20"
-          ],
-          "specificity": 0.9851851851851853
-        },
-        {
-          "accuracy": 0.979381443298969,
-          "balanced_accuracy": 0.9761904761904763,
-          "best_params": {
-            "model__C": 0.1,
-            "selector__n_components": 20
-          },
-          "f1": 0.9781305114638448,
-          "fold": 11,
-          "mcc": 0.9694958133340693,
-          "n_test": 97,
-          "n_train": 388,
-          "per_class": {
-            "KIRC": {
-              "sensitivity": 1.0,
-              "specificity": 1.0
-            },
-            "LUAD": {
-              "sensitivity": 1.0,
-              "specificity": 0.9682539682539683
-            },
-            "LUSC": {
-              "sensitivity": 0.9285714285714286,
-              "specificity": 1.0
-            }
-          },
-          "pr_auc_macro": 1.0,
-          "precision": 0.9814814814814815,
-          "recall_sensitivity": 0.9761904761904763,
-          "roc_auc_ovr_macro": 1.0,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20"
-          ],
-          "specificity": 0.9894179894179894
-        },
-        {
-          "accuracy": 0.9587628865979382,
-          "balanced_accuracy": 0.9562610229276896,
-          "best_params": {
-            "model__C": 10.0,
-            "selector__n_components": 20
-          },
-          "f1": 0.956393217058659,
-          "fold": 12,
-          "mcc": 0.9378712594770671,
-          "n_test": 97,
-          "n_train": 388,
-          "per_class": {
-            "KIRC": {
-              "sensitivity": 0.9714285714285714,
-              "specificity": 1.0
-            },
-            "LUAD": {
-              "sensitivity": 0.9714285714285714,
-              "specificity": 0.967741935483871
-            },
-            "LUSC": {
-              "sensitivity": 0.9259259259259259,
-              "specificity": 0.9714285714285714
-            }
-          },
-          "pr_auc_macro": 0.9933181306700553,
-          "precision": 0.95679012345679,
-          "recall_sensitivity": 0.9562610229276896,
-          "roc_auc_ovr_macro": 0.9966774762473687,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20"
-          ],
-          "specificity": 0.9797235023041475
-        },
-        {
-          "accuracy": 0.9484536082474226,
-          "balanced_accuracy": 0.9410934744268079,
+          "accuracy": 0.9381443298969072,
+          "balanced_accuracy": 0.9335511982570806,
           "best_params": {
             "model__C": 0.1,
             "selector__n_components": 10
           },
-          "f1": 0.9444713255454943,
-          "fold": 13,
-          "mcc": 0.9238014059175335,
+          "f1": 0.9335511982570806,
+          "fold": 2,
+          "mcc": 0.9065510597302505,
           "n_test": 97,
-          "n_train": 388,
+          "n_train": 385,
           "per_class": {
             "KIRC": {
-              "sensitivity": 0.9714285714285714,
+              "sensitivity": 1.0,
               "specificity": 1.0
             },
             "LUAD": {
-              "sensitivity": 1.0,
-              "specificity": 0.9354838709677419
+              "sensitivity": 0.9117647058823529,
+              "specificity": 0.9523809523809523
             },
             "LUSC": {
-              "sensitivity": 0.8518518518518519,
-              "specificity": 0.9857142857142858
+              "sensitivity": 0.8888888888888888,
+              "specificity": 0.9571428571428572
             }
           },
-          "pr_auc_macro": 0.9929093812900751,
-          "precision": 0.951923076923077,
-          "recall_sensitivity": 0.9410934744268079,
-          "roc_auc_ovr_macro": 0.9967855720543893,
+          "pr_auc_macro": 0.9762426048591418,
+          "precision": 0.9335511982570806,
+          "recall_sensitivity": 0.9335511982570806,
+          "roc_auc_ovr_macro": 0.9872808382612304,
           "selected_features": [
             "PC1",
             "PC2",
@@ -2346,38 +1692,38 @@
             "PC9",
             "PC10"
           ],
-          "specificity": 0.9737327188940093
+          "specificity": 0.9698412698412698
         },
         {
-          "accuracy": 0.979381443298969,
-          "balanced_accuracy": 0.9778503994190269,
+          "accuracy": 0.9791666666666666,
+          "balanced_accuracy": 0.9753086419753086,
           "best_params": {
             "model__C": 10.0,
             "selector__n_components": 20
           },
-          "f1": 0.9778503994190269,
-          "fold": 14,
-          "mcc": 0.9688503532434168,
-          "n_test": 97,
-          "n_train": 388,
+          "f1": 0.9776556776556777,
+          "fold": 3,
+          "mcc": 0.9691238154030312,
+          "n_test": 96,
+          "n_train": 386,
           "per_class": {
             "KIRC": {
               "sensitivity": 1.0,
               "specificity": 1.0
             },
             "LUAD": {
-              "sensitivity": 0.9705882352941176,
-              "specificity": 0.9841269841269841
+              "sensitivity": 1.0,
+              "specificity": 0.967741935483871
             },
             "LUSC": {
-              "sensitivity": 0.9629629629629629,
-              "specificity": 0.9857142857142858
+              "sensitivity": 0.9259259259259259,
+              "specificity": 1.0
             }
           },
-          "pr_auc_macro": 0.9933963711367699,
-          "precision": 0.9778503994190269,
-          "recall_sensitivity": 0.9778503994190269,
-          "roc_auc_ovr_macro": 0.9953833385205936,
+          "pr_auc_macro": 0.9921488803152972,
+          "precision": 0.9814814814814815,
+          "recall_sensitivity": 0.9753086419753086,
+          "roc_auc_ovr_macro": 0.9957556741810882,
           "selected_features": [
             "PC1",
             "PC2",
@@ -2400,38 +1746,122 @@
             "PC19",
             "PC20"
           ],
-          "specificity": 0.98994708994709
+          "specificity": 0.989247311827957
         },
         {
-          "accuracy": 0.9278350515463918,
-          "balanced_accuracy": 0.9186637618010166,
+          "accuracy": 0.9583333333333334,
+          "balanced_accuracy": 0.9557007988380537,
+          "best_params": {
+            "model__C": 1.0,
+            "selector__n_components": 50
+          },
+          "f1": 0.9557007988380537,
+          "fold": 4,
+          "mcc": 0.937111038322961,
+          "n_test": 96,
+          "n_train": 386,
+          "per_class": {
+            "KIRC": {
+              "sensitivity": 1.0,
+              "specificity": 1.0
+            },
+            "LUAD": {
+              "sensitivity": 0.9411764705882353,
+              "specificity": 0.967741935483871
+            },
+            "LUSC": {
+              "sensitivity": 0.9259259259259259,
+              "specificity": 0.9710144927536232
+            }
+          },
+          "pr_auc_macro": 0.9911542880507502,
+          "precision": 0.9557007988380537,
+          "recall_sensitivity": 0.9557007988380537,
+          "roc_auc_ovr_macro": 0.9949108831626775,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
+          ],
+          "specificity": 0.9795854760791647
+        },
+        {
+          "accuracy": 0.96875,
+          "balanced_accuracy": 0.9629629629629629,
           "best_params": {
             "model__C": 0.1,
-            "selector__n_components": 10
+            "selector__n_components": 50
           },
-          "f1": 0.9211107273959812,
-          "fold": 15,
-          "mcc": 0.8915883725911655,
-          "n_test": 97,
-          "n_train": 388,
+          "f1": 0.9661735116581843,
+          "fold": 5,
+          "mcc": 0.9537709390928761,
+          "n_test": 96,
+          "n_train": 386,
           "per_class": {
             "KIRC": {
               "sensitivity": 1.0,
               "specificity": 0.9836065573770492
             },
             "LUAD": {
-              "sensitivity": 0.9411764705882353,
-              "specificity": 0.9365079365079365
+              "sensitivity": 1.0,
+              "specificity": 0.967741935483871
             },
             "LUSC": {
-              "sensitivity": 0.8148148148148148,
-              "specificity": 0.9714285714285714
+              "sensitivity": 0.8888888888888888,
+              "specificity": 1.0
             }
           },
-          "pr_auc_macro": 0.9651075151986045,
-          "precision": 0.9261761761761762,
-          "recall_sensitivity": 0.9186637618010166,
-          "roc_auc_ovr_macro": 0.9799875505757859,
+          "pr_auc_macro": 0.9984070091596973,
+          "precision": 0.9722222222222222,
+          "recall_sensitivity": 0.9629629629629629,
+          "roc_auc_ovr_macro": 0.9992843084630524,
           "selected_features": [
             "PC1",
             "PC2",
@@ -2442,124 +1872,164 @@
             "PC7",
             "PC8",
             "PC9",
-            "PC10"
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
           ],
-          "specificity": 0.9638476884378524
+          "specificity": 0.9837828309536402
         },
         {
           "accuracy": 0.9690721649484536,
-          "balanced_accuracy": 0.9663865546218489,
+          "balanced_accuracy": 0.9642857142857143,
           "best_params": {
-            "model__C": 1.0,
+            "model__C": 10.0,
             "selector__n_components": 50
           },
-          "f1": 0.9673194245688032,
-          "fold": 16,
-          "mcc": 0.9534966152765709,
+          "f1": 0.9670475684294447,
+          "fold": 6,
+          "mcc": 0.9546495047367297,
           "n_test": 97,
-          "n_train": 388,
+          "n_train": 385,
           "per_class": {
             "KIRC": {
               "sensitivity": 1.0,
-              "specificity": 0.9838709677419355
+              "specificity": 1.0
+            },
+            "LUAD": {
+              "sensitivity": 1.0,
+              "specificity": 0.9523809523809523
+            },
+            "LUSC": {
+              "sensitivity": 0.8928571428571429,
+              "specificity": 1.0
+            }
+          },
+          "pr_auc_macro": 0.9897450787970202,
+          "precision": 0.9729729729729729,
+          "recall_sensitivity": 0.9642857142857143,
+          "roc_auc_ovr_macro": 0.9945432279191869,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
+          ],
+          "specificity": 0.9841269841269842
+        },
+        {
+          "accuracy": 0.979381443298969,
+          "balanced_accuracy": 0.9778503994190269,
+          "best_params": {
+            "model__C": 1.0,
+            "selector__n_components": 10
+          },
+          "f1": 0.9778503994190269,
+          "fold": 7,
+          "mcc": 0.9688503532434168,
+          "n_test": 97,
+          "n_train": 385,
+          "per_class": {
+            "KIRC": {
+              "sensitivity": 1.0,
+              "specificity": 1.0
             },
             "LUAD": {
               "sensitivity": 0.9705882352941176,
               "specificity": 0.9841269841269841
             },
             "LUSC": {
-              "sensitivity": 0.9285714285714286,
-              "specificity": 0.9855072463768116
+              "sensitivity": 0.9629629629629629,
+              "specificity": 0.9857142857142858
             }
           },
-          "pr_auc_macro": 0.9936310388622663,
-          "precision": 0.9685911401597677,
-          "recall_sensitivity": 0.9663865546218489,
-          "roc_auc_ovr_macro": 0.9965797913368246,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20",
-            "PC21",
-            "PC22",
-            "PC23",
-            "PC24",
-            "PC25",
-            "PC26",
-            "PC27",
-            "PC28",
-            "PC29",
-            "PC30",
-            "PC31",
-            "PC32",
-            "PC33",
-            "PC34",
-            "PC35",
-            "PC36",
-            "PC37",
-            "PC38",
-            "PC39",
-            "PC40",
-            "PC41",
-            "PC42",
-            "PC43",
-            "PC44",
-            "PC45",
-            "PC46",
-            "PC47",
-            "PC48",
-            "PC49",
-            "PC50"
-          ],
-          "specificity": 0.9845017327485771
-        },
-        {
-          "accuracy": 0.9690721649484536,
-          "balanced_accuracy": 0.9629629629629629,
-          "best_params": {
-            "model__C": 10.0,
-            "selector__n_components": 10
-          },
-          "f1": 0.9666935267257587,
-          "fold": 17,
-          "mcc": 0.9545076437793032,
-          "n_test": 97,
-          "n_train": 388,
-          "per_class": {
-            "KIRC": {
-              "sensitivity": 1.0,
-              "specificity": 1.0
-            },
-            "LUAD": {
-              "sensitivity": 1.0,
-              "specificity": 0.9516129032258065
-            },
-            "LUSC": {
-              "sensitivity": 0.8888888888888888,
-              "specificity": 1.0
-            }
-          },
-          "pr_auc_macro": 0.9934822044759932,
-          "precision": 0.9736842105263158,
-          "recall_sensitivity": 0.9629629629629629,
-          "roc_auc_ovr_macro": 0.995989076634238,
+          "pr_auc_macro": 0.9992789708475982,
+          "precision": 0.9778503994190269,
+          "recall_sensitivity": 0.9778503994190269,
+          "roc_auc_ovr_macro": 0.99966801535429,
           "selected_features": [
             "PC1",
             "PC2",
@@ -2572,38 +2042,38 @@
             "PC9",
             "PC10"
           ],
-          "specificity": 0.9838709677419355
+          "specificity": 0.98994708994709
         },
         {
-          "accuracy": 0.979381443298969,
-          "balanced_accuracy": 0.9781305114638448,
+          "accuracy": 0.9583333333333334,
+          "balanced_accuracy": 0.9531590413943355,
           "best_params": {
-            "model__C": 0.1,
+            "model__C": 1.0,
             "selector__n_components": 50
           },
-          "f1": 0.9781305114638448,
-          "fold": 18,
-          "mcc": 0.9688603531300161,
-          "n_test": 97,
-          "n_train": 388,
+          "f1": 0.9553113553113554,
+          "fold": 8,
+          "mcc": 0.9375862268339834,
+          "n_test": 96,
+          "n_train": 386,
           "per_class": {
             "KIRC": {
               "sensitivity": 1.0,
               "specificity": 1.0
             },
             "LUAD": {
-              "sensitivity": 0.9714285714285714,
-              "specificity": 0.9838709677419355
+              "sensitivity": 0.9705882352941176,
+              "specificity": 0.9516129032258065
             },
             "LUSC": {
-              "sensitivity": 0.9629629629629629,
-              "specificity": 0.9857142857142858
+              "sensitivity": 0.8888888888888888,
+              "specificity": 0.9855072463768116
             }
           },
-          "pr_auc_macro": 0.9917147219533988,
-          "precision": 0.9781305114638448,
-          "recall_sensitivity": 0.9781305114638448,
-          "roc_auc_ovr_macro": 0.9939807703248563,
+          "pr_auc_macro": 0.9922309827984289,
+          "precision": 0.9588888888888888,
+          "recall_sensitivity": 0.9531590413943355,
+          "roc_auc_ovr_macro": 0.996250852599797,
           "selected_features": [
             "PC1",
             "PC2",
@@ -2656,38 +2126,38 @@
             "PC49",
             "PC50"
           ],
-          "specificity": 0.9898617511520738
+          "specificity": 0.9790400498675393
         },
         {
-          "accuracy": 0.9484536082474226,
-          "balanced_accuracy": 0.943355119825708,
+          "accuracy": 0.9583333333333334,
+          "balanced_accuracy": 0.9585226683265898,
           "best_params": {
-            "model__C": 1.0,
+            "model__C": 0.1,
             "selector__n_components": 20
           },
-          "f1": 0.9443988697475162,
-          "fold": 19,
-          "mcc": 0.9221872579378951,
-          "n_test": 97,
-          "n_train": 388,
+          "f1": 0.9565656565656567,
+          "fold": 9,
+          "mcc": 0.9378691411618775,
+          "n_test": 96,
+          "n_train": 386,
           "per_class": {
             "KIRC": {
-              "sensitivity": 1.0,
-              "specificity": 1.0
+              "sensitivity": 0.9714285714285714,
+              "specificity": 0.9836065573770492
             },
             "LUAD": {
               "sensitivity": 0.9411764705882353,
-              "specificity": 0.9523809523809523
+              "specificity": 1.0
             },
             "LUSC": {
-              "sensitivity": 0.8888888888888888,
-              "specificity": 0.9714285714285714
+              "sensitivity": 0.9629629629629629,
+              "specificity": 0.9565217391304348
             }
           },
-          "pr_auc_macro": 0.9637335255795607,
-          "precision": 0.9457875457875456,
-          "recall_sensitivity": 0.943355119825708,
-          "roc_auc_ovr_macro": 0.9823529411764707,
+          "pr_auc_macro": 0.9905370787983815,
+          "precision": 0.9559934318555009,
+          "recall_sensitivity": 0.9585226683265898,
+          "roc_auc_ovr_macro": 0.9939849114185185,
           "selected_features": [
             "PC1",
             "PC2",
@@ -2710,38 +2180,38 @@
             "PC19",
             "PC20"
           ],
-          "specificity": 0.9746031746031746
+          "specificity": 0.9800427655024947
         },
         {
-          "accuracy": 0.9690721649484536,
-          "balanced_accuracy": 0.9660493827160495,
+          "accuracy": 0.9583333333333334,
+          "balanced_accuracy": 0.9531590413943355,
           "best_params": {
-            "model__C": 1.0,
+            "model__C": 0.1,
             "selector__n_components": 50
           },
-          "f1": 0.9669134302671374,
-          "fold": 20,
-          "mcc": 0.9536985380208497,
-          "n_test": 97,
-          "n_train": 388,
+          "f1": 0.9553113553113554,
+          "fold": 10,
+          "mcc": 0.9375862268339834,
+          "n_test": 96,
+          "n_train": 386,
           "per_class": {
             "KIRC": {
-              "sensitivity": 0.9722222222222222,
+              "sensitivity": 1.0,
               "specificity": 1.0
             },
             "LUAD": {
-              "sensitivity": 1.0,
-              "specificity": 0.9682539682539683
+              "sensitivity": 0.9705882352941176,
+              "specificity": 0.9516129032258065
             },
             "LUSC": {
-              "sensitivity": 0.9259259259259259,
-              "specificity": 0.9857142857142858
+              "sensitivity": 0.8888888888888888,
+              "specificity": 0.9855072463768116
             }
           },
-          "pr_auc_macro": 0.9929850429788806,
-          "precision": 0.9686609686609686,
-          "recall_sensitivity": 0.9660493827160495,
-          "roc_auc_ovr_macro": 0.9966386554621849,
+          "pr_auc_macro": 0.9939799354300988,
+          "precision": 0.9588888888888888,
+          "recall_sensitivity": 0.9531590413943355,
+          "roc_auc_ovr_macro": 0.9971454670209815,
           "selected_features": [
             "PC1",
             "PC2",
@@ -2794,20 +2264,216 @@
             "PC49",
             "PC50"
           ],
-          "specificity": 0.9846560846560847
+          "specificity": 0.9790400498675393
         },
         {
           "accuracy": 0.979381443298969,
-          "balanced_accuracy": 0.9782913165266107,
+          "balanced_accuracy": 0.9761904761904763,
+          "best_params": {
+            "model__C": 0.1,
+            "selector__n_components": 10
+          },
+          "f1": 0.9781305114638448,
+          "fold": 11,
+          "mcc": 0.9694958133340693,
+          "n_test": 97,
+          "n_train": 385,
+          "per_class": {
+            "KIRC": {
+              "sensitivity": 1.0,
+              "specificity": 1.0
+            },
+            "LUAD": {
+              "sensitivity": 1.0,
+              "specificity": 0.9682539682539683
+            },
+            "LUSC": {
+              "sensitivity": 0.9285714285714286,
+              "specificity": 1.0
+            }
+          },
+          "pr_auc_macro": 0.9851798593655259,
+          "precision": 0.9814814814814815,
+          "recall_sensitivity": 0.9761904761904763,
+          "roc_auc_ovr_macro": 0.991556042706938,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10"
+          ],
+          "specificity": 0.9894179894179894
+        },
+        {
+          "accuracy": 0.9896907216494846,
+          "balanced_accuracy": 0.9876543209876543,
+          "best_params": {
+            "model__C": 1.0,
+            "selector__n_components": 20
+          },
+          "f1": 0.9888797739495031,
+          "fold": 12,
+          "mcc": 0.9845667307551725,
+          "n_test": 97,
+          "n_train": 385,
+          "per_class": {
+            "KIRC": {
+              "sensitivity": 1.0,
+              "specificity": 1.0
+            },
+            "LUAD": {
+              "sensitivity": 1.0,
+              "specificity": 0.9841269841269841
+            },
+            "LUSC": {
+              "sensitivity": 0.9629629629629629,
+              "specificity": 1.0
+            }
+          },
+          "pr_auc_macro": 0.9992789708475982,
+          "precision": 0.9904761904761905,
+          "recall_sensitivity": 0.9876543209876543,
+          "roc_auc_ovr_macro": 0.99966801535429,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20"
+          ],
+          "specificity": 0.9947089947089948
+        },
+        {
+          "accuracy": 0.9375,
+          "balanced_accuracy": 0.9335511982570806,
+          "best_params": {
+            "model__C": 1.0,
+            "selector__n_components": 20
+          },
+          "f1": 0.9335511982570806,
+          "fold": 13,
+          "mcc": 0.9056665574844416,
+          "n_test": 96,
+          "n_train": 386,
+          "per_class": {
+            "KIRC": {
+              "sensitivity": 1.0,
+              "specificity": 1.0
+            },
+            "LUAD": {
+              "sensitivity": 0.9117647058823529,
+              "specificity": 0.9516129032258065
+            },
+            "LUSC": {
+              "sensitivity": 0.8888888888888888,
+              "specificity": 0.9565217391304348
+            }
+          },
+          "pr_auc_macro": 0.9747285821905626,
+          "precision": 0.9335511982570806,
+          "recall_sensitivity": 0.9335511982570806,
+          "roc_auc_ovr_macro": 0.9834468322331443,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20"
+          ],
+          "specificity": 0.9693782141187471
+        },
+        {
+          "accuracy": 0.9583333333333334,
+          "balanced_accuracy": 0.9557007988380537,
           "best_params": {
             "model__C": 10.0,
-            "selector__n_components": 50
+            "selector__n_components": 10
           },
-          "f1": 0.9782913165266107,
-          "fold": 21,
-          "mcc": 0.9689301729660474,
-          "n_test": 97,
-          "n_train": 388,
+          "f1": 0.9557007988380537,
+          "fold": 14,
+          "mcc": 0.937111038322961,
+          "n_test": 96,
+          "n_train": 386,
+          "per_class": {
+            "KIRC": {
+              "sensitivity": 1.0,
+              "specificity": 1.0
+            },
+            "LUAD": {
+              "sensitivity": 0.9411764705882353,
+              "specificity": 0.967741935483871
+            },
+            "LUSC": {
+              "sensitivity": 0.9259259259259259,
+              "specificity": 0.9710144927536232
+            }
+          },
+          "pr_auc_macro": 0.9807752544333095,
+          "precision": 0.9557007988380537,
+          "recall_sensitivity": 0.9557007988380537,
+          "roc_auc_ovr_macro": 0.9898468902218135,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10"
+          ],
+          "specificity": 0.9795854760791647
+        },
+        {
+          "accuracy": 0.96875,
+          "balanced_accuracy": 0.9655047204066812,
+          "best_params": {
+            "model__C": 0.1,
+            "selector__n_components": 10
+          },
+          "f1": 0.9666393218485098,
+          "fold": 15,
+          "mcc": 0.9529362086997915,
+          "n_test": 96,
+          "n_train": 386,
           "per_class": {
             "KIRC": {
               "sensitivity": 1.0,
@@ -2815,6 +2481,50 @@
             },
             "LUAD": {
               "sensitivity": 0.9705882352941176,
+              "specificity": 0.967741935483871
+            },
+            "LUSC": {
+              "sensitivity": 0.9259259259259259,
+              "specificity": 0.9855072463768116
+            }
+          },
+          "pr_auc_macro": 0.9985571732122204,
+          "precision": 0.9681318681318681,
+          "recall_sensitivity": 0.9655047204066812,
+          "roc_auc_ovr_macro": 0.9993258986970543,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10"
+          ],
+          "specificity": 0.9844163939535608
+        },
+        {
+          "accuracy": 0.979381443298969,
+          "balanced_accuracy": 0.9785714285714286,
+          "best_params": {
+            "model__C": 0.1,
+            "selector__n_components": 50
+          },
+          "f1": 0.9784334023464458,
+          "fold": 16,
+          "mcc": 0.9690903267136451,
+          "n_test": 97,
+          "n_train": 385,
+          "per_class": {
+            "KIRC": {
+              "sensitivity": 0.9714285714285714,
+              "specificity": 1.0
+            },
+            "LUAD": {
+              "sensitivity": 1.0,
               "specificity": 0.9841269841269841
             },
             "LUSC": {
@@ -2822,10 +2532,10 @@
               "specificity": 0.9855072463768116
             }
           },
-          "pr_auc_macro": 0.9887952690667888,
-          "precision": 0.9782913165266107,
-          "recall_sensitivity": 0.9782913165266107,
-          "roc_auc_ovr_macro": 0.9927603891798266,
+          "pr_auc_macro": 0.9995894909688013,
+          "precision": 0.9785714285714286,
+          "recall_sensitivity": 0.9785714285714286,
+          "roc_auc_ovr_macro": 0.9998274672187716,
           "selected_features": [
             "PC1",
             "PC2",
@@ -2881,35 +2591,35 @@
           "specificity": 0.9898780768345986
         },
         {
-          "accuracy": 0.9690721649484536,
-          "balanced_accuracy": 0.9657848324514992,
+          "accuracy": 0.9587628865979382,
+          "balanced_accuracy": 0.9557007988380537,
           "best_params": {
             "model__C": 0.1,
-            "selector__n_components": 10
+            "selector__n_components": 50
           },
-          "f1": 0.9670475684294445,
-          "fold": 22,
-          "mcc": 0.9533846980767284,
+          "f1": 0.9558170587953182,
+          "fold": 17,
+          "mcc": 0.9378314342089115,
           "n_test": 97,
-          "n_train": 388,
+          "n_train": 385,
           "per_class": {
             "KIRC": {
               "sensitivity": 1.0,
-              "specificity": 1.0
+              "specificity": 0.9836065573770492
             },
             "LUAD": {
-              "sensitivity": 0.9714285714285714,
-              "specificity": 0.967741935483871
+              "sensitivity": 0.9411764705882353,
+              "specificity": 0.9841269841269841
             },
             "LUSC": {
               "sensitivity": 0.9259259259259259,
-              "specificity": 0.9857142857142858
+              "specificity": 0.9714285714285714
             }
           },
-          "pr_auc_macro": 0.9959001741596157,
-          "precision": 0.9686609686609686,
-          "recall_sensitivity": 0.9657848324514992,
-          "roc_auc_ovr_macro": 0.9980201399556239,
+          "pr_auc_macro": 0.9940491065628695,
+          "precision": 0.9561986228652896,
+          "recall_sensitivity": 0.9557007988380537,
+          "roc_auc_ovr_macro": 0.9973026247536051,
           "selected_features": [
             "PC1",
             "PC2",
@@ -2920,40 +2630,416 @@
             "PC7",
             "PC8",
             "PC9",
-            "PC10"
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
           ],
-          "specificity": 0.9844854070660523
+          "specificity": 0.9797207043108682
         },
         {
-          "accuracy": 0.9587628865979382,
-          "balanced_accuracy": 0.9562610229276896,
+          "accuracy": 0.9895833333333334,
+          "balanced_accuracy": 0.9876543209876543,
           "best_params": {
-            "model__C": 10.0,
-            "selector__n_components": 20
+            "model__C": 0.1,
+            "selector__n_components": 50
           },
-          "f1": 0.9562610229276896,
-          "fold": 23,
-          "mcc": 0.9377207062600321,
-          "n_test": 97,
-          "n_train": 388,
+          "f1": 0.9888797739495031,
+          "fold": 18,
+          "mcc": 0.9844219688220355,
+          "n_test": 96,
+          "n_train": 386,
           "per_class": {
             "KIRC": {
               "sensitivity": 1.0,
               "specificity": 1.0
             },
             "LUAD": {
-              "sensitivity": 0.9428571428571428,
-              "specificity": 0.967741935483871
+              "sensitivity": 1.0,
+              "specificity": 0.9838709677419355
             },
             "LUSC": {
-              "sensitivity": 0.9259259259259259,
-              "specificity": 0.9714285714285714
+              "sensitivity": 0.9629629629629629,
+              "specificity": 1.0
             }
           },
-          "pr_auc_macro": 0.9759389260615978,
-          "precision": 0.9562610229276896,
-          "recall_sensitivity": 0.9562610229276896,
-          "roc_auc_ovr_macro": 0.9875519144336348,
+          "pr_auc_macro": 0.9927442892105626,
+          "precision": 0.9904761904761905,
+          "recall_sensitivity": 0.9876543209876543,
+          "roc_auc_ovr_macro": 0.9960927248325611,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
+          ],
+          "specificity": 0.9946236559139785
+        },
+        {
+          "accuracy": 0.9895833333333334,
+          "balanced_accuracy": 0.9876543209876543,
+          "best_params": {
+            "model__C": 1.0,
+            "selector__n_components": 50
+          },
+          "f1": 0.9888797739495031,
+          "fold": 19,
+          "mcc": 0.9844219688220355,
+          "n_test": 96,
+          "n_train": 386,
+          "per_class": {
+            "KIRC": {
+              "sensitivity": 1.0,
+              "specificity": 1.0
+            },
+            "LUAD": {
+              "sensitivity": 1.0,
+              "specificity": 0.9838709677419355
+            },
+            "LUSC": {
+              "sensitivity": 0.9629629629629629,
+              "specificity": 1.0
+            }
+          },
+          "pr_auc_macro": 0.9991485738612175,
+          "precision": 0.9904761904761905,
+          "recall_sensitivity": 0.9876543209876543,
+          "roc_auc_ovr_macro": 0.9996421542315262,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
+          ],
+          "specificity": 0.9946236559139785
+        },
+        {
+          "accuracy": 0.9583333333333334,
+          "balanced_accuracy": 0.9531590413943355,
+          "best_params": {
+            "model__C": 10.0,
+            "selector__n_components": 50
+          },
+          "f1": 0.9553113553113554,
+          "fold": 20,
+          "mcc": 0.9375862268339834,
+          "n_test": 96,
+          "n_train": 386,
+          "per_class": {
+            "KIRC": {
+              "sensitivity": 1.0,
+              "specificity": 1.0
+            },
+            "LUAD": {
+              "sensitivity": 0.9705882352941176,
+              "specificity": 0.9516129032258065
+            },
+            "LUSC": {
+              "sensitivity": 0.8888888888888888,
+              "specificity": 0.9855072463768116
+            }
+          },
+          "pr_auc_macro": 0.9892009361522458,
+          "precision": 0.9588888888888888,
+          "recall_sensitivity": 0.9531590413943355,
+          "roc_auc_ovr_macro": 0.991727532700958,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
+          ],
+          "specificity": 0.9790400498675393
+        },
+        {
+          "accuracy": 0.9484536082474226,
+          "balanced_accuracy": 0.9404761904761904,
+          "best_params": {
+            "model__C": 0.1,
+            "selector__n_components": 50
+          },
+          "f1": 0.9441069072386387,
+          "fold": 21,
+          "mcc": 0.9250972214266271,
+          "n_test": 97,
+          "n_train": 385,
+          "per_class": {
+            "KIRC": {
+              "sensitivity": 1.0,
+              "specificity": 0.9838709677419355
+            },
+            "LUAD": {
+              "sensitivity": 1.0,
+              "specificity": 0.9365079365079365
+            },
+            "LUSC": {
+              "sensitivity": 0.8214285714285714,
+              "specificity": 1.0
+            }
+          },
+          "pr_auc_macro": 0.9807832182300561,
+          "precision": 0.9556530214424951,
+          "recall_sensitivity": 0.9404761904761904,
+          "roc_auc_ovr_macro": 0.9898178158593965,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
+          ],
+          "specificity": 0.9734596347499572
+        },
+        {
+          "accuracy": 1.0,
+          "balanced_accuracy": 1.0,
+          "best_params": {
+            "model__C": 1.0,
+            "selector__n_components": 20
+          },
+          "f1": 1.0,
+          "fold": 22,
+          "mcc": 1.0,
+          "n_test": 97,
+          "n_train": 385,
+          "per_class": {
+            "KIRC": {
+              "sensitivity": 1.0,
+              "specificity": 1.0
+            },
+            "LUAD": {
+              "sensitivity": 1.0,
+              "specificity": 1.0
+            },
+            "LUSC": {
+              "sensitivity": 1.0,
+              "specificity": 1.0
+            }
+          },
+          "pr_auc_macro": 1.0,
+          "precision": 1.0,
+          "recall_sensitivity": 1.0,
+          "roc_auc_ovr_macro": 1.0,
           "selected_features": [
             "PC1",
             "PC2",
@@ -2976,104 +3062,20 @@
             "PC19",
             "PC20"
           ],
-          "specificity": 0.9797235023041475
+          "specificity": 1.0
         },
         {
-          "accuracy": 0.9587628865979382,
-          "balanced_accuracy": 0.9506172839506174,
+          "accuracy": 0.9791666666666666,
+          "balanced_accuracy": 0.9778503994190269,
           "best_params": {
             "model__C": 0.1,
             "selector__n_components": 50
           },
-          "f1": 0.9548148148148149,
-          "fold": 24,
-          "mcc": 0.9398685514707423,
-          "n_test": 97,
-          "n_train": 388,
-          "per_class": {
-            "KIRC": {
-              "sensitivity": 1.0,
-              "specificity": 1.0
-            },
-            "LUAD": {
-              "sensitivity": 1.0,
-              "specificity": 0.9365079365079365
-            },
-            "LUSC": {
-              "sensitivity": 0.8518518518518519,
-              "specificity": 1.0
-            }
-          },
-          "pr_auc_macro": 0.9943507148194861,
-          "precision": 0.9649122807017544,
-          "recall_sensitivity": 0.9506172839506174,
-          "roc_auc_ovr_macro": 0.9973441228343191,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20",
-            "PC21",
-            "PC22",
-            "PC23",
-            "PC24",
-            "PC25",
-            "PC26",
-            "PC27",
-            "PC28",
-            "PC29",
-            "PC30",
-            "PC31",
-            "PC32",
-            "PC33",
-            "PC34",
-            "PC35",
-            "PC36",
-            "PC37",
-            "PC38",
-            "PC39",
-            "PC40",
-            "PC41",
-            "PC42",
-            "PC43",
-            "PC44",
-            "PC45",
-            "PC46",
-            "PC47",
-            "PC48",
-            "PC49",
-            "PC50"
-          ],
-          "specificity": 0.978835978835979
-        },
-        {
-          "accuracy": 0.9690721649484536,
-          "balanced_accuracy": 0.9655047204066812,
-          "best_params": {
-            "model__C": 0.1,
-            "selector__n_components": 50
-          },
-          "f1": 0.9666393218485098,
-          "fold": 25,
-          "mcc": 0.9533769943465338,
-          "n_test": 97,
-          "n_train": 388,
+          "f1": 0.9778503994190269,
+          "fold": 23,
+          "mcc": 0.9685555191614805,
+          "n_test": 96,
+          "n_train": 386,
           "per_class": {
             "KIRC": {
               "sensitivity": 1.0,
@@ -3081,17 +3083,17 @@
             },
             "LUAD": {
               "sensitivity": 0.9705882352941176,
-              "specificity": 0.9682539682539683
+              "specificity": 0.9838709677419355
             },
             "LUSC": {
-              "sensitivity": 0.9259259259259259,
-              "specificity": 0.9857142857142858
+              "sensitivity": 0.9629629629629629,
+              "specificity": 0.9855072463768116
             }
           },
-          "pr_auc_macro": 0.9985571732122204,
-          "precision": 0.9681318681318681,
-          "recall_sensitivity": 0.9655047204066812,
-          "roc_auc_ovr_macro": 0.9993360307085798,
+          "pr_auc_macro": 0.996953161445607,
+          "precision": 0.9778503994190269,
+          "recall_sensitivity": 0.9778503994190269,
+          "roc_auc_ovr_macro": 0.9983563369766378,
           "selected_features": [
             "PC1",
             "PC2",
@@ -3144,30 +3146,168 @@
             "PC49",
             "PC50"
           ],
-          "specificity": 0.9846560846560847
+          "specificity": 0.9897927380395823
+        },
+        {
+          "accuracy": 0.96875,
+          "balanced_accuracy": 0.9705882352941176,
+          "best_params": {
+            "model__C": 1.0,
+            "selector__n_components": 20
+          },
+          "f1": 0.9670715249662619,
+          "fold": 24,
+          "mcc": 0.9543986975974709,
+          "n_test": 96,
+          "n_train": 386,
+          "per_class": {
+            "KIRC": {
+              "sensitivity": 1.0,
+              "specificity": 1.0
+            },
+            "LUAD": {
+              "sensitivity": 0.9117647058823529,
+              "specificity": 1.0
+            },
+            "LUSC": {
+              "sensitivity": 1.0,
+              "specificity": 0.9565217391304348
+            }
+          },
+          "pr_auc_macro": 0.9916889431962055,
+          "precision": 0.9666666666666667,
+          "recall_sensitivity": 0.9705882352941176,
+          "roc_auc_ovr_macro": 0.9950898060469143,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20"
+          ],
+          "specificity": 0.9855072463768115
+        },
+        {
+          "accuracy": 0.9583333333333334,
+          "balanced_accuracy": 0.9506172839506174,
+          "best_params": {
+            "model__C": 0.1,
+            "selector__n_components": 50
+          },
+          "f1": 0.9548148148148149,
+          "fold": 25,
+          "mcc": 0.9393187059486646,
+          "n_test": 96,
+          "n_train": 386,
+          "per_class": {
+            "KIRC": {
+              "sensitivity": 1.0,
+              "specificity": 1.0
+            },
+            "LUAD": {
+              "sensitivity": 1.0,
+              "specificity": 0.9354838709677419
+            },
+            "LUSC": {
+              "sensitivity": 0.8518518518518519,
+              "specificity": 1.0
+            }
+          },
+          "pr_auc_macro": 0.998580111182028,
+          "precision": 0.9649122807017544,
+          "recall_sensitivity": 0.9506172839506174,
+          "roc_auc_ovr_macro": 0.9993258986970543,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
+          ],
+          "specificity": 0.978494623655914
         }
       ],
       "summary": {
         "accuracy": {
           "max": 1.0,
-          "mean": 0.9653608247422681,
-          "min": 0.9175257731958762,
+          "mean": 0.9688616838487972,
+          "min": 0.9375,
           "n": 25,
-          "std": 0.018556701030927835
+          "std": 0.016408887854295808
         },
         "balanced_accuracy": {
           "max": 1.0,
-          "mean": 0.961794999481274,
-          "min": 0.9125220458553791,
+          "mean": 0.9657387695819069,
+          "min": 0.9335511982570806,
           "n": 25,
-          "std": 0.02053216007153919
+          "std": 0.017765635555612367
         },
         "f1": {
           "max": 1.0,
-          "mean": 0.9628820294387781,
-          "min": 0.9125220458553791,
+          "mean": 0.9667337045063477,
+          "min": 0.9335511982570806,
           "n": 25,
-          "std": 0.020023437039062685
+          "std": 0.017590232466223737
         },
         "fold": {
           "max": 25.0,
@@ -3178,59 +3318,59 @@
         },
         "mcc": {
           "max": 1.0,
-          "mean": 0.9480597107207296,
-          "min": 0.8754414125200642,
+          "mean": 0.9535282131288852,
+          "min": 0.9056665574844416,
           "n": 25,
-          "std": 0.02789124469384568
+          "std": 0.024581615925474642
         },
         "n_test": {
           "max": 97.0,
-          "mean": 97.0,
-          "min": 97.0,
+          "mean": 96.4,
+          "min": 96.0,
           "n": 25,
-          "std": 0.0
+          "std": 0.49999999999999994
         },
         "n_train": {
-          "max": 388.0,
-          "mean": 388.0,
-          "min": 388.0,
+          "max": 386.0,
+          "mean": 385.6,
+          "min": 385.0,
           "n": 25,
-          "std": 0.0
+          "std": 0.5
         },
         "pr_auc_macro": {
           "max": 1.0,
-          "mean": 0.9890934885464655,
-          "min": 0.9637335255795607,
+          "mean": 0.992199299996609,
+          "min": 0.9747285821905626,
           "n": 25,
-          "std": 0.010697297044538947
+          "std": 0.0075362929617203075
         },
         "precision": {
           "max": 1.0,
-          "mean": 0.9649974552273829,
-          "min": 0.9125220458553791,
+          "mean": 0.9690824679997163,
+          "min": 0.9335511982570806,
           "n": 25,
-          "std": 0.01921076485308155
+          "std": 0.017199227370497273
         },
         "recall_sensitivity": {
           "max": 1.0,
-          "mean": 0.961794999481274,
-          "min": 0.9125220458553791,
+          "mean": 0.9657387695819069,
+          "min": 0.9335511982570806,
           "n": 25,
-          "std": 0.02053216007153919
+          "std": 0.017765635555612367
         },
         "roc_auc_ovr_macro": {
           "max": 1.0,
-          "mean": 0.9940976115711568,
-          "min": 0.9799875505757859,
+          "mean": 0.9955940087564595,
+          "min": 0.9834468322331443,
           "n": 25,
-          "std": 0.005816211629877879
+          "std": 0.0044730265286516335
         },
         "specificity": {
           "max": 1.0,
-          "mean": 0.9827216533171973,
-          "min": 0.959447004608295,
+          "mean": 0.9844804110665742,
+          "min": 0.9693782141187471,
           "n": 25,
-          "std": 0.009258706868668263
+          "std": 0.00808964975278537
         }
       }
     },
@@ -3239,16 +3379,16 @@
   },
   "protocol": "fold-local PCA; repeated 5-fold x 5 outer CV; 3-fold inner selection",
   "regression": {
-    "elapsed_seconds": 701.5821024,
+    "elapsed_seconds": 751.1357411,
     "final_best_params": {
       "model__alpha": 0.1,
       "selector__n_components": 50
     },
     "heldout_metrics": {
-      "mae": 0.020616018881214882,
-      "mse": 0.0008313686490970493,
-      "r2": 0.938601849370734,
-      "rmse": 0.028833464049556192
+      "mae": 0.02085078403706346,
+      "mse": 0.0008616919495629189,
+      "r2": 0.936263428879388,
+      "rmse": 0.029354589923262748
     },
     "interpretation": "PCA components are predictive dimensions, not gene-level candidate signatures.",
     "name": "regression",
@@ -3260,12 +3400,12 @@
             "selector__n_components": 50
           },
           "fold": 1,
-          "mae": 0.01733304872842919,
-          "mse": 0.0004376504177676403,
+          "mae": 0.016663602035266383,
+          "mse": 0.0004089895859323898,
           "n_test": 74,
-          "n_train": 294,
-          "r2": 0.9714673944071762,
-          "rmse": 0.02092009602673086,
+          "n_train": 293,
+          "r2": 0.9737229325669069,
+          "rmse": 0.02022349094326669,
           "selected_features": [
             "PC1",
             "PC2",
@@ -3325,12 +3465,12 @@
             "selector__n_components": 50
           },
           "fold": 2,
-          "mae": 0.02329108499321159,
-          "mse": 0.0019800477021100406,
+          "mae": 0.02374387260963612,
+          "mse": 0.001974928261418054,
           "n_test": 74,
-          "n_train": 294,
-          "r2": 0.8785259911995238,
-          "rmse": 0.04449772693194609,
+          "n_train": 293,
+          "r2": 0.8827888849626343,
+          "rmse": 0.044440164957142696,
           "selected_features": [
             "PC1",
             "PC2",
@@ -3387,15 +3527,15 @@
         {
           "best_params": {
             "model__alpha": 0.1,
-            "selector__n_components": 50
+            "selector__n_components": 20
           },
           "fold": 3,
-          "mae": 0.015501628217131743,
-          "mse": 0.0006630430248663714,
-          "n_test": 74,
+          "mae": 0.01770588271786082,
+          "mse": 0.000526548336390238,
+          "n_test": 73,
           "n_train": 294,
-          "r2": 0.961376558071124,
-          "rmse": 0.02574962183928866,
+          "r2": 0.9709971895763928,
+          "rmse": 0.022946641069887287,
           "selected_features": [
             "PC1",
             "PC2",
@@ -3416,37 +3556,7 @@
             "PC17",
             "PC18",
             "PC19",
-            "PC20",
-            "PC21",
-            "PC22",
-            "PC23",
-            "PC24",
-            "PC25",
-            "PC26",
-            "PC27",
-            "PC28",
-            "PC29",
-            "PC30",
-            "PC31",
-            "PC32",
-            "PC33",
-            "PC34",
-            "PC35",
-            "PC36",
-            "PC37",
-            "PC38",
-            "PC39",
-            "PC40",
-            "PC41",
-            "PC42",
-            "PC43",
-            "PC44",
-            "PC45",
-            "PC46",
-            "PC47",
-            "PC48",
-            "PC49",
-            "PC50"
+            "PC20"
           ]
         },
         {
@@ -3455,12 +3565,12 @@
             "selector__n_components": 50
           },
           "fold": 4,
-          "mae": 0.016984670037361663,
-          "mse": 0.0004539927547246351,
+          "mae": 0.017107141191872878,
+          "mse": 0.0004763563073588327,
           "n_test": 73,
-          "n_train": 295,
-          "r2": 0.9721224337082841,
-          "rmse": 0.0213071057331735,
+          "n_train": 294,
+          "r2": 0.9659465167013258,
+          "rmse": 0.021825588362260312,
           "selected_features": [
             "PC1",
             "PC2",
@@ -3520,12 +3630,12 @@
             "selector__n_components": 50
           },
           "fold": 5,
-          "mae": 0.017515683368501657,
-          "mse": 0.0005351404169324481,
+          "mae": 0.017801849518586682,
+          "mse": 0.0005350168882796449,
           "n_test": 73,
-          "n_train": 295,
-          "r2": 0.959051190628239,
-          "rmse": 0.023133102189988444,
+          "n_train": 294,
+          "r2": 0.9603711585383714,
+          "rmse": 0.02313043208155967,
           "selected_features": [
             "PC1",
             "PC2",
@@ -3585,12 +3695,77 @@
             "selector__n_components": 50
           },
           "fold": 6,
-          "mae": 0.021760870217823844,
-          "mse": 0.001956719940936528,
+          "mae": 0.020867904594499078,
+          "mse": 0.0018810292105235888,
           "n_test": 74,
-          "n_train": 294,
-          "r2": 0.8966678483938212,
-          "rmse": 0.04423482723981781,
+          "n_train": 293,
+          "r2": 0.8864668137971833,
+          "rmse": 0.043370833638789894,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
+          ]
+        },
+        {
+          "best_params": {
+            "model__alpha": 0.1,
+            "selector__n_components": 50
+          },
+          "fold": 7,
+          "mae": 0.019724037100037017,
+          "mse": 0.0006632939358307154,
+          "n_test": 74,
+          "n_train": 293,
+          "r2": 0.9599056394283373,
+          "rmse": 0.025754493507555442,
           "selected_features": [
             "PC1",
             "PC2",
@@ -3647,50 +3822,15 @@
         {
           "best_params": {
             "model__alpha": 100.0,
-            "selector__n_components": 20
-          },
-          "fold": 7,
-          "mae": 0.022443579085560713,
-          "mse": 0.0008066009154664012,
-          "n_test": 74,
-          "n_train": 294,
-          "r2": 0.9568127451475246,
-          "rmse": 0.028400720333583113,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20"
-          ]
-        },
-        {
-          "best_params": {
-            "model__alpha": 0.1,
             "selector__n_components": 50
           },
           "fold": 8,
-          "mae": 0.01825427433271276,
-          "mse": 0.0006317708988870715,
-          "n_test": 74,
+          "mae": 0.016986102947175532,
+          "mse": 0.00045435207463574435,
+          "n_test": 73,
           "n_train": 294,
-          "r2": 0.9595455816874379,
-          "rmse": 0.02513505319045638,
+          "r2": 0.9766223293563471,
+          "rmse": 0.02131553599222277,
           "selected_features": [
             "PC1",
             "PC2",
@@ -3750,12 +3890,12 @@
             "selector__n_components": 20
           },
           "fold": 9,
-          "mae": 0.02026043568356614,
-          "mse": 0.0006939116107120593,
+          "mae": 0.021145378756895632,
+          "mse": 0.0007709238986548526,
           "n_test": 73,
-          "n_train": 295,
-          "r2": 0.9411632174362895,
-          "rmse": 0.026342202085476062,
+          "n_train": 294,
+          "r2": 0.9433656161231896,
+          "rmse": 0.027765516358512994,
           "selected_features": [
             "PC1",
             "PC2",
@@ -3785,77 +3925,12 @@
             "selector__n_components": 50
           },
           "fold": 10,
-          "mae": 0.013366079768546712,
-          "mse": 0.00028281230790899676,
+          "mae": 0.012946420661686199,
+          "mse": 0.0002732189728944303,
           "n_test": 73,
-          "n_train": 295,
-          "r2": 0.979995339549052,
-          "rmse": 0.016817024347636437,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20",
-            "PC21",
-            "PC22",
-            "PC23",
-            "PC24",
-            "PC25",
-            "PC26",
-            "PC27",
-            "PC28",
-            "PC29",
-            "PC30",
-            "PC31",
-            "PC32",
-            "PC33",
-            "PC34",
-            "PC35",
-            "PC36",
-            "PC37",
-            "PC38",
-            "PC39",
-            "PC40",
-            "PC41",
-            "PC42",
-            "PC43",
-            "PC44",
-            "PC45",
-            "PC46",
-            "PC47",
-            "PC48",
-            "PC49",
-            "PC50"
-          ]
-        },
-        {
-          "best_params": {
-            "model__alpha": 0.1,
-            "selector__n_components": 50
-          },
-          "fold": 11,
-          "mae": 0.01643460841829955,
-          "mse": 0.00045792360591520776,
-          "n_test": 74,
           "n_train": 294,
-          "r2": 0.9541754320343183,
-          "rmse": 0.021399149654021482,
+          "r2": 0.9770732514517101,
+          "rmse": 0.016529336734861153,
           "selected_features": [
             "PC1",
             "PC2",
@@ -3914,13 +3989,13 @@
             "model__alpha": 0.1,
             "selector__n_components": 20
           },
-          "fold": 12,
-          "mae": 0.020602223622217444,
-          "mse": 0.0007091979596356023,
+          "fold": 11,
+          "mae": 0.014334645395823256,
+          "mse": 0.00031593799437244617,
           "n_test": 74,
-          "n_train": 294,
-          "r2": 0.9553340463799513,
-          "rmse": 0.026630770917035095,
+          "n_train": 293,
+          "r2": 0.9662940539476419,
+          "rmse": 0.017774644704534777,
           "selected_features": [
             "PC1",
             "PC2",
@@ -3947,15 +4022,80 @@
         {
           "best_params": {
             "model__alpha": 0.1,
+            "selector__n_components": 50
+          },
+          "fold": 12,
+          "mae": 0.018283900049625157,
+          "mse": 0.0007099728689425458,
+          "n_test": 74,
+          "n_train": 293,
+          "r2": 0.9507716866325054,
+          "rmse": 0.026645316078863574,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
+          ]
+        },
+        {
+          "best_params": {
+            "model__alpha": 100.0,
             "selector__n_components": 50
           },
           "fold": 13,
-          "mae": 0.01740907860497713,
-          "mse": 0.0006101787403913553,
-          "n_test": 74,
+          "mae": 0.018692232687089628,
+          "mse": 0.0005306348695996639,
+          "n_test": 73,
           "n_train": 294,
-          "r2": 0.9550997763119065,
-          "rmse": 0.02470179629887987,
+          "r2": 0.9631465143282377,
+          "rmse": 0.023035513226313493,
           "selected_features": [
             "PC1",
             "PC2",
@@ -4012,15 +4152,15 @@
         {
           "best_params": {
             "model__alpha": 0.1,
-            "selector__n_components": 20
+            "selector__n_components": 50
           },
           "fold": 14,
-          "mae": 0.021314976020550692,
-          "mse": 0.0008082349697776335,
+          "mae": 0.018873514201235127,
+          "mse": 0.0006068395070996364,
           "n_test": 73,
-          "n_train": 295,
-          "r2": 0.9565516294863853,
-          "rmse": 0.028429473610632215,
+          "n_train": 294,
+          "r2": 0.9673317442496313,
+          "rmse": 0.02463411267124587,
           "selected_features": [
             "PC1",
             "PC2",
@@ -4041,7 +4181,37 @@
             "PC17",
             "PC18",
             "PC19",
-            "PC20"
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
           ]
         },
         {
@@ -4050,12 +4220,77 @@
             "selector__n_components": 50
           },
           "fold": 15,
-          "mae": 0.020402761870855407,
-          "mse": 0.0018697176858027428,
+          "mae": 0.02032565045542503,
+          "mse": 0.001859476743244391,
           "n_test": 73,
-          "n_train": 295,
-          "r2": 0.9083564258448104,
-          "rmse": 0.0432402322588899,
+          "n_train": 294,
+          "r2": 0.9118695176872493,
+          "rmse": 0.04312165051623594,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20",
+            "PC21",
+            "PC22",
+            "PC23",
+            "PC24",
+            "PC25",
+            "PC26",
+            "PC27",
+            "PC28",
+            "PC29",
+            "PC30",
+            "PC31",
+            "PC32",
+            "PC33",
+            "PC34",
+            "PC35",
+            "PC36",
+            "PC37",
+            "PC38",
+            "PC39",
+            "PC40",
+            "PC41",
+            "PC42",
+            "PC43",
+            "PC44",
+            "PC45",
+            "PC46",
+            "PC47",
+            "PC48",
+            "PC49",
+            "PC50"
+          ]
+        },
+        {
+          "best_params": {
+            "model__alpha": 0.1,
+            "selector__n_components": 50
+          },
+          "fold": 16,
+          "mae": 0.015734527196234582,
+          "mse": 0.00043731234293455757,
+          "n_test": 74,
+          "n_train": 293,
+          "r2": 0.971901288495318,
+          "rmse": 0.020912014320350815,
           "selected_features": [
             "PC1",
             "PC2",
@@ -4114,13 +4349,13 @@
             "model__alpha": 0.1,
             "selector__n_components": 20
           },
-          "fold": 16,
-          "mae": 0.022238671603990724,
-          "mse": 0.0008296865946663345,
+          "fold": 17,
+          "mae": 0.022724673459806933,
+          "mse": 0.0007699468902935388,
           "n_test": 74,
-          "n_train": 294,
-          "r2": 0.9495994546375606,
-          "rmse": 0.028804280839249127,
+          "n_train": 293,
+          "r2": 0.9500036766556165,
+          "rmse": 0.02774791686403754,
           "selected_features": [
             "PC1",
             "PC2",
@@ -4149,78 +4384,13 @@
             "model__alpha": 0.1,
             "selector__n_components": 50
           },
-          "fold": 17,
-          "mae": 0.017255636421230125,
-          "mse": 0.0005764264165444773,
-          "n_test": 74,
-          "n_train": 294,
-          "r2": 0.9608182765505003,
-          "rmse": 0.02400888203445711,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20",
-            "PC21",
-            "PC22",
-            "PC23",
-            "PC24",
-            "PC25",
-            "PC26",
-            "PC27",
-            "PC28",
-            "PC29",
-            "PC30",
-            "PC31",
-            "PC32",
-            "PC33",
-            "PC34",
-            "PC35",
-            "PC36",
-            "PC37",
-            "PC38",
-            "PC39",
-            "PC40",
-            "PC41",
-            "PC42",
-            "PC43",
-            "PC44",
-            "PC45",
-            "PC46",
-            "PC47",
-            "PC48",
-            "PC49",
-            "PC50"
-          ]
-        },
-        {
-          "best_params": {
-            "model__alpha": 0.1,
-            "selector__n_components": 50
-          },
           "fold": 18,
-          "mae": 0.019886878961967076,
-          "mse": 0.0018585695456604801,
-          "n_test": 74,
+          "mae": 0.02221003175496227,
+          "mse": 0.0019972316479175845,
+          "n_test": 73,
           "n_train": 294,
-          "r2": 0.8949543167432625,
-          "rmse": 0.04311113018305691,
+          "r2": 0.8942716258947047,
+          "rmse": 0.04469039771491841,
           "selected_features": [
             "PC1",
             "PC2",
@@ -4280,77 +4450,12 @@
             "selector__n_components": 50
           },
           "fold": 19,
-          "mae": 0.01613193512190984,
-          "mse": 0.0004471791652179277,
+          "mae": 0.018950020967451124,
+          "mse": 0.0019912074428600963,
           "n_test": 73,
-          "n_train": 295,
-          "r2": 0.9633829174302379,
-          "rmse": 0.021146611199384352,
-          "selected_features": [
-            "PC1",
-            "PC2",
-            "PC3",
-            "PC4",
-            "PC5",
-            "PC6",
-            "PC7",
-            "PC8",
-            "PC9",
-            "PC10",
-            "PC11",
-            "PC12",
-            "PC13",
-            "PC14",
-            "PC15",
-            "PC16",
-            "PC17",
-            "PC18",
-            "PC19",
-            "PC20",
-            "PC21",
-            "PC22",
-            "PC23",
-            "PC24",
-            "PC25",
-            "PC26",
-            "PC27",
-            "PC28",
-            "PC29",
-            "PC30",
-            "PC31",
-            "PC32",
-            "PC33",
-            "PC34",
-            "PC35",
-            "PC36",
-            "PC37",
-            "PC38",
-            "PC39",
-            "PC40",
-            "PC41",
-            "PC42",
-            "PC43",
-            "PC44",
-            "PC45",
-            "PC46",
-            "PC47",
-            "PC48",
-            "PC49",
-            "PC50"
-          ]
-        },
-        {
-          "best_params": {
-            "model__alpha": 100.0,
-            "selector__n_components": 50
-          },
-          "fold": 20,
-          "mae": 0.020516566054651533,
-          "mse": 0.0006544103790969655,
-          "n_test": 73,
-          "n_train": 295,
-          "r2": 0.9630523027861021,
-          "rmse": 0.025581445993081892,
+          "n_train": 294,
+          "r2": 0.813555576388823,
+          "rmse": 0.044622947491846573,
           "selected_features": [
             "PC1",
             "PC2",
@@ -4407,15 +4512,50 @@
         {
           "best_params": {
             "model__alpha": 0.1,
+            "selector__n_components": 20
+          },
+          "fold": 20,
+          "mae": 0.02348346535854451,
+          "mse": 0.0009760058232627549,
+          "n_test": 73,
+          "n_train": 294,
+          "r2": 0.9452937227237126,
+          "rmse": 0.03124109190253687,
+          "selected_features": [
+            "PC1",
+            "PC2",
+            "PC3",
+            "PC4",
+            "PC5",
+            "PC6",
+            "PC7",
+            "PC8",
+            "PC9",
+            "PC10",
+            "PC11",
+            "PC12",
+            "PC13",
+            "PC14",
+            "PC15",
+            "PC16",
+            "PC17",
+            "PC18",
+            "PC19",
+            "PC20"
+          ]
+        },
+        {
+          "best_params": {
+            "model__alpha": 0.1,
             "selector__n_components": 50
           },
           "fold": 21,
-          "mae": 0.021092641229843234,
-          "mse": 0.00196279704395689,
+          "mae": 0.01938479579654765,
+          "mse": 0.0018019101658068716,
           "n_test": 74,
-          "n_train": 294,
-          "r2": 0.8863935155978391,
-          "rmse": 0.04430346537187458,
+          "n_train": 293,
+          "r2": 0.8867550197208883,
+          "rmse": 0.04244891242195578,
           "selected_features": [
             "PC1",
             "PC2",
@@ -4475,12 +4615,12 @@
             "selector__n_components": 50
           },
           "fold": 22,
-          "mae": 0.01566472835764284,
-          "mse": 0.00042740908394272843,
+          "mae": 0.015808226053563613,
+          "mse": 0.0004519996762811234,
           "n_test": 74,
-          "n_train": 294,
-          "r2": 0.9692403009857575,
-          "rmse": 0.02067387442988683,
+          "n_train": 293,
+          "r2": 0.9699345903095429,
+          "rmse": 0.02126028401224037,
           "selected_features": [
             "PC1",
             "PC2",
@@ -4540,12 +4680,12 @@
             "selector__n_components": 20
           },
           "fold": 23,
-          "mae": 0.019366213229077545,
-          "mse": 0.0006571802883932106,
-          "n_test": 74,
+          "mae": 0.020474112993631926,
+          "mse": 0.0006522107545662613,
+          "n_test": 73,
           "n_train": 294,
-          "r2": 0.9571945358890747,
-          "rmse": 0.025635527854780182,
+          "r2": 0.9563349754045972,
+          "rmse": 0.02553841722907395,
           "selected_features": [
             "PC1",
             "PC2",
@@ -4575,12 +4715,12 @@
             "selector__n_components": 50
           },
           "fold": 24,
-          "mae": 0.017655071887087176,
-          "mse": 0.0005935695447474321,
+          "mae": 0.016616349324758726,
+          "mse": 0.0006246944113196463,
           "n_test": 73,
-          "n_train": 295,
-          "r2": 0.9631445524683911,
-          "rmse": 0.02436328271697868,
+          "n_train": 294,
+          "r2": 0.9659440528019361,
+          "rmse": 0.0249938874791347,
           "selected_features": [
             "PC1",
             "PC2",
@@ -4640,12 +4780,12 @@
             "selector__n_components": 50
           },
           "fold": 25,
-          "mae": 0.01637987463394913,
-          "mse": 0.0004248226813635414,
+          "mae": 0.01746163940744318,
+          "mse": 0.0004984777593499454,
           "n_test": 73,
-          "n_train": 295,
-          "r2": 0.9715913026885719,
-          "rmse": 0.020611227070786962,
+          "n_train": 294,
+          "r2": 0.9639053397858005,
+          "rmse": 0.022326615492500097,
           "selected_features": [
             "PC1",
             "PC2",
@@ -4709,46 +4849,46 @@
           "std": 7.359800721939872
         },
         "mae": {
-          "max": 0.02329108499321159,
-          "mean": 0.01876252881884382,
-          "min": 0.013366079768546712,
+          "max": 0.02374387260963612,
+          "mean": 0.018721999089426358,
+          "min": 0.012946420661686199,
           "n": 25,
-          "std": 0.002580485486933134
+          "std": 0.0027514371358559634
         },
         "mse": {
-          "max": 0.0019800477021100406,
-          "mean": 0.0008531597478169889,
-          "min": 0.00028281230790899676,
+          "max": 0.0019972316479175845,
+          "mean": 0.0008875406547907822,
+          "min": 0.0002732189728944303,
           "n": 25,
-          "std": 0.0005636316409266101
+          "std": 0.0006101771512679339
         },
         "n_test": {
           "max": 74.0,
-          "mean": 73.6,
+          "mean": 73.4,
           "min": 73.0,
           "n": 25,
           "std": 0.49999999999999994
         },
         "n_train": {
-          "max": 295.0,
-          "mean": 294.4,
-          "min": 294.0,
+          "max": 294.0,
+          "mean": 293.6,
+          "min": 293.0,
           "n": 25,
           "std": 0.5
         },
         "r2": {
-          "max": 0.979995339549052,
-          "mean": 0.9474246834425257,
-          "min": 0.8785259911995238,
+          "max": 0.9770732514517101,
+          "mean": 0.9429829487011442,
+          "min": 0.813555576388823,
           "n": 25,
-          "std": 0.029237803658346023
+          "std": 0.04060736517520374
         },
         "rmse": {
-          "max": 0.04449772693194609,
-          "mean": 0.027967145214043705,
-          "min": 0.016817024347636437,
+          "max": 0.04469039771491841,
+          "mean": 0.028331830230873906,
+          "min": 0.016529336734861153,
           "n": 25,
-          "std": 0.008599814459819112
+          "std": 0.009401243853858382
         }
       }
     },

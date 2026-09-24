@@ -26,6 +26,7 @@ from .safe_ml import (
 from .safe_survival import (
     build_survival_pipeline, nested_cv_survival, survival_metrics, validate_survival_target,
 )
+from .patient_partitions import patient_partition_audit
 
 
 SCHEMA_VERSION = 1
@@ -89,6 +90,14 @@ def parse_dataset(path, task):
     if raw.shape[1] <= required:
         raise ValueError("The uploaded file contains no usable feature columns.")
     training, testing, blind = _partition_masks(raw.iloc[:, outcome_columns])
+    analysis_rows = np.flatnonzero(training | testing)
+    analysis_split = np.where(training[analysis_rows], "train", "test")
+    retained, patient_audit = patient_partition_audit(raw.index[analysis_rows], analysis_split)
+    if len(retained) != len(analysis_rows):
+        keep_rows = np.sort(np.r_[analysis_rows[retained], np.flatnonzero(blind)])
+        raw = raw.iloc[keep_rows].copy()
+        training, testing, blind = _partition_masks(raw.iloc[:, outcome_columns])
+    raw.attrs["patient_level_audit"] = patient_audit
     features = raw.iloc[:, required:]
     train_features = validate_feature_matrix(features.loc[training])
     feature_sets = {
@@ -135,6 +144,15 @@ def normalize_scaler(value, requires_scaling=True):
         return "none"
     return {"Z": "standard", "MM": "minmax", "MA": "maxabs", "N": "none"}.get(
         str(value or "Z").upper(), "standard")
+
+
+def class_imbalance_warning(labels):
+    counts = pd.Series(labels).value_counts()
+    if len(counts) < 2 or counts.min() == 0 or counts.max() / counts.min() < 3:
+        return None
+    summary = ", ".join("%s=%d" % (name, count) for name, count in counts.items())
+    return ("Class imbalance in the development set (%s). Review per-class metrics and "
+            "balanced accuracy; MALER does not automatically reweight classes." % summary)
 
 
 def _bounded_grid(grid, maximum_candidates=24):
@@ -248,7 +266,8 @@ def run_validated_analysis(project_dir, projectid, options):
         "strategy": strategy,
         "created_utc": datetime.utcnow().replace(microsecond=0).isoformat() + "Z",
         "dataset": {"training_samples": int(len(X["train"])), "testing_samples": int(len(X["test"])),
-                    "blind_samples": int(len(X["blind"])), "features": int(X["train"].shape[1])},
+                    "blind_samples": int(len(X["blind"])), "features": int(X["train"].shape[1]),
+                    "patient_level_audit": raw.attrs.get("patient_level_audit")},
         "validation": {"outer_splits": outer, "outer_repeats": repeats,
                        "inner_splits": inner, "random_state": 10,
                        "preprocessing_scope": "fit independently within every training fold"},
@@ -261,6 +280,16 @@ def run_validated_analysis(project_dir, projectid, options):
     if not signing_key:
         result["warnings"].append(
             "Signed model export is disabled until MALER_MODEL_SIGNING_KEY is configured.")
+    patient_audit = raw.attrs.get("patient_level_audit") or {}
+    removed = (len(patient_audit.get("excluded_cross_partition_patients", []))
+               + len(patient_audit.get("collapsed_within_partition_patients", [])))
+    if removed:
+        result["warnings"].append(
+            "Patient-level audit excluded cross-partition specimens and collapsed within-partition aliquots; see dataset.patient_level_audit for exact IDs and retained samples.")
+    if task == "classification":
+        warning = class_imbalance_warning(y["train"])
+        if warning:
+            result["warnings"].append(warning)
     for key, estimator, raw_grid, requires_scaling in _model_records(
             task, strategy, project_dir, options.get("model_md5")):
         try:

@@ -42,9 +42,7 @@ def preview_result(request):
         raise SuspiciousOperation('Unsupported analysis type.')
 
     model_md5 = None
-    print('projectid: ',projectid,'feature_select_method: ',feature_select_method,
-          'fsm: ',fsm,'file_upload_type: ',file_upload_type,'select_model: ',select_model,
-          'strategy: ',strategy,'to_mail: ',to_mail,'fn: ',fn)
+    # Do not log the optional email address or uploaded-data metadata.
 
     if file_upload_type == 'example_data':
         if select_model == 'model_bclass':

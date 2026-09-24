@@ -236,7 +236,11 @@
 					</div>
 					<div class="alert alert-light border mb-2"><b>Model:</b> Upload a signed <code>.maler</code> model bundle downloaded from MALER Analysis.</div>
 					<div class="alert alert-light border mb-2"><b>File:</b> Upload a CSV file with features in rows and samples in columns, no larger than 200 MB.</div>
-					<div class="alert alert-warning mb-0"><b>Privacy:</b> Do not upload direct identifiers. Uploaded data and derived cache files are temporary and are deleted according to the deployment retention policy (24 hours by default).</div>
+					<div class="alert alert-warning mb-0"><b>Privacy:</b> Do not upload direct identifiers or sensitive patient data. Access tokens expire after 24 hours by default; cached files are physically removed when the operator runs the cleanup job.</div>
+					<div class="form-check mt-3">
+						<input class="form-check-input" type="checkbox" id="data_consent" name="data_consent" value="confirmed">
+						<label class="form-check-label" for="data_consent">I confirm that the uploaded data are de-identified and that I have consent, ethics approval, and institutional authorization where required.</label>
+					</div>
 				</div>
 					
 			<!-- </div> -->
@@ -435,6 +439,8 @@
 								location.reload();
 							} else if (!$("#upload_model").val().toLowerCase().endsWith(".maler")){
 								alert("Please select a signed .maler model bundle downloaded from MALER Analysis.");
+							} else if (!$("#data_consent").is(":checked")) {
+								alert("Please confirm data authorization and privacy before uploading.");
 							}else {
 							    $("#form_data").submit();
 							}

@@ -12,6 +12,7 @@ from mlserver.views.classification_oc_result_view_webscoket import JsonEncoder
 from ML_WebServer.settings import MLSERVER_STATIC_DIR, STATIC_ROOT
 from mlserver.views.classification_oc_result_view_webscoket import get_file_md5
 from django.contrib import messages
+from django.core.exceptions import SuspiciousOperation
 from mlserver.views.preview_views import data_hist, mkcol
 from mlserver.safe_ml import ModelBundleError, load_signed_model_bundle
 
@@ -66,6 +67,8 @@ def get_predict_page(request):
         return render(request, 'predict.html')
 
 def predict_preview(request):
+    if request.POST.get('file_upload_type') != 'example_data' and request.POST.get('data_consent') != 'confirmed':
+        raise SuspiciousOperation('Data authorization and privacy confirmation is required.')
     cache_dir = os.path.join(STATIC_ROOT, 'cache')
     os.makedirs(cache_dir, exist_ok=True)
 

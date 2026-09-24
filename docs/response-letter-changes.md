@@ -1,6 +1,6 @@
 # MALER 回复信最终一致性记录
 
-_用于核对 `v1.0.0-review3` 回复信、正文、补充材料和代码是否一致_
+_2026-09-24 更新：核对本地 `final_submission_patient_level_20260923`；`v1.0.0-review3` 是不含本轮修正的旧公开标签_
 
 ## 已完成的关键修正
 
@@ -12,20 +12,22 @@ _用于核对 `v1.0.0-review3` 回复信、正文、补充材料和代码是否�
 | 非折内或非 nested | 外层重复验证、内层选择；所有拟合步骤限制在训练折 |
 | 已完成功能仍写 future | PCA、no reduction、扩展指标、完整 bundle、bootstrap CI 改为已实现 |
 | legacy 路径“不可访问”但仍有 helper | `get_cp_combination` 已取消路由，公共计算统一走验证引擎 |
-| 36 项测试 | 更新为 46 项测试全部通过 |
-| 仓库 pending | 更新为 GitHub/Gitee 公开、MIT、`v1.0.0-review3` |
+| 36 项测试 | 更新为 50 项 Django 测试及 3 项患者分区测试全部通过 |
+| 仓库 pending | 旧 GitHub/Gitee `v1.0.0-review3` 公开、MIT；患者级修正须另发新版本 |
 | Figure 2 六面板 | 更新为含 scaling guidance 的七面板正式合图 |
 | Figure 3 旧页面截图 | 更新为 checksum-locked 定量验证图 |
 | 预测对齐只写“允许重排” | 增加页面报告重排列和忽略额外特征的说明 |
 
-## 可直接使用的公开仓库声明
+## 公开仓库声明边界
 
-Source code and reproducibility materials are publicly available under the MIT
-License at <https://github.com/zhaizhaoyu98/MALER_server>, mirrored at
-<https://gitee.com/zhaoyuzhai/MLSERVER>, as release `v1.0.0-review3`.
-The release includes pinned Windows and Linux Conda specifications, example
-data, validation and figure-generation scripts, fixed seeds, source hashes,
-machine-readable results, deployment templates, and 46 passing Django tests.
+旧 `v1.0.0-review3` 可用于追溯此前公开基线，但不能用于证明本地患者级
+重算、更新图件和 50 项测试已公开。正文和回复信均明确要求投稿前把本轮修正
+发布为新版本，并在最终上传时核对实际 commit 和公开链接。
+
+本轮补充：R2#10 现在有两项直接 scikit-learn 参考拟合；R2#14–16 的回复区分
+令牌过期、运营方物理清理、主机访问与未核实的备份/邮件上游日志；Editorial Major4
+改为准确说明生存 FSS/BSS 与固定 k 停止；Editorial Major6–7 增加类别失衡警告、
+缩放可覆盖的明确说明。未将这些局部修复写成云端已部署。
 
 不要声称存在 notebook；审稿意见允许 reproducible scripts or notebooks，当前发布采用
 脚本路径。
@@ -38,8 +40,8 @@ machine-readable results, deployment templates, and 46 passing Django tests.
 不可写：review3 已部署、HTTPS 已完成、HSTS/secure-cookie 已实机通过、独立渗透
 测试完成、存储已加密、备份恢复已验证。
 
-本轮用户明确要求不更新阿里云，因此回复信必须区分“公开源码 review3”和
-“线上已验证版本 13d6b3e”。
+本轮用户明确要求暂不更新阿里云，因此回复信区分“旧公开源码 review3”、
+“本地患者级修正”和“2026-09-22 曾验证的线上版本 13d6b3e”。
 
 ## 预测特征对齐回复
 
@@ -54,9 +56,11 @@ alter prediction values.
 
 - Figure 1：简化的 leakage-controlled 方法流程。
 - Figure 2：七面板界面图，新增 scaling guidance，并与 A-G 图注逐项对应。
-- Figure 3：312 个开发样本、50 个外层验证估计、302 个 held-out 样本、ROC/PR、
+- Figure 3：309 位开发患者、50 个外层验证估计、299 位内部留出患者、ROC/PR、
   混淆矩阵及 bootstrap 置信区间。
-- Figure S7：与 Figure 2 使用相同的七个经核验界面面板。
+- Supplementary Figures S1–S6：分别对应内部验证、外部验证、特征稳定性、
+  扩展生存、GSE50081 回顾性重分析和单机容量。七联界面图是主 Figure 2，
+  不再声明另有 Figure S7。
 - Table 3：结构化比较 MALER、Auto-WEKA、auto-sklearn、iLearnPlus 和 JADBio，
   不声称普遍性能优越。
 
@@ -71,7 +75,8 @@ alter prediction values.
 - 作者、单位、基金、通讯作者、利益冲突和伦理声明真实无误。
 - 投稿系统中的文件类别和期刊图片规范。
 - 服务器维护期限与负责人。
+- 新代码/结果版本公开、云端最终同步复测、Word 逐页视觉核对。
 
-最终回复信应保持 55 个 Comment、55 个 Response 和 55 个
-Changes in the manuscript 段落，且每项完成声明均能由代码、公开仓库、图或验证记录
-直接支持。
+最终回复信保持 55 个 Comment、55 个 Response 和 55 个
+Changes in the manuscript 段落；本轮新增完成声明由本地代码、图和验证记录支持，
+公开仓库对应版本仍须另行发布。

@@ -526,7 +526,6 @@ def cp_sur_analysis(client_msg,projectid):
         #send email
         # to_mail = request.POST.get('to_mail')
         to_mail =client_msg['to_mail']
-        print('mail: ',to_mail)
         if 'para_md5' in locals():  # 判断是否使用缓存，已有数据的变量名是select_md5
             url = 'maler/survival_cp_result/prev/'+ projectid + '_' + para_md5
             if to_mail != '':

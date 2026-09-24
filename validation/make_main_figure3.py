@@ -211,7 +211,7 @@ def build_figure():
     axis_a.legend(frameon=False, fontsize=8.5, loc="lower left", ncol=2)
     _panel_title(
         axis_a, "A", "Repeated nested cross-validation",
-        "Development set n=312; 5 folds × 10 repeats; model selection confined to training folds",
+        "Development set n=%d; 5 folds × 10 repeats; model selection confined to training folds" % len(X_train),
     )
     _style_axis(axis_a, grid_axis="y")
 
@@ -231,7 +231,7 @@ def build_figure():
     axis_b.set_xlabel("FPR (ROC) or recall (PR)", color=INK)
     axis_b.set_ylabel("TPR (ROC) or precision (PR)", color=INK)
     axis_b.legend(frameon=False, fontsize=8.2, loc="lower right")
-    _panel_title(axis_b, "B", "Held-out discrimination", "Independent test n=302")
+    _panel_title(axis_b, "B", "Held-out discrimination", "Internal held-out test n=%d" % len(X_test))
     _style_axis(axis_b, grid_axis="both")
 
     image = axis_c.imshow(matrix, cmap="Blues", vmin=0, vmax=max(1, matrix.max()))
@@ -252,7 +252,9 @@ def build_figure():
     axis_c.tick_params(colors=INK, labelsize=9)
     _panel_title(
         axis_c, "C", "Held-out confusion matrix",
-        "LUAD n=153; LUSC n=149",
+        "%s n=%d; %s n=%d" % (
+            classes[0], int(np.sum(y_test == classes[0])),
+            classes[1], int(np.sum(y_test == classes[1]))),
     )
 
     ci_metrics = [
@@ -308,8 +310,10 @@ def build_figure():
 
     png_path = os.path.join(FIGURE_DIR, "Figure_3_results.png")
     pdf_path = os.path.join(FIGURE_DIR, "Figure_3_results.pdf")
+    tiff_path = os.path.join(FIGURE_DIR, "Figure_3_results.tiff")
     figure.savefig(png_path, dpi=300, facecolor="white")
     figure.savefig(pdf_path, facecolor="white")
+    figure.savefig(tiff_path, dpi=300, facecolor="white")
     plt.close(figure)
 
     prediction_frame = pd.DataFrame(
@@ -334,6 +338,7 @@ def build_figure():
         "metric_tolerance": 1e-12,
         "figure_png": os.path.relpath(png_path, REPOSITORY_ROOT).replace(os.sep, "/"),
         "figure_pdf": os.path.relpath(pdf_path, REPOSITORY_ROOT).replace(os.sep, "/"),
+        "figure_tiff": os.path.relpath(tiff_path, REPOSITORY_ROOT).replace(os.sep, "/"),
         "prediction_csv": os.path.relpath(prediction_csv, REPOSITORY_ROOT).replace(os.sep, "/"),
     }
     audit_path = os.path.join(FIGURE_DIR, "Figure_3_generation_audit.json")

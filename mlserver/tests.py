@@ -46,9 +46,31 @@ from .views.download_views import download_model, download_sample_data
 from .security import validated_project_id
 from .task_access import issue_task_token
 from .views import predict_result as predict_result_view
+from .validated_analysis import class_imbalance_warning, normalize_scaler, parse_dataset
+
+
+class PatientLevelExampleTests(unittest.TestCase):
+    def test_public_analysis_filters_tcga_example_by_patient(self):
+        example = os.path.join(os.path.dirname(__file__), "static", "cache",
+                               "example", "binary_classification_example.csv")
+        raw, features, targets = parse_dataset(example, "classification")
+        self.assertEqual((len(features["train"]), len(features["test"])), (309, 299))
+        self.assertEqual((len(targets["train"]), len(targets["test"])), (309, 299))
+        self.assertEqual(len(raw.attrs["patient_level_audit"]["excluded_cross_partition_patients"]), 1)
+        self.assertEqual(len(raw.attrs["patient_level_audit"]["collapsed_within_partition_patients"]), 4)
 
 
 class SafeMLValidationTests(unittest.TestCase):
+    def test_imbalance_warning_reports_counts_without_claiming_reweighting(self):
+        warning = class_imbalance_warning(["case"] * 3 + ["control"] * 9)
+        self.assertIn("control=9", warning)
+        self.assertIn("does not automatically reweight", warning)
+        self.assertIsNone(class_imbalance_warning(["case"] * 4 + ["control"] * 8))
+
+    def test_no_scaling_remains_explicit_user_override(self):
+        self.assertEqual(normalize_scaler("N", requires_scaling=True), "none")
+        self.assertEqual(normalize_scaler("Z", requires_scaling=True), "standard")
+
     def test_rejects_duplicate_features(self):
         frame = pd.DataFrame([[1.0, 2.0], [2.0, 3.0]], columns=["A", "A"])
         with self.assertRaises(DataValidationError):
@@ -505,6 +527,7 @@ class AutomatedUsabilityTests(unittest.TestCase):
         self.assertIn(b"privacy", content)
         self.assertIn(b"direct identifiers", content)
         self.assertIn(b"24 hours", content)
+        self.assertIn(b'name="data_consent"', content)
         self.assertNotIn(b'accept=".pkl', content)
         self.assertNotIn(b'accept=".pickle', content)
 
@@ -522,9 +545,19 @@ class AutomatedUsabilityTests(unittest.TestCase):
         response = self.client.post("/maler/predict_preview", {
             "select_model": "model_bclass",
             "file_upload_type": "upload_data",
+            "data_consent": "confirmed",
         })
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"only signed .maler", response.content.lower())
+
+    def test_prediction_upload_without_authorization_is_rejected(self):
+        with tempfile.TemporaryDirectory() as root, override_settings(STATIC_ROOT=root):
+            response = self.client.post("/maler/predict_preview", {
+                "select_model": "model_bclass",
+                "file_upload_type": "user_data",
+            })
+            self.assertEqual(response.status_code, 400)
+            self.assertFalse(os.path.exists(os.path.join(root, "cache")))
 
 
 class ValidatedWebsiteWorkflowTests(unittest.TestCase):

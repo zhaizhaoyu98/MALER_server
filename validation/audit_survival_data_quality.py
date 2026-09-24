@@ -40,7 +40,9 @@ def _native(value):
 
 def main():
     X, y, split, source_path = load_survival("survival_example.csv")
-    X_train_raw, y_train_raw, X_external, y_external = split_declared(X, y, split)
+    # Audit the unmodified specimen-level source before shared patient filtering.
+    X_train_raw, y_train_raw, X_external, y_external = split_declared(
+        X, y, split, patient_level=False)
     X_train, y_train, duplicates = collapse_tcga_aliquots(X_train_raw, y_train_raw)
     training_patients = set(tcga_patient_identifier(value) for value in X_train_raw.index)
     external_patients = set(str(value) for value in X_external.index)

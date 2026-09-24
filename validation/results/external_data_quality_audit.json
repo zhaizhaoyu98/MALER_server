@@ -22,7 +22,7 @@
     },
     {
       "check": "analysis_matrix_grain",
-      "evidence": "172 samples x 43 unique features",
+      "evidence": "172 samples x 42 unique features",
       "passed": true
     },
     {
@@ -42,7 +42,7 @@
     },
     {
       "check": "platform_mapping_coverage",
-      "evidence": "43 of 50 internal candidates mapped to GPL570 (86.0%)",
+      "evidence": "42 of 50 internal candidates mapped to GPL570 (84.0%)",
       "passed": true
     },
     {

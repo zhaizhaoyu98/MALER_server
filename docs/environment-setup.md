@@ -14,7 +14,8 @@ _记录本机 conda 环境 `maler` 的最小安装方案与验收证据 · 2026-
 
 > 2026-09-22 更新：Windows `gene_edit` 环境使用 Python 3.7.11，并通过
 > `conda run -p D:\software\miniforge3\envs\gene_edit python manage.py test`
-> 完成 46 项测试。下文 `maler`/Python 3.7.12 记录保留为 Linux 最小环境的
+> 当时完成 46 项测试；2026-09-24 本地 `gene_edit` 环境在患者级修正后
+> 完成 50 项 Django 测试及 3 项患者分区测试。下文 `maler`/Python 3.7.12 记录保留为 Linux 最小环境的
 > 独立复现证据。
 
 ---

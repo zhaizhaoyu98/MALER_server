@@ -397,7 +397,6 @@ def oc_reg_analysis(client_msg,projectid):
     #send email
     # to_mail = request.POST.get('to_mail')
     to_mail = client_msg['to_mail']
-    print('mail: ',to_mail)
     url = 'maler/regression_oc_result/'+ projectid
     if to_mail != '' and to_mail != None:
             task_sendmail(to_mail, url)

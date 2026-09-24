@@ -1,11 +1,12 @@
 {
-  "bundle_sha256": "f2d0b0d6fc8cb3bcaf639545a16b58f09d2a4c838a91e7c0f996c29071e9886c",
+  "bundle_sha256": "e56172df79946f4a1ef361ff26cb589391cd8ee11f14c3e33acdcfa8c4ad4c35",
   "dataset_sha256": "0fc172c497de44e5bed111d18464c071fda6924c6a04af38038ea31aeedd80b9",
   "figure_pdf": "validation/figures/Figure_3_results.pdf",
   "figure_png": "validation/figures/Figure_3_results.png",
+  "figure_tiff": "validation/figures/Figure_3_results.tiff",
   "manifest": {
     "bundle_version": 1,
-    "created_utc": "2026-08-20T14:45:31Z",
+    "created_utc": "2026-09-23T11:51:31Z",
     "feature_names": [
       "ADA",
       "TMEM41A",
@@ -1542,7 +1543,7 @@
     ],
     "metadata": {
       "best_params": {
-        "model__C": 1.0,
+        "model__C": 10.0,
         "selector__k": 50
       },
       "classes": {
@@ -1568,45 +1569,45 @@
   "metric_tolerance": 1e-12,
   "prediction_csv": "validation/figures/Figure_3_heldout_predictions.csv",
   "recomputed_test_metrics": {
-    "accuracy": 0.9536423841059603,
-    "balanced_accuracy": 0.9536342501206299,
-    "f1": 0.9530201342281879,
-    "mcc": 0.9072685002412598,
+    "accuracy": 0.939799331103679,
+    "balanced_accuracy": 0.9398657718120805,
+    "f1": 0.9407894736842105,
+    "mcc": 0.8803225625310169,
     "per_class": {
       "LUAD": {
-        "sensitivity": 0.954248366013072,
-        "specificity": 0.9530201342281879
+        "sensitivity": 0.92,
+        "specificity": 0.959731543624161
       },
       "LUSC": {
-        "sensitivity": 0.9530201342281879,
-        "specificity": 0.954248366013072
+        "sensitivity": 0.959731543624161,
+        "specificity": 0.92
       }
     },
-    "pr_auc": 0.9894246694625363,
-    "precision": 0.9530201342281879,
-    "recall_sensitivity": 0.9530201342281879,
-    "roc_auc": 0.9866210466289423,
-    "specificity": 0.954248366013072
+    "pr_auc": 0.9872025694007529,
+    "precision": 0.9225806451612903,
+    "recall_sensitivity": 0.959731543624161,
+    "roc_auc": 0.9833109619686802,
+    "specificity": 0.92
   },
   "stored_test_metrics": {
-    "accuracy": 0.9536423841059603,
-    "balanced_accuracy": 0.9536342501206299,
-    "f1": 0.9530201342281879,
-    "mcc": 0.9072685002412598,
+    "accuracy": 0.939799331103679,
+    "balanced_accuracy": 0.9398657718120805,
+    "f1": 0.9407894736842105,
+    "mcc": 0.8803225625310169,
     "per_class": {
       "LUAD": {
-        "sensitivity": 0.954248366013072,
-        "specificity": 0.9530201342281879
+        "sensitivity": 0.92,
+        "specificity": 0.959731543624161
       },
       "LUSC": {
-        "sensitivity": 0.9530201342281879,
-        "specificity": 0.954248366013072
+        "sensitivity": 0.959731543624161,
+        "specificity": 0.92
       }
     },
-    "pr_auc": 0.9894246694625363,
-    "precision": 0.9530201342281879,
-    "recall_sensitivity": 0.9530201342281879,
-    "roc_auc": 0.9866210466289423,
-    "specificity": 0.954248366013072
+    "pr_auc": 0.9872025694007529,
+    "precision": 0.9225806451612903,
+    "recall_sensitivity": 0.959731543624161,
+    "roc_auc": 0.9833109619686802,
+    "specificity": 0.92
   }
 }

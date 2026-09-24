@@ -463,7 +463,11 @@ def fit_and_evaluate_candidates(X_train, y_train, X_test, y_test, specs):
 
 def run_tcga_cgga():
     X, y, split, source_path = load_survival("survival_example.csv")
-    X_train_raw, y_train_raw, X_external, y_external = split_declared(X, y, split)
+    # This analysis has its own documented TCGA aliquot-collapse audit below.
+    # Keep its original raw-count provenance; the shared patient filter is used
+    # by all other analyses.
+    X_train_raw, y_train_raw, X_external, y_external = split_declared(
+        X, y, split, patient_level=False)
     X_train, y_train, duplicate_detail = collapse_tcga_aliquots(X_train_raw, y_train_raw)
     specs = candidate_specs_high_dimensional(X_train.shape[1])
     candidate_results = []

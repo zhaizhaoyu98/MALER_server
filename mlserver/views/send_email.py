@@ -22,15 +22,9 @@ import re
 #             print(ee)
 
 
-subject = 'Task run complete!'
-content = '<a style="font-size: 28px; font-weight: 700; text-align: center;" href="'+ '/timecourse/analysis/omics_data_analysis_page?analysisId=' + '">--》Click to see the results《--</a>'
-# from_mail = 'Task run notification<' + '>'
-from_mail = 'linzhewei1999@163.com'
-to_mail = '1198369937@qq.com'
-print('发送邮件' + content)
-send_mail(subject, message=None, from_email=from_mail, recipient_list=[to_mail], fail_silently=False,
-              html_message=content)
-print('Sending an email succeeded！')
+# This legacy module is not a public route. Never send a message at import time.
+# The supported validated result view sends an optional, configured completion
+# notice only after a successful analysis.
 
 # try:
 #

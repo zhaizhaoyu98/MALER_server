@@ -108,7 +108,7 @@
 			</br>
 			<h1>Introduction</h1>
 			<hr>
-				<p>MALER is a user-friendly and easy-to-use web application that helps biologists apply ML models to
+				<p>MALER is a web application that helps biologists apply ML models to
                     biological and biomedical data. This page provides documentation on how to use MALER.</p>
 				<p>MALER provides four types of machine learning analysis, each with multiple model building algorithms, 
 				evaluation methods, as well as feature selection methods for users to choose from to build their custom 
@@ -137,7 +137,7 @@
 					</tr>
 					<tr>
 						<td style="font-weight: bold;">Regression</td>
-						<td>Linear Regression, SVM, Ridge, Lasso, Decision Tree,
+						<td>Linear Regression, SVR, Ridge, Lasso, Decision Tree,
 							XGBoost, AdaBoost, Random Forest, Gradient Boosting Regressor
 						</td>
 					<td>R-squared, MAE, MSE, and RMSE</td>
@@ -145,8 +145,8 @@
 					</tr>
 					<tr>
 						<td style="font-weight: bold;">Survival Analysis</td>
-						<td>SurvivalSVM, SurvivalTree, ExtraSurvivialTrees, RandomSurvivalForest, 
-							GradientBoostingSurivival
+						<td>SurvivalSVM, SurvivalTree, ExtraSurvivalTrees, RandomSurvivalForest,
+							GradientBoostingSurvival
 						</td>
 					<td>C-index, cumulative/dynamic time AUC, and integrated Brier score when estimable</td>
 					<td>Censoring-aware univariate Cox ranking</td>
@@ -159,7 +159,7 @@
 				
 			<h3 id='os_compat'>Browser and Operating System (OS) Compatibility</h3>
 				<hr>
-				MALAR is free and open to all users with no login requirement and can be really accessed by a variety of popular web browsers and 
+				MALER is free to access without a user account and can be opened in current desktop browsers and
 				operating systems as shown below.
 <!-- 				<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bolder;">
 				What can MALER do?
@@ -214,7 +214,6 @@
                 <p><b>Module selection</b></p>
 				
 				
-				<p style="text-align: center"><img src='/mlserver_static/img/help_analysis.png' width="960" height="400"></p>
 				<p>
                     MALER provides four modules including binary classification, multi-class classification, regression
                     and survival analysis. Classification is a supervised process that involves predicting the class of
@@ -223,17 +222,13 @@
                 </p>
 				<!-- <img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/gen_tab.png" alt="general tab img"/> -->
 				<p><b>Data submit</b></p>
-				<p style="text-align: center"><img src='/mlserver_static/img/help_submit.png' width="960" height="480"></p>
 
-				<p>When the module is selected, the user should submit the corresponding data format as following. Example
-                    data was also provided in “Example Data”.</p>
+				<p>Choose a task and upload the corresponding feature-by-sample CSV, or try a bundled example. User uploads require authorization and de-identification confirmation.</p>
                 <p><b>Format of input files</b></p>
-				<p>In general, a feature-by-sample matrix in a csv format is required to initiate the MALER analysis. A
-                    sample label file is also suggested to be uploaded so as to evaluate the matrix more comprehensive.</p>
+				<p>MALER accepts one feature-by-sample CSV. The first rows contain the task-specific outcome and train/test partition labels; remaining rows contain numeric features. Use the downloadable examples to check the exact row names and layout.</p>
 				<!-- <img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/general_home.PNG" alt="general overview img"/> -->
 				<br>
 				<p><b>Preview</b></p>
-				<p style="text-align: center"><img src='/mlserver_static/img/help_preview.png' width="900" height="1400"></p>
 				<p>In the preview page, users can view the information and distribution about the uploaded data.
 					After checking the data, click the 'Analysis' button to analyze the input data.
 				</p>
@@ -340,9 +335,9 @@
             		feature selection to create the model.
             	</p>
             	<p>
-					<b>FSS (Forward Stepwise Selection): </b>The method starts with an empty subset and adds the candidate that most
-					improves the task-specific training score at each step. Prescreening and subset search are refitted independently
-					inside each training fold.
+					<b>FSS (Forward Stepwise Selection): </b>The method starts with an empty subset and adds the candidate that
+									yields the highest task-specific inner-CV score at each step. Selection stops at the configured feature count,
+									not when score improvement ceases. Prescreening and subset search are refitted inside each training fold.
             	</p>
             	<p>
 					<b>BSS (Backward Stepwise Selection): </b>The method starts with the fold-local candidate set and removes the
@@ -351,46 +346,25 @@
 				</p>
 				<p><b>PCA:</b> Principal component analysis is an unsupervised optional reduction branch. Components and loadings are
 				fitted within training folds and are exported with the complete pipeline; PCA components are not reported as genes.</p>
-				<p><b>No reduction:</b> All validated input features are retained as an equal-budget reference branch.</p>
+				<p><b>No reduction:</b> All validated input features are retained. Published no-reduction comparisons use matched resampling, not identical compute budgets.</p>
+				<p>The <a href="/maler/analysis/methods.json">machine-readable method registry</a> lists current models, parameter grids, and defaults. TopK, MRMR, and PCA test 10, 20, or 50 features/components when feasible; FSS and BSS use a 50-feature prescreen and test 5, 10, or 20 retained features. Each model search is capped at 24 parameter combinations.</p>
 				<br></br>
 			
 			<h3 id='one_click'>One-click Modeling</h3>
 				<hr>
-				<p style="text-align: center"><img src='/mlserver_static/img/help_oneclick.png' width="1000" height="500"></p>
-				<p>
-			        One-click Modeling allows users run multiple models within the same process. The default parameters
-			        would be set for each ML model.
-				</p>
+				<p>One-click Modeling compares registered estimators using their versioned defaults and bounded search grids. Z-score scaling is recommended for scale-sensitive estimators; users can override it, but unscaled cross-model comparisons may be unfair.</p>
 				
 			    <!-- <img style="width: 100%; padding-left: 10%; padding-right: 10%" src="/organoidb_static/img/help_img/Detailed_information_page.PNG" alt="Detailed information img"/> -->
 			<h3 id='cus_model'>Customized Modeling</h3>
 				<hr>
-				<p style="text-align: center"><img src='/mlserver_static/img/help_customized.png' width="1000" height="520"></p>
-				<p>
-			        Users can customized the machine learning algorithm using different parameters. The Customized
-			        modeling will be stored in the server and could be compared with other modelings derived from the
-			        same data under the same ProjectID.
-				</p>
-				<p style="text-align: center"><img src='/mlserver_static/img/help_customized2.png' width="1050" height="450"></p>
-				<p style="text-align: center"><img src='/mlserver_static/img/help_customized3.png' width="1050" height="450"></p>
-				<p>
-					Users can also submit tasks using the same project ID to compare the performance of tasks with different parameters or different models. 
-					The results page of the previous task can be returned by clicking the 'view' button, and the 'combine' button can 
-					combine the performance metrics of all tasks.
-				</p>
+				<p>Customized Modeling lets users select one supported estimator and submit validated parameter values. The completed result records the fitted preprocessing, selected parameters, metrics, and a private access link. Exported signed models can be reused for external prediction.</p>
 				
 				
 				
 			<h3 id='predict'>External Prediction</h3>
                 <hr>
 				<!-- <p style="text-align: center"><img src='/mlserver_static/img/home5.png' width="900" height="400"></p> -->
-				<p style="text-align: center"><img src='/mlserver_static/img/help_pred1.png' width="1050" height="800"></p>
-				<p style="text-align: center"><img src='/mlserver_static/img/help_pred2.png' width="1050" height="600"></p>
-				<p>
-                    Users can apply the models downloaded from ML Analysis on external data, and performed the prediction.
-                    The confusion matrix will be calculated for the validation set, while predictions will be listed in
-                    a table for the blind test set.
-				</p>
+				<p>Use a signed model exported from MALER Analysis with an identifier-compatible external CSV. Prediction labels are listed for blind samples; where outcome labels are supplied, the page also shows validation metrics. Uploads require de-identification and authorization confirmation.</p>
                 <!-- <img style="width: 75%; padding-left: 25%;" src="/organoidb_static/img/help_img/Feedback.png" alt="Feedback img"/> -->
 
             <h3 id='samp'>Sample Data</h3>

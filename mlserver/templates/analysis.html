@@ -281,6 +281,7 @@
 								<div style="position: relative;">
 									<p><div> <b> File: </b>  Upload a CSV file with features in rows and samples in columns. The file must be no larger than 200MB. Example/template files are provided to illustrate the required input format.</div></p>
 									<p><b> Template: </b> Classification and regression files use the first three rows for sample name, label, and train/test set. Survival files use the first four rows for sample name, status, time, and train/test set. Example files can be downloaded below.</p>
+									<p><b> Patient-level safeguard: </b> TCGA-style barcodes are grouped by patient at analysis time. Patients found in both training and testing are excluded from both; repeated aliquots within one partition are reduced by a fixed sample-type/vial rule. The result file lists every excluded or retained barcode, so analyzed sample counts may be lower than the upload preview.</p>
 									<p><b> Project access: </b> MALER generates a random project suffix and a separate access token. Keep the result link private; the project ID alone is not sufficient to retrieve data or results.</p>
 									<div class="form-check alert alert-warning">
 										<input class="form-check-input" type="checkbox" id="data_consent" name="data_consent" value="confirmed">
@@ -416,7 +417,7 @@
 								<span><input type="radio" id="feature_norm_ma" name="feature_norm" value="MA" />&nbsp;<label for="feature_norm_ma">MaxAbs</label></span>
 								<span><input type="radio" id="feature_norm_none" name="feature_norm" value="N" />&nbsp;<label for="feature_norm_none">None</label></span>
 							</div>
-							<p style="margin-top: 10px;color: #666;">Z-Score is the recommended default for fair comparison of scale-sensitive SVM, KNN and penalized linear models. Tree-based models are generally less scale sensitive. The reviewer-validation reference pipeline fits scaling inside every training fold; historical interactive scores should be treated as exploratory model-development results.</p>
+							<p style="margin-top: 10px;color: #666;">Z-Score is the recommended default for fair comparison of scale-sensitive SVM, KNN and penalized linear models. Tree-based models are generally less scale sensitive. The setting can be changed, including to no scaling; doing so for a scale-sensitive model may make comparisons unfair. Scaling is fitted inside every training fold, and the selected setting is recorded with the result.</p>
 							</div>
 						</div>
 					</div>
@@ -2953,7 +2954,6 @@
 				$("#random_token").val(random_token)
 				var select_model = $("#select_model").val()
 				var to_mail = $("#to_mail").val()
-				console.log(to_mail)
 				//获取fsm radio中的name值 两种方法
 				// var radios = document.getElementsByName("fsm")
 				// for(var i=0;i<radios.length;i++){

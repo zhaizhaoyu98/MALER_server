@@ -53,6 +53,10 @@ from mlserver.safe_survival import (  # noqa: E402
     survival_metrics,
     validate_survival_target,
 )
+from mlserver.patient_partitions import (  # noqa: E402
+    patient_id as _patient_id,
+    patient_partition_audit,
+)
 
 
 EXAMPLE_DIR = os.path.join(REPOSITORY_ROOT, "mlserver", "static", "cache", "example")
@@ -119,15 +123,22 @@ def load_survival(filename):
     return X, y, split, path
 
 
-def split_declared(X, y, split):
+def split_declared(X, y, split, patient_level=True, return_audit=False):
     train_mask = np.isin(split, ["train", "training"])
     test_mask = np.isin(split, ["test", "testing"])
     if not train_mask.any() or not test_mask.any() or (train_mask | test_mask).sum() != len(split):
         raise ValueError("Every sample must be assigned to train/training or test/testing.")
-    return X.loc[train_mask], y[train_mask], X.loc[test_mask], y[test_mask]
+    audit = None
+    if patient_level:
+        kept, audit = patient_partition_audit(X.index, split)
+        X, y, split = X.iloc[kept], y[kept], split[kept]
+        train_mask = np.isin(split, ["train", "training"])
+        test_mask = np.isin(split, ["test", "testing"])
+    result = (X.loc[train_mask], y[train_mask], X.loc[test_mask], y[test_mask])
+    return result + (audit,) if return_audit else result
 
 
-def describe_dataset(name, X_train, y_train, X_test, y_test, source_path, task):
+def describe_dataset(name, X_train, y_train, X_test, y_test, source_path, task, patient_audit=None):
     result = {
         "dataset": name,
         "task": task,
@@ -139,6 +150,8 @@ def describe_dataset(name, X_train, y_train, X_test, y_test, source_path, task):
         "missing_train": int(X_train.isna().sum().sum()),
         "missing_test": int(X_test.isna().sum().sum()),
     }
+    if patient_audit is not None:
+        result["patient_level_audit"] = patient_audit
     if task == "classification":
         result["train_class_counts"] = dict(Counter(map(str, y_train)))
         result["test_class_counts"] = dict(Counter(map(str, y_test)))
@@ -256,7 +269,7 @@ def validation_key():
 
 def run_classification(name, filename, signing_key):
     X, y, split, source_path = load_classification(filename)
-    X_train, y_train, X_test, y_test = split_declared(X, y, split)
+    X_train, y_train, X_test, y_test, patient_audit = split_declared(X, y, split, return_audit=True)
     estimator = LogisticRegression(
         solver="liblinear", class_weight="balanced", max_iter=500,
         random_state=RANDOM_STATE, multi_class="ovr")
@@ -299,7 +312,7 @@ def run_classification(name, filename, signing_key):
         "binary" if len(final.classes_) == 2 else "multiclass",
         X_train.columns, signing_key, metadata=metadata)
     result = {
-        "dataset": describe_dataset(name, X_train, y_train, X_test, y_test, source_path, "classification"),
+        "dataset": describe_dataset(name, X_train, y_train, X_test, y_test, source_path, "classification", patient_audit),
         "protocol": {"outer_cv": "repeated stratified 5-fold x 10", "inner_cv": "stratified 3-fold"},
         "nested_cv": nested,
         "nested_cv_fold_intervals": fold_intervals(nested),
@@ -324,7 +337,7 @@ def run_regression(signing_key):
     name = "regression"
     filename = "regression_example.csv"
     X, y, split, source_path = load_regression(filename)
-    X_train, y_train, X_test, y_test = split_declared(X, y, split)
+    X_train, y_train, X_test, y_test, patient_audit = split_declared(X, y, split, return_audit=True)
     estimator = Ridge()
     started = time.perf_counter()
     nested = nested_cv_regression(
@@ -356,7 +369,7 @@ def run_regression(signing_key):
             "best_params": final.best_params_,
         })
     return {
-        "dataset": describe_dataset(name, X_train, y_train, X_test, y_test, source_path, "regression"),
+        "dataset": describe_dataset(name, X_train, y_train, X_test, y_test, source_path, "regression", patient_audit),
         "protocol": {"outer_cv": "repeated 5-fold x 10", "inner_cv": "3-fold"},
         "nested_cv": nested,
         "nested_cv_fold_intervals": fold_intervals(nested),
@@ -379,7 +392,7 @@ def run_survival(signing_key):
     name = "survival"
     filename = "survival_example.csv"
     X, y, split, source_path = load_survival(filename)
-    X_train, y_train, X_test, y_test = split_declared(X, y, split)
+    X_train, y_train, X_test, y_test, patient_audit = split_declared(X, y, split, return_audit=True)
     estimator = SurvivalTree(random_state=RANDOM_STATE, min_samples_leaf=10)
     started = time.perf_counter()
     nested = nested_cv_survival(
@@ -416,7 +429,7 @@ def run_survival(signing_key):
             "best_params": final.best_params_,
         })
     return {
-        "dataset": describe_dataset(name, X_train, y_train, X_test, y_test, source_path, "survival"),
+        "dataset": describe_dataset(name, X_train, y_train, X_test, y_test, source_path, "survival", patient_audit),
         "protocol": {"outer_cv": "event-stratified 5-fold x 10", "inner_cv": "event-stratified 3-fold"},
         "nested_cv": nested,
         "nested_cv_fold_intervals": fold_intervals(nested),

@@ -3,7 +3,9 @@
 The model family, feature mapping and selected feature count are reconstructed
 deterministically from TCGA exactly as in run_external_gse37745.py.  GSE37745
 is used only to calibrate a single probability threshold; GSE50081 is then an
-untouched final cohort and never enters feature, parameter or threshold choice.
+independent cohort and never enters feature, parameter or threshold choice.
+This patient-level reanalysis is not a newly untouched evaluation: earlier
+releases already reported this cohort's outcomes.
 """
 
 from __future__ import absolute_import, print_function
@@ -230,7 +232,7 @@ def main():
             "feature_mapping": "same outcome-blind GPL570 mapping used for GSE37745",
             "model_selection": "TCGA training partition only",
             "threshold_calibration": "single balanced-accuracy threshold selected on GSE37745 only",
-            "final_validation": "GSE50081 used once; no feature, model, or threshold tuning",
+            "final_validation": "Previously reported GSE50081 cohort reanalyzed after patient-level filtering; no current feature, model, or threshold tuning on GSE50081 outcomes",
             "positive_class": str(final.classes_[-1]),
         },
         "quality_checks": {
@@ -240,7 +242,7 @@ def main():
             "metadata_expression_order_identical": True,
             "expression_all_finite": True,
             "all_included_labels_complete": bool(included["label"].notna().all()),
-            "all_43_locked_input_genes_mapped": bool(external_X.shape[1] == len(mapped_features) == 43),
+            "all_locked_input_genes_mapped": bool(external_X.shape[1] == len(mapped_features)),
             "locked_model_reconstruction_identical": True,
             "gse50081_not_used_for_threshold_selection": True,
         },

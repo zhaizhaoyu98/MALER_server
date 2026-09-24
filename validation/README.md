@@ -40,21 +40,32 @@ bundles. Do not commit the key. Completed task JSON files are reused unless
 ## Evaluation design
 
 - Model development uses the repository-declared training partition only.
+- Before fitting, TCGA barcodes are normalized to patient IDs. Every patient
+  present in both declared partitions is excluded from both; within either
+  partition, one aliquot is selected without consulting outcomes (primary
+  tumour type 01, then vial A, then lexical order). The bundled CSVs remain
+  unmodified, and each task JSON contains the complete patient-level audit.
+  This correction yields binary 309/299, multiclass 482/468, regression
+  367/162, and survival 160/133 development/test samples.
 - Imputation, scaling, ranking, selection, and tuning are fitted within folds.
 - Main estimates use 5-fold × 10 repeated outer validation with a 3-fold inner
-  loop; the declared test partition is evaluated once.
-- The revised no-feature-selection comparison uses the same 5-fold × 10
-  repeated outer validation and 3-fold inner tuning budget as the primary
-  classification/regression analyses. TCGA survival aliquots are first
-  collapsed to one sample per patient.
+  loop; the declared test partition is evaluated once. The public web UI
+  defaults to 5-fold × 2 repeats and 3-fold inner selection; 5 × 10 is the
+  review-validation script setting, not the web default.
+- The no-feature-selection comparison uses the same outer and inner split
+  protocol and model hyperparameter grids, but has fewer feature-size
+  candidates. It is a matched-resampling comparison, not a compute-matched
+  causal ablation of feature selection.
 - Declared internal held-out confidence intervals use 1,000 bootstrap
   resamples; independent external-cohort and expanded-survival intervals use
   2,000 bootstrap resamples.
 - GSE37745 histology filtering and GPL570 feature availability are determined
   without external outcomes.
 - GSE50081 eligibility, model reconstruction, calibration-cohort use, metrics,
-  and tie breaking were locked in `external_data/GSE50081_protocol.json`
-  before the downloaded matrix was parsed.
+  and tie breaking were documented in `external_data/GSE50081_protocol.json`
+  before the original downloaded matrix was parsed. Its patient-level
+  reanalysis is not newly untouched because prior releases reported its
+  outcomes; no GSE50081 outcomes enter the current model or threshold choice.
 
 ## Real external cohort
 
@@ -65,13 +76,14 @@ bundles. Do not commit the key. Completed task JSON files are reused unless
   `3B331E2A531B314B503D0E65D6D2F2259AD32FDE1F40C0F3271998DC38753B27`
 - Archive integrity: 196 members, ZIP CRC passed
 - Target-matched analysis: 106 LUAD + 66 LUSC; 24 large-cell samples excluded
-- Platform mapping: 43 of 50 candidate genes (86%); 20 locked final features
+- Platform mapping after patient-level correction: 42 of 50 candidate genes
+  (84%); 20 final features
 
 The primary external transform is a within-sample percentile rank and does not
 use the external cohort distribution. Cohort-wise z-scoring is retained only as
 a clearly labeled transductive sensitivity analysis.
 
-## Second untouched external cohort and threshold calibration
+## Second external cohort and threshold calibration
 
 - Accession: GSE50081 (UHN181), GPL570, submitter-processed log2 RMA
 - Official Series Matrix SHA-256:
@@ -79,13 +91,14 @@ a clearly labeled transductive sensitivity analysis.
 - Matrix: 54,675 unique probes × 181 unique samples; all values finite
 - Prespecified target-matched analysis: 127 LUAD + 42 LUSC; 12 other or
   ambiguous histologies excluded without reference to model output
-- GSE37745-only threshold: 0.941194; GSE50081 was not used in its selection
-- Untouched GSE50081 result: balanced accuracy 0.877 (95% bootstrap CI
-  0.819–0.933), ROC-AUC 0.891 (0.819–0.954), specificity 0.898, sensitivity
-  0.857, and MCC 0.719
+- Recalculated GSE37745-only threshold: 0.932106; GSE50081 outcomes were not
+  used for its selection in this rerun.
+- GSE50081 retrospective reanalysis: balanced accuracy 0.873, ROC-AUC 0.893,
+  specificity 0.890, sensitivity 0.857, and MCC 0.707. Exact bootstrap CIs
+  are in `results/external_gse50081.json`.
 
-The uncalibrated 0.5 threshold is also retained (balanced accuracy 0.630,
-specificity 0.331). This demonstrates that discrimination transferred but the
+The uncalibrated 0.5 threshold is also retained (balanced accuracy 0.649,
+specificity 0.370). This demonstrates that discrimination transferred but the
 decision threshold required calibration; it is not hidden by the stronger
 calibrated result.
 
@@ -101,13 +114,26 @@ calibrated result.
   C-index was 0.700 (0.641–0.756), mean time-dependent AUC 0.768, and integrated
   Brier score 0.166.
 
+## Direct reference implementation parity
+
+`reference_parity_check.py` refits the locked binary Logistic Regression and
+regression Ridge models using direct scikit-learn components, without importing
+the MALER pipeline or metric helpers. It checks the archived input hash,
+patient-level exclusions, selected features, and held-out metrics; for the
+binary task it also compares all 299 patient predictions and probabilities.
+The run passed at absolute tolerance `1e-10`; details are in
+`results/reference_parity_check.json`. This is evidence for two selected
+models, not all estimators or an independent algorithm reimplementation.
+
 ## Capacity evidence
 
 Fresh Windows subprocesses measured peak working set for every case. The
 largest tested training matrix (1,000 samples × 5,000 features) completed in
 7.72 seconds with 344.6 MB peak working set. A 10,000-row prediction batch ran
-at approximately 839,067 predictions/second. These are observed single-process
-measurements on this machine, not universal server limits.
+at approximately 839,067 predictions/second for the in-process prediction
+call only (not CSV upload, queueing, or end-to-end web throughput). These are
+observed single-process measurements on this machine, not universal server
+limits.
 
 ## Configuration-level security evidence
 

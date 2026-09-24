@@ -1,4 +1,9 @@
-"""Equal-resampling no-feature-selection baselines for the reviewer revision."""
+"""Matched-resampling no-feature-selection baselines for the reviewer revision.
+
+The outer and inner splits and model hyperparameter grids match the primary
+analysis, but the number of feature-size candidates differs. This is not a
+compute-matched or causal feature-selection ablation.
+"""
 
 from __future__ import absolute_import, print_function
 
@@ -74,7 +79,9 @@ def classification(filename, multiclass=False):
     started = time.perf_counter()
     result = nested_cv_classification(
         X_train, y_train,
-        LogisticRegression(solver="liblinear", max_iter=4000, random_state=RANDOM_STATE),
+        LogisticRegression(solver="liblinear", class_weight="balanced",
+                           max_iter=500, random_state=RANDOM_STATE,
+                           multi_class="ovr"),
         param_grid={"model__C": [0.1, 1.0, 10.0]}, k_values=(X_train.shape[1],),
         outer_splits=5, outer_repeats=10, inner_splits=3,
         random_state=RANDOM_STATE, feature_method="none",
@@ -102,7 +109,9 @@ def regression():
 
 def survival():
     X, y, split, source_path = load_survival("survival_example.csv")
-    X_train, y_train, _, _ = split_declared(X, y, split)
+    # Preserve raw aliquot provenance; collapse below applies the same
+    # patient-level training set used by the primary analysis.
+    X_train, y_train, _, _ = split_declared(X, y, split, patient_level=False)
     X_train, y_train, duplicate_detail = collapse_tcga_aliquots(X_train, y_train)
     started = time.perf_counter()
     result = nested_cv_survival(
@@ -119,7 +128,7 @@ def survival():
 
 
 def main():
-    result = {"protocol": "same 5-fold x 10 outer repeats and 3-fold inner tuning as primary analyses"}
+    result = {"protocol": "same 5-fold x 10 outer repeats and 3-fold inner tuning as primary analyses; feature-size candidate count and computational budget differ"}
     if os.path.isfile(CHECKPOINT_PATH) and not os.environ.get("MALER_VALIDATION_FORCE"):
         with open(CHECKPOINT_PATH, "r", encoding="utf-8") as handle:
             result.update(json.load(handle))
@@ -133,7 +142,7 @@ def main():
         if name in result:
             print("Loaded baseline checkpoint:", name, flush=True)
             continue
-        print("Equal-budget baseline:", name, flush=True)
+        print("Matched-resampling baseline:", name, flush=True)
         result[name] = job()
         _write_json(CHECKPOINT_PATH, result)
         print("Wrote baseline checkpoint:", name, flush=True)

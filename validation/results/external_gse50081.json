@@ -1,5 +1,5 @@
 {
-  "elapsed_seconds": 12.7307398,
+  "elapsed_seconds": 12.8708922,
   "external_dataset": {
     "accession": "GSE50081",
     "class_counts": {
@@ -26,56 +26,56 @@
   "gse37745_calibration": {
     "balanced_accuracy_at_selected_threshold": 0.9479702687249857,
     "samples": 172,
-    "selected_threshold": 0.9411943424217819
+    "selected_threshold": 0.9321062962030295
   },
   "gse50081_default_threshold": {
     "bootstrap": {
       "accuracy": {
         "bootstrap_95_ci": [
-          0.40236686390532544,
-          0.5562130177514792
+          0.4319526627218935,
+          0.5857988165680473
         ],
-        "estimate": 0.47928994082840237,
+        "estimate": 0.5088757396449705,
         "n_bootstrap": 2000
       },
       "balanced_accuracy": {
         "bootstrap_95_ci": [
-          0.5731589147286822,
-          0.6828240584822272
+          0.5935891175444715,
+          0.7026488575302852
         ],
-        "estimate": 0.6296400449943758,
+        "estimate": 0.6493250843644545,
         "n_bootstrap": 2000
       },
       "f1": {
         "bootstrap_95_ci": [
-          0.36600908656145387,
-          0.5586678927096707
+          0.37906730259671434,
+          0.5747160850712368
         ],
-        "estimate": 0.4698795180722892,
+        "estimate": 0.484472049689441,
         "n_bootstrap": 2000
       },
       "mcc": {
         "bootstrap_95_ci": [
-          0.14614757299832593,
-          0.35072313873686767
+          0.17649297485708285,
+          0.3808337158666804
         ],
-        "estimate": 0.2535003568159504,
+        "estimate": 0.2827683432251171,
         "n_bootstrap": 2000
       },
       "pr_auc": {
         "bootstrap_95_ci": [
-          0.5937075406592957,
-          0.8947938622807787
+          0.6032182686186413,
+          0.8945004818231135
         ],
-        "estimate": 0.7373640865931328,
+        "estimate": 0.7479005575483526,
         "n_bootstrap": 2000
       },
       "precision": {
         "bootstrap_95_ci": [
-          0.23007022813996914,
-          0.3970899800598203
+          0.23893805309734514,
+          0.4122947851279574
         ],
-        "estimate": 0.31451612903225806,
+        "estimate": 0.3277310924369748,
         "n_bootstrap": 2000
       },
       "recall_sensitivity": {
@@ -88,25 +88,25 @@
       },
       "roc_auc": {
         "bootstrap_95_ci": [
-          0.8189318969640973,
-          0.9538572298033187
+          0.8203081854043391,
+          0.9554052145452718
         ],
-        "estimate": 0.891451068616423,
+        "estimate": 0.8927634045744283,
         "n_bootstrap": 2000
       },
       "specificity": {
         "bootstrap_95_ci": [
-          0.2481188436206796,
-          0.4148444444444443
+          0.2845510933557611,
+          0.453125
         ],
-        "estimate": 0.33070866141732286,
+        "estimate": 0.3700787401574803,
         "n_bootstrap": 2000
       }
     },
     "confusion_matrix": [
       [
-        42,
-        85
+        47,
+        80
       ],
       [
         3,
@@ -114,75 +114,75 @@
       ]
     ],
     "metrics": {
-      "accuracy": 0.47928994082840237,
-      "balanced_accuracy": 0.6296400449943758,
-      "f1": 0.4698795180722892,
-      "mcc": 0.2535003568159504,
+      "accuracy": 0.5088757396449705,
+      "balanced_accuracy": 0.6493250843644545,
+      "f1": 0.484472049689441,
+      "mcc": 0.2827683432251171,
       "per_class": {
         "LUAD": {
-          "sensitivity": 0.33070866141732286,
+          "sensitivity": 0.3700787401574803,
           "specificity": 0.9285714285714286
         },
         "LUSC": {
           "sensitivity": 0.9285714285714286,
-          "specificity": 0.33070866141732286
+          "specificity": 0.3700787401574803
         }
       },
-      "pr_auc": 0.7373640865931328,
-      "precision": 0.31451612903225806,
+      "pr_auc": 0.7479005575483526,
+      "precision": 0.3277310924369748,
       "recall_sensitivity": 0.9285714285714286,
-      "roc_auc": 0.891451068616423,
-      "specificity": 0.33070866141732286
+      "roc_auc": 0.8927634045744283,
+      "specificity": 0.3700787401574803
     }
   },
   "gse50081_gse37745_calibrated_threshold": {
     "bootstrap": {
       "accuracy": {
         "bootstrap_95_ci": [
-          0.8402366863905325,
-          0.9349112426035503
+          0.8284023668639053,
+          0.9289940828402367
         ],
-        "estimate": 0.8875739644970414,
+        "estimate": 0.8816568047337278,
         "n_bootstrap": 2000
       },
       "balanced_accuracy": {
         "bootstrap_95_ci": [
-          0.8185455833352439,
-          0.9329385788290316
+          0.813790798836171,
+          0.9292727272727273
         ],
-        "estimate": 0.8773903262092237,
+        "estimate": 0.873453318335208,
         "n_bootstrap": 2000
       },
       "f1": {
         "bootstrap_95_ci": [
-          0.6856947162426614,
-          0.8737864077669903
+          0.676056338028169,
+          0.8653846153846154
         ],
-        "estimate": 0.7912087912087913,
+        "estimate": 0.782608695652174,
         "n_bootstrap": 2000
       },
       "mcc": {
         "bootstrap_95_ci": [
-          0.5987176709282427,
-          0.8298724211399833
+          0.5864889926876913,
+          0.8174252020904678
         ],
-        "estimate": 0.7188836426048905,
+        "estimate": 0.7071871182729859,
         "n_bootstrap": 2000
       },
       "pr_auc": {
         "bootstrap_95_ci": [
-          0.5937075406592957,
-          0.8947938622807787
+          0.6032182686186413,
+          0.8945004818231135
         ],
-        "estimate": 0.7373640865931328,
+        "estimate": 0.7479005575483526,
         "n_bootstrap": 2000
       },
       "precision": {
         "bootstrap_95_ci": [
-          0.5998936170212765,
-          0.8541666666666666
+          0.5833333333333334,
+          0.8421310629514962
         ],
-        "estimate": 0.7346938775510204,
+        "estimate": 0.72,
         "n_bootstrap": 2000
       },
       "recall_sensitivity": {
@@ -195,25 +195,25 @@
       },
       "roc_auc": {
         "bootstrap_95_ci": [
-          0.8189318969640973,
-          0.9538572298033187
+          0.8203081854043391,
+          0.9554052145452718
         ],
-        "estimate": 0.891451068616423,
+        "estimate": 0.8927634045744283,
         "n_bootstrap": 2000
       },
       "specificity": {
         "bootstrap_95_ci": [
-          0.8396946564885496,
-          0.9469043309198176
+          0.8307627118644069,
+          0.9426288056206089
         ],
-        "estimate": 0.8976377952755905,
+        "estimate": 0.889763779527559,
         "n_bootstrap": 2000
       }
     },
     "confusion_matrix": [
       [
-        114,
-        13
+        113,
+        14
       ],
       [
         6,
@@ -221,25 +221,25 @@
       ]
     ],
     "metrics": {
-      "accuracy": 0.8875739644970414,
-      "balanced_accuracy": 0.8773903262092237,
-      "f1": 0.7912087912087913,
-      "mcc": 0.7188836426048905,
+      "accuracy": 0.8816568047337278,
+      "balanced_accuracy": 0.873453318335208,
+      "f1": 0.782608695652174,
+      "mcc": 0.7071871182729859,
       "per_class": {
         "LUAD": {
-          "sensitivity": 0.8976377952755905,
+          "sensitivity": 0.889763779527559,
           "specificity": 0.8571428571428571
         },
         "LUSC": {
           "sensitivity": 0.8571428571428571,
-          "specificity": 0.8976377952755905
+          "specificity": 0.889763779527559
         }
       },
-      "pr_auc": 0.7373640865931328,
-      "precision": 0.7346938775510204,
+      "pr_auc": 0.7479005575483526,
+      "precision": 0.72,
       "recall_sensitivity": 0.8571428571428571,
-      "roc_auc": 0.891451068616423,
-      "specificity": 0.8976377952755905
+      "roc_auc": 0.8927634045744283,
+      "specificity": 0.889763779527559
     }
   },
   "model_reconstruction": {
@@ -281,7 +281,6 @@
       "TP63",
       "HAP1",
       "DLX5",
-      "CDHR1",
       "YEATS2",
       "ARHGEF38",
       "MIR205HG",
@@ -320,7 +319,7 @@
   "protocol": {
     "cohort_rule_locked_before_download_analysis": "include only exact adenocarcinoma and squamous cell carcinoma histology",
     "feature_mapping": "same outcome-blind GPL570 mapping used for GSE37745",
-    "final_validation": "GSE50081 used once; no feature, model, or threshold tuning",
+    "final_validation": "Previously reported GSE50081 cohort reanalyzed after patient-level filtering; no current feature, model, or threshold tuning on GSE50081 outcomes",
     "locked_protocol_path": "E:\\CodeProject\\Server\\MLSERVER\\validation\\external_data\\GSE50081_protocol.json",
     "locked_protocol_sha256": "7d8a3fc1cbed1ee69df676f207d3e86e1786c59dd9a44413fdde288df701f770",
     "model_selection": "TCGA training partition only",
@@ -328,8 +327,8 @@
     "threshold_calibration": "single balanced-accuracy threshold selected on GSE37745 only"
   },
   "quality_checks": {
-    "all_43_locked_input_genes_mapped": true,
     "all_included_labels_complete": true,
+    "all_locked_input_genes_mapped": true,
     "all_passed": true,
     "expression_all_finite": true,
     "gse50081_not_used_for_threshold_selection": true,

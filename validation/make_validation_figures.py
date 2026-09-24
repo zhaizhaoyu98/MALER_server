@@ -96,7 +96,7 @@ def internal_performance_figure(all_results, equal_budget, pca_result):
         nested_mean, y + 0.14, xerr=nested_sd, fmt="o", color=BLUE,
         ecolor=BLUE, capsize=3, markersize=6, label="Nested CV mean ± SD")
     axis.scatter(baseline_mean, y - 0.14, marker="s", s=38, facecolors="white",
-                 edgecolors=GREY, linewidths=1.2, label="Equal-budget no selection")
+                 edgecolors=GREY, linewidths=1.2, label="Matched-resampling no selection")
     pca_positions = np.asarray(y, dtype=float) - 0.28
     valid_pca = np.isfinite(pca_mean)
     axis.errorbar(
@@ -110,7 +110,7 @@ def internal_performance_figure(all_results, equal_budget, pca_result):
     axis.set_xlabel("Primary metric (balanced accuracy, R², or C-index)", color=INK)
     axis.set_title("A  Internal predictive performance", loc="left", color=INK,
                    fontweight="bold", y=1.10)
-    axis.text(0.0, 1.025, "Equal-budget comparison; PCA sensitivity used 5 × 5",
+    axis.text(0.0, 1.025, "Matched resampling (not compute matched); PCA used 5 × 5",
               transform=axis.transAxes, fontsize=9, color=GREY)
     axis.legend(frameon=False, fontsize=8, loc="upper left")
     style_axis(axis)
@@ -266,12 +266,12 @@ def external_stability_figure(external_result):
 def survival_expanded_figure(result):
     figure, axes = plt.subplots(1, 2, figsize=(12.8, 5.5), sharex=True)
     panels = [
-        (axes[0], result["tcga_cgga"], "all_external_audit_results",
-         "A  TCGA development → CGGA audit",
-         "160 unique TCGA patients; 133 CGGA samples"),
-        (axes[1], result["gbsg2"], "all_heldout_audit_results",
-         "B  GBSG2 development → declared holdout",
+        (axes[0], result["gbsg2"], "all_heldout_audit_results",
+         "A  GBSG2 development → declared holdout",
          "514 development; 172 held-out samples"),
+        (axes[1], result["tcga_cgga"], "all_external_audit_results",
+         "B  TCGA development → CGGA audit",
+         "160 unique TCGA patients; 133 CGGA samples"),
     ]
     for axis, section, audit_key, title, subtitle in panels:
         nested = {row["name"]: row for row in section["candidate_results"]}
@@ -299,8 +299,10 @@ def survival_expanded_figure(result):
         axis.text(0.0, 1.025, subtitle + "; * training-selected winner",
                   transform=axis.transAxes, fontsize=9, color=GREY)
         style_axis(axis)
-    axes[0].legend(frameon=False, fontsize=8, loc="lower right")
-    figure.tight_layout()
+    handles, labels = axes[0].get_legend_handles_labels()
+    figure.legend(handles, labels, frameon=False, fontsize=8, ncol=2,
+                  loc="lower center", bbox_to_anchor=(0.5, -0.02))
+    figure.tight_layout(rect=(0, 0.07, 1, 1))
     figure.savefig(os.path.join(FIGURE_DIR, "Figure_S4_survival_expanded.png"),
                    dpi=300, bbox_inches="tight")
     figure.savefig(os.path.join(FIGURE_DIR, "Figure_S4_survival_expanded.pdf"),
@@ -343,21 +345,26 @@ def external_calibration_figure(gse37745_result, gse50081_result):
     axis.set_ylim(0, 1.02)
     axis.set_xlabel("False-positive rate", color=INK)
     axis.set_ylabel("True-positive rate", color=INK)
-    axis.set_title("A  Final-cohort discrimination", loc="left", color=INK,
+    axis.set_title("A  GSE50081 discrimination", loc="left", color=INK,
                    fontweight="bold", y=1.10)
-    axis.text(0.0, 1.025, "GSE50081: LUAD n=127; LUSC n=42",
+    axis.text(0.0, 1.025, "GSE50081: %s n=%d; %s n=%d" % (
+                  classes[0], int(np.sum(y == classes[0])),
+                  classes[-1], int(np.sum(y == classes[-1]))),
               transform=axis.transAxes, fontsize=9, color=GREY)
     axis.legend(frameon=False, fontsize=8, loc="lower right")
     style_axis(axis)
     _confusion_axis(
-        axes[1], confusion_matrix(y, default_prediction, labels=classes),
-        "B  Default threshold 0.5", classes)
-    axes[1].text(0.0, 1.045, "Balanced accuracy 0.630; specificity 0.331",
+        axes[1], confusion_matrix(y, calibrated_prediction, labels=classes),
+        "B  GSE37745-calibrated threshold", classes)
+    axes[1].text(0.0, 1.045, "Threshold %.3f; balanced accuracy %.3f" % (
+                     threshold, gse50081_result["gse50081_gse37745_calibrated_threshold"]["metrics"]["balanced_accuracy"]),
                  transform=axes[1].transAxes, fontsize=9, color=GREY)
     _confusion_axis(
-        axes[2], confusion_matrix(y, calibrated_prediction, labels=classes),
-        "C  GSE37745-calibrated threshold", classes)
-    axes[2].text(0.0, 1.045, "Threshold %.3f; balanced accuracy 0.877" % threshold,
+        axes[2], confusion_matrix(y, default_prediction, labels=classes),
+        "C  Default threshold 0.5", classes)
+    axes[2].text(0.0, 1.045, "Balanced accuracy %.3f; specificity %.3f" % (
+                     gse50081_result["gse50081_default_threshold"]["metrics"]["balanced_accuracy"],
+                     gse50081_result["gse50081_default_threshold"]["metrics"]["specificity"]),
                  transform=axes[2].transAxes, fontsize=9, color=GREY)
     figure.tight_layout()
     figure.savefig(os.path.join(FIGURE_DIR, "Figure_S5_external_GSE50081.png"),
@@ -396,10 +403,10 @@ def capacity_figure(result):
     axes[1].set_yticklabels(elapsed["label"])
     axes[1].set_xlim(0, max(elapsed["total_seconds"]) * 1.22)
     axes[1].set_xlabel("Total elapsed time (seconds)", color=INK)
-    axes[1].set_title("B  End-to-end elapsed time", loc="left", color=INK,
+    axes[1].set_title("B  Fresh-process script elapsed time", loc="left", color=INK,
                       fontweight="bold", y=1.10)
     prediction = frame[frame["task"] == "prediction"].iloc[0]
-    axes[1].text(0.0, 1.025, "Prediction throughput: %s rows/s" %
+    axes[1].text(0.0, 1.025, "In-process prediction: %s rows/s" %
                  format(int(round(prediction["predictions_per_second"])), ","),
                  transform=axes[1].transAxes, fontsize=9, color=GREY)
     for value, position in zip(elapsed["total_seconds"], y2):
