@@ -1,6 +1,6 @@
 # MALER 审稿意见与实现侧最终对照
 
-_2026-09-24 患者级复核版；当前公开版本为 `v1.0.0-review4`，`v1.0.0-review3` 为旧基线_
+_2026-09-25 状态补记；患者级结果固定于 `v1.0.0-review4`，后续源码修复已公开于提交 `77d16ab`，`v1.0.0-review3` 为旧基线_
 
 ## 结论
 
@@ -26,7 +26,7 @@ _2026-09-24 患者级复核版；当前公开版本为 `v1.0.0-review4`，`v1.0.
 | 外部与跨队列验证 | `validation/results` | 如实报告正面与不理想结果 |
 | 访问与缓存控制 | `task_access.py`、cleanup command | 任务令牌、删除入口和保留期配置 |
 | legacy 路由收敛 | `mlserver/urls.py` | 旧 WebSocket 和 `get_cp_combination` 不再提供计算路径 |
-| 自动测试 | `mlserver/tests.py` | 50/50 通过，另有 3 项患者分区单元测试 |
+| 自动测试 | `mlserver/tests.py` | 当前源码 54/54 通过，另有 3 项患者分区单元测试；旧云端版本曾通过 50/50 |
 | UI 鼠标回归 | Analysis、Predict、Preview、Help、结果页 | 此前版本 27/27 通过；患者级提示新增后以 Django 测试与本轮页面复核为准 |
 | 签名模型闭环 | `.maler` 下载与 Predict 上传 | 本地测试密钥下完成生成、下载、上传和 50 样本预测 |
 
@@ -41,7 +41,7 @@ _2026-09-24 患者级复核版；当前公开版本为 `v1.0.0-review4`，`v1.0.
 | 示例数据 | 四类任务示例位于静态示例目录 |
 | 验证脚本和结果 | `validation/` 与 `validation/results/` |
 | 公开地址 | GitHub 与 Gitee 均可匿名读取 |
-| 版本标签 | `v1.0.0-review4` 包含患者级修正；`v1.0.0-review3` 为旧公开基线 |
+| 版本标签 | `v1.0.0-review4` 包含患者级修正；后续输入校验和隐私提示在提交 `77d16ab`；`v1.0.0-review3` 为旧公开基线 |
 
 审稿意见使用“scripts or notebooks”。现有脚本、示例、固定随机种子、校验哈希和
 机器可读结果已经满足可复现路径，因此回复信不声称提供 notebook。
