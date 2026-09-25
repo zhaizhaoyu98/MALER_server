@@ -15,6 +15,7 @@ from django.contrib import messages
 from django.core.exceptions import SuspiciousOperation
 from mlserver.views.preview_views import data_hist, mkcol
 from mlserver.safe_ml import ModelBundleError, load_signed_model_bundle
+from mlserver.validated_analysis import validate_sample_header
 
 
 TASK_TO_METHOD = {
@@ -128,6 +129,13 @@ def predict_preview(request):
         if obj_file is None or os.path.splitext(obj_file.name.lower())[1] not in ('.csv', '.tsv', '.txt'):
             messages.error(request, 'Prediction data must be a CSV, TSV, or TXT file.')
             return render(request, 'predict.html')
+        try:
+            validate_sample_header(obj_file.readline().decode('utf-8-sig'))
+        except (UnicodeDecodeError, ValueError) as exc:
+            messages.error(request, str(exc))
+            return render(request, 'predict.html')
+        finally:
+            obj_file.seek(0)
 
         temporary_id = uuid.uuid4().hex
         temporary_model = os.path.join(cache_dir, temporary_id + '.maler')

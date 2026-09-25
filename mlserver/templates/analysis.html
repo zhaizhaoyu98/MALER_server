@@ -283,6 +283,7 @@
 									<p><b> Template: </b> Classification and regression files use the first three rows for sample name, label, and train/test set. Survival files use the first four rows for sample name, status, time, and train/test set. Example files can be downloaded below.</p>
 									<p><b> Patient-level safeguard: </b> TCGA-style barcodes are grouped by patient at analysis time. Patients found in both training and testing are excluded from both; repeated aliquots within one partition are reduced by a fixed sample-type/vial rule. The result file lists every excluded or retained barcode, so analyzed sample counts may be lower than the upload preview.</p>
 									<p><b> Project access: </b> MALER generates a random project suffix and a separate access token. Keep the result link private; the project ID alone is not sufficient to retrieve data or results.</p>
+									<p class="alert alert-warning"><b>Privacy:</b> Do not upload direct identifiers or sensitive patient data. Access tokens expire after 24 hours by default; cached files are physically removed when the operator runs the cleanup job. The current public endpoint uses HTTP, so upload only non-sensitive, de-identified data.</p>
 									<div class="form-check alert alert-warning">
 										<input class="form-check-input" type="checkbox" id="data_consent" name="data_consent" value="confirmed">
 										<label class="form-check-label" for="data_consent">I confirm that this upload contains no directly identifying information and that I am authorized to process these data.</label>

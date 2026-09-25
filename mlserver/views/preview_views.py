@@ -17,6 +17,7 @@ import re
 from django.core.exceptions import SuspiciousOperation
 from mlserver.security import validated_project_id
 from mlserver.task_access import issue_task_token
+from mlserver.validated_analysis import validate_sample_header
 
 def preview_result(request):
     STATIC_ROOT = settings.STATIC_ROOT
@@ -105,13 +106,21 @@ def preview_result(request):
     else:
         if request.POST.get('data_consent') != 'confirmed':
             raise SuspiciousOperation('Data authorization and privacy confirmation is required.')
+        upload_file = request.FILES.get('upload_file')
+        if upload_file is None:
+            raise SuspiciousOperation('No upload was provided.')
+        if upload_file.size > settings.MALER_MAX_DATA_UPLOAD_BYTES:
+            raise SuspiciousOperation('Data upload exceeds the configured size limit.')
+        try:
+            validate_sample_header(upload_file.readline().decode('utf-8-sig'))
+        except (UnicodeDecodeError, ValueError) as exc:
+            raise SuspiciousOperation(str(exc))
+        finally:
+            upload_file.seek(0)
         projectid = validated_project_id(projectid)
         projectid = validated_project_id(projectid + '-' + secrets.token_hex(4))
         if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
             # file load
-            upload_file = request.FILES.get('upload_file')
-            if upload_file is None:
-                raise SuspiciousOperation('No upload was provided.')
             if not os.path.exists(os.path.join(STATIC_ROOT, 'cache', projectid)):
                 os.makedirs(os.path.join(STATIC_ROOT, 'cache', projectid), exist_ok=True)
             # Never place the client-supplied filename into a filesystem path.

@@ -2,6 +2,7 @@
 
 from __future__ import absolute_import
 
+import csv
 import json
 import os
 import pickle
@@ -42,7 +43,24 @@ def _json_default(value):
     return str(value)
 
 
+def validate_sample_header(header_line):
+    # pandas silently mangles duplicate CSV header names (for example S1 -> S1.1).
+    # Check the original sample identifiers before pandas can rename them.
+    try:
+        dialect = csv.Sniffer().sniff(header_line, delimiters=",\t;|/")
+        header = next(csv.reader([header_line], dialect=dialect))
+    except (csv.Error, StopIteration):
+        raise ValueError("The uploaded matrix has an invalid CSV header.")
+    if len(header) < 2:
+        raise ValueError("The uploaded matrix requires sample identifiers in its header.")
+    sample_identifiers = header[1:]
+    if len(sample_identifiers) != len(set(sample_identifiers)):
+        raise ValueError("Duplicate sample identifiers are not allowed.")
+
+
 def read_uploaded_matrix(path):
+    with open(path, "r", encoding="utf-8-sig", newline="") as handle:
+        validate_sample_header(handle.readline())
     data = pd.read_csv(path, header=0, index_col=0, sep=None, engine="python").T
     data.index = data.index.map(str)
     data.columns = data.columns.map(str)

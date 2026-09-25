@@ -19,6 +19,7 @@ from mlserver.views.regression_cp_result_view_websocket import reg_cust_val, mkv
 from mlserver.views.survival_oc_result_view_websocket import sur_data_process, mk_surv_data, time_dependent_auc, mk_auc_line, mk_surv_layout
 from mlserver.views.predict_views import _bundle_as_legacy_dict
 from mlserver.safe_ml import DataValidationError, ModelBundleError, align_prediction_frame, alignment_report
+from mlserver.validated_analysis import validate_sample_header
 
 
 def _display_class(value, reverse_mapping):
@@ -94,7 +95,14 @@ def predict_results(request, projectid):
         # model
         method, model_name, model, feature_names = \
             model_pickle['method'], model_pickle['name'], model_pickle['model'], model_pickle['feature_names']
-        inputdata = pd.read_csv(STATIC_ROOT + '/cache/' + projectid + '/data.csv', header=0, index_col=0, sep=r'/|,|\t').T
+        input_path = STATIC_ROOT + '/cache/' + projectid + '/data.csv'
+        try:
+            with open(input_path, 'r', encoding='utf-8-sig', newline='') as handle:
+                validate_sample_header(handle.readline())
+        except (UnicodeDecodeError, ValueError) as exc:
+            messages.error(request, str(exc))
+            return HttpResponseRedirect('/maler/predict')
+        inputdata = pd.read_csv(input_path, header=0, index_col=0, sep=r'/|,|\t').T
         # 预测矩阵与训练特征契约的偏差报告
         alignment_notices = []
         print('projectid:', projectid)

@@ -46,7 +46,7 @@ from .views.download_views import download_model, download_sample_data
 from .security import validated_project_id
 from .task_access import issue_task_token
 from .views import predict_result as predict_result_view
-from .validated_analysis import class_imbalance_warning, normalize_scaler, parse_dataset
+from .validated_analysis import class_imbalance_warning, normalize_scaler, parse_dataset, read_uploaded_matrix
 
 
 class PatientLevelExampleTests(unittest.TestCase):
@@ -61,6 +61,14 @@ class PatientLevelExampleTests(unittest.TestCase):
 
 
 class SafeMLValidationTests(unittest.TestCase):
+    def test_rejects_duplicate_sample_headers_before_pandas_renames_them(self):
+        with tempfile.TemporaryDirectory() as root:
+            path = os.path.join(root, "duplicate_samples.csv")
+            with open(path, "w", encoding="utf-8") as handle:
+                handle.write("feature,S1,S1\nlabel,0,1\nset,training,testing\ngene,2,3\n")
+            with self.assertRaisesRegex(ValueError, "Duplicate sample identifiers"):
+                read_uploaded_matrix(path)
+
     def test_imbalance_warning_reports_counts_without_claiming_reweighting(self):
         warning = class_imbalance_warning(["case"] * 3 + ["control"] * 9)
         self.assertIn("control=9", warning)
@@ -559,6 +567,19 @@ class AutomatedUsabilityTests(unittest.TestCase):
             self.assertEqual(response.status_code, 400)
             self.assertFalse(os.path.exists(os.path.join(root, "cache")))
 
+    def test_prediction_upload_rejects_duplicate_sample_headers(self):
+        with override_settings(MALER_MODEL_SIGNING_KEY="test-signing-key"):
+            response = self.client.post("/maler/predict_preview", {
+                "select_model": "model_bclass",
+                "file_upload_type": "user_data",
+                "data_consent": "confirmed",
+                "upload_model": SimpleUploadedFile("model.maler", b"not-a-model"),
+                "upload_file": SimpleUploadedFile(
+                    "input.csv", b"feature,S1,S1\nlabel,0,1\nset,blind,blind\ngene,2,3\n"),
+            })
+            self.assertEqual(response.status_code, 200)
+            self.assertIn(b"Duplicate sample identifiers", response.content)
+
 
 class ValidatedWebsiteWorkflowTests(unittest.TestCase):
     def _write_regression_project(self, root, projectid):
@@ -652,6 +673,40 @@ class ValidatedWebsiteWorkflowTests(unittest.TestCase):
                 self.assertTrue(response.context["access_token"])
                 self.assertTrue(os.path.exists(os.path.join(directory, "access.json")))
                 self.assertFalse(os.path.exists(os.path.join(directory, "normalization_data.pkl")))
+
+    def test_analysis_upload_rejects_oversize_before_creating_project(self):
+        with tempfile.TemporaryDirectory() as root:
+            upload = SimpleUploadedFile(
+                "input.csv", b"feature,S1\nlabel,1\nset,training\ngene,2\n",
+                content_type="text/csv")
+            with override_settings(STATIC_ROOT=root, MALER_MAX_DATA_UPLOAD_BYTES=16):
+                response = Client().post("/maler/preview", {
+                    "projectid": "RO-AZ-upload-TopK",
+                    "file_upload_type": "user_data",
+                    "select_model": "model_reg",
+                    "strategy": "O",
+                    "data_consent": "confirmed",
+                    "upload_file": upload,
+                })
+                self.assertEqual(response.status_code, 400)
+                self.assertEqual(os.listdir(os.path.join(root, "cache")), [])
+
+    def test_analysis_upload_rejects_duplicate_sample_ids_before_storage(self):
+        with tempfile.TemporaryDirectory() as root:
+            upload = SimpleUploadedFile(
+                "input.csv", b"feature,S1,S1\nlabel,0,1\nset,training,testing\ngene,2,3\n",
+                content_type="text/csv")
+            with override_settings(STATIC_ROOT=root):
+                response = Client().post("/maler/preview", {
+                    "projectid": "RO-AZ-upload-TopK",
+                    "file_upload_type": "user_data",
+                    "select_model": "model_reg",
+                    "strategy": "O",
+                    "data_consent": "confirmed",
+                    "upload_file": upload,
+                })
+                self.assertEqual(response.status_code, 400)
+                self.assertEqual(os.listdir(os.path.join(root, "cache")), [])
 
     def test_regression_post_runs_nested_validation_and_exports_json(self):
         with tempfile.TemporaryDirectory() as root:
