@@ -60,6 +60,34 @@ class PatientLevelExampleTests(unittest.TestCase):
         self.assertEqual(len(raw.attrs["patient_level_audit"]["collapsed_within_partition_patients"]), 4)
 
 
+class PublicExampleDownloadTests(unittest.TestCase):
+    def test_csv_templates_download_without_collected_static_files(self):
+        names = (
+            "binary_classification_example.csv",
+            "multiclass_classification_example.csv",
+            "regression_example.csv",
+            "survival_example.csv",
+            "binary_pred.csv",
+            "multi_pred.csv",
+            "reg_pred.csv",
+            "survival_pred.csv",
+        )
+        with tempfile.TemporaryDirectory() as empty_static_root:
+            with override_settings(STATIC_ROOT=empty_static_root):
+                client = Client()
+                for name in names:
+                    with self.subTest(name=name):
+                        response = client.get(
+                            "/maler/download/" + name, HTTP_HOST="localhost")
+                        try:
+                            self.assertEqual(response.status_code, 200)
+                            self.assertIn(name, response["Content-Disposition"])
+                            self.assertTrue(response.streaming)
+                            self.assertTrue(next(iter(response.streaming_content)))
+                        finally:
+                            response.close()
+
+
 class SafeMLValidationTests(unittest.TestCase):
     def test_rejects_duplicate_sample_headers_before_pandas_renames_them(self):
         with tempfile.TemporaryDirectory() as root:

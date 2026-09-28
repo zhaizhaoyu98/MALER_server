@@ -10,6 +10,16 @@ from mlserver.task_access import require_task_access
 
 
 SAFE_ARTIFACT_NAME = re.compile(r'^[A-Za-z0-9][A-Za-z0-9_. -]{0,199}$')
+PUBLIC_EXAMPLE_CSVS = frozenset({
+    'binary_classification_example.csv',
+    'multiclass_classification_example.csv',
+    'regression_example.csv',
+    'survival_example.csv',
+    'binary_pred.csv',
+    'multi_pred.csv',
+    'reg_pred.csv',
+    'survival_pred.csv',
+})
 
 
 def _json_safe(value):
@@ -70,7 +80,11 @@ def _write_bundle_from_legacy(legacy_path, bundle_path, default_name):
 def download_sample_data(request, fname):
     if not SAFE_ARTIFACT_NAME.fullmatch(fname) or os.path.basename(fname) != fname:
         raise Http404
-    file_path = os.path.join(settings.STATIC_ROOT, 'cache', 'example', fname)
+    # These versioned CSV templates live in the app's source static directory;
+    # downloading them must not depend on collectstatic having been run.
+    example_root = (settings.MLSERVER_STATIC_DIR if fname in PUBLIC_EXAMPLE_CSVS
+                    else settings.STATIC_ROOT)
+    file_path = os.path.join(example_root, 'cache', 'example', fname)
     try:
         if fname.lower().endswith('.maler') and not os.path.exists(file_path):
             legacy_path = os.path.splitext(file_path)[0] + '.pkl'
