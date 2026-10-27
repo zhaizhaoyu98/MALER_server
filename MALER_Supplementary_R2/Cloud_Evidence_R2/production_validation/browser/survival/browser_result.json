@@ -1,0 +1,518 @@
+{
+  "created_utc": "2026-10-24T07:24:58Z",
+  "dataset": {
+    "blind_samples": 0,
+    "cohort_provenance_supplied": false,
+    "development_subjects": null,
+    "features": 8,
+    "independent_external_cohort_verified": false,
+    "patient_level_audit": {
+      "collapsed_within_partition_patients": 0,
+      "excluded_cross_partition_patients": 0,
+      "retained_patients": 120,
+      "source_samples": 120
+    },
+    "split_level": "sample",
+    "testing_samples": 40,
+    "training_samples": 80
+  },
+  "failures": [],
+  "feature_reduction": "select",
+  "models": [
+    {
+      "best_params": {
+        "selector__k": 8
+      },
+      "candidate_count": 1,
+      "candidate_grid": {
+        "selector__k": [
+          8
+        ]
+      },
+      "effective_feature_method": "select",
+      "estimator": "sksurv.tree.tree.SurvivalTree",
+      "heldout_test": {
+        "c_index": 0.527511961722488,
+        "time_auc_mean": 0.5362001461029644,
+        "time_auc_times": [
+          8.85813811928804,
+          14.71579136357004,
+          20.69048347763379
+        ],
+        "time_auc_values": [
+          0.4950429633953914,
+          0.5366005204353093,
+          0.5671513286348266
+        ]
+      },
+      "hyperparameter_candidate_count": 1,
+      "key": "SurvivalTree",
+      "model_bundle": "SurvivalTree.maler",
+      "nested_cv": {
+        "actual_repeats": 2,
+        "candidate_count": 1,
+        "candidate_grid": {
+          "selector__k": [
+            8
+          ]
+        },
+        "folds": [
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "c_index": 0.4634146341463415,
+            "fold": 1,
+            "integrated_brier_score": 0.2984173847895494,
+            "n_test": 16,
+            "n_train": 64,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "time_auc_mean": 0.43014466769590254,
+            "time_auc_times": [
+              7.409783275403623,
+              9.335885589317389,
+              12.205553550097042
+            ],
+            "time_auc_values": [
+              0.40909090909090906,
+              0.3888888888888889,
+              0.5013615645177145
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "c_index": 0.42142857142857143,
+            "fold": 2,
+            "integrated_brier_score": 0.2376827947473524,
+            "n_test": 16,
+            "n_train": 64,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "c_index": 0.5887096774193549,
+            "fold": 3,
+            "integrated_brier_score": 0.25087245319267654,
+            "n_test": 16,
+            "n_train": 64,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "time_auc_mean": 0.561498567649541,
+            "time_auc_times": [
+              10.887489709953488,
+              13.19292143773737,
+              18.57205073050123
+            ],
+            "time_auc_values": [
+              0.6264789883663375,
+              0.4780615510098715,
+              0.5335061961711481
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "c_index": 0.6067415730337079,
+            "fold": 4,
+            "integrated_brier_score": 0.21556431035465864,
+            "n_test": 16,
+            "n_train": 64,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "time_auc_mean": 0.6407121673659549,
+            "time_auc_times": [
+              9.6924314907053,
+              14.1850842176366,
+              19.90936647434919
+            ],
+            "time_auc_values": [
+              0.6931855427479301,
+              0.6030637263871018,
+              0.6010661747985886
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "c_index": 0.743421052631579,
+            "fold": 5,
+            "integrated_brier_score": 0.18404684517788755,
+            "n_test": 16,
+            "n_train": 64,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "time_auc_mean": 0.7180328278120981,
+            "time_auc_times": [
+              5.371203882874268,
+              10.513137337868846,
+              15.188759599094414
+            ],
+            "time_auc_values": [
+              0.8616604118552732,
+              0.5921326669628193,
+              0.6707943096942284
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "c_index": 0.603448275862069,
+            "fold": 6,
+            "integrated_brier_score": 0.24048307414602468,
+            "n_test": 16,
+            "n_train": 64,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "time_auc_mean": 0.600860835265899,
+            "time_auc_times": [
+              5.747504268967492,
+              8.307353320490364,
+              9.90315369270026
+            ],
+            "time_auc_values": [
+              0.6520396024406155,
+              0.4844418194621107,
+              0.6226271829690972
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "c_index": 0.58125,
+            "fold": 7,
+            "n_test": 16,
+            "n_train": 64,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "c_index": 0.7207792207792207,
+            "fold": 8,
+            "integrated_brier_score": 0.13538417099609823,
+            "n_test": 16,
+            "n_train": 64,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "time_auc_mean": 0.7949290690777914,
+            "time_auc_times": [
+              8.496244707020956,
+              12.965839853348918,
+              17.18074666941157
+            ],
+            "time_auc_values": [
+              0.7938810967541509,
+              0.837135660238351,
+              0.7399159789637608
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "c_index": 0.5135135135135135,
+            "fold": 9,
+            "integrated_brier_score": 0.23859988931315,
+            "n_test": 16,
+            "n_train": 64,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "time_auc_mean": 0.4725542236536206,
+            "time_auc_times": [
+              9.62219075670698,
+              15.442751150520625,
+              18.57205073050123
+            ],
+            "time_auc_values": [
+              0.5437386479459336,
+              0.3811902028697174,
+              0.4605578108973426
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "c_index": 0.5614035087719298,
+            "fold": 10,
+            "integrated_brier_score": 0.20780006407836293,
+            "n_test": 16,
+            "n_train": 64,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "time_auc_mean": 0.5600637796554264,
+            "time_auc_times": [
+              10.513137337868846,
+              15.048403244216033,
+              20.155275065315223
+            ],
+            "time_auc_values": [
+              0.6903574397339983,
+              0.5747941793334138,
+              0.418058828330387
+            ]
+          }
+        ],
+        "split_ids_hash": "12acad2672e782608a4d86f132f67edd321c427aeb55fc264df05b5da153ab7f",
+        "summary": {
+          "c_index": {
+            "max": 0.743421052631579,
+            "mean": 0.5804110027586288,
+            "min": 0.42142857142857143,
+            "n": 10,
+            "std": 0.10075780776222228
+          },
+          "fold": {
+            "max": 10,
+            "mean": 5.5,
+            "min": 1,
+            "n": 10,
+            "std": 3.0276503540974917
+          },
+          "integrated_brier_score": {
+            "max": 0.2984173847895494,
+            "mean": 0.22320566519952895,
+            "min": 0.13538417099609823,
+            "n": 9,
+            "std": 0.04570159061350485
+          },
+          "n_test": {
+            "max": 16,
+            "mean": 16,
+            "min": 16,
+            "n": 10,
+            "std": 0
+          },
+          "n_train": {
+            "max": 64,
+            "mean": 64,
+            "min": 64,
+            "n": 10,
+            "std": 0
+          },
+          "time_auc_mean": {
+            "max": 0.7949290690777914,
+            "mean": 0.5973495172720292,
+            "min": 0.43014466769590254,
+            "n": 8,
+            "std": 0.12053549172720111
+          }
+        }
+      },
+      "prediction_files": {
+        "testing": "SurvivalTree_testing_predictions.csv"
+      },
+      "scaler": "standard",
+      "selected_features": [
+        "feature0",
+        "feature1",
+        "feature2",
+        "feature3",
+        "feature4",
+        "feature5",
+        "feature6",
+        "feature7"
+      ]
+    }
+  ],
+  "positive_class": null,
+  "project_id": "SC-CZ-cb4352-x9l3ly-b143c3db",
+  "registry_version": 4,
+  "schema_version": 3,
+  "selected_family": "SurvivalTree",
+  "selection": {
+    "best_params": {
+      "selector__k": 8
+    },
+    "candidate_counts": {
+      "SurvivalTree": 1
+    },
+    "candidate_families": [
+      "SurvivalTree"
+    ],
+    "candidate_grids": {
+      "SurvivalTree": {
+        "selector__k": [
+          8
+        ]
+      }
+    },
+    "class_order": null,
+    "estimator": "sksurv.tree.tree.SurvivalTree",
+    "family_selected_at": "2026-10-24T07:24:58.537250Z",
+    "feature_method": "select",
+    "fitted_model_sha256": "5f0ec26e7f5f66da0cee1ea3e4c3620c40fe955f9e3f3c2af4360f0a26741e54",
+    "heldout_unlocked_at": "2026-10-24T07:24:58.577664Z",
+    "imputer_strategy": "median",
+    "inner_split_policy": "fold-local task-aware CV; grouped when subject_id supplied",
+    "input_features": [
+      "feature0",
+      "feature1",
+      "feature2",
+      "feature3",
+      "feature4",
+      "feature5",
+      "feature6",
+      "feature7"
+    ],
+    "input_sha256": "c62f1762121bd0f51a208e5c4787d043afe1a330db81646d9be147b6bfe8dbd6",
+    "outer_split_ids_hash": "12acad2672e782608a4d86f132f67edd321c427aeb55fc264df05b5da153ab7f",
+    "positive_class": null,
+    "project_id": "SC-CZ-cb4352-x9l3ly-b143c3db",
+    "random_seed": 10,
+    "scaler": "standard",
+    "schema_version": 3,
+    "selected_at": "2026-10-24T07:24:58.577533Z",
+    "selected_family": "SurvivalTree",
+    "selected_features": [
+      "feature0",
+      "feature1",
+      "feature2",
+      "feature3",
+      "feature4",
+      "feature5",
+      "feature6",
+      "feature7"
+    ],
+    "selection_metric": "c_index",
+    "selection_rule": "highest development per-family outer-CV mean; lexicographic tie-break",
+    "software_commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "software_identity": {
+      "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+      "declared_commit_matches": true,
+      "dirty": false,
+      "verified": true
+    },
+    "threshold_policy": null,
+    "threshold_value": null,
+    "validation_budget": {
+      "actual_inner_splits": 3,
+      "actual_outer_evaluations": 10,
+      "actual_outer_repeats": 2,
+      "actual_outer_splits": 5,
+      "requested_inner_splits": 3,
+      "requested_outer_repeats": 2,
+      "requested_outer_splits": 5
+    }
+  },
+  "selection_lock_sha256": "fb16eb92638a4cccc265672f06e9cf01912d9ca75c16f9acb559640bdf8bea2c",
+  "software": {
+    "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "declared_commit_matches": true,
+    "dirty": false,
+    "verified": true
+  },
+  "strategy": "custom",
+  "task": "survival",
+  "validation": {
+    "family_scope": "fixed family per outer CV; family selected from development summaries",
+    "inner_splits": 3,
+    "outer_repeats": 2,
+    "outer_splits": 5,
+    "preprocessing_scope": "fit within inner and outer training folds; FSS/BSS internal scoring uses upstream training-fold preprocessing",
+    "random_state": 10,
+    "requested_budget": {
+      "inner_splits": 3,
+      "outer_repeats": 2,
+      "outer_splits": 5
+    },
+    "selection_metric": "c_index",
+    "threshold_policy": "not applicable",
+    "threshold_value": null
+  },
+  "warnings": [
+    "The development outer-CV scores describe fixed estimator families; the winning family was selected using those scores. Only the selected family has a heldout result."
+  ]
+}

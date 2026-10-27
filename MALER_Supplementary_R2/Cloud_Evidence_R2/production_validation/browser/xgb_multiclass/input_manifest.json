@@ -1,0 +1,18 @@
+{
+  "task": "multiclass",
+  "seed": 311,
+  "synthetic": true,
+  "development_samples": 80,
+  "heldout_samples": 40,
+  "prediction_samples": 40,
+  "blind_prediction_samples": 10,
+  "labeled_prediction_samples": 30,
+  "input_features": 8,
+  "prediction_missing_cells": 41,
+  "feature_order_reversed": true,
+  "extra_feature": "ignored_extra",
+  "files": {
+    "analysis.csv": "154ed38d5b608ccacdc19b1e33e5e75e98e8c3fbbf2c96329c6fcdb9483deda8",
+    "predict.csv": "9d9fab3d54bdc3bb3ea7f95621baf11f01290287dac973938664ff05799268fb"
+  }
+}

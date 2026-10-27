@@ -1,0 +1,513 @@
+{
+  "analytical_implications": [
+    "The original row-level cross-validation can place aliquots from the same TCGA patient in different folds.",
+    "Patient-level collapse is required before internal performance estimation.",
+    "The declared test partition is a cross-cohort TCGA-to-CGGA audit, not an internal random holdout.",
+    "Large expression-distribution shifts can reduce external transport even when internal cross-validation is valid."
+  ],
+  "checks": [
+    {
+      "evidence": {
+        "duplicate_identifiers": 0,
+        "samples": 300
+      },
+      "name": "sample_identifier_uniqueness",
+      "passed": true
+    },
+    {
+      "evidence": {
+        "duplicate_identifiers": 0,
+        "features": 3032
+      },
+      "name": "feature_identifier_uniqueness",
+      "passed": true
+    },
+    {
+      "evidence": {
+        "non_finite_cells": 0
+      },
+      "name": "finite_feature_values",
+      "passed": true
+    },
+    {
+      "evidence": {
+        "maximum_time": 3593.0,
+        "minimum_time": 5.0
+      },
+      "name": "outcome_validity",
+      "passed": true
+    },
+    {
+      "evidence": {
+        "overlap": []
+      },
+      "name": "cross_cohort_patient_overlap",
+      "passed": true
+    },
+    {
+      "evidence": {
+        "duplicate_patients": 6,
+        "extra_aliquots": 7,
+        "raw_samples": 167,
+        "unique_patients": 160
+      },
+      "name": "patient_level_training_uniqueness",
+      "passed": false
+    },
+    {
+      "evidence": {
+        "duplicate_patient_records": [
+          {
+            "outcomes_consistent": true,
+            "patient": "TCGA-06-0125",
+            "samples": [
+              "TCGA-06-0125-01A",
+              "TCGA-06-0125-02A"
+            ],
+            "selected": "TCGA-06-0125-01A"
+          },
+          {
+            "outcomes_consistent": true,
+            "patient": "TCGA-06-0190",
+            "samples": [
+              "TCGA-06-0190-01A",
+              "TCGA-06-0190-02A"
+            ],
+            "selected": "TCGA-06-0190-01A"
+          },
+          {
+            "outcomes_consistent": true,
+            "patient": "TCGA-06-0210",
+            "samples": [
+              "TCGA-06-0210-01A",
+              "TCGA-06-0210-02A"
+            ],
+            "selected": "TCGA-06-0210-01A"
+          },
+          {
+            "outcomes_consistent": true,
+            "patient": "TCGA-06-0211",
+            "samples": [
+              "TCGA-06-0211-02A",
+              "TCGA-06-0211-01B",
+              "TCGA-06-0211-01A"
+            ],
+            "selected": "TCGA-06-0211-01A"
+          },
+          {
+            "outcomes_consistent": true,
+            "patient": "TCGA-14-1034",
+            "samples": [
+              "TCGA-14-1034-02B",
+              "TCGA-14-1034-01A"
+            ],
+            "selected": "TCGA-14-1034-01A"
+          },
+          {
+            "outcomes_consistent": true,
+            "patient": "TCGA-19-4065",
+            "samples": [
+              "TCGA-19-4065-01A",
+              "TCGA-19-4065-02A"
+            ],
+            "selected": "TCGA-19-4065-01A"
+          }
+        ]
+      },
+      "name": "duplicate_outcome_consistency",
+      "passed": true
+    }
+  ],
+  "cohort_inference_from_identifiers": {
+    "declared_testing": {
+      "CGGA": 133
+    },
+    "declared_training": {
+      "TCGA": 167
+    }
+  },
+  "cohort_shift": {
+    "features_with_ks_at_least_0_5": 1104,
+    "fraction_with_ks_at_least_0_5": 0.3641160949868074,
+    "median_ks_statistic": 0.39154135338345863,
+    "top_50_shifted_features": [
+      {
+        "feature": "KLC1",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 1.0,
+        "median_shift": 4.041694936185005,
+        "standardized_median_shift": 5.9694684199199255
+      },
+      {
+        "feature": "POLR2F",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 1.0,
+        "median_shift": 7.67535847187852,
+        "standardized_median_shift": 7.071286107598383
+      },
+      {
+        "feature": "EIF5AL1",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 1.0,
+        "median_shift": -4.4379569093589195,
+        "standardized_median_shift": -8.801825814048328
+      },
+      {
+        "feature": "MAGED4B",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 1.0,
+        "median_shift": 6.193167189533026,
+        "standardized_median_shift": 5.727343183029871
+      },
+      {
+        "feature": "FAM156B",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 1.0,
+        "median_shift": 6.389101533204455,
+        "standardized_median_shift": 8.284907052563165
+      },
+      {
+        "feature": "IFNAR2",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 1.0,
+        "median_shift": 5.358990537214467,
+        "standardized_median_shift": 6.829744630331755
+      },
+      {
+        "feature": "RPN2",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 1.0,
+        "median_shift": -2.5251680753316617,
+        "standardized_median_shift": -3.940580877704624
+      },
+      {
+        "feature": "PABPC3",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9924812030075187,
+        "median_shift": -3.703439027310304,
+        "standardized_median_shift": -6.2166536708141065
+      },
+      {
+        "feature": "RPL13AP5",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9924812030075187,
+        "median_shift": -3.4439524471396394,
+        "standardized_median_shift": -3.4342623523231834
+      },
+      {
+        "feature": "FAM50B",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9924812030075187,
+        "median_shift": 5.43803778196714,
+        "standardized_median_shift": 5.294379599912015
+      },
+      {
+        "feature": "HMGN4",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9924812030075187,
+        "median_shift": -3.40645013168776,
+        "standardized_median_shift": -3.044746877021793
+      },
+      {
+        "feature": "MAGED4",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9875,
+        "median_shift": 5.07263730014223,
+        "standardized_median_shift": 5.121256738679819
+      },
+      {
+        "feature": "PIPSL",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9862312030075188,
+        "median_shift": -3.350331623489178,
+        "standardized_median_shift": -6.384825742694924
+      },
+      {
+        "feature": "EDEM2",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9787124060150376,
+        "median_shift": -2.032410545878915,
+        "standardized_median_shift": -3.60700157741977
+      },
+      {
+        "feature": "XRN2",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9724624060150376,
+        "median_shift": -2.5887968664899716,
+        "standardized_median_shift": -2.6689962479897957
+      },
+      {
+        "feature": "TTLL11",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9711936090225564,
+        "median_shift": 3.2922978177894247,
+        "standardized_median_shift": 3.1623599719925846
+      },
+      {
+        "feature": "MAPRE1",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9674812030075188,
+        "median_shift": -2.4724916388035396,
+        "standardized_median_shift": -3.420254563556696
+      },
+      {
+        "feature": "DAP",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9662124060150376,
+        "median_shift": -1.8837537048179538,
+        "standardized_median_shift": -2.547380026398556
+      },
+      {
+        "feature": "EIF3CL",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9649436090225564,
+        "median_shift": 3.5462312483245,
+        "standardized_median_shift": 4.157459503429149
+      },
+      {
+        "feature": "PLEKHF2",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9636748120300752,
+        "median_shift": -2.5993889183382253,
+        "standardized_median_shift": -3.2777883411552375
+      },
+      {
+        "feature": "PIN1",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9599624060150376,
+        "median_shift": 1.8725052960671498,
+        "standardized_median_shift": 3.958445606326724
+      },
+      {
+        "feature": "MPRIP",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9586936090225564,
+        "median_shift": 1.719385998470484,
+        "standardized_median_shift": 2.9633519586091595
+      },
+      {
+        "feature": "DBR1",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9586936090225564,
+        "median_shift": -1.5714006615621745,
+        "standardized_median_shift": -2.213612883389601
+      },
+      {
+        "feature": "ARF4",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9574248120300752,
+        "median_shift": -2.12833441708824,
+        "standardized_median_shift": -2.9034071821342766
+      },
+      {
+        "feature": "LAPTM4A",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9549812030075188,
+        "median_shift": -2.6580428414230894,
+        "standardized_median_shift": -2.4334744704546987
+      },
+      {
+        "feature": "CCZ1B",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9548872180451128,
+        "median_shift": 2.8687546839647853,
+        "standardized_median_shift": 3.3746105180167385
+      },
+      {
+        "feature": "KDELR2",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9537124060150376,
+        "median_shift": -2.07068573770435,
+        "standardized_median_shift": -2.5851659890953647
+      },
+      {
+        "feature": "KDELR1",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9537124060150376,
+        "median_shift": -1.8664192138231783,
+        "standardized_median_shift": -2.6153486451580825
+      },
+      {
+        "feature": "RHOF",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9524436090225564,
+        "median_shift": 3.4874560974825903,
+        "standardized_median_shift": 3.2270337713107744
+      },
+      {
+        "feature": "IL10RB",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9524436090225564,
+        "median_shift": -1.98580582569548,
+        "standardized_median_shift": -3.0341208573441003
+      },
+      {
+        "feature": "CMTM6",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9511748120300751,
+        "median_shift": -2.6348134101792455,
+        "standardized_median_shift": -3.194970157939459
+      },
+      {
+        "feature": "ILF2",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.95,
+        "median_shift": -2.021949656630861,
+        "standardized_median_shift": -3.6491445538197618
+      },
+      {
+        "feature": "RPL13AP20",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9486372180451128,
+        "median_shift": -3.516733754835165,
+        "standardized_median_shift": -2.877492885670992
+      },
+      {
+        "feature": "TMEM60",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9474624060150376,
+        "median_shift": -1.9157917856499154,
+        "standardized_median_shift": -1.7085532730456958
+      },
+      {
+        "feature": "BSCL2",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9461936090225563,
+        "median_shift": 3.9935009800593795,
+        "standardized_median_shift": 3.575378574437959
+      },
+      {
+        "feature": "DDOST",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9461936090225563,
+        "median_shift": -1.57834032728438,
+        "standardized_median_shift": -2.6740405391580935
+      },
+      {
+        "feature": "YWHAB",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.943656015037594,
+        "median_shift": -2.3606821507476106,
+        "standardized_median_shift": -3.513570859261754
+      },
+      {
+        "feature": "ATP6V0E1",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.943656015037594,
+        "median_shift": -1.634043509512889,
+        "standardized_median_shift": -2.659318802407969
+      },
+      {
+        "feature": "TMEM179B",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9423872180451128,
+        "median_shift": -1.6390892862716395,
+        "standardized_median_shift": -2.942778887442847
+      },
+      {
+        "feature": "LEPROT",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9386748120300752,
+        "median_shift": -2.167186392425906,
+        "standardized_median_shift": -3.003135533898086
+      },
+      {
+        "feature": "STK38",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9386748120300752,
+        "median_shift": -2.0297516642251106,
+        "standardized_median_shift": -3.1478253660308404
+      },
+      {
+        "feature": "SEC16B",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9361372180451127,
+        "median_shift": 2.911707587432951,
+        "standardized_median_shift": 3.5008229091077285
+      },
+      {
+        "feature": "DCLRE1B",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9349624060150376,
+        "median_shift": -2.49936639171451,
+        "standardized_median_shift": -3.170673718041906
+      },
+      {
+        "feature": "AGAP3",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9348684210526316,
+        "median_shift": 2.034282841264515,
+        "standardized_median_shift": 3.33181057775456
+      },
+      {
+        "feature": "FAM210B",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9335996240601504,
+        "median_shift": -2.1327978562696854,
+        "standardized_median_shift": -2.877282336042488
+      },
+      {
+        "feature": "GNG12",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9324248120300752,
+        "median_shift": -2.9774894970602546,
+        "standardized_median_shift": -2.944055887950831
+      },
+      {
+        "feature": "BLOC1S5",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9311560150375939,
+        "median_shift": -1.8708495019800244,
+        "standardized_median_shift": -3.0751146462593977
+      },
+      {
+        "feature": "EML5",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9298872180451128,
+        "median_shift": 2.9466203882617084,
+        "standardized_median_shift": 3.108137413884159
+      },
+      {
+        "feature": "NXT1",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9286184210526316,
+        "median_shift": -2.0919947755602895,
+        "standardized_median_shift": -2.777024365577284
+      },
+      {
+        "feature": "MCM6",
+        "ks_p_value": 1.887379141862766e-15,
+        "ks_statistic": 0.9286184210526316,
+        "median_shift": -2.4891072364441493,
+        "standardized_median_shift": -3.1758397482223906
+      }
+    ]
+  },
+  "expected_quality_exception": "Patient-level uniqueness fails before deterministic aliquot collapse; duplicate outcomes are consistent.",
+  "external": {
+    "censored": 23,
+    "events": 110,
+    "followup_iqr": [
+      261.0,
+      842.0
+    ],
+    "followup_median": 459.0,
+    "samples": 133
+  },
+  "grain": "one column per tumour specimen; rows are outcome fields then gene-expression features",
+  "passed_checks": 6,
+  "source_path": "E:\\CodeProject\\Server\\MLSERVER\\mlserver\\static\\cache\\example\\survival_example.csv",
+  "source_sha256": "85d2df86473c90018d98f90a30d77935a2c57a0877cbc1d62f639b4be0b88189",
+  "total_checks": 7,
+  "training": {
+    "censored_after_collapse": 29,
+    "events_after_collapse": 131,
+    "followup_iqr": [
+      154.75,
+      535.5
+    ],
+    "followup_median": 361.0,
+    "raw_samples": 167,
+    "unique_patients_after_primary_sample_rule": 160
+  }
+}

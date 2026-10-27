@@ -1,0 +1,9 @@
+{
+  "prediction_count": 40,
+  "all_browser_rows_match_saved_pipeline": true,
+  "positive_class": "case",
+  "threshold_value": 0.65,
+  "imputer_unchanged": true,
+  "manifest_lock_hash_matches": true,
+  "source_commit": "5d3d1a3df516233566e20b206a96c2eb33d45877"
+}

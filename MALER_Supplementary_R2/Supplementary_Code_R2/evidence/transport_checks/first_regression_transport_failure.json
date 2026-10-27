@@ -1,0 +1,67 @@
+{
+  "task": "regression",
+  "completed_utc": "2026-10-22T12:20:21.594Z",
+  "scope": "Actual public HTTPS production upload-to-Predict",
+  "origin": "https://www.inbirg.com",
+  "tls_verification_disabled": false,
+  "browser_version": "155.0.4283.62",
+  "source": {
+    "commit": "0b2435434a5fde670e317670980619dbabdfc372",
+    "declared_commit_matches": true,
+    "dirty": false,
+    "verified": true
+  },
+  "analysis_project_id": "RC-AZ-89fdeb-ga2sjw-86402080",
+  "prediction_project_id": "PRED-REG-ba7e2e-4b6fad-c89f4d23",
+  "model_file_name": "Ridge.maler",
+  "model_bundle_sha256": "f168898c466222c1a27a341446bb59a81fe5a3f8b1d957f622626a1ca67380db",
+  "selection_lock_sha256": "5b6304af0cad26ef0a008d140cb437004ca4d3f4fab74ae59c19fce435792601",
+  "successful_posts": [
+    {
+      "path": "/maler/preview",
+      "status": 200,
+      "origin_only_referer": true
+    },
+    {
+      "path": "/maler/regression_cp_result/RC-AZ-89fdeb-ga2sjw-86402080",
+      "status": 200,
+      "origin_only_referer": true
+    },
+    {
+      "path": "/maler/predict_preview",
+      "status": 200,
+      "origin_only_referer": true
+    },
+    {
+      "path": "/maler/predict_result/PRED-REG-ba7e2e-4b6fad-c89f4d23",
+      "status": 200,
+      "origin_only_referer": true
+    }
+  ],
+  "page_errors": [],
+  "unexpected_failed_requests": [
+    {
+      "url": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2",
+      "error": "net::ERR_QUIC_PROTOCOL_ERROR"
+    }
+  ],
+  "expected_download_aborts": [
+    {
+      "url": "https://www.inbirg.com/maler/task/RC-AZ-89fdeb-ga2sjw-86402080/model/Ridge.maler",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "prediction_rows": 40,
+  "blind_rows": 10,
+  "validation_rows": 30,
+  "actual_budget": {
+    "actual_inner_splits": 3,
+    "actual_outer_evaluations": 10,
+    "actual_outer_repeats": 2,
+    "actual_outer_splits": 5,
+    "requested_inner_splits": 3,
+    "requested_outer_repeats": 2,
+    "requested_outer_splits": 5
+  },
+  "email_address_supplied": false
+}

@@ -1,0 +1,23 @@
+{
+  "baseline_commit": "b87cae92d696798604beab228c082d713f2a0e63",
+  "source_commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+  "changed_source_files": [
+    "README.md",
+    "mlserver/templates/analysis.html",
+    "mlserver/templates/predict.html"
+  ],
+  "change": "The two upload forms now display their configured data limit instead of the stale literal 200 MB; README records the correction.",
+  "data_limit_MiB": 50,
+  "model_limit_MiB": 100,
+  "request_limit_MiB": 160,
+  "enforcement_limits_changed": false,
+  "model_or_scientific_code_changed": false,
+  "local_and_cloud_tests": 95,
+  "public_uploads_enabled": true,
+  "runtime_upgraded": false,
+  "main_figure_1": "R1 branching visual style, revised family comparison/refit/lock/held-out sequence",
+  "main_figure_2": "Seven original public HTTPS interface crops with capture manifest",
+  "main_figure_3": "Prior R2 scientific results and four-panel layout, byte-identical",
+  "initial_navigation_timeouts": "Initial xgb_binary and oneclick_repeat attempts timed out while opening Analysis before any upload; completed runs were retained, and only incomplete flows retried.",
+  "post_switch_inspect_guard": "A repeat of the pre-release inspect command correctly rejected the already switched source because it expected the prior commit; final identity/verification use the current commit."
+}

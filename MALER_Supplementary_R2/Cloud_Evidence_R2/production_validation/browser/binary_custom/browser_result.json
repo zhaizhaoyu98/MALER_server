@@ -1,0 +1,664 @@
+{
+  "created_utc": "2026-10-24T07:16:15Z",
+  "dataset": {
+    "blind_samples": 0,
+    "cohort_provenance_supplied": false,
+    "development_subjects": null,
+    "features": 8,
+    "independent_external_cohort_verified": false,
+    "patient_level_audit": {
+      "collapsed_within_partition_patients": 0,
+      "excluded_cross_partition_patients": 0,
+      "retained_patients": 120,
+      "source_samples": 120
+    },
+    "split_level": "sample",
+    "testing_samples": 40,
+    "training_samples": 80
+  },
+  "failures": [],
+  "feature_reduction": "select",
+  "models": [
+    {
+      "best_params": {
+        "selector__k": 8
+      },
+      "candidate_count": 1,
+      "candidate_grid": {
+        "selector__k": [
+          8
+        ]
+      },
+      "effective_feature_method": "select",
+      "estimator": "sklearn.linear_model._logistic.LogisticRegression",
+      "heldout_test": {
+        "accuracy": 0.45,
+        "balanced_accuracy": 0.5333333333333333,
+        "f1": 0.5416666666666666,
+        "mcc": 0.0849411985729376,
+        "per_class": {
+          "case": {
+            "sensitivity": 0.8666666666666667,
+            "specificity": 0.2
+          },
+          "control": {
+            "sensitivity": 0.2,
+            "specificity": 0.8666666666666667
+          }
+        },
+        "positive_class": "case",
+        "pr_auc": 0.37780108279871083,
+        "precision": 0.3939393939393939,
+        "recall_sensitivity": 0.8666666666666667,
+        "roc_auc": 0.5133333333333333,
+        "specificity": 0.2
+      },
+      "hyperparameter_candidate_count": 1,
+      "key": "Logistic",
+      "model_bundle": "Logistic.maler",
+      "nested_cv": {
+        "actual_repeats": 2,
+        "candidate_count": 1,
+        "candidate_grid": {
+          "selector__k": [
+            8
+          ]
+        },
+        "folds": [
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9285714285714286,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.923076923076923,
+            "fold": 1,
+            "mcc": 0.8783100656536799,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.8571428571428571,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.8571428571428571
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9999999999999998,
+            "precision": 1,
+            "recall_sensitivity": 0.8571428571428571,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.7857142857142857,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.7272727272727273,
+            "fold": 2,
+            "mcc": 0.6546536707079771,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5714285714285714,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.5714285714285714
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9129251700680272,
+            "precision": 1,
+            "recall_sensitivity": 0.5714285714285714,
+            "roc_auc": 0.9206349206349207,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9375,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.9333333333333333,
+            "fold": 3,
+            "mcc": 0.8819171036881969,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9861111111111112,
+            "precision": 1,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.984375,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9375,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.9333333333333333,
+            "fold": 4,
+            "mcc": 0.8819171036881969,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8125,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.823529411764706,
+            "fold": 5,
+            "mcc": 0.629940788348712,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9659090909090909,
+            "precision": 0.7777777777777778,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.953125,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.8571428571428572,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.8333333333333333,
+            "fold": 6,
+            "mcc": 0.7644707871564383,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.7142857142857143,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.7142857142857143
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9047619047619047,
+            "precision": 1,
+            "recall_sensitivity": 0.7142857142857143,
+            "roc_auc": 0.8888888888888888,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.7857142857142857,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.7272727272727273,
+            "fold": 7,
+            "mcc": 0.6546536707079771,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5714285714285714,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.5714285714285714
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9340659340659339,
+            "precision": 1,
+            "recall_sensitivity": 0.5714285714285714,
+            "roc_auc": 0.9047619047619048,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.875,
+            "fold": 8,
+            "mcc": 0.75,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              },
+              "control": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9861111111111112,
+            "precision": 0.875,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.984375,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.875
+          },
+          {
+            "accuracy": 1,
+            "balanced_accuracy": 1,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 1,
+            "fold": 9,
+            "mcc": 1,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 1,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9375,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.9333333333333333,
+            "fold": 10,
+            "mcc": 0.8819171036881969,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          }
+        ],
+        "split_ids_hash": "068aaa39daf051e3f0d389fb379e3ab9355ce751390506d28e1de254bb961558",
+        "summary": {
+          "accuracy": {
+            "max": 1,
+            "mean": 0.89375,
+            "min": 0.8125,
+            "n": 10,
+            "std": 0.06620936909196126
+          },
+          "balanced_accuracy": {
+            "max": 1,
+            "mean": 0.8857142857142858,
+            "min": 0.7857142857142857,
+            "n": 10,
+            "std": 0.0739629741286146
+          },
+          "f1": {
+            "max": 1,
+            "mean": 0.8709485122720416,
+            "min": 0.7272727272727273,
+            "n": 10,
+            "std": 0.091901278625523
+          },
+          "fold": {
+            "max": 10,
+            "mean": 5.5,
+            "min": 1,
+            "n": 10,
+            "std": 3.0276503540974917
+          },
+          "mcc": {
+            "max": 1,
+            "mean": 0.7977780293639376,
+            "min": 0.629940788348712,
+            "n": 10,
+            "std": 0.1252321851547347
+          },
+          "n_test": {
+            "max": 16,
+            "mean": 16,
+            "min": 16,
+            "n": 10,
+            "std": 0
+          },
+          "n_train": {
+            "max": 64,
+            "mean": 64,
+            "min": 64,
+            "n": 10,
+            "std": 0
+          },
+          "pr_auc": {
+            "max": 1,
+            "mean": 0.9689884322027179,
+            "min": 0.9047619047619047,
+            "n": 10,
+            "std": 0.037904032359787634
+          },
+          "precision": {
+            "max": 1,
+            "mean": 0.9652777777777779,
+            "min": 0.7777777777777778,
+            "n": 10,
+            "std": 0.07670389595268931
+          },
+          "recall_sensitivity": {
+            "max": 1,
+            "mean": 0.8089285714285713,
+            "min": 0.5714285714285714,
+            "n": 10,
+            "std": 0.1423726904753762
+          },
+          "roc_auc": {
+            "max": 1,
+            "mean": 0.9636160714285715,
+            "min": 0.8888888888888888,
+            "n": 10,
+            "std": 0.04366849094362785
+          },
+          "specificity": {
+            "max": 1,
+            "mean": 0.9625,
+            "min": 0.75,
+            "n": 10,
+            "std": 0.0843685697138191
+          }
+        }
+      },
+      "prediction_files": {
+        "testing": "Logistic_testing_predictions.csv"
+      },
+      "scaler": "standard",
+      "selected_features": [
+        "gene0",
+        "gene1",
+        "gene2",
+        "gene3",
+        "gene4",
+        "gene5",
+        "gene6",
+        "gene7"
+      ]
+    }
+  ],
+  "positive_class": "case",
+  "project_id": "BCC-AZ-cbb985-6lyoxl-882ee9d7",
+  "registry_version": 4,
+  "schema_version": 3,
+  "selected_family": "Logistic",
+  "selection": {
+    "best_params": {
+      "selector__k": 8
+    },
+    "candidate_counts": {
+      "Logistic": 1
+    },
+    "candidate_families": [
+      "Logistic"
+    ],
+    "candidate_grids": {
+      "Logistic": {
+        "selector__k": [
+          8
+        ]
+      }
+    },
+    "class_order": [
+      "case",
+      "control"
+    ],
+    "estimator": "sklearn.linear_model._logistic.LogisticRegression",
+    "family_selected_at": "2026-10-24T07:16:15.776787Z",
+    "feature_method": "select",
+    "fitted_model_sha256": "1c58354f0f0440d5650cae0b22fd675aafe02010646a03ce862822027cc1589f",
+    "heldout_unlocked_at": "2026-10-24T07:16:15.812491Z",
+    "imputer_strategy": "median",
+    "inner_split_policy": "fold-local task-aware CV; grouped when subject_id supplied",
+    "input_features": [
+      "gene0",
+      "gene1",
+      "gene2",
+      "gene3",
+      "gene4",
+      "gene5",
+      "gene6",
+      "gene7"
+    ],
+    "input_sha256": "57336962e3e39e581195bbf7efe689d6c4a3d5abde6c5088bcf2dd9c1cc4d232",
+    "outer_split_ids_hash": "068aaa39daf051e3f0d389fb379e3ab9355ce751390506d28e1de254bb961558",
+    "positive_class": "case",
+    "project_id": "BCC-AZ-cbb985-6lyoxl-882ee9d7",
+    "random_seed": 10,
+    "scaler": "standard",
+    "schema_version": 3,
+    "selected_at": "2026-10-24T07:16:15.812351Z",
+    "selected_family": "Logistic",
+    "selected_features": [
+      "gene0",
+      "gene1",
+      "gene2",
+      "gene3",
+      "gene4",
+      "gene5",
+      "gene6",
+      "gene7"
+    ],
+    "selection_metric": "balanced_accuracy",
+    "selection_rule": "highest development per-family outer-CV mean; lexicographic tie-break",
+    "software_commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "software_identity": {
+      "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+      "declared_commit_matches": true,
+      "dirty": false,
+      "verified": true
+    },
+    "threshold_policy": "explicit_probability_threshold",
+    "threshold_value": 0.65,
+    "validation_budget": {
+      "actual_inner_splits": 3,
+      "actual_outer_evaluations": 10,
+      "actual_outer_repeats": 2,
+      "actual_outer_splits": 5,
+      "requested_inner_splits": 3,
+      "requested_outer_repeats": 2,
+      "requested_outer_splits": 5
+    }
+  },
+  "selection_lock_sha256": "463cbfb0cffdafef45f3c36089eb2217f2303660c64be8e16c950e482a03532f",
+  "software": {
+    "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "declared_commit_matches": true,
+    "dirty": false,
+    "verified": true
+  },
+  "strategy": "custom",
+  "task": "classification",
+  "validation": {
+    "family_scope": "fixed family per outer CV; family selected from development summaries",
+    "inner_splits": 3,
+    "outer_repeats": 2,
+    "outer_splits": 5,
+    "preprocessing_scope": "fit within inner and outer training folds; FSS/BSS internal scoring uses upstream training-fold preprocessing",
+    "random_state": 10,
+    "requested_budget": {
+      "inner_splits": 3,
+      "outer_repeats": 2,
+      "outer_splits": 5
+    },
+    "selection_metric": "balanced_accuracy",
+    "threshold_policy": "explicit_probability_threshold",
+    "threshold_value": 0.65
+  },
+  "warnings": [
+    "The development outer-CV scores describe fixed estimator families; the winning family was selected using those scores. Only the selected family has a heldout result."
+  ]
+}

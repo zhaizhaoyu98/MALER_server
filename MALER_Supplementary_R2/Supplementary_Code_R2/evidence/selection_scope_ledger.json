@@ -1,0 +1,470 @@
+{
+  "web_selection_dimensions": {
+    "scaling_option": "user fixes method before CV; parameters fit in each training fold",
+    "feature_ranking_method": "user fixes method before CV; ranks fit in each training fold",
+    "dimensionality_reduction_method": "user fixes ranking/PCA/none before CV",
+    "subset_size": "inner CV selects allowed k or component count",
+    "estimator_family": "after per-family outer means in one-click; fixed in customized mode",
+    "estimator_hyperparameters": "inner CV; chosen family retuned on all development data only",
+    "classification_threshold": "native default or user-prespecified cutoff; no web threshold search"
+  },
+  "web_grid_cap": "24 applies to retained hyperparameter combinations before subset/component product; actual total is recorded per result",
+  "records": [
+    {
+      "result": "binary_classification",
+      "family": "LogisticRegression(lbfgs, balanced, max_iter=500)",
+      "family_choice": "fixed in the reported analysis script; not selected among families in these 50 folds",
+      "preprocessing_method_choice": "fixed median imputation and StandardScaler",
+      "feature_method_choice": "fixed SelectKBest(f_classif)",
+      "inner_search": {
+        "selector__k": [
+          10,
+          20,
+          50
+        ],
+        "model__C": [
+          0.1,
+          1,
+          10
+        ]
+      },
+      "outer_splits": 5,
+      "outer_repeats": 10,
+      "inner_splits": 3,
+      "final_development_tuning_folds": 5,
+      "final_best_params": {
+        "model__C": 1.0,
+        "selector__k": 50
+      },
+      "threshold": "estimator-native; binary positive=LUSC",
+      "evaluation_scope": "historical TCGA internal holdout after patient exclusion and aliquot collapse; upstream split provenance unavailable",
+      "source_commit": "60351c5a787ad104b383612f18237592cfee1314",
+      "artifact": "primary_results/binary_classification.json",
+      "artifact_sha256": "16c9d9673b8bc4aeb87ece32cbdd3e299ed760979669b60fcb37093d3cfa471d"
+    },
+    {
+      "result": "multiclass_classification",
+      "family": "LogisticRegression(lbfgs, balanced, max_iter=500)",
+      "family_choice": "fixed in the reported analysis script; not selected among families in these 50 folds",
+      "preprocessing_method_choice": "fixed median imputation and StandardScaler",
+      "feature_method_choice": "fixed SelectKBest(f_classif)",
+      "inner_search": {
+        "selector__k": [
+          10,
+          20,
+          50
+        ],
+        "model__C": [
+          0.1,
+          1,
+          10
+        ]
+      },
+      "outer_splits": 5,
+      "outer_repeats": 10,
+      "inner_splits": 3,
+      "final_development_tuning_folds": 5,
+      "final_best_params": {
+        "model__C": 10.0,
+        "selector__k": 50
+      },
+      "threshold": "not optimized",
+      "evaluation_scope": "historical TCGA internal holdout after patient exclusion and aliquot collapse; upstream split provenance unavailable",
+      "source_commit": "60351c5a787ad104b383612f18237592cfee1314",
+      "artifact": "primary_results/multiclass_classification.json",
+      "artifact_sha256": "1e02c2c0c62ae09a44df44f0095f73d8fe5d2d773e51c657c62b9c4ec76c254d"
+    },
+    {
+      "result": "regression",
+      "family": "Ridge",
+      "family_choice": "fixed in the reported analysis script; not selected among families in these 50 folds",
+      "preprocessing_method_choice": "fixed median imputation and StandardScaler",
+      "feature_method_choice": "fixed SelectKBest(f_regression)",
+      "inner_search": {
+        "selector__k": [
+          10,
+          20,
+          50
+        ],
+        "model__alpha": [
+          0.1,
+          1,
+          10,
+          100
+        ]
+      },
+      "outer_splits": 5,
+      "outer_repeats": 10,
+      "inner_splits": 3,
+      "final_development_tuning_folds": 5,
+      "final_best_params": {
+        "model__alpha": 10.0,
+        "selector__k": 50
+      },
+      "threshold": "not optimized",
+      "evaluation_scope": "historical TCGA internal holdout after patient exclusion and aliquot collapse; upstream split provenance unavailable",
+      "source_commit": "60351c5a787ad104b383612f18237592cfee1314",
+      "artifact": "primary_results/regression.json",
+      "artifact_sha256": "863ee28b54a34f7596b360def0a577c26300043535eaa125d032b66ec9060cd9"
+    },
+    {
+      "result": "survival",
+      "family": "SurvivalTree(random_state=10, min_samples_leaf=10)",
+      "family_choice": "fixed in the reported analysis script; not selected among families in these 50 folds",
+      "preprocessing_method_choice": "fixed median imputation and StandardScaler",
+      "feature_method_choice": "fixed Cox score ranking",
+      "inner_search": {
+        "selector__k": [
+          10,
+          20,
+          50
+        ],
+        "model__max_depth": [
+          2,
+          3,
+          5
+        ]
+      },
+      "outer_splits": 5,
+      "outer_repeats": 10,
+      "inner_splits": 3,
+      "final_development_tuning_folds": 5,
+      "final_best_params": {
+        "model__max_depth": 5,
+        "selector__k": 50
+      },
+      "threshold": "not optimized",
+      "evaluation_scope": "previously examined bundled CGGA external cohort after TCGA aliquot collapse; not a newly untouched revision cohort",
+      "source_commit": "60351c5a787ad104b383612f18237592cfee1314",
+      "artifact": "primary_results/survival.json",
+      "artifact_sha256": "02af3558e08e0d8186c18b8320b53bdbcef9ad5452d267494ad53b883d83595f"
+    },
+    {
+      "result": "GSE37745",
+      "family": "LogisticRegression(liblinear, balanced, max_iter=500)",
+      "family_choice": "fixed family; outcome-blind platform mapping",
+      "preprocessing_method_choice": "fixed median and within-sample percentile ranks; no additional scaler",
+      "feature_method_choice": "fixed ANOVA SelectKBest over 42 mapped prior candidate genes; initial TCGA outcome-based candidate-universe selection is outside this rank-model CV, so its development means are conditional on that prior gene list",
+      "inner_search": {
+        "selector__k": [
+          10,
+          20,
+          40
+        ],
+        "model__C": [
+          0.1,
+          1,
+          10
+        ]
+      },
+      "outer_splits": 5,
+      "outer_repeats": 10,
+      "inner_splits": 3,
+      "final_development_tuning_folds": 5,
+      "final_best_params": {
+        "model__C": 10.0,
+        "selector__k": 20
+      },
+      "threshold": "native default (0.5 probability)",
+      "evaluation_scope": "retrospective independent-study reanalysis; historically examined, not a newly untouched revision cohort",
+      "artifact": "archived_results/external_gse37745.json",
+      "artifact_sha256": "0ab91ea4cb1ba92e85de16be7c537e59fea2fb72e8d04f202d1ffa42c6b48c6b"
+    },
+    {
+      "result": "GSE50081",
+      "family": "LogisticRegression(liblinear, balanced, max_iter=500)",
+      "family_choice": "fixed family; outcome-blind platform mapping",
+      "preprocessing_method_choice": "fixed median and within-sample percentile ranks; no additional scaler",
+      "feature_method_choice": "fixed ANOVA SelectKBest over 42 mapped prior candidate genes; initial TCGA outcome-based candidate-universe selection is outside this rank-model CV, so its development means are conditional on that prior gene list",
+      "inner_search": {
+        "selector__k": [
+          10,
+          20,
+          40
+        ],
+        "model__C": [
+          0.1,
+          1,
+          10
+        ]
+      },
+      "outer_splits": null,
+      "outer_repeats": null,
+      "inner_splits": null,
+      "final_development_tuning_folds": 5,
+      "final_best_params": {
+        "model__C": 10.0,
+        "selector__k": 20
+      },
+      "threshold": "GSE37745-only balanced-accuracy calibration, cutoff 0.9321062962030295; no current GSE50081 tuning",
+      "evaluation_scope": "retrospective independent-study reanalysis; historically examined, not a newly untouched revision cohort",
+      "artifact": "archived_results/external_gse50081.json",
+      "artifact_sha256": "ca5a0ff6d31ccfa76fe214cdc46e99d091148c46b2d795c6884b23382f773566"
+    },
+    {
+      "result": "GBSG2",
+      "family": "gradient_boosting",
+      "family_choice": "chosen after comparing per-family/per-representation development outer means; family selection not nested",
+      "preprocessing_method_choice": "fixed median and StandardScaler; GBSG2 outcome-independent categorical encoding",
+      "feature_method_choice": "all encoded clinical predictors",
+      "candidate_families_and_grids": [
+        {
+          "name": "coxph",
+          "grid": {
+            "model__alpha": [
+              0.01,
+              0.1,
+              1.0,
+              10.0
+            ]
+          },
+          "representation": "all encoded clinical features"
+        },
+        {
+          "name": "coxnet",
+          "grid": {
+            "model__l1_ratio": [
+              0.1,
+              0.5,
+              0.9
+            ]
+          },
+          "representation": "all encoded clinical features"
+        },
+        {
+          "name": "extra_trees",
+          "grid": {
+            "model__min_samples_leaf": [
+              3,
+              5,
+              10,
+              20
+            ],
+            "model__max_features": [
+              "sqrt",
+              0.5,
+              1.0
+            ]
+          },
+          "representation": "all encoded clinical features"
+        },
+        {
+          "name": "random_forest",
+          "grid": {
+            "model__min_samples_leaf": [
+              3,
+              5,
+              10,
+              20
+            ],
+            "model__max_features": [
+              "sqrt",
+              0.5,
+              1.0
+            ]
+          },
+          "representation": "all encoded clinical features"
+        },
+        {
+          "name": "gradient_boosting",
+          "grid": {
+            "model__n_estimators": [
+              100,
+              250
+            ],
+            "model__learning_rate": [
+              0.03,
+              0.1
+            ],
+            "model__max_depth": [
+              1,
+              2
+            ]
+          },
+          "representation": "all encoded clinical features"
+        },
+        {
+          "name": "survival_svm",
+          "grid": {
+            "model__alpha": [
+              0.01,
+              0.1,
+              1.0,
+              10.0
+            ]
+          },
+          "representation": "all encoded clinical features"
+        }
+      ],
+      "outer_splits": 5,
+      "outer_repeats": 5,
+      "inner_splits": 3,
+      "final_development_tuning_folds": 5,
+      "final_best_params": {
+        "model__learning_rate": 0.1,
+        "model__max_depth": 1,
+        "model__n_estimators": 100
+      },
+      "threshold": "not applicable to risk scoring",
+      "evaluation_scope": "development-selected reported row; archive also contains evaluation of nonwinning families, so no claim of a freshly sealed once-only family-wide audit",
+      "artifact": "archived_results/survival_expanded_validation.json",
+      "artifact_sha256": "19c981e958459b60ae19c89b3d9dd791b8c71b30ecf9c18b1e76a5016bf5c19d"
+    },
+    {
+      "result": "TCGA to CGGA",
+      "family": "coxph_pca",
+      "family_choice": "chosen after comparing per-family/per-representation development outer means; family selection not nested",
+      "preprocessing_method_choice": "fixed median and StandardScaler; GBSG2 outcome-independent categorical encoding",
+      "feature_method_choice": "ranked and PCA representations compete after per-pipeline outer evaluation",
+      "candidate_families_and_grids": [
+        {
+          "name": "coxph_ranked",
+          "grid": {
+            "reduce__k": [
+              20,
+              50,
+              100
+            ],
+            "model__alpha": [
+              0.1,
+              1.0,
+              10.0
+            ]
+          },
+          "representation": "fold-local univariate Cox ranking"
+        },
+        {
+          "name": "coxnet_ranked",
+          "grid": {
+            "reduce__k": [
+              20,
+              50,
+              100
+            ],
+            "model__l1_ratio": [
+              0.1,
+              0.5,
+              0.9
+            ]
+          },
+          "representation": "fold-local univariate Cox ranking"
+        },
+        {
+          "name": "extra_trees_ranked",
+          "grid": {
+            "reduce__k": [
+              20,
+              50,
+              100
+            ],
+            "model__min_samples_leaf": [
+              3,
+              5,
+              10
+            ],
+            "model__max_features": [
+              "sqrt",
+              0.5
+            ]
+          },
+          "representation": "fold-local univariate Cox ranking"
+        },
+        {
+          "name": "random_forest_ranked",
+          "grid": {
+            "reduce__k": [
+              20,
+              50,
+              100
+            ],
+            "model__min_samples_leaf": [
+              5,
+              10
+            ],
+            "model__max_features": [
+              "sqrt",
+              0.5
+            ]
+          },
+          "representation": "fold-local univariate Cox ranking"
+        },
+        {
+          "name": "gradient_boosting_ranked",
+          "grid": {
+            "reduce__k": [
+              20,
+              50,
+              100
+            ],
+            "model__n_estimators": [
+              100,
+              250
+            ],
+            "model__learning_rate": [
+              0.03,
+              0.1
+            ],
+            "model__max_depth": [
+              1,
+              2
+            ]
+          },
+          "representation": "fold-local univariate Cox ranking"
+        },
+        {
+          "name": "coxph_pca",
+          "grid": {
+            "reduce__n_components": [
+              10,
+              20,
+              50
+            ],
+            "model__alpha": [
+              0.1,
+              1.0,
+              10.0
+            ]
+          },
+          "representation": "fold-local PCA"
+        },
+        {
+          "name": "survival_svm_pca",
+          "grid": {
+            "reduce__n_components": [
+              10,
+              20,
+              50
+            ],
+            "model__alpha": [
+              0.01,
+              0.1,
+              1.0,
+              10.0
+            ]
+          },
+          "representation": "fold-local PCA"
+        }
+      ],
+      "outer_splits": 5,
+      "outer_repeats": 5,
+      "inner_splits": 3,
+      "final_development_tuning_folds": 5,
+      "final_best_params": {
+        "model__alpha": 1.0,
+        "reduce__n_components": 50
+      },
+      "threshold": "not applicable to risk scoring",
+      "evaluation_scope": "development-selected reported row; archive also contains evaluation of nonwinning families, so no claim of a freshly sealed once-only family-wide audit",
+      "artifact": "archived_results/survival_expanded_validation.json",
+      "artifact_sha256": "19c981e958459b60ae19c89b3d9dd791b8c71b30ecf9c18b1e76a5016bf5c19d"
+    },
+    {
+      "result": "Archived no-reduction and PCA sensitivity results",
+      "family": "fixed LogisticRegression, Ridge or SurvivalTree by task",
+      "family_choice": "fixed by analysis script; comparator preprocessing/representation fixed per run",
+      "inner_search": "subset/components and allowed family parameters; baseline budgets differ",
+      "evaluation_scope": "earlier analysis configurations and unequal search budgets; descriptive sensitivity, not paired final-R2 evidence",
+      "artifact": "archived_results/validation_results.json; equal_budget_no_selection_baselines.json; pca_sensitivity.json"
+    }
+  ]
+}

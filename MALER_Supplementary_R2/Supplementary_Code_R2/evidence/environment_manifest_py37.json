@@ -1,0 +1,18 @@
+{
+  "packages": {
+    "Django": "2.1.8",
+    "joblib": "1.3.2",
+    "lightgbm": "3.3.3",
+    "matplotlib": "3.5.2",
+    "mrmr-selection": "0.2.8",
+    "numpy": "1.21.2",
+    "pandas": "1.3.5",
+    "scikit-learn": "1.0.2",
+    "scikit-survival": "0.17.2",
+    "scipy": "1.7.3",
+    "xgboost": "1.6.2"
+  },
+  "platform": "Windows-10-10.0.26100-SP0",
+  "python": "3.7.11",
+  "role": "retained MALER R2 release baseline; no runtime upgrade"
+}

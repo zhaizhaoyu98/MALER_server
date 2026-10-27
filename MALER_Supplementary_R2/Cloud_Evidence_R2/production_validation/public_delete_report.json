@@ -1,0 +1,118 @@
+{
+  "completed_utc": "2026-10-24T07:49:11.772Z",
+  "scope": "Explicit protected deletion of only identified synthetic tasks",
+  "records": [
+    {
+      "workflow": "binary_custom",
+      "project_id": "BCC-AZ-cbb985-6lyoxl-882ee9d7",
+      "missing_token_status": 403,
+      "delete_final_status": 200,
+      "after_delete_status": 403
+    },
+    {
+      "workflow": "binary_custom",
+      "project_id": "PRED-BCLASS-310cb8-dbba67-68ea8040",
+      "missing_token_status": 403,
+      "delete_final_status": 200,
+      "after_delete_status": 403
+    },
+    {
+      "workflow": "oneclick",
+      "project_id": "BCO-AZ-cbb985-TopK-7eb50106",
+      "missing_token_status": 403,
+      "delete_final_status": 200,
+      "after_delete_status": 403
+    },
+    {
+      "workflow": "oneclick",
+      "project_id": "PRED-BCLASS-a33986-dbba67-56795a6c",
+      "missing_token_status": 403,
+      "delete_final_status": 200,
+      "after_delete_status": 403
+    },
+    {
+      "workflow": "multiclass",
+      "project_id": "MCC-AZ-ec99a2-rg9bw0-f707f31a",
+      "missing_token_status": 403,
+      "delete_final_status": 200,
+      "after_delete_status": 403
+    },
+    {
+      "workflow": "multiclass",
+      "project_id": "PRED-MCLASS-e2b432-b36ea3-346349b0",
+      "missing_token_status": 403,
+      "delete_final_status": 200,
+      "after_delete_status": 403
+    },
+    {
+      "workflow": "regression",
+      "project_id": "RC-AZ-89fdeb-zggz2q-d7bd2682",
+      "missing_token_status": 403,
+      "delete_final_status": 200,
+      "after_delete_status": 403
+    },
+    {
+      "workflow": "regression",
+      "project_id": "PRED-REG-209803-4b6fad-62533af3",
+      "missing_token_status": 403,
+      "delete_final_status": 200,
+      "after_delete_status": 403
+    },
+    {
+      "workflow": "survival",
+      "project_id": "SC-CZ-cb4352-x9l3ly-b143c3db",
+      "missing_token_status": 403,
+      "delete_final_status": 200,
+      "after_delete_status": 403
+    },
+    {
+      "workflow": "survival",
+      "project_id": "PRED-SUR-5de9ec-2c8ac8-728505ad",
+      "missing_token_status": 403,
+      "delete_final_status": 200,
+      "after_delete_status": 403
+    },
+    {
+      "workflow": "xgb_binary",
+      "project_id": "BCC-AZ-cbb985-i1jvzv-34c250f8",
+      "missing_token_status": 403,
+      "delete_final_status": 200,
+      "after_delete_status": 403
+    },
+    {
+      "workflow": "xgb_binary",
+      "project_id": "PRED-BCLASS-6942f8-dbba67-2dfd9709",
+      "missing_token_status": 403,
+      "delete_final_status": 200,
+      "after_delete_status": 403
+    },
+    {
+      "workflow": "xgb_multiclass",
+      "project_id": "MCC-AZ-ec99a2-ile9n2-90ef132b",
+      "missing_token_status": 403,
+      "delete_final_status": 200,
+      "after_delete_status": 403
+    },
+    {
+      "workflow": "xgb_multiclass",
+      "project_id": "PRED-MCLASS-b1619a-b36ea3-3598ab11",
+      "missing_token_status": 403,
+      "delete_final_status": 200,
+      "after_delete_status": 403
+    },
+    {
+      "workflow": "oneclick_repeat",
+      "project_id": "BCO-AZ-cbb985-TopK-89ee86a2",
+      "missing_token_status": 403,
+      "delete_final_status": 200,
+      "after_delete_status": 403
+    },
+    {
+      "workflow": "oneclick_repeat",
+      "project_id": "PRED-BCLASS-10a00c-dbba67-07cf1709",
+      "missing_token_status": 403,
+      "delete_final_status": 200,
+      "after_delete_status": 403
+    }
+  ]
+}

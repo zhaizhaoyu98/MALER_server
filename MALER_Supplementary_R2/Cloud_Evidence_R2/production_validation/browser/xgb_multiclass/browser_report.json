@@ -1,0 +1,62 @@
+{
+  "task": "multiclass",
+  "completed_utc": "2026-10-24T07:33:01.978Z",
+  "scope": "Actual public HTTPS production upload-to-Predict",
+  "origin": "https://www.inbirg.com",
+  "tls_verification_disabled": false,
+  "browser_version": "155.0.4283.62",
+  "source": {
+    "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "declared_commit_matches": true,
+    "dirty": false,
+    "verified": true
+  },
+  "analysis_project_id": "MCC-AZ-ec99a2-ile9n2-90ef132b",
+  "prediction_project_id": "PRED-MCLASS-b1619a-b36ea3-3598ab11",
+  "model_file_name": "XGBoost.maler",
+  "model_bundle_sha256": "3887eec21172972aece60b40b9374352387573ee7ec3edf325b19ea10ae1501a",
+  "selection_lock_sha256": "5d10f3e98fd95c923a8f4f8cc1dd0913a169593f80e6c1f6e783918342d20295",
+  "successful_posts": [
+    {
+      "path": "/maler/preview",
+      "status": 200,
+      "origin_only_referer": true
+    },
+    {
+      "path": "/maler/classification_cp_result/MCC-AZ-ec99a2-ile9n2-90ef132b",
+      "status": 200,
+      "origin_only_referer": true
+    },
+    {
+      "path": "/maler/predict_preview",
+      "status": 200,
+      "origin_only_referer": true
+    },
+    {
+      "path": "/maler/predict_result/PRED-MCLASS-b1619a-b36ea3-3598ab11",
+      "status": 200,
+      "origin_only_referer": true
+    }
+  ],
+  "page_errors": [],
+  "unexpected_failed_requests": [],
+  "expected_download_aborts": [
+    {
+      "url": "https://www.inbirg.com/maler/task/MCC-AZ-ec99a2-ile9n2-90ef132b/model/XGBoost.maler",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "prediction_rows": 40,
+  "blind_rows": 10,
+  "validation_rows": 30,
+  "actual_budget": {
+    "actual_inner_splits": 3,
+    "actual_outer_evaluations": 10,
+    "actual_outer_repeats": 2,
+    "actual_outer_splits": 5,
+    "requested_inner_splits": 3,
+    "requested_outer_repeats": 2,
+    "requested_outer_splits": 5
+  },
+  "email_address_supplied": false
+}

@@ -1,0 +1,50 @@
+{
+  "server_utc": "2026-10-24T07:50:36.654187Z",
+  "absent_synthetic_tasks": [
+    "BCC-AZ-cbb985-6lyoxl-882ee9d7",
+    "PRED-BCLASS-310cb8-dbba67-68ea8040",
+    "BCO-AZ-cbb985-TopK-7eb50106",
+    "PRED-BCLASS-a33986-dbba67-56795a6c",
+    "MCC-AZ-ec99a2-rg9bw0-f707f31a",
+    "PRED-MCLASS-e2b432-b36ea3-346349b0",
+    "RC-AZ-89fdeb-zggz2q-d7bd2682",
+    "PRED-REG-209803-4b6fad-62533af3",
+    "SC-CZ-cb4352-x9l3ly-b143c3db",
+    "PRED-SUR-5de9ec-2c8ac8-728505ad",
+    "BCC-AZ-cbb985-i1jvzv-34c250f8",
+    "PRED-BCLASS-6942f8-dbba67-2dfd9709",
+    "MCC-AZ-ec99a2-ile9n2-90ef132b",
+    "PRED-MCLASS-b1619a-b36ea3-3598ab11",
+    "BCO-AZ-cbb985-TopK-89ee86a2",
+    "PRED-BCLASS-10a00c-dbba67-07cf1709"
+  ],
+  "identity": {
+    "server_utc": "2026-10-24T07:50:35.560870Z",
+    "source_commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "source_clean": true,
+    "source_directory": "/mnt/home/liqiang/maler_revision2_20260930/source_public_961b45a",
+    "process_exe": "/mnt/home/liqiang/.conda/envs/gene_edit/bin/python3.7",
+    "master_pid": 2817537,
+    "public_uploads_enabled": true,
+    "task_root": "/var/lib/maler_public_r2/tasks"
+  },
+  "ops_health": {
+    "server_utc": "2026-10-24T07:50:36.646025Z",
+    "checks": {
+      "maler-r2-restricted.service": true,
+      "nginx.service": true,
+      "maler-public-cleanup.timer": true,
+      "certbot-renew.timer": true,
+      "chronyd.service": true,
+      "cleanup_recent_success": true,
+      "cleanup_failed_count_zero": true,
+      "tmpfs": true,
+      "no_swap": true,
+      "resolved_private_storage_paths": true,
+      "certificate_21_days": true,
+      "clock_synchronized_within_one_second": true
+    },
+    "healthy": true,
+    "external_notifications_configured": false
+  }
+}

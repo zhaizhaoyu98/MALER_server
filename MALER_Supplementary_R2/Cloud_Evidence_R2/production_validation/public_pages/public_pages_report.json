@@ -1,0 +1,41 @@
+{
+  "client_utc": "2026-10-24T07:52:20.028Z",
+  "browser": "155.0.4283.62",
+  "origin": "https://www.inbirg.com",
+  "tls_verification_disabled": false,
+  "passed": true,
+  "records": [
+    {
+      "page": "home",
+      "status": 200,
+      "public_notice_visible": true,
+      "referrer_policy": "strict-origin",
+      "page_errors": [],
+      "failed_requests": []
+    },
+    {
+      "page": "analysis",
+      "status": 200,
+      "public_notice_visible": true,
+      "referrer_policy": "strict-origin",
+      "page_errors": [],
+      "failed_requests": []
+    },
+    {
+      "page": "predict",
+      "status": 200,
+      "public_notice_visible": true,
+      "referrer_policy": "strict-origin",
+      "page_errors": [],
+      "failed_requests": []
+    },
+    {
+      "page": "help",
+      "status": 200,
+      "public_notice_visible": true,
+      "referrer_policy": "strict-origin",
+      "page_errors": [],
+      "failed_requests": []
+    }
+  ]
+}

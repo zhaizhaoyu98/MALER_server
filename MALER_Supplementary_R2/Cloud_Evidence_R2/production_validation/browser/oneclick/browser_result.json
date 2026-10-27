@@ -1,0 +1,5783 @@
+{
+  "created_utc": "2026-10-24T07:16:55Z",
+  "dataset": {
+    "blind_samples": 0,
+    "cohort_provenance_supplied": false,
+    "development_subjects": null,
+    "features": 8,
+    "independent_external_cohort_verified": false,
+    "patient_level_audit": {
+      "collapsed_within_partition_patients": 0,
+      "excluded_cross_partition_patients": 0,
+      "retained_patients": 120,
+      "source_samples": 120
+    },
+    "split_level": "sample",
+    "testing_samples": 40,
+    "training_samples": 80
+  },
+  "failures": [],
+  "feature_reduction": "select",
+  "models": [
+    {
+      "best_params": null,
+      "candidate_count": 3,
+      "candidate_grid": {
+        "model__var_smoothing": [
+          1e-11,
+          1e-9,
+          1e-7
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "effective_feature_method": "select",
+      "estimator": "sklearn.naive_bayes.GaussianNB",
+      "heldout_test": null,
+      "hyperparameter_candidate_count": 3,
+      "key": "naive_bayes",
+      "nested_cv": {
+        "actual_repeats": 2,
+        "candidate_count": 3,
+        "candidate_grid": {
+          "model__var_smoothing": [
+            1e-11,
+            1e-9,
+            1e-7
+          ],
+          "selector__k": [
+            8
+          ]
+        },
+        "folds": [
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.8571428571428572,
+            "best_params": {
+              "model__var_smoothing": 1e-11,
+              "selector__k": 8
+            },
+            "f1": 0.8333333333333333,
+            "fold": 1,
+            "mcc": 0.7644707871564383,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.7142857142857143,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.7142857142857143
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9617346938775511,
+            "precision": 1,
+            "recall_sensitivity": 0.7142857142857143,
+            "roc_auc": 0.9682539682539681,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.8571428571428572,
+            "best_params": {
+              "model__var_smoothing": 1e-11,
+              "selector__k": 8
+            },
+            "f1": 0.8333333333333333,
+            "fold": 2,
+            "mcc": 0.7644707871564383,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.7142857142857143,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.7142857142857143
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9404761904761902,
+            "precision": 1,
+            "recall_sensitivity": 0.7142857142857143,
+            "roc_auc": 0.9206349206349206,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "model__var_smoothing": 1e-11,
+              "selector__k": 8
+            },
+            "f1": 0.8571428571428571,
+            "fold": 3,
+            "mcc": 0.7745966692414834,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.75,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.75
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9519230769230769,
+            "precision": 1,
+            "recall_sensitivity": 0.75,
+            "roc_auc": 0.921875,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9375,
+            "best_params": {
+              "model__var_smoothing": 1e-11,
+              "selector__k": 8
+            },
+            "f1": 0.9333333333333333,
+            "fold": 4,
+            "mcc": 0.8819171036881969,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9519230769230769,
+            "precision": 1,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.921875,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8125,
+            "best_params": {
+              "model__var_smoothing": 1e-11,
+              "selector__k": 8
+            },
+            "f1": 0.823529411764706,
+            "fold": 5,
+            "mcc": 0.629940788348712,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.78234126984127,
+            "precision": 0.7777777777777778,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.828125,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.7857142857142857,
+            "best_params": {
+              "model__var_smoothing": 1e-11,
+              "selector__k": 8
+            },
+            "f1": 0.7272727272727273,
+            "fold": 6,
+            "mcc": 0.6546536707079771,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5714285714285714,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.5714285714285714
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.857142857142857,
+            "precision": 1,
+            "recall_sensitivity": 0.5714285714285714,
+            "roc_auc": 0.7936507936507936,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8015873015873016,
+            "best_params": {
+              "model__var_smoothing": 1e-11,
+              "selector__k": 8
+            },
+            "f1": 0.7692307692307692,
+            "fold": 7,
+            "mcc": 0.6180700462007377,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.7142857142857143,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 0.7142857142857143
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9038342609771179,
+            "precision": 0.8333333333333334,
+            "recall_sensitivity": 0.7142857142857143,
+            "roc_auc": 0.9047619047619048,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8125,
+            "best_params": {
+              "model__var_smoothing": 1e-11,
+              "selector__k": 8
+            },
+            "f1": 0.7999999999999999,
+            "fold": 8,
+            "mcc": 0.629940788348712,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.75,
+                "specificity": 0.875
+              },
+              "control": {
+                "sensitivity": 0.875,
+                "specificity": 0.75
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8755456349206349,
+            "precision": 0.8571428571428571,
+            "recall_sensitivity": 0.75,
+            "roc_auc": 0.90625,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.875
+          },
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9375,
+            "best_params": {
+              "model__var_smoothing": 1e-11,
+              "selector__k": 8
+            },
+            "f1": 0.9333333333333333,
+            "fold": 9,
+            "mcc": 0.8819171036881969,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9659090909090909,
+            "precision": 1,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.953125,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9375,
+            "best_params": {
+              "model__var_smoothing": 1e-11,
+              "selector__k": 8
+            },
+            "f1": 0.9333333333333333,
+            "fold": 10,
+            "mcc": 0.8819171036881969,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          }
+        ],
+        "split_ids_hash": "068aaa39daf051e3f0d389fb379e3ab9355ce751390506d28e1de254bb961558",
+        "summary": {
+          "accuracy": {
+            "max": 0.9375,
+            "mean": 0.86875,
+            "min": 0.8125,
+            "n": 10,
+            "std": 0.05472468973568207
+          },
+          "balanced_accuracy": {
+            "max": 0.9375,
+            "mean": 0.8614087301587301,
+            "min": 0.7857142857142857,
+            "n": 10,
+            "std": 0.05933252996347761
+          },
+          "f1": {
+            "max": 0.9333333333333333,
+            "mean": 0.8443842432077726,
+            "min": 0.7272727272727273,
+            "n": 10,
+            "std": 0.07142275252576327
+          },
+          "fold": {
+            "max": 10,
+            "mean": 5.5,
+            "min": 1,
+            "n": 10,
+            "std": 3.0276503540974917
+          },
+          "mcc": {
+            "max": 0.8819171036881969,
+            "mean": 0.748189484822509,
+            "min": 0.6180700462007377,
+            "n": 10,
+            "std": 0.10980905366822138
+          },
+          "n_test": {
+            "max": 16,
+            "mean": 16,
+            "min": 16,
+            "n": 10,
+            "std": 0
+          },
+          "n_train": {
+            "max": 64,
+            "mean": 64,
+            "min": 64,
+            "n": 10,
+            "std": 0
+          },
+          "pr_auc": {
+            "max": 1,
+            "mean": 0.9190830151990866,
+            "min": 0.78234126984127,
+            "n": 10,
+            "std": 0.06483905616270554
+          },
+          "precision": {
+            "max": 1,
+            "mean": 0.9468253968253968,
+            "min": 0.7777777777777778,
+            "n": 10,
+            "std": 0.0877453847249095
+          },
+          "recall_sensitivity": {
+            "max": 0.875,
+            "mean": 0.7714285714285715,
+            "min": 0.5714285714285714,
+            "n": 10,
+            "std": 0.1019926190028757
+          },
+          "roc_auc": {
+            "max": 1,
+            "mean": 0.9118551587301587,
+            "min": 0.7936507936507936,
+            "n": 10,
+            "std": 0.0614601593400311
+          },
+          "specificity": {
+            "max": 1,
+            "mean": 0.951388888888889,
+            "min": 0.75,
+            "n": 10,
+            "std": 0.08617828920826984
+          }
+        }
+      },
+      "prediction_files": {},
+      "scaler": "none",
+      "selected_features": null
+    },
+    {
+      "best_params": {
+        "model__C": 10,
+        "model__gamma": "scale",
+        "model__kernel": "rbf",
+        "selector__k": 8
+      },
+      "candidate_count": 12,
+      "candidate_grid": {
+        "model__C": [
+          0.1,
+          1,
+          10
+        ],
+        "model__gamma": [
+          "scale",
+          "auto"
+        ],
+        "model__kernel": [
+          "linear",
+          "rbf"
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "effective_feature_method": "select",
+      "estimator": "sklearn.svm._classes.SVC",
+      "heldout_test": {
+        "accuracy": 0.625,
+        "balanced_accuracy": 0.5133333333333333,
+        "f1": 0.11764705882352941,
+        "mcc": 0.05923488777590923,
+        "per_class": {
+          "case": {
+            "sensitivity": 0.06666666666666667,
+            "specificity": 0.96
+          },
+          "control": {
+            "sensitivity": 0.96,
+            "specificity": 0.06666666666666667
+          }
+        },
+        "positive_class": "case",
+        "pr_auc": 0.45522875816993463,
+        "precision": 0.5,
+        "recall_sensitivity": 0.06666666666666667,
+        "roc_auc": 0.58,
+        "specificity": 0.96
+      },
+      "hyperparameter_candidate_count": 12,
+      "key": "svm",
+      "model_bundle": "svm.maler",
+      "nested_cv": {
+        "actual_repeats": 2,
+        "candidate_count": 12,
+        "candidate_grid": {
+          "model__C": [
+            0.1,
+            1,
+            10
+          ],
+          "model__gamma": [
+            "scale",
+            "auto"
+          ],
+          "model__kernel": [
+            "linear",
+            "rbf"
+          ],
+          "selector__k": [
+            8
+          ]
+        },
+        "folds": [
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9285714285714286,
+            "best_params": {
+              "model__C": 1,
+              "model__gamma": "scale",
+              "model__kernel": "linear",
+              "selector__k": 8
+            },
+            "f1": 0.923076923076923,
+            "fold": 1,
+            "mcc": 0.8783100656536799,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.8571428571428571,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.8571428571428571
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9999999999999998,
+            "precision": 1,
+            "recall_sensitivity": 0.8571428571428571,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.7857142857142857,
+            "best_params": {
+              "model__C": 1,
+              "model__gamma": "scale",
+              "model__kernel": "rbf",
+              "selector__k": 8
+            },
+            "f1": 0.7272727272727273,
+            "fold": 2,
+            "mcc": 0.6546536707079771,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5714285714285714,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.5714285714285714
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9821428571428572,
+            "precision": 1,
+            "recall_sensitivity": 0.5714285714285714,
+            "roc_auc": 0.9841269841269841,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9375,
+            "best_params": {
+              "model__C": 1,
+              "model__gamma": "scale",
+              "model__kernel": "linear",
+              "selector__k": 8
+            },
+            "f1": 0.9333333333333333,
+            "fold": 3,
+            "mcc": 0.8819171036881969,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.975,
+            "precision": 1,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.96875,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "model__C": 10,
+              "model__gamma": "scale",
+              "model__kernel": "rbf",
+              "selector__k": 8
+            },
+            "f1": 0.875,
+            "fold": 4,
+            "mcc": 0.75,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              },
+              "control": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9526289682539683,
+            "precision": 0.875,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.953125,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.875
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "model__C": 1,
+              "model__gamma": "scale",
+              "model__kernel": "linear",
+              "selector__k": 8
+            },
+            "f1": 0.888888888888889,
+            "fold": 5,
+            "mcc": 0.7745966692414834,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 0.8,
+            "recall_sensitivity": 1,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.8571428571428572,
+            "best_params": {
+              "model__C": 1,
+              "model__gamma": "scale",
+              "model__kernel": "rbf",
+              "selector__k": 8
+            },
+            "f1": 0.8333333333333333,
+            "fold": 6,
+            "mcc": 0.7644707871564383,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.7142857142857143,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.7142857142857143
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9682539682539681,
+            "precision": 1,
+            "recall_sensitivity": 0.7142857142857143,
+            "roc_auc": 0.9682539682539683,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.7857142857142857,
+            "best_params": {
+              "model__C": 1,
+              "model__gamma": "scale",
+              "model__kernel": "linear",
+              "selector__k": 8
+            },
+            "f1": 0.7272727272727273,
+            "fold": 7,
+            "mcc": 0.6546536707079771,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5714285714285714,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.5714285714285714
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9340659340659339,
+            "precision": 1,
+            "recall_sensitivity": 0.5714285714285714,
+            "roc_auc": 0.9047619047619048,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 1,
+            "balanced_accuracy": 1,
+            "best_params": {
+              "model__C": 1,
+              "model__gamma": "scale",
+              "model__kernel": "linear",
+              "selector__k": 8
+            },
+            "f1": 1,
+            "fold": 8,
+            "mcc": 1,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 1,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9375,
+            "best_params": {
+              "model__C": 1,
+              "model__gamma": "scale",
+              "model__kernel": "rbf",
+              "selector__k": 8
+            },
+            "f1": 0.9411764705882353,
+            "fold": 9,
+            "mcc": 0.8819171036881969,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 0.875
+              },
+              "control": {
+                "sensitivity": 0.875,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9861111111111112,
+            "precision": 0.8888888888888888,
+            "recall_sensitivity": 1,
+            "roc_auc": 0.984375,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.875
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "model__C": 10,
+              "model__gamma": "scale",
+              "model__kernel": "rbf",
+              "selector__k": 8
+            },
+            "f1": 0.8571428571428571,
+            "fold": 10,
+            "mcc": 0.7745966692414834,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.75,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.75
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 0.75,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          }
+        ],
+        "split_ids_hash": "068aaa39daf051e3f0d389fb379e3ab9355ce751390506d28e1de254bb961558",
+        "summary": {
+          "accuracy": {
+            "max": 1,
+            "mean": 0.89375,
+            "min": 0.8125,
+            "n": 10,
+            "std": 0.05929270612815711
+          },
+          "balanced_accuracy": {
+            "max": 1,
+            "mean": 0.8857142857142858,
+            "min": 0.7857142857142857,
+            "n": 10,
+            "std": 0.06784147688836496
+          },
+          "f1": {
+            "max": 1,
+            "mean": 0.8706497260909026,
+            "min": 0.7272727272727273,
+            "n": 10,
+            "std": 0.08908412307138026
+          },
+          "fold": {
+            "max": 10,
+            "mean": 5.5,
+            "min": 1,
+            "n": 10,
+            "std": 3.0276503540974917
+          },
+          "mcc": {
+            "max": 1,
+            "mean": 0.8015115740085434,
+            "min": 0.6546536707079771,
+            "n": 10,
+            "std": 0.1089518424942582
+          },
+          "n_test": {
+            "max": 16,
+            "mean": 16,
+            "min": 16,
+            "n": 10,
+            "std": 0
+          },
+          "n_train": {
+            "max": 64,
+            "mean": 64,
+            "min": 64,
+            "n": 10,
+            "std": 0
+          },
+          "pr_auc": {
+            "max": 1,
+            "mean": 0.9798202838827837,
+            "min": 0.9340659340659339,
+            "n": 10,
+            "std": 0.022763751865082348
+          },
+          "precision": {
+            "max": 1,
+            "mean": 0.9563888888888888,
+            "min": 0.8,
+            "n": 10,
+            "std": 0.07374986921938603
+          },
+          "recall_sensitivity": {
+            "max": 1,
+            "mean": 0.8214285714285714,
+            "min": 0.5714285714285714,
+            "n": 10,
+            "std": 0.1647422917035482
+          },
+          "roc_auc": {
+            "max": 1,
+            "mean": 0.9763392857142857,
+            "min": 0.9047619047619048,
+            "n": 10,
+            "std": 0.03009195664773696
+          },
+          "specificity": {
+            "max": 1,
+            "mean": 0.95,
+            "min": 0.75,
+            "n": 10,
+            "std": 0.08740073734751262
+          }
+        }
+      },
+      "prediction_files": {
+        "testing": "svm_testing_predictions.csv"
+      },
+      "scaler": "standard",
+      "selected_features": [
+        "gene0",
+        "gene1",
+        "gene2",
+        "gene3",
+        "gene4",
+        "gene5",
+        "gene6",
+        "gene7"
+      ]
+    },
+    {
+      "best_params": null,
+      "candidate_count": 3,
+      "candidate_grid": {
+        "model__C": [
+          0.1,
+          1,
+          10
+        ],
+        "model__penalty": [
+          "l2"
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "effective_feature_method": "select",
+      "estimator": "sklearn.linear_model._logistic.LogisticRegression",
+      "heldout_test": null,
+      "hyperparameter_candidate_count": 3,
+      "key": "logistic_regression",
+      "nested_cv": {
+        "actual_repeats": 2,
+        "candidate_count": 3,
+        "candidate_grid": {
+          "model__C": [
+            0.1,
+            1,
+            10
+          ],
+          "model__penalty": [
+            "l2"
+          ],
+          "selector__k": [
+            8
+          ]
+        },
+        "folds": [
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.873015873015873,
+            "best_params": {
+              "model__C": 10,
+              "model__penalty": "l2",
+              "selector__k": 8
+            },
+            "f1": 0.8571428571428571,
+            "fold": 1,
+            "mcc": 0.746031746031746,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.8571428571428571,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 0.8571428571428571
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9821428571428572,
+            "precision": 0.8571428571428571,
+            "recall_sensitivity": 0.8571428571428571,
+            "roc_auc": 0.9841269841269841,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.7301587301587301,
+            "best_params": {
+              "model__C": 10,
+              "model__penalty": "l2",
+              "selector__k": 8
+            },
+            "f1": 0.6666666666666666,
+            "fold": 2,
+            "mcc": 0.49265895172303803,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5714285714285714,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 0.5714285714285714
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9087301587301586,
+            "precision": 0.8,
+            "recall_sensitivity": 0.5714285714285714,
+            "roc_auc": 0.9206349206349207,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9375,
+            "best_params": {
+              "model__C": 10,
+              "model__penalty": "l2",
+              "selector__k": 8
+            },
+            "f1": 0.9333333333333333,
+            "fold": 3,
+            "mcc": 0.8819171036881969,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9375,
+            "best_params": {
+              "model__C": 10,
+              "model__penalty": "l2",
+              "selector__k": 8
+            },
+            "f1": 0.9333333333333333,
+            "fold": 4,
+            "mcc": 0.8819171036881969,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8125,
+            "best_params": {
+              "model__C": 10,
+              "model__penalty": "l2",
+              "selector__k": 8
+            },
+            "f1": 0.8421052631578948,
+            "fold": 5,
+            "mcc": 0.674199862463242,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 0.625
+              },
+              "control": {
+                "sensitivity": 0.625,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9659090909090909,
+            "precision": 0.7272727272727273,
+            "recall_sensitivity": 1,
+            "roc_auc": 0.953125,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.625
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.8571428571428572,
+            "best_params": {
+              "model__C": 10,
+              "model__penalty": "l2",
+              "selector__k": 8
+            },
+            "f1": 0.8333333333333333,
+            "fold": 6,
+            "mcc": 0.7644707871564383,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.7142857142857143,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.7142857142857143
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9617346938775511,
+            "precision": 1,
+            "recall_sensitivity": 0.7142857142857143,
+            "roc_auc": 0.9682539682539681,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.8571428571428572,
+            "best_params": {
+              "model__C": 10,
+              "model__penalty": "l2",
+              "selector__k": 8
+            },
+            "f1": 0.8333333333333333,
+            "fold": 7,
+            "mcc": 0.7644707871564383,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.7142857142857143,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.7142857142857143
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9480519480519478,
+            "precision": 1,
+            "recall_sensitivity": 0.7142857142857143,
+            "roc_auc": 0.9365079365079365,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "model__C": 10,
+              "model__penalty": "l2",
+              "selector__k": 8
+            },
+            "f1": 0.875,
+            "fold": 8,
+            "mcc": 0.75,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              },
+              "control": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.975,
+            "precision": 0.875,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.96875,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.875
+          },
+          {
+            "accuracy": 1,
+            "balanced_accuracy": 1,
+            "best_params": {
+              "model__C": 1,
+              "model__penalty": "l2",
+              "selector__k": 8
+            },
+            "f1": 1,
+            "fold": 9,
+            "mcc": 1,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 1,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9375,
+            "best_params": {
+              "model__C": 1,
+              "model__penalty": "l2",
+              "selector__k": 8
+            },
+            "f1": 0.9333333333333333,
+            "fold": 10,
+            "mcc": 0.8819171036881969,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          }
+        ],
+        "split_ids_hash": "068aaa39daf051e3f0d389fb379e3ab9355ce751390506d28e1de254bb961558",
+        "summary": {
+          "accuracy": {
+            "max": 1,
+            "mean": 0.8875,
+            "min": 0.75,
+            "n": 10,
+            "std": 0.07095577652469333
+          },
+          "balanced_accuracy": {
+            "max": 1,
+            "mean": 0.8817460317460318,
+            "min": 0.7301587301587301,
+            "n": 10,
+            "std": 0.07631484191454418
+          },
+          "f1": {
+            "max": 1,
+            "mean": 0.8707581453634086,
+            "min": 0.6666666666666666,
+            "n": 10,
+            "std": 0.09063316862108695
+          },
+          "fold": {
+            "max": 10,
+            "mean": 5.5,
+            "min": 1,
+            "n": 10,
+            "std": 3.0276503540974917
+          },
+          "mcc": {
+            "max": 1,
+            "mean": 0.7837583445595493,
+            "min": 0.49265895172303803,
+            "n": 10,
+            "std": 0.1397278063644227
+          },
+          "n_test": {
+            "max": 16,
+            "mean": 16,
+            "min": 16,
+            "n": 10,
+            "std": 0
+          },
+          "n_train": {
+            "max": 64,
+            "mean": 64,
+            "min": 64,
+            "n": 10,
+            "std": 0
+          },
+          "pr_auc": {
+            "max": 1,
+            "mean": 0.9741568748711605,
+            "min": 0.9087301587301586,
+            "n": 10,
+            "std": 0.029665569546531375
+          },
+          "precision": {
+            "max": 1,
+            "mean": 0.9259415584415585,
+            "min": 0.7272727272727273,
+            "n": 10,
+            "std": 0.10304626840723932
+          },
+          "recall_sensitivity": {
+            "max": 1,
+            "mean": 0.8357142857142857,
+            "min": 0.5714285714285714,
+            "n": 10,
+            "std": 0.13331207313494683
+          },
+          "roc_auc": {
+            "max": 1,
+            "mean": 0.973139880952381,
+            "min": 0.9206349206349207,
+            "n": 10,
+            "std": 0.0289616399284524
+          },
+          "specificity": {
+            "max": 1,
+            "mean": 0.9277777777777778,
+            "min": 0.625,
+            "n": 10,
+            "std": 0.11962016933124933
+          }
+        }
+      },
+      "prediction_files": {},
+      "scaler": "standard",
+      "selected_features": null
+    },
+    {
+      "best_params": null,
+      "candidate_count": 16,
+      "candidate_grid": {
+        "model__n_neighbors": [
+          3,
+          5,
+          9,
+          15
+        ],
+        "model__p": [
+          1,
+          2
+        ],
+        "model__weights": [
+          "uniform",
+          "distance"
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "effective_feature_method": "select",
+      "estimator": "sklearn.neighbors._classification.KNeighborsClassifier",
+      "heldout_test": null,
+      "hyperparameter_candidate_count": 16,
+      "key": "knn",
+      "nested_cv": {
+        "actual_repeats": 2,
+        "candidate_count": 16,
+        "candidate_grid": {
+          "model__n_neighbors": [
+            3,
+            5,
+            9,
+            15
+          ],
+          "model__p": [
+            1,
+            2
+          ],
+          "model__weights": [
+            "uniform",
+            "distance"
+          ],
+          "selector__k": [
+            8
+          ]
+        },
+        "folds": [
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9285714285714286,
+            "best_params": {
+              "model__n_neighbors": 3,
+              "model__p": 1,
+              "model__weights": "uniform",
+              "selector__k": 8
+            },
+            "f1": 0.923076923076923,
+            "fold": 1,
+            "mcc": 0.8783100656536799,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.8571428571428571,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.8571428571428571
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9196428571428572,
+            "precision": 1,
+            "recall_sensitivity": 0.8571428571428571,
+            "roc_auc": 0.8888888888888888,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.873015873015873,
+            "best_params": {
+              "model__n_neighbors": 3,
+              "model__p": 2,
+              "model__weights": "uniform",
+              "selector__k": 8
+            },
+            "f1": 0.8571428571428571,
+            "fold": 2,
+            "mcc": 0.746031746031746,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.8571428571428571,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 0.8571428571428571
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9072356215213357,
+            "precision": 0.8571428571428571,
+            "recall_sensitivity": 0.8571428571428571,
+            "roc_auc": 0.9444444444444444,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "model__n_neighbors": 3,
+              "model__p": 2,
+              "model__weights": "uniform",
+              "selector__k": 8
+            },
+            "f1": 0.875,
+            "fold": 3,
+            "mcc": 0.75,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              },
+              "control": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9034090909090909,
+            "precision": 0.875,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.9375,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.875
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "model__n_neighbors": 3,
+              "model__p": 1,
+              "model__weights": "uniform",
+              "selector__k": 8
+            },
+            "f1": 0.875,
+            "fold": 4,
+            "mcc": 0.75,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              },
+              "control": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9050480769230769,
+            "precision": 0.875,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.9296875,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.875
+          },
+          {
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.75,
+            "best_params": {
+              "model__n_neighbors": 3,
+              "model__p": 2,
+              "model__weights": "uniform",
+              "selector__k": 8
+            },
+            "f1": 0.7142857142857143,
+            "fold": 5,
+            "mcc": 0.5163977794943222,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.625,
+                "specificity": 0.875
+              },
+              "control": {
+                "sensitivity": 0.875,
+                "specificity": 0.625
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8349358974358975,
+            "precision": 0.8333333333333334,
+            "recall_sensitivity": 0.625,
+            "roc_auc": 0.8515625,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.875
+          },
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9285714285714286,
+            "best_params": {
+              "model__n_neighbors": 3,
+              "model__p": 2,
+              "model__weights": "uniform",
+              "selector__k": 8
+            },
+            "f1": 0.923076923076923,
+            "fold": 6,
+            "mcc": 0.8783100656536799,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.8571428571428571,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.8571428571428571
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9404761904761905,
+            "precision": 1,
+            "recall_sensitivity": 0.8571428571428571,
+            "roc_auc": 0.9603174603174603,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9444444444444444,
+            "best_params": {
+              "model__n_neighbors": 3,
+              "model__p": 2,
+              "model__weights": "uniform",
+              "selector__k": 8
+            },
+            "f1": 0.9333333333333333,
+            "fold": 7,
+            "mcc": 0.8819171036881969,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9285714285714286,
+            "precision": 0.875,
+            "recall_sensitivity": 1,
+            "roc_auc": 0.9682539682539683,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 1,
+            "balanced_accuracy": 1,
+            "best_params": {
+              "model__n_neighbors": 3,
+              "model__p": 2,
+              "model__weights": "uniform",
+              "selector__k": 8
+            },
+            "f1": 1,
+            "fold": 8,
+            "mcc": 1,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 1,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.75,
+            "best_params": {
+              "model__n_neighbors": 3,
+              "model__p": 2,
+              "model__weights": "uniform",
+              "selector__k": 8
+            },
+            "f1": 0.75,
+            "fold": 9,
+            "mcc": 0.5,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.75,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 0.75
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.84375,
+            "precision": 0.75,
+            "recall_sensitivity": 0.75,
+            "roc_auc": 0.796875,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.75,
+            "best_params": {
+              "model__n_neighbors": 3,
+              "model__p": 2,
+              "model__weights": "uniform",
+              "selector__k": 8
+            },
+            "f1": 0.7142857142857143,
+            "fold": 10,
+            "mcc": 0.5163977794943222,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.625,
+                "specificity": 0.875
+              },
+              "control": {
+                "sensitivity": 0.875,
+                "specificity": 0.625
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.78125,
+            "precision": 0.8333333333333334,
+            "recall_sensitivity": 0.625,
+            "roc_auc": 0.796875,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.875
+          }
+        ],
+        "split_ids_hash": "068aaa39daf051e3f0d389fb379e3ab9355ce751390506d28e1de254bb961558",
+        "summary": {
+          "accuracy": {
+            "max": 1,
+            "mean": 0.86875,
+            "min": 0.75,
+            "n": 10,
+            "std": 0.09057110466368398
+          },
+          "balanced_accuracy": {
+            "max": 1,
+            "mean": 0.8674603174603174,
+            "min": 0.75,
+            "n": 10,
+            "std": 0.08975138217101114
+          },
+          "f1": {
+            "max": 1,
+            "mean": 0.8565201465201465,
+            "min": 0.7142857142857143,
+            "n": 10,
+            "std": 0.09879133442251148
+          },
+          "fold": {
+            "max": 10,
+            "mean": 5.5,
+            "min": 1,
+            "n": 10,
+            "std": 3.0276503540974917
+          },
+          "mcc": {
+            "max": 1,
+            "mean": 0.7417364540015947,
+            "min": 0.5,
+            "n": 10,
+            "std": 0.17757688416471307
+          },
+          "n_test": {
+            "max": 16,
+            "mean": 16,
+            "min": 16,
+            "n": 10,
+            "std": 0
+          },
+          "n_train": {
+            "max": 64,
+            "mean": 64,
+            "min": 64,
+            "n": 10,
+            "std": 0
+          },
+          "pr_auc": {
+            "max": 1,
+            "mean": 0.8964319162979877,
+            "min": 0.78125,
+            "n": 10,
+            "std": 0.061735636919301104
+          },
+          "precision": {
+            "max": 1,
+            "mean": 0.8898809523809523,
+            "min": 0.75,
+            "n": 10,
+            "std": 0.08437790148795601
+          },
+          "recall_sensitivity": {
+            "max": 1,
+            "mean": 0.8321428571428571,
+            "min": 0.625,
+            "n": 10,
+            "std": 0.13100648233083131
+          },
+          "roc_auc": {
+            "max": 1,
+            "mean": 0.9074404761904763,
+            "min": 0.796875,
+            "n": 10,
+            "std": 0.0712938201207981
+          },
+          "specificity": {
+            "max": 1,
+            "mean": 0.9027777777777779,
+            "min": 0.75,
+            "n": 10,
+            "std": 0.07829414132077668
+          }
+        }
+      },
+      "prediction_files": {},
+      "scaler": "standard",
+      "selected_features": null
+    },
+    {
+      "best_params": null,
+      "candidate_count": 16,
+      "candidate_grid": {
+        "model__max_depth": [
+          null,
+          3,
+          5,
+          10
+        ],
+        "model__min_samples_leaf": [
+          1,
+          3,
+          5,
+          10
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "effective_feature_method": "select",
+      "estimator": "sklearn.tree._classes.DecisionTreeClassifier",
+      "heldout_test": null,
+      "hyperparameter_candidate_count": 16,
+      "key": "decision_tree",
+      "nested_cv": {
+        "actual_repeats": 2,
+        "candidate_count": 16,
+        "candidate_grid": {
+          "model__max_depth": [
+            null,
+            3,
+            5,
+            10
+          ],
+          "model__min_samples_leaf": [
+            1,
+            3,
+            5,
+            10
+          ],
+          "selector__k": [
+            8
+          ]
+        },
+        "folds": [
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8174603174603174,
+            "best_params": {
+              "model__max_depth": null,
+              "model__min_samples_leaf": 1,
+              "selector__k": 8
+            },
+            "f1": 0.7999999999999999,
+            "fold": 1,
+            "mcc": 0.629940788348712,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.8571428571428571,
+                "specificity": 0.7777777777777778
+              },
+              "control": {
+                "sensitivity": 0.7777777777777778,
+                "specificity": 0.8571428571428571
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.7053571428571428,
+            "precision": 0.75,
+            "recall_sensitivity": 0.8571428571428571,
+            "roc_auc": 0.8174603174603174,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.7777777777777778
+          },
+          {
+            "accuracy": 0.5625,
+            "balanced_accuracy": 0.5634920634920635,
+            "best_params": {
+              "model__max_depth": null,
+              "model__min_samples_leaf": 3,
+              "selector__k": 8
+            },
+            "f1": 0.5333333333333333,
+            "fold": 2,
+            "mcc": 0.1259881576697424,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5714285714285714,
+                "specificity": 0.5555555555555556
+              },
+              "control": {
+                "sensitivity": 0.5555555555555556,
+                "specificity": 0.5714285714285714
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.5803571428571428,
+            "precision": 0.5,
+            "recall_sensitivity": 0.5714285714285714,
+            "roc_auc": 0.6031746031746031,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.5555555555555556
+          },
+          {
+            "accuracy": 0.6875,
+            "balanced_accuracy": 0.6875,
+            "best_params": {
+              "model__max_depth": null,
+              "model__min_samples_leaf": 10,
+              "selector__k": 8
+            },
+            "f1": 0.5454545454545454,
+            "fold": 3,
+            "mcc": 0.48038446141526137,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.375,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.375
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8833333333333334,
+            "precision": 1,
+            "recall_sensitivity": 0.375,
+            "roc_auc": 0.9140625,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "model__max_depth": null,
+              "model__min_samples_leaf": 3,
+              "selector__k": 8
+            },
+            "f1": 0.8571428571428571,
+            "fold": 4,
+            "mcc": 0.7745966692414834,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.75,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.75
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9375,
+            "precision": 1,
+            "recall_sensitivity": 0.75,
+            "roc_auc": 0.9375,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8125,
+            "best_params": {
+              "model__max_depth": null,
+              "model__min_samples_leaf": 10,
+              "selector__k": 8
+            },
+            "f1": 0.8421052631578948,
+            "fold": 5,
+            "mcc": 0.674199862463242,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 0.625
+              },
+              "control": {
+                "sensitivity": 0.625,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.7191558441558441,
+            "precision": 0.7272727272727273,
+            "recall_sensitivity": 1,
+            "roc_auc": 0.8046875,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.625
+          },
+          {
+            "accuracy": 0.625,
+            "balanced_accuracy": 0.6190476190476191,
+            "best_params": {
+              "model__max_depth": null,
+              "model__min_samples_leaf": 10,
+              "selector__k": 8
+            },
+            "f1": 0.5714285714285714,
+            "fold": 6,
+            "mcc": 0.23809523809523808,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5714285714285714,
+                "specificity": 0.6666666666666666
+              },
+              "control": {
+                "sensitivity": 0.6666666666666666,
+                "specificity": 0.5714285714285714
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.7217068645640075,
+            "precision": 0.5714285714285714,
+            "recall_sensitivity": 0.5714285714285714,
+            "roc_auc": 0.7857142857142857,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.6666666666666666
+          },
+          {
+            "accuracy": 0.6875,
+            "balanced_accuracy": 0.6587301587301587,
+            "best_params": {
+              "model__max_depth": null,
+              "model__min_samples_leaf": 10,
+              "selector__k": 8
+            },
+            "f1": 0.5454545454545454,
+            "fold": 7,
+            "mcc": 0.363696483726654,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.42857142857142855,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 0.42857142857142855
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.7767857142857142,
+            "precision": 0.75,
+            "recall_sensitivity": 0.42857142857142855,
+            "roc_auc": 0.8174603174603174,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 0.6875,
+            "balanced_accuracy": 0.6875,
+            "best_params": {
+              "model__max_depth": null,
+              "model__min_samples_leaf": 10,
+              "selector__k": 8
+            },
+            "f1": 0.6666666666666666,
+            "fold": 8,
+            "mcc": 0.3779644730092272,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.625,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 0.625
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.7598214285714286,
+            "precision": 0.7142857142857143,
+            "recall_sensitivity": 0.625,
+            "roc_auc": 0.8359375,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8125,
+            "best_params": {
+              "model__max_depth": null,
+              "model__min_samples_leaf": 10,
+              "selector__k": 8
+            },
+            "f1": 0.823529411764706,
+            "fold": 9,
+            "mcc": 0.629940788348712,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.7138888888888889,
+            "precision": 0.7777777777777778,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.796875,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9375,
+            "best_params": {
+              "model__max_depth": 5,
+              "model__min_samples_leaf": 1,
+              "selector__k": 8
+            },
+            "f1": 0.9333333333333333,
+            "fold": 10,
+            "mcc": 0.8819171036881969,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9375,
+            "precision": 1,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.9375,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          }
+        ],
+        "split_ids_hash": "068aaa39daf051e3f0d389fb379e3ab9355ce751390506d28e1de254bb961558",
+        "summary": {
+          "accuracy": {
+            "max": 0.9375,
+            "mean": 0.75,
+            "min": 0.5625,
+            "n": 10,
+            "std": 0.11785113019775792
+          },
+          "balanced_accuracy": {
+            "max": 0.9375,
+            "mean": 0.7471230158730158,
+            "min": 0.5634920634920635,
+            "n": 10,
+            "std": 0.120710072505315
+          },
+          "f1": {
+            "max": 0.9333333333333333,
+            "mean": 0.7118448527736454,
+            "min": 0.5333333333333333,
+            "n": 10,
+            "std": 0.15505441130504605
+          },
+          "fold": {
+            "max": 10,
+            "mean": 5.5,
+            "min": 1,
+            "n": 10,
+            "std": 3.0276503540974917
+          },
+          "mcc": {
+            "max": 0.8819171036881969,
+            "mean": 0.517672402600647,
+            "min": 0.1259881576697424,
+            "n": 10,
+            "std": 0.24142878545325694
+          },
+          "n_test": {
+            "max": 16,
+            "mean": 16,
+            "min": 16,
+            "n": 10,
+            "std": 0
+          },
+          "n_train": {
+            "max": 64,
+            "mean": 64,
+            "min": 64,
+            "n": 10,
+            "std": 0
+          },
+          "pr_auc": {
+            "max": 0.9375,
+            "mean": 0.7735406359513501,
+            "min": 0.5803571428571428,
+            "n": 10,
+            "std": 0.11411015964044169
+          },
+          "precision": {
+            "max": 1,
+            "mean": 0.779076479076479,
+            "min": 0.5,
+            "n": 10,
+            "std": 0.17511804996603628
+          },
+          "recall_sensitivity": {
+            "max": 1,
+            "mean": 0.6928571428571428,
+            "min": 0.375,
+            "n": 10,
+            "std": 0.20974014805281183
+          },
+          "roc_auc": {
+            "max": 0.9375,
+            "mean": 0.8250372023809524,
+            "min": 0.6031746031746031,
+            "n": 10,
+            "std": 0.09742884862689426
+          },
+          "specificity": {
+            "max": 1,
+            "mean": 0.8013888888888889,
+            "min": 0.5555555555555556,
+            "n": 10,
+            "std": 0.16381956056129734
+          }
+        }
+      },
+      "prediction_files": {},
+      "scaler": "none",
+      "selected_features": null
+    },
+    {
+      "best_params": null,
+      "candidate_count": 18,
+      "candidate_grid": {
+        "model__max_depth": [
+          null,
+          5,
+          10
+        ],
+        "model__max_features": [
+          "sqrt",
+          0.5
+        ],
+        "model__min_samples_leaf": [
+          1,
+          3,
+          5
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "effective_feature_method": "select",
+      "estimator": "sklearn.ensemble._forest.RandomForestClassifier",
+      "heldout_test": null,
+      "hyperparameter_candidate_count": 18,
+      "key": "random_forest",
+      "nested_cv": {
+        "actual_repeats": 2,
+        "candidate_count": 18,
+        "candidate_grid": {
+          "model__max_depth": [
+            null,
+            5,
+            10
+          ],
+          "model__max_features": [
+            "sqrt",
+            0.5
+          ],
+          "model__min_samples_leaf": [
+            1,
+            3,
+            5
+          ],
+          "selector__k": [
+            8
+          ]
+        },
+        "folds": [
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.8571428571428572,
+            "best_params": {
+              "model__max_depth": null,
+              "model__max_features": 0.5,
+              "model__min_samples_leaf": 3,
+              "selector__k": 8
+            },
+            "f1": 0.8333333333333333,
+            "fold": 1,
+            "mcc": 0.7644707871564383,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.7142857142857143,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.7142857142857143
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9999999999999998,
+            "precision": 1,
+            "recall_sensitivity": 0.7142857142857143,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.7857142857142857,
+            "best_params": {
+              "model__max_depth": null,
+              "model__max_features": "sqrt",
+              "model__min_samples_leaf": 1,
+              "selector__k": 8
+            },
+            "f1": 0.7272727272727273,
+            "fold": 2,
+            "mcc": 0.6546536707079771,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5714285714285714,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.5714285714285714
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8809523809523809,
+            "precision": 1,
+            "recall_sensitivity": 0.5714285714285714,
+            "roc_auc": 0.8809523809523809,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8125,
+            "best_params": {
+              "model__max_depth": null,
+              "model__max_features": 0.5,
+              "model__min_samples_leaf": 1,
+              "selector__k": 8
+            },
+            "f1": 0.7692307692307693,
+            "fold": 3,
+            "mcc": 0.674199862463242,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.625,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.625
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9526289682539683,
+            "precision": 1,
+            "recall_sensitivity": 0.625,
+            "roc_auc": 0.953125,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8125,
+            "best_params": {
+              "model__max_depth": null,
+              "model__max_features": 0.5,
+              "model__min_samples_leaf": 1,
+              "selector__k": 8
+            },
+            "f1": 0.7999999999999999,
+            "fold": 4,
+            "mcc": 0.629940788348712,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.75,
+                "specificity": 0.875
+              },
+              "control": {
+                "sensitivity": 0.875,
+                "specificity": 0.75
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.932426948051948,
+            "precision": 0.8571428571428571,
+            "recall_sensitivity": 0.75,
+            "roc_auc": 0.921875,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.875
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8125,
+            "best_params": {
+              "model__max_depth": null,
+              "model__max_features": "sqrt",
+              "model__min_samples_leaf": 1,
+              "selector__k": 8
+            },
+            "f1": 0.823529411764706,
+            "fold": 5,
+            "mcc": 0.629940788348712,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.959375,
+            "precision": 0.7777777777777778,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.953125,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.7857142857142857,
+            "best_params": {
+              "model__max_depth": null,
+              "model__max_features": 0.5,
+              "model__min_samples_leaf": 5,
+              "selector__k": 8
+            },
+            "f1": 0.7272727272727273,
+            "fold": 6,
+            "mcc": 0.6546536707079771,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5714285714285714,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.5714285714285714
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8766233766233766,
+            "precision": 1,
+            "recall_sensitivity": 0.5714285714285714,
+            "roc_auc": 0.873015873015873,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.7301587301587301,
+            "best_params": {
+              "model__max_depth": null,
+              "model__max_features": 0.5,
+              "model__min_samples_leaf": 3,
+              "selector__k": 8
+            },
+            "f1": 0.6666666666666666,
+            "fold": 7,
+            "mcc": 0.49265895172303803,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5714285714285714,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 0.5714285714285714
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8962585034013604,
+            "precision": 0.8,
+            "recall_sensitivity": 0.5714285714285714,
+            "roc_auc": 0.8888888888888888,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "model__max_depth": null,
+              "model__max_features": 0.5,
+              "model__min_samples_leaf": 1,
+              "selector__k": 8
+            },
+            "f1": 0.875,
+            "fold": 8,
+            "mcc": 0.75,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              },
+              "control": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.959375,
+            "precision": 0.875,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.953125,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.875
+          },
+          {
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.75,
+            "best_params": {
+              "model__max_depth": null,
+              "model__max_features": 0.5,
+              "model__min_samples_leaf": 3,
+              "selector__k": 8
+            },
+            "f1": 0.75,
+            "fold": 9,
+            "mcc": 0.5,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.75,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 0.75
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.7885912698412698,
+            "precision": 0.75,
+            "recall_sensitivity": 0.75,
+            "roc_auc": 0.8125,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 1,
+            "balanced_accuracy": 1,
+            "best_params": {
+              "model__max_depth": null,
+              "model__max_features": 0.5,
+              "model__min_samples_leaf": 3,
+              "selector__k": 8
+            },
+            "f1": 1,
+            "fold": 10,
+            "mcc": 1,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 1,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          }
+        ],
+        "split_ids_hash": "068aaa39daf051e3f0d389fb379e3ab9355ce751390506d28e1de254bb961558",
+        "summary": {
+          "accuracy": {
+            "max": 1,
+            "mean": 0.83125,
+            "min": 0.75,
+            "n": 10,
+            "std": 0.07246886304552536
+          },
+          "balanced_accuracy": {
+            "max": 1,
+            "mean": 0.8221230158730158,
+            "min": 0.7301587301587301,
+            "n": 10,
+            "std": 0.07619473884405162
+          },
+          "f1": {
+            "max": 1,
+            "mean": 0.7972305635540928,
+            "min": 0.6666666666666666,
+            "n": 10,
+            "std": 0.09369933136452242
+          },
+          "fold": {
+            "max": 10,
+            "mean": 5.5,
+            "min": 1,
+            "n": 10,
+            "std": 3.0276503540974917
+          },
+          "mcc": {
+            "max": 1,
+            "mean": 0.6750518519456097,
+            "min": 0.49265895172303803,
+            "n": 10,
+            "std": 0.14453661755015546
+          },
+          "n_test": {
+            "max": 16,
+            "mean": 16,
+            "min": 16,
+            "n": 10,
+            "std": 0
+          },
+          "n_train": {
+            "max": 64,
+            "mean": 64,
+            "min": 64,
+            "n": 10,
+            "std": 0
+          },
+          "pr_auc": {
+            "max": 1,
+            "mean": 0.9246231447124303,
+            "min": 0.7885912698412698,
+            "n": 10,
+            "std": 0.0651018741993416
+          },
+          "precision": {
+            "max": 1,
+            "mean": 0.9059920634920635,
+            "min": 0.75,
+            "n": 10,
+            "std": 0.10516704070186345
+          },
+          "recall_sensitivity": {
+            "max": 1,
+            "mean": 0.7303571428571429,
+            "min": 0.5714285714285714,
+            "n": 10,
+            "std": 0.14998346469707816
+          },
+          "roc_auc": {
+            "max": 1,
+            "mean": 0.9236607142857143,
+            "min": 0.8125,
+            "n": 10,
+            "std": 0.05983094719986763
+          },
+          "specificity": {
+            "max": 1,
+            "mean": 0.913888888888889,
+            "min": 0.75,
+            "n": 10,
+            "std": 0.10243938285880987
+          }
+        }
+      },
+      "prediction_files": {},
+      "scaler": "none",
+      "selected_features": null
+    },
+    {
+      "best_params": null,
+      "candidate_count": 9,
+      "candidate_grid": {
+        "model__learning_rate": [
+          0.03,
+          0.1,
+          0.3
+        ],
+        "model__n_estimators": [
+          50,
+          100,
+          250
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "effective_feature_method": "select",
+      "estimator": "sklearn.ensemble._weight_boosting.AdaBoostClassifier",
+      "heldout_test": null,
+      "hyperparameter_candidate_count": 9,
+      "key": "adaboost",
+      "nested_cv": {
+        "actual_repeats": 2,
+        "candidate_count": 9,
+        "candidate_grid": {
+          "model__learning_rate": [
+            0.03,
+            0.1,
+            0.3
+          ],
+          "model__n_estimators": [
+            50,
+            100,
+            250
+          ],
+          "selector__k": [
+            8
+          ]
+        },
+        "folds": [
+          {
+            "accuracy": 0.5625,
+            "balanced_accuracy": 0.5,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__n_estimators": 50,
+              "selector__k": 8
+            },
+            "f1": 0,
+            "fold": 1,
+            "mcc": 0,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9413265306122449,
+            "precision": 0,
+            "recall_sensitivity": 0,
+            "roc_auc": 0.9682539682539681,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.625,
+            "balanced_accuracy": 0.6190476190476191,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__n_estimators": 50,
+              "selector__k": 8
+            },
+            "f1": 0.5714285714285714,
+            "fold": 2,
+            "mcc": 0.23809523809523808,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5714285714285714,
+                "specificity": 0.6666666666666666
+              },
+              "control": {
+                "sensitivity": 0.6666666666666666,
+                "specificity": 0.5714285714285714
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.7586167800453514,
+            "precision": 0.5714285714285714,
+            "recall_sensitivity": 0.5714285714285714,
+            "roc_auc": 0.761904761904762,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.6666666666666666
+          },
+          {
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.75,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__n_estimators": 50,
+              "selector__k": 8
+            },
+            "f1": 0.7142857142857143,
+            "fold": 3,
+            "mcc": 0.5163977794943222,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.625,
+                "specificity": 0.875
+              },
+              "control": {
+                "sensitivity": 0.875,
+                "specificity": 0.625
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9131944444444444,
+            "precision": 0.8333333333333334,
+            "recall_sensitivity": 0.625,
+            "roc_auc": 0.9375,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.875
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8125,
+            "best_params": {
+              "model__learning_rate": 0.1,
+              "model__n_estimators": 50,
+              "selector__k": 8
+            },
+            "f1": 0.7692307692307693,
+            "fold": 4,
+            "mcc": 0.674199862463242,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.625,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.625
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.975,
+            "precision": 1,
+            "recall_sensitivity": 0.625,
+            "roc_auc": 0.96875,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.75,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__n_estimators": 50,
+              "selector__k": 8
+            },
+            "f1": 0.75,
+            "fold": 5,
+            "mcc": 0.5,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.75,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 0.75
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8354527417027418,
+            "precision": 0.75,
+            "recall_sensitivity": 0.75,
+            "roc_auc": 0.859375,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 0.625,
+            "balanced_accuracy": 0.5714285714285714,
+            "best_params": {
+              "model__learning_rate": 0.3,
+              "model__n_estimators": 50,
+              "selector__k": 8
+            },
+            "f1": 0.25,
+            "fold": 6,
+            "mcc": 0.29277002188455997,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.14285714285714285,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.14285714285714285
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9214285714285713,
+            "precision": 1,
+            "recall_sensitivity": 0.14285714285714285,
+            "roc_auc": 0.9206349206349207,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.6875,
+            "balanced_accuracy": 0.6428571428571428,
+            "best_params": {
+              "model__learning_rate": 0.1,
+              "model__n_estimators": 50,
+              "selector__k": 8
+            },
+            "f1": 0.4444444444444445,
+            "fold": 7,
+            "mcc": 0.42857142857142855,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.2857142857142857,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.2857142857142857
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8520408163265305,
+            "precision": 1,
+            "recall_sensitivity": 0.2857142857142857,
+            "roc_auc": 0.873015873015873,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.625,
+            "balanced_accuracy": 0.625,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__n_estimators": 50,
+              "selector__k": 8
+            },
+            "f1": 0.5714285714285715,
+            "fold": 8,
+            "mcc": 0.2581988897471611,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 0.5
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8552579365079366,
+            "precision": 0.6666666666666666,
+            "recall_sensitivity": 0.5,
+            "roc_auc": 0.859375,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 0.625,
+            "balanced_accuracy": 0.625,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__n_estimators": 50,
+              "selector__k": 8
+            },
+            "f1": 0.5714285714285715,
+            "fold": 9,
+            "mcc": 0.2581988897471611,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 0.5
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8430555555555556,
+            "precision": 0.6666666666666666,
+            "recall_sensitivity": 0.5,
+            "roc_auc": 0.84375,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 0.6875,
+            "balanced_accuracy": 0.6875,
+            "best_params": {
+              "model__learning_rate": 0.1,
+              "model__n_estimators": 50,
+              "selector__k": 8
+            },
+            "f1": 0.5454545454545454,
+            "fold": 10,
+            "mcc": 0.48038446141526137,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.375,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.375
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 0.375,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          }
+        ],
+        "split_ids_hash": "068aaa39daf051e3f0d389fb379e3ab9355ce751390506d28e1de254bb961558",
+        "summary": {
+          "accuracy": {
+            "max": 0.8125,
+            "mean": 0.675,
+            "min": 0.5625,
+            "n": 10,
+            "std": 0.0768295371441074
+          },
+          "balanced_accuracy": {
+            "max": 0.8125,
+            "mean": 0.6583333333333334,
+            "min": 0.5,
+            "n": 10,
+            "std": 0.09312512206589778
+          },
+          "f1": {
+            "max": 0.7692307692307693,
+            "mean": 0.5187701187701187,
+            "min": 0,
+            "n": 10,
+            "std": 0.23812673067685625
+          },
+          "fold": {
+            "max": 10,
+            "mean": 5.5,
+            "min": 1,
+            "n": 10,
+            "std": 3.0276503540974917
+          },
+          "mcc": {
+            "max": 0.674199862463242,
+            "mean": 0.3646816571418375,
+            "min": 0,
+            "n": 10,
+            "std": 0.19190989560010457
+          },
+          "n_test": {
+            "max": 16,
+            "mean": 16,
+            "min": 16,
+            "n": 10,
+            "std": 0
+          },
+          "n_train": {
+            "max": 64,
+            "mean": 64,
+            "min": 64,
+            "n": 10,
+            "std": 0
+          },
+          "pr_auc": {
+            "max": 1,
+            "mean": 0.8895373376623376,
+            "min": 0.7586167800453514,
+            "n": 10,
+            "std": 0.07346325980747845
+          },
+          "precision": {
+            "max": 1,
+            "mean": 0.7488095238095238,
+            "min": 0,
+            "n": 10,
+            "std": 0.3100549980065854
+          },
+          "recall_sensitivity": {
+            "max": 0.75,
+            "mean": 0.4375,
+            "min": 0,
+            "n": 10,
+            "std": 0.23543905287578698
+          },
+          "roc_auc": {
+            "max": 1,
+            "mean": 0.8992559523809524,
+            "min": 0.761904761904762,
+            "n": 10,
+            "std": 0.07262916632310637
+          },
+          "specificity": {
+            "max": 1,
+            "mean": 0.8791666666666667,
+            "min": 0.6666666666666666,
+            "n": 10,
+            "std": 0.1367191633591635
+          }
+        }
+      },
+      "prediction_files": {},
+      "scaler": "none",
+      "selected_features": null
+    },
+    {
+      "best_params": null,
+      "candidate_count": 12,
+      "candidate_grid": {
+        "model__learning_rate": [
+          0.03,
+          0.1
+        ],
+        "model__max_depth": [
+          1,
+          2,
+          3
+        ],
+        "model__n_estimators": [
+          100,
+          250
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "effective_feature_method": "select",
+      "estimator": "sklearn.ensemble._gb.GradientBoostingClassifier",
+      "heldout_test": null,
+      "hyperparameter_candidate_count": 12,
+      "key": "gradient_boosting",
+      "nested_cv": {
+        "actual_repeats": 2,
+        "candidate_count": 12,
+        "candidate_grid": {
+          "model__learning_rate": [
+            0.03,
+            0.1
+          ],
+          "model__max_depth": [
+            1,
+            2,
+            3
+          ],
+          "model__n_estimators": [
+            100,
+            250
+          ],
+          "selector__k": [
+            8
+          ]
+        },
+        "folds": [
+          {
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.7301587301587301,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__max_depth": 2,
+              "model__n_estimators": 100,
+              "selector__k": 8
+            },
+            "f1": 0.6666666666666666,
+            "fold": 1,
+            "mcc": 0.49265895172303803,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5714285714285714,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 0.5714285714285714
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9413265306122447,
+            "precision": 0.8,
+            "recall_sensitivity": 0.5714285714285714,
+            "roc_auc": 0.9523809523809523,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8015873015873016,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__max_depth": 3,
+              "model__n_estimators": 250,
+              "selector__k": 8
+            },
+            "f1": 0.7692307692307692,
+            "fold": 2,
+            "mcc": 0.6180700462007377,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.7142857142857143,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 0.7142857142857143
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8612768184196755,
+            "precision": 0.8333333333333334,
+            "recall_sensitivity": 0.7142857142857143,
+            "roc_auc": 0.8571428571428571,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__max_depth": 2,
+              "model__n_estimators": 100,
+              "selector__k": 8
+            },
+            "f1": 0.8571428571428571,
+            "fold": 3,
+            "mcc": 0.7745966692414834,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.75,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.75
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9704861111111112,
+            "precision": 1,
+            "recall_sensitivity": 0.75,
+            "roc_auc": 0.96875,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.75,
+            "best_params": {
+              "model__learning_rate": 0.1,
+              "model__max_depth": 2,
+              "model__n_estimators": 250,
+              "selector__k": 8
+            },
+            "f1": 0.75,
+            "fold": 4,
+            "mcc": 0.5,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.75,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 0.75
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9472222222222222,
+            "precision": 0.75,
+            "recall_sensitivity": 0.75,
+            "roc_auc": 0.9375,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8125,
+            "best_params": {
+              "model__learning_rate": 0.1,
+              "model__max_depth": 1,
+              "model__n_estimators": 250,
+              "selector__k": 8
+            },
+            "f1": 0.8421052631578948,
+            "fold": 5,
+            "mcc": 0.674199862463242,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 0.625
+              },
+              "control": {
+                "sensitivity": 0.625,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9704861111111112,
+            "precision": 0.7272727272727273,
+            "recall_sensitivity": 1,
+            "roc_auc": 0.96875,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.625
+          },
+          {
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.7301587301587301,
+            "best_params": {
+              "model__learning_rate": 0.1,
+              "model__max_depth": 1,
+              "model__n_estimators": 250,
+              "selector__k": 8
+            },
+            "f1": 0.6666666666666666,
+            "fold": 6,
+            "mcc": 0.49265895172303803,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5714285714285714,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 0.5714285714285714
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9129251700680272,
+            "precision": 0.8,
+            "recall_sensitivity": 0.5714285714285714,
+            "roc_auc": 0.9206349206349207,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8015873015873016,
+            "best_params": {
+              "model__learning_rate": 0.1,
+              "model__max_depth": 2,
+              "model__n_estimators": 250,
+              "selector__k": 8
+            },
+            "f1": 0.7692307692307692,
+            "fold": 7,
+            "mcc": 0.6180700462007377,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.7142857142857143,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 0.7142857142857143
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8745421245421245,
+            "precision": 0.8333333333333334,
+            "recall_sensitivity": 0.7142857142857143,
+            "roc_auc": 0.8571428571428571,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__max_depth": 3,
+              "model__n_estimators": 250,
+              "selector__k": 8
+            },
+            "f1": 0.875,
+            "fold": 8,
+            "mcc": 0.75,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              },
+              "control": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8956845238095239,
+            "precision": 0.875,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.90625,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.875
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8125,
+            "best_params": {
+              "model__learning_rate": 0.1,
+              "model__max_depth": 2,
+              "model__n_estimators": 250,
+              "selector__k": 8
+            },
+            "f1": 0.823529411764706,
+            "fold": 9,
+            "mcc": 0.629940788348712,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9415178571428572,
+            "precision": 0.7777777777777778,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.9375,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 1,
+            "balanced_accuracy": 1,
+            "best_params": {
+              "model__learning_rate": 0.1,
+              "model__max_depth": 2,
+              "model__n_estimators": 250,
+              "selector__k": 8
+            },
+            "f1": 1,
+            "fold": 10,
+            "mcc": 1,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 1,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          }
+        ],
+        "split_ids_hash": "068aaa39daf051e3f0d389fb379e3ab9355ce751390506d28e1de254bb961558",
+        "summary": {
+          "accuracy": {
+            "max": 1,
+            "mean": 0.825,
+            "min": 0.75,
+            "n": 10,
+            "std": 0.0768295371441074
+          },
+          "balanced_accuracy": {
+            "max": 1,
+            "mean": 0.8188492063492063,
+            "min": 0.7301587301587301,
+            "n": 10,
+            "std": 0.08183331242280156
+          },
+          "f1": {
+            "max": 1,
+            "mean": 0.801957240386033,
+            "min": 0.6666666666666666,
+            "n": 10,
+            "std": 0.1006244565515022
+          },
+          "fold": {
+            "max": 10,
+            "mean": 5.5,
+            "min": 1,
+            "n": 10,
+            "std": 3.0276503540974917
+          },
+          "mcc": {
+            "max": 1,
+            "mean": 0.655019531590099,
+            "min": 0.49265895172303803,
+            "n": 10,
+            "std": 0.15734316112404872
+          },
+          "n_test": {
+            "max": 16,
+            "mean": 16,
+            "min": 16,
+            "n": 10,
+            "std": 0
+          },
+          "n_train": {
+            "max": 64,
+            "mean": 64,
+            "min": 64,
+            "n": 10,
+            "std": 0
+          },
+          "pr_auc": {
+            "max": 1,
+            "mean": 0.9315467469038898,
+            "min": 0.8612768184196755,
+            "n": 10,
+            "std": 0.044695806108638346
+          },
+          "precision": {
+            "max": 1,
+            "mean": 0.8396717171717171,
+            "min": 0.7272727272727273,
+            "n": 10,
+            "std": 0.09451152436933342
+          },
+          "recall_sensitivity": {
+            "max": 1,
+            "mean": 0.7821428571428571,
+            "min": 0.5714285714285714,
+            "n": 10,
+            "std": 0.1535668142533057
+          },
+          "roc_auc": {
+            "max": 1,
+            "mean": 0.9306051587301587,
+            "min": 0.8571428571428571,
+            "n": 10,
+            "std": 0.046881604542978586
+          },
+          "specificity": {
+            "max": 1,
+            "mean": 0.8555555555555555,
+            "min": 0.625,
+            "n": 10,
+            "std": 0.1164239096962956
+          }
+        }
+      },
+      "prediction_files": {},
+      "scaler": "none",
+      "selected_features": null
+    },
+    {
+      "best_params": null,
+      "candidate_count": 12,
+      "candidate_grid": {
+        "model__learning_rate": [
+          0.03,
+          0.1,
+          0.3
+        ],
+        "model__max_depth": [
+          3,
+          6
+        ],
+        "model__n_estimators": [
+          100,
+          250
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "effective_feature_method": "select",
+      "estimator": "mlserver.labelled_xgboost.LabelledXGBClassifier",
+      "heldout_test": null,
+      "hyperparameter_candidate_count": 12,
+      "key": "xgboost",
+      "nested_cv": {
+        "actual_repeats": 2,
+        "candidate_count": 12,
+        "candidate_grid": {
+          "model__learning_rate": [
+            0.03,
+            0.1,
+            0.3
+          ],
+          "model__max_depth": [
+            3,
+            6
+          ],
+          "model__n_estimators": [
+            100,
+            250
+          ],
+          "selector__k": [
+            8
+          ]
+        },
+        "folds": [
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.873015873015873,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__max_depth": 3,
+              "model__n_estimators": 250,
+              "selector__k": 8
+            },
+            "f1": 0.8571428571428571,
+            "fold": 1,
+            "mcc": 0.746031746031746,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.8571428571428571,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 0.8571428571428571
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9821428571428572,
+            "precision": 0.8571428571428571,
+            "recall_sensitivity": 0.8571428571428571,
+            "roc_auc": 0.9841269841269841,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.7301587301587301,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__max_depth": 3,
+              "model__n_estimators": 250,
+              "selector__k": 8
+            },
+            "f1": 0.6666666666666666,
+            "fold": 2,
+            "mcc": 0.49265895172303803,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5714285714285714,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 0.5714285714285714
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8198412698412698,
+            "precision": 0.8,
+            "recall_sensitivity": 0.5714285714285714,
+            "roc_auc": 0.7936507936507937,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 1,
+            "balanced_accuracy": 1,
+            "best_params": {
+              "model__learning_rate": 0.3,
+              "model__max_depth": 3,
+              "model__n_estimators": 250,
+              "selector__k": 8
+            },
+            "f1": 1,
+            "fold": 3,
+            "mcc": 1,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 1,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__max_depth": 3,
+              "model__n_estimators": 100,
+              "selector__k": 8
+            },
+            "f1": 0.875,
+            "fold": 4,
+            "mcc": 0.75,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              },
+              "control": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.932426948051948,
+            "precision": 0.875,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.9296875,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.875
+          },
+          {
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.75,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__max_depth": 3,
+              "model__n_estimators": 100,
+              "selector__k": 8
+            },
+            "f1": 0.7777777777777777,
+            "fold": 5,
+            "mcc": 0.5163977794943222,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.625
+              },
+              "control": {
+                "sensitivity": 0.625,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.932426948051948,
+            "precision": 0.7,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.921875,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.625
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.8571428571428572,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__max_depth": 3,
+              "model__n_estimators": 250,
+              "selector__k": 8
+            },
+            "f1": 0.8333333333333333,
+            "fold": 6,
+            "mcc": 0.7644707871564383,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.7142857142857143,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.7142857142857143
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9123376623376622,
+            "precision": 1,
+            "recall_sensitivity": 0.7142857142857143,
+            "roc_auc": 0.9047619047619048,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.7301587301587301,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__max_depth": 3,
+              "model__n_estimators": 100,
+              "selector__k": 8
+            },
+            "f1": 0.6666666666666666,
+            "fold": 7,
+            "mcc": 0.49265895172303803,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5714285714285714,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 0.5714285714285714
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8690476190476191,
+            "precision": 0.8,
+            "recall_sensitivity": 0.5714285714285714,
+            "roc_auc": 0.888888888888889,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "model__learning_rate": 0.1,
+              "model__max_depth": 3,
+              "model__n_estimators": 250,
+              "selector__k": 8
+            },
+            "f1": 0.888888888888889,
+            "fold": 8,
+            "mcc": 0.7745966692414834,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9415178571428572,
+            "precision": 0.8,
+            "recall_sensitivity": 1,
+            "roc_auc": 0.9375,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__max_depth": 3,
+              "model__n_estimators": 250,
+              "selector__k": 8
+            },
+            "f1": 0.888888888888889,
+            "fold": 9,
+            "mcc": 0.7745966692414834,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.7885912698412698,
+            "precision": 0.8,
+            "recall_sensitivity": 1,
+            "roc_auc": 0.8125,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 1,
+            "balanced_accuracy": 1,
+            "best_params": {
+              "model__learning_rate": 0.3,
+              "model__max_depth": 6,
+              "model__n_estimators": 100,
+              "selector__k": 8
+            },
+            "f1": 1,
+            "fold": 10,
+            "mcc": 1,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 1,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          }
+        ],
+        "split_ids_hash": "068aaa39daf051e3f0d389fb379e3ab9355ce751390506d28e1de254bb961558",
+        "summary": {
+          "accuracy": {
+            "max": 1,
+            "mean": 0.8625,
+            "min": 0.75,
+            "n": 10,
+            "std": 0.09223309842157773
+          },
+          "balanced_accuracy": {
+            "max": 1,
+            "mean": 0.856547619047619,
+            "min": 0.7301587301587301,
+            "n": 10,
+            "std": 0.09761084729182666
+          },
+          "f1": {
+            "max": 1,
+            "mean": 0.8454365079365079,
+            "min": 0.6666666666666666,
+            "n": 10,
+            "std": 0.11605004023684902
+          },
+          "fold": {
+            "max": 10,
+            "mean": 5.5,
+            "min": 1,
+            "n": 10,
+            "std": 3.0276503540974917
+          },
+          "mcc": {
+            "max": 1,
+            "mean": 0.7311411554611549,
+            "min": 0.49265895172303803,
+            "n": 10,
+            "std": 0.18556143352431376
+          },
+          "n_test": {
+            "max": 16,
+            "mean": 16,
+            "min": 16,
+            "n": 10,
+            "std": 0
+          },
+          "n_train": {
+            "max": 64,
+            "mean": 64,
+            "min": 64,
+            "n": 10,
+            "std": 0
+          },
+          "pr_auc": {
+            "max": 1,
+            "mean": 0.9178332431457431,
+            "min": 0.7885912698412698,
+            "n": 10,
+            "std": 0.07252704072361366
+          },
+          "precision": {
+            "max": 1,
+            "mean": 0.8632142857142856,
+            "min": 0.7,
+            "n": 10,
+            "std": 0.1048437180541567
+          },
+          "recall_sensitivity": {
+            "max": 1,
+            "mean": 0.8464285714285713,
+            "min": 0.5714285714285714,
+            "n": 10,
+            "std": 0.17152774908883692
+          },
+          "roc_auc": {
+            "max": 1,
+            "mean": 0.9172991071428571,
+            "min": 0.7936507936507937,
+            "n": 10,
+            "std": 0.07146359436675298
+          },
+          "specificity": {
+            "max": 1,
+            "mean": 0.8666666666666666,
+            "min": 0.625,
+            "n": 10,
+            "std": 0.12494854908199403
+          }
+        }
+      },
+      "prediction_files": {},
+      "scaler": "none",
+      "selected_features": null
+    },
+    {
+      "best_params": null,
+      "candidate_count": 12,
+      "candidate_grid": {
+        "model__learning_rate": [
+          0.03,
+          0.1
+        ],
+        "model__n_estimators": [
+          100,
+          250
+        ],
+        "model__num_leaves": [
+          15,
+          31,
+          63
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "effective_feature_method": "select",
+      "estimator": "lightgbm.sklearn.LGBMClassifier",
+      "heldout_test": null,
+      "hyperparameter_candidate_count": 12,
+      "key": "lightgbm",
+      "nested_cv": {
+        "actual_repeats": 2,
+        "candidate_count": 12,
+        "candidate_grid": {
+          "model__learning_rate": [
+            0.03,
+            0.1
+          ],
+          "model__n_estimators": [
+            100,
+            250
+          ],
+          "model__num_leaves": [
+            15,
+            31,
+            63
+          ],
+          "selector__k": [
+            8
+          ]
+        },
+        "folds": [
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.8571428571428572,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__n_estimators": 250,
+              "model__num_leaves": 15,
+              "selector__k": 8
+            },
+            "f1": 0.8333333333333333,
+            "fold": 1,
+            "mcc": 0.7644707871564383,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.7142857142857143,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.7142857142857143
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9571428571428571,
+            "precision": 1,
+            "recall_sensitivity": 0.7142857142857143,
+            "roc_auc": 0.9523809523809524,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.873015873015873,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__n_estimators": 100,
+              "model__num_leaves": 15,
+              "selector__k": 8
+            },
+            "f1": 0.8571428571428571,
+            "fold": 2,
+            "mcc": 0.746031746031746,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.8571428571428571,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 0.8571428571428571
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8612768184196755,
+            "precision": 0.8571428571428571,
+            "recall_sensitivity": 0.8571428571428571,
+            "roc_auc": 0.8571428571428571,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8125,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__n_estimators": 250,
+              "model__num_leaves": 15,
+              "selector__k": 8
+            },
+            "f1": 0.7692307692307693,
+            "fold": 3,
+            "mcc": 0.674199862463242,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.625,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.625
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9861111111111112,
+            "precision": 1,
+            "recall_sensitivity": 0.625,
+            "roc_auc": 0.984375,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__n_estimators": 100,
+              "model__num_leaves": 15,
+              "selector__k": 8
+            },
+            "f1": 0.875,
+            "fold": 4,
+            "mcc": 0.75,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              },
+              "control": {
+                "sensitivity": 0.875,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9415178571428571,
+            "precision": 0.875,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.9453125,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.875
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__n_estimators": 100,
+              "model__num_leaves": 15,
+              "selector__k": 8
+            },
+            "f1": 0.888888888888889,
+            "fold": 5,
+            "mcc": 0.7745966692414834,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8951388888888889,
+            "precision": 0.8,
+            "recall_sensitivity": 1,
+            "roc_auc": 0.890625,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 0.6875,
+            "balanced_accuracy": 0.6587301587301587,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__n_estimators": 100,
+              "model__num_leaves": 15,
+              "selector__k": 8
+            },
+            "f1": 0.5454545454545454,
+            "fold": 6,
+            "mcc": 0.363696483726654,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.42857142857142855,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 0.42857142857142855
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8676870748299319,
+            "precision": 0.75,
+            "recall_sensitivity": 0.42857142857142855,
+            "roc_auc": 0.8809523809523809,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.873015873015873,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__n_estimators": 100,
+              "model__num_leaves": 15,
+              "selector__k": 8
+            },
+            "f1": 0.8571428571428571,
+            "fold": 7,
+            "mcc": 0.746031746031746,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.8571428571428571,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 0.8571428571428571
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9038342609771179,
+            "precision": 0.8571428571428571,
+            "recall_sensitivity": 0.8571428571428571,
+            "roc_auc": 0.9047619047619048,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 0.6875,
+            "balanced_accuracy": 0.6875,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__n_estimators": 100,
+              "model__num_leaves": 15,
+              "selector__k": 8
+            },
+            "f1": 0.6666666666666666,
+            "fold": 8,
+            "mcc": 0.3779644730092272,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.625,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 0.625
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8830357142857144,
+            "precision": 0.7142857142857143,
+            "recall_sensitivity": 0.625,
+            "roc_auc": 0.8828125,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8125,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__n_estimators": 100,
+              "model__num_leaves": 15,
+              "selector__k": 8
+            },
+            "f1": 0.823529411764706,
+            "fold": 9,
+            "mcc": 0.629940788348712,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8802579365079366,
+            "precision": 0.7777777777777778,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.875,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.875,
+            "best_params": {
+              "model__learning_rate": 0.03,
+              "model__n_estimators": 250,
+              "model__num_leaves": 15,
+              "selector__k": 8
+            },
+            "f1": 0.8571428571428571,
+            "fold": 10,
+            "mcc": 0.7745966692414834,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.75,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.75
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 0.75,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          }
+        ],
+        "split_ids_hash": "068aaa39daf051e3f0d389fb379e3ab9355ce751390506d28e1de254bb961558",
+        "summary": {
+          "accuracy": {
+            "max": 0.875,
+            "mean": 0.825,
+            "min": 0.6875,
+            "n": 10,
+            "std": 0.0768295371441074
+          },
+          "balanced_accuracy": {
+            "max": 0.875,
+            "mean": 0.8199404761904763,
+            "min": 0.6587301587301587,
+            "n": 10,
+            "std": 0.08148117280313277
+          },
+          "f1": {
+            "max": 0.888888888888889,
+            "mean": 0.797353218676748,
+            "min": 0.5454545454545454,
+            "n": 10,
+            "std": 0.10976477603406763
+          },
+          "fold": {
+            "max": 10,
+            "mean": 5.5,
+            "min": 1,
+            "n": 10,
+            "std": 3.0276503540974917
+          },
+          "mcc": {
+            "max": 0.7745966692414834,
+            "mean": 0.6601529225250732,
+            "min": 0.363696483726654,
+            "n": 10,
+            "std": 0.1593481973224076
+          },
+          "n_test": {
+            "max": 16,
+            "mean": 16,
+            "min": 16,
+            "n": 10,
+            "std": 0
+          },
+          "n_train": {
+            "max": 64,
+            "mean": 64,
+            "min": 64,
+            "n": 10,
+            "std": 0
+          },
+          "pr_auc": {
+            "max": 1,
+            "mean": 0.917600251930609,
+            "min": 0.8612768184196755,
+            "n": 10,
+            "std": 0.05007322560755921
+          },
+          "precision": {
+            "max": 1,
+            "mean": 0.8631349206349206,
+            "min": 0.7142857142857143,
+            "n": 10,
+            "std": 0.10678961463505121
+          },
+          "recall_sensitivity": {
+            "max": 1,
+            "mean": 0.7607142857142857,
+            "min": 0.42857142857142855,
+            "n": 10,
+            "std": 0.16713369938282271
+          },
+          "roc_auc": {
+            "max": 1,
+            "mean": 0.9173363095238095,
+            "min": 0.8571428571428571,
+            "n": 10,
+            "std": 0.04959970225941611
+          },
+          "specificity": {
+            "max": 1,
+            "mean": 0.8791666666666667,
+            "min": 0.75,
+            "n": 10,
+            "std": 0.10228233940780056
+          }
+        }
+      },
+      "prediction_files": {},
+      "scaler": "none",
+      "selected_features": null
+    }
+  ],
+  "positive_class": "case",
+  "project_id": "BCO-AZ-cbb985-TopK-7eb50106",
+  "registry_version": 4,
+  "schema_version": 3,
+  "selected_family": "svm",
+  "selection": {
+    "best_params": {
+      "model__C": 10,
+      "model__gamma": "scale",
+      "model__kernel": "rbf",
+      "selector__k": 8
+    },
+    "candidate_counts": {
+      "adaboost": 9,
+      "decision_tree": 16,
+      "gradient_boosting": 12,
+      "knn": 16,
+      "lightgbm": 12,
+      "logistic_regression": 3,
+      "naive_bayes": 3,
+      "random_forest": 18,
+      "svm": 12,
+      "xgboost": 12
+    },
+    "candidate_families": [
+      "naive_bayes",
+      "svm",
+      "logistic_regression",
+      "knn",
+      "decision_tree",
+      "random_forest",
+      "adaboost",
+      "gradient_boosting",
+      "xgboost",
+      "lightgbm"
+    ],
+    "candidate_grids": {
+      "adaboost": {
+        "model__learning_rate": [
+          0.03,
+          0.1,
+          0.3
+        ],
+        "model__n_estimators": [
+          50,
+          100,
+          250
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "decision_tree": {
+        "model__max_depth": [
+          null,
+          3,
+          5,
+          10
+        ],
+        "model__min_samples_leaf": [
+          1,
+          3,
+          5,
+          10
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "gradient_boosting": {
+        "model__learning_rate": [
+          0.03,
+          0.1
+        ],
+        "model__max_depth": [
+          1,
+          2,
+          3
+        ],
+        "model__n_estimators": [
+          100,
+          250
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "knn": {
+        "model__n_neighbors": [
+          3,
+          5,
+          9,
+          15
+        ],
+        "model__p": [
+          1,
+          2
+        ],
+        "model__weights": [
+          "uniform",
+          "distance"
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "lightgbm": {
+        "model__learning_rate": [
+          0.03,
+          0.1
+        ],
+        "model__n_estimators": [
+          100,
+          250
+        ],
+        "model__num_leaves": [
+          15,
+          31,
+          63
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "logistic_regression": {
+        "model__C": [
+          0.1,
+          1,
+          10
+        ],
+        "model__penalty": [
+          "l2"
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "naive_bayes": {
+        "model__var_smoothing": [
+          1e-11,
+          1e-9,
+          1e-7
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "random_forest": {
+        "model__max_depth": [
+          null,
+          5,
+          10
+        ],
+        "model__max_features": [
+          "sqrt",
+          0.5
+        ],
+        "model__min_samples_leaf": [
+          1,
+          3,
+          5
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "svm": {
+        "model__C": [
+          0.1,
+          1,
+          10
+        ],
+        "model__gamma": [
+          "scale",
+          "auto"
+        ],
+        "model__kernel": [
+          "linear",
+          "rbf"
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "xgboost": {
+        "model__learning_rate": [
+          0.03,
+          0.1,
+          0.3
+        ],
+        "model__max_depth": [
+          3,
+          6
+        ],
+        "model__n_estimators": [
+          100,
+          250
+        ],
+        "selector__k": [
+          8
+        ]
+      }
+    },
+    "class_order": [
+      "case",
+      "control"
+    ],
+    "estimator": "sklearn.svm._classes.SVC",
+    "family_selected_at": "2026-10-24T07:23:48.598289Z",
+    "feature_method": "select",
+    "fitted_model_sha256": "6fd25549f33bafbbcac79ae955ffc2a09859d49bd207388838e5d2629eef1a92",
+    "heldout_unlocked_at": "2026-10-24T07:23:48.955952Z",
+    "imputer_strategy": "median",
+    "inner_split_policy": "fold-local task-aware CV; grouped when subject_id supplied",
+    "input_features": [
+      "gene0",
+      "gene1",
+      "gene2",
+      "gene3",
+      "gene4",
+      "gene5",
+      "gene6",
+      "gene7"
+    ],
+    "input_sha256": "57336962e3e39e581195bbf7efe689d6c4a3d5abde6c5088bcf2dd9c1cc4d232",
+    "outer_split_ids_hash": "068aaa39daf051e3f0d389fb379e3ab9355ce751390506d28e1de254bb961558",
+    "positive_class": "case",
+    "project_id": "BCO-AZ-cbb985-TopK-7eb50106",
+    "random_seed": 10,
+    "scaler": "standard",
+    "schema_version": 3,
+    "selected_at": "2026-10-24T07:23:48.955795Z",
+    "selected_family": "svm",
+    "selected_features": [
+      "gene0",
+      "gene1",
+      "gene2",
+      "gene3",
+      "gene4",
+      "gene5",
+      "gene6",
+      "gene7"
+    ],
+    "selection_metric": "balanced_accuracy",
+    "selection_rule": "highest development per-family outer-CV mean; lexicographic tie-break",
+    "software_commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "software_identity": {
+      "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+      "declared_commit_matches": true,
+      "dirty": false,
+      "verified": true
+    },
+    "threshold_policy": "explicit_probability_threshold",
+    "threshold_value": 0.65,
+    "validation_budget": {
+      "actual_inner_splits": 3,
+      "actual_outer_evaluations": 10,
+      "actual_outer_repeats": 2,
+      "actual_outer_splits": 5,
+      "requested_inner_splits": 3,
+      "requested_outer_repeats": 2,
+      "requested_outer_splits": 5
+    }
+  },
+  "selection_lock_sha256": "30e01ad393f782436bc7d86204acde54fff80799506e877e4f0d5061db3edc71",
+  "software": {
+    "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "declared_commit_matches": true,
+    "dirty": false,
+    "verified": true
+  },
+  "strategy": "one_click",
+  "task": "classification",
+  "validation": {
+    "family_scope": "fixed family per outer CV; family selected from development summaries",
+    "inner_splits": 3,
+    "outer_repeats": 2,
+    "outer_splits": 5,
+    "preprocessing_scope": "fit within inner and outer training folds; FSS/BSS internal scoring uses upstream training-fold preprocessing",
+    "random_state": 10,
+    "requested_budget": {
+      "inner_splits": 3,
+      "outer_repeats": 2,
+      "outer_splits": 5
+    },
+    "selection_metric": "balanced_accuracy",
+    "threshold_policy": "explicit_probability_threshold",
+    "threshold_value": 0.65
+  },
+  "warnings": [
+    "The development outer-CV scores describe fixed estimator families; the winning family was selected using those scores. Only the selected family has a heldout result."
+  ]
+}

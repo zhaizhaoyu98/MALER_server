@@ -1,0 +1,117 @@
+{
+  "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+  "assets": [
+    {
+      "file": "mlserver/static/cache/example/Survival_ExtraSurvivalTrees.pkl",
+      "storage": "source_assets/mlserver/static/cache/example/Survival_ExtraSurvivalTrees.pkl.xz",
+      "bytes": 8126227,
+      "sha256": "66d0c27a46fcbb216db12c18239b5e1601fc1358b534813a90dbd104a9dfdd0c",
+      "stored_sha256": "e795259599b1b02f0c00631d217732810b4632440a34b80d72a575835684264a"
+    },
+    {
+      "file": "mlserver/static/cache/example/binary_classification_example.csv",
+      "storage": "source_assets/mlserver/static/cache/example/binary_classification_example.csv.xz",
+      "bytes": 11081721,
+      "sha256": "0fc172c497de44e5bed111d18464c071fda6924c6a04af38038ea31aeedd80b9",
+      "stored_sha256": "5d0d12bee8de8a864c72cee6991a90bac1b4f068344fa929ba576ea1d34d89c1"
+    },
+    {
+      "file": "mlserver/static/cache/example/multi_pred.csv",
+      "storage": "source_assets/mlserver/static/cache/example/multi_pred.csv.xz",
+      "bytes": 1206035,
+      "sha256": "be9b5cc0fa704a74f0617dc45596d1fe0f8125c288f174166d7c8122cbb7a9de",
+      "stored_sha256": "79c30e572cb4b5ee800024d92012933ceaac0b6252dfa84935131d87ca62e56f"
+    },
+    {
+      "file": "mlserver/static/cache/example/multiclass_classification_example.csv",
+      "storage": "source_assets/mlserver/static/cache/example/multiclass_classification_example.csv.xz",
+      "bytes": 18487938,
+      "sha256": "fd5a1ac21d2fbb81631cf4f9967cea033b53a6d08ef68e7295be85550984af29",
+      "stored_sha256": "8724b3ad84aaab434c30a70bbd31c3c20b42021eb5b49e2987774344399f3b91"
+    },
+    {
+      "file": "mlserver/static/cache/example/regression_example.csv",
+      "storage": "source_assets/mlserver/static/cache/example/regression_example.csv.xz",
+      "bytes": 127441867,
+      "sha256": "29add066aaecbe1e3c7b6b9734c828f20e9938d1e1a5a7a5234bd746244e1892",
+      "stored_sha256": "7955551a350789671fa0bf44b0a052a4458b0683c9e15fa2b8cdabbad81ede7b"
+    },
+    {
+      "file": "mlserver/static/cache/example/survival_example.csv",
+      "storage": "source_assets/mlserver/static/cache/example/survival_example.csv.xz",
+      "bytes": 15273442,
+      "sha256": "85d2df86473c90018d98f90a30d77935a2c57a0877cbc1d62f639b4be0b88189",
+      "stored_sha256": "1e380d25c402fa83f1643f3fb81e443b068f8e45cf0d63ee2183444d43837c11"
+    },
+    {
+      "file": "mlserver/static/cdn/js/plotly-2.8.3.min.js",
+      "storage": "source_assets/mlserver/static/cdn/js/plotly-2.8.3.min.js.xz",
+      "bytes": 3663361,
+      "sha256": "490f496c6606790201e98fb9bcffe9a9067fdd33b80035eeee44d17683e2ec45",
+      "stored_sha256": "4e63c4e5fe162fcabf118aae6f868b4583baec8e603755a3960598c431a33dde"
+    },
+    {
+      "file": "mlserver/static/img/gsea2.svg",
+      "storage": "source_assets/mlserver/static/img/gsea2.svg.xz",
+      "bytes": 2396069,
+      "sha256": "766bd6f14ca08b4d7c39efba13c49084977d9570600dd2d7187aa70f582da3b6",
+      "stored_sha256": "e151598b94a95e05f3e06ec41df66947fea0eaec8a438d2b7c490483bbeed8fb"
+    },
+    {
+      "file": "mlserver/static/img/help_img/detail1.jpg",
+      "storage": "source_assets/mlserver/static/img/help_img/detail1.jpg.xz",
+      "bytes": 2422612,
+      "sha256": "2fd9114fb2a34c557e8fb24a2c5031750c7ebc0d88c0f68bf8ebacfb7c515c40",
+      "stored_sha256": "2eee3c3c1a16bb52a241d016f66f1be9dcd7ef05a0d29c0d74b250ea203e5c40"
+    },
+    {
+      "file": "mlserver/static/img/help_img/detail2.jpg",
+      "storage": "source_assets/mlserver/static/img/help_img/detail2.jpg.xz",
+      "bytes": 2943381,
+      "sha256": "6125e5c8806a6d8e34bd436a85add306b102e2c1a1ded8732f5f81f98a43c184",
+      "stored_sha256": "3aa58df490b883b92438a8571e5fb158481ac4ab8ec453349c6287a9e8d2466b"
+    },
+    {
+      "file": "mlserver/static/img/help_img/detail3.jpg",
+      "storage": "source_assets/mlserver/static/img/help_img/detail3.jpg.xz",
+      "bytes": 3609917,
+      "sha256": "330bd5e98e972b8ab3ad0fedd490b376f17b38a3e79232cab385fb1cfd3e5dba",
+      "stored_sha256": "845238c843c07f382420dc624dd4565488dd7a6e63be7ccabd51fc7b461c97b7"
+    },
+    {
+      "file": "mlserver/static/img/logo/材质展示图11.jpg",
+      "storage": "source_assets/mlserver/static/img/logo/材质展示图11.jpg.xz",
+      "bytes": 2743674,
+      "sha256": "9b92ed6c7db57e440204db3ec68c6582102e9b98a799a92e6da3c8b53f3be698",
+      "stored_sha256": "63c9c6d1346e3457cc64e97e1a941eb26c5354fb656565e165fbe5dcb2a5956e"
+    },
+    {
+      "file": "mlserver/static/img/logo/桂花树下的小孩儿 确认.ai",
+      "storage": "source_assets/mlserver/static/img/logo/桂花树下的小孩儿 确认.ai.xz",
+      "bytes": 1101822,
+      "sha256": "3c7153e72a3e3bfda06c65a20f72f05334109fcf93298daf56f4d1157b7d17ef",
+      "stored_sha256": "d80884aff65b8d8558df8550738803914a20a78ffce092a76383b582575d7a80"
+    },
+    {
+      "file": "mlserver/static/img/logo/桂花树下的小孩儿.zip",
+      "storage": "source_assets/mlserver/static/img/logo/桂花树下的小孩儿.zip.xz",
+      "bytes": 5796384,
+      "sha256": "448ac599f0dd5ddc3408417fe20b3704a0e53db83dd541ee47721c1155e3ab4b",
+      "stored_sha256": "3a32f67524f14204520717e8535a18a04553c8c45b9d310c256cb89505ae7fdc"
+    },
+    {
+      "file": "validation/figures/Figure_2_interface.png",
+      "storage": "source_assets/validation/figures/Figure_2_interface.png.xz",
+      "bytes": 2016739,
+      "sha256": "a0dc4173dbc3e7632defcee6f8f8b6d3d3df72b5634f4ee6da48ebcb322dec50",
+      "stored_sha256": "8265f7d2168b2a1e70587c16837eff157e9ad59ad7c69d7a844910883c393fd0"
+    }
+  ],
+  "source_path_map": {
+    "docs/comprehensive-audit-20261001.md": "docs/comprehensive-audit.md",
+    "docs/history/deployment_status_20260930.md": "docs/history/deployment_status.md",
+    "docs/history/README_status_20260930.md": "docs/history/README_status.md",
+    "docs/reviewer_response_status_20260924.md": "docs/reviewer_response_status.md",
+    "mlserver/static/img/20220720-LOGO定稿.zip": "mlserver/static/img/LOGO定稿.zip"
+  }
+}

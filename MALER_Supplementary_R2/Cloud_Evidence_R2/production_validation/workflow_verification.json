@@ -1,0 +1,323 @@
+{
+  "server_utc": "2026-10-24T07:47:41.887004Z",
+  "source_commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+  "records": [
+    {
+      "name": "binary_custom",
+      "prediction_rows": 40,
+      "missing_feature_cells": 42,
+      "analysis_project_id": "BCC-AZ-cbb985-6lyoxl-882ee9d7",
+      "prediction_project_id": "PRED-BCLASS-310cb8-dbba67-68ea8040",
+      "model_bundle_sha256": "c38ef1eeacf9d62ff55c65f55accdfddba0ca4d513e3f30852cfa2c7cc4ff405",
+      "selection_lock_sha256": "463cbfb0cffdafef45f3c36089eb2217f2303660c64be8e16c950e482a03532f",
+      "all_rows_match_saved_pipeline": true,
+      "imputer_unchanged": true,
+      "independent_pipeline_fit_calls": 0,
+      "independent_imputer_fit_calls": 0,
+      "original_label_mapping": null,
+      "independently_recomputed_metrics": {
+        "balanced_accuracy": 0.5333333333333333,
+        "roc_auc": 0.5133333333333333,
+        "pr_auc": 0.37780108279871083
+      },
+      "metric_scope": "Analysis heldout partition"
+    },
+    {
+      "name": "oneclick",
+      "prediction_rows": 40,
+      "missing_feature_cells": 42,
+      "analysis_project_id": "BCO-AZ-cbb985-TopK-7eb50106",
+      "prediction_project_id": "PRED-BCLASS-a33986-dbba67-56795a6c",
+      "model_bundle_sha256": "c664118c265f7abccf522abceb6a4f3e5bbf126b2153dbffc9763460db4648c6",
+      "selection_lock_sha256": "30e01ad393f782436bc7d86204acde54fff80799506e877e4f0d5061db3edc71",
+      "all_rows_match_saved_pipeline": true,
+      "imputer_unchanged": true,
+      "independent_pipeline_fit_calls": 0,
+      "independent_imputer_fit_calls": 0,
+      "original_label_mapping": null,
+      "independently_recomputed_metrics": {
+        "balanced_accuracy": 0.5133333333333333,
+        "roc_auc": 0.58,
+        "pr_auc": 0.45522875816993463
+      },
+      "metric_scope": "Analysis heldout partition"
+    },
+    {
+      "name": "multiclass",
+      "prediction_rows": 40,
+      "missing_feature_cells": 41,
+      "analysis_project_id": "MCC-AZ-ec99a2-rg9bw0-f707f31a",
+      "prediction_project_id": "PRED-MCLASS-e2b432-b36ea3-346349b0",
+      "model_bundle_sha256": "32a149b8bca9a1aab3b798023bf9360b5745be8b304cc006fa62babd52672b66",
+      "selection_lock_sha256": "f1c209ce07cdf328764e85ec851c3f5fc551815e9541b78cd438c49986464edb",
+      "all_rows_match_saved_pipeline": true,
+      "imputer_unchanged": true,
+      "independent_pipeline_fit_calls": 0,
+      "independent_imputer_fit_calls": 0,
+      "original_label_mapping": null,
+      "independently_recomputed_metrics": {
+        "balanced_accuracy": 0.6,
+        "roc_auc_ovr_macro": 0.765
+      },
+      "metric_scope": "labelled Predict partition"
+    },
+    {
+      "name": "regression",
+      "prediction_rows": 40,
+      "missing_feature_cells": 32,
+      "analysis_project_id": "RC-AZ-89fdeb-zggz2q-d7bd2682",
+      "prediction_project_id": "PRED-REG-209803-4b6fad-62533af3",
+      "model_bundle_sha256": "f46fe2c09a2146bbb7693d8ddc24273217b5737fa519e65daa15585710c57dd9",
+      "selection_lock_sha256": "9a72901fbeeef638c97365dd9a8988a04e9f959d2b33b7ca7064c791c237dda7",
+      "all_rows_match_saved_pipeline": true,
+      "imputer_unchanged": true,
+      "independent_pipeline_fit_calls": 0,
+      "independent_imputer_fit_calls": 0,
+      "original_label_mapping": null,
+      "independently_recomputed_metrics": {
+        "r2": 0.8594776678917739,
+        "mae": 0.4176968890472536,
+        "mse": 0.3229819043146088,
+        "rmse": 0.5683149692860543
+      },
+      "metric_scope": "labelled Predict partition"
+    },
+    {
+      "name": "survival",
+      "prediction_rows": 40,
+      "missing_feature_cells": 29,
+      "analysis_project_id": "SC-CZ-cb4352-x9l3ly-b143c3db",
+      "prediction_project_id": "PRED-SUR-5de9ec-2c8ac8-728505ad",
+      "model_bundle_sha256": "5ba7455d9fd5c820823305db7d21880e12604f5c279922b9932c231091b9d959",
+      "selection_lock_sha256": "fb16eb92638a4cccc265672f06e9cf01912d9ca75c16f9acb559640bdf8bea2c",
+      "all_rows_match_saved_pipeline": true,
+      "imputer_unchanged": true,
+      "independent_pipeline_fit_calls": 0,
+      "independent_imputer_fit_calls": 0,
+      "original_label_mapping": null,
+      "independently_recomputed_metrics": {
+        "c_index": 0.4855072463768116
+      },
+      "metric_scope": "labelled Predict partition"
+    },
+    {
+      "name": "xgb_binary",
+      "prediction_rows": 40,
+      "missing_feature_cells": 42,
+      "analysis_project_id": "BCC-AZ-cbb985-i1jvzv-34c250f8",
+      "prediction_project_id": "PRED-BCLASS-6942f8-dbba67-2dfd9709",
+      "model_bundle_sha256": "1e94da36c81f984dfaecfc42df9695fe4f0976c72f515b4f6c53841323e07320",
+      "selection_lock_sha256": "fcd6bd583148ad53b2a5f5d6c468678058c8f814a3a1416da4940a75e84d80af",
+      "all_rows_match_saved_pipeline": true,
+      "imputer_unchanged": true,
+      "independent_pipeline_fit_calls": 0,
+      "independent_imputer_fit_calls": 0,
+      "original_label_mapping": [
+        {
+          "original": "case",
+          "native_index": 0
+        },
+        {
+          "original": "control",
+          "native_index": 1
+        }
+      ],
+      "independently_recomputed_metrics": {
+        "balanced_accuracy": 0.74,
+        "roc_auc": 0.8613333333333334,
+        "pr_auc": 0.804934293470099
+      },
+      "metric_scope": "Analysis heldout partition"
+    },
+    {
+      "name": "xgb_multiclass",
+      "prediction_rows": 40,
+      "missing_feature_cells": 41,
+      "analysis_project_id": "MCC-AZ-ec99a2-ile9n2-90ef132b",
+      "prediction_project_id": "PRED-MCLASS-b1619a-b36ea3-3598ab11",
+      "model_bundle_sha256": "3887eec21172972aece60b40b9374352387573ee7ec3edf325b19ea10ae1501a",
+      "selection_lock_sha256": "5d10f3e98fd95c923a8f4f8cc1dd0913a169593f80e6c1f6e783918342d20295",
+      "all_rows_match_saved_pipeline": true,
+      "imputer_unchanged": true,
+      "independent_pipeline_fit_calls": 0,
+      "independent_imputer_fit_calls": 0,
+      "original_label_mapping": [
+        {
+          "original": "groupA",
+          "native_index": 0
+        },
+        {
+          "original": "groupB",
+          "native_index": 1
+        },
+        {
+          "original": "groupC",
+          "native_index": 2
+        }
+      ],
+      "independently_recomputed_metrics": {
+        "balanced_accuracy": 0.5333333333333333,
+        "roc_auc_ovr_macro": 0.735
+      },
+      "metric_scope": "labelled Predict partition"
+    },
+    {
+      "name": "oneclick_repeat",
+      "prediction_rows": 40,
+      "missing_feature_cells": 42,
+      "analysis_project_id": "BCO-AZ-cbb985-TopK-89ee86a2",
+      "prediction_project_id": "PRED-BCLASS-10a00c-dbba67-07cf1709",
+      "model_bundle_sha256": "d237aede79c0aef9f7f8581b9af87bd84b92bc51deadcd790409cfa1a10cd4f0",
+      "selection_lock_sha256": "1d56266c6c4043779c2f4c9f8fea516f21d1418559a49a6a62209ec0eeeea39a",
+      "all_rows_match_saved_pipeline": true,
+      "imputer_unchanged": true,
+      "independent_pipeline_fit_calls": 0,
+      "independent_imputer_fit_calls": 0,
+      "original_label_mapping": null,
+      "independently_recomputed_metrics": {
+        "balanced_accuracy": 0.5133333333333333,
+        "roc_auc": 0.58,
+        "pr_auc": 0.45522875816993463
+      },
+      "metric_scope": "Analysis heldout partition"
+    }
+  ],
+  "verification_account_uid": 1000,
+  "root_application_imports_performed": false,
+  "paired_oneclick": {
+    "xgboost_successfully_compared": true,
+    "same_all_family_fold_scores": true,
+    "same_selected_family": "svm",
+    "same_final_params": true,
+    "all_40_labels_equal": true,
+    "balanced_accuracy_by_family": {
+      "naive_bayes": [
+        0.8571428571428572,
+        0.8571428571428572,
+        0.875,
+        0.9375,
+        0.8125,
+        0.7857142857142857,
+        0.8015873015873016,
+        0.8125,
+        0.9375,
+        0.9375
+      ],
+      "svm": [
+        0.9285714285714286,
+        0.7857142857142857,
+        0.9375,
+        0.875,
+        0.875,
+        0.8571428571428572,
+        0.7857142857142857,
+        1,
+        0.9375,
+        0.875
+      ],
+      "logistic_regression": [
+        0.873015873015873,
+        0.7301587301587301,
+        0.9375,
+        0.9375,
+        0.8125,
+        0.8571428571428572,
+        0.8571428571428572,
+        0.875,
+        1,
+        0.9375
+      ],
+      "knn": [
+        0.9285714285714286,
+        0.873015873015873,
+        0.875,
+        0.875,
+        0.75,
+        0.9285714285714286,
+        0.9444444444444444,
+        1,
+        0.75,
+        0.75
+      ],
+      "decision_tree": [
+        0.8174603174603174,
+        0.5634920634920635,
+        0.6875,
+        0.875,
+        0.8125,
+        0.6190476190476191,
+        0.6587301587301587,
+        0.6875,
+        0.8125,
+        0.9375
+      ],
+      "random_forest": [
+        0.8571428571428572,
+        0.7857142857142857,
+        0.8125,
+        0.8125,
+        0.8125,
+        0.7857142857142857,
+        0.7301587301587301,
+        0.875,
+        0.75,
+        1
+      ],
+      "adaboost": [
+        0.5,
+        0.6190476190476191,
+        0.75,
+        0.8125,
+        0.75,
+        0.5714285714285714,
+        0.6428571428571428,
+        0.625,
+        0.625,
+        0.6875
+      ],
+      "gradient_boosting": [
+        0.7301587301587301,
+        0.8015873015873016,
+        0.875,
+        0.75,
+        0.8125,
+        0.7301587301587301,
+        0.8015873015873016,
+        0.875,
+        0.8125,
+        1
+      ],
+      "xgboost": [
+        0.873015873015873,
+        0.7301587301587301,
+        1,
+        0.875,
+        0.75,
+        0.8571428571428572,
+        0.7301587301587301,
+        0.875,
+        0.875,
+        1
+      ],
+      "lightgbm": [
+        0.8571428571428572,
+        0.873015873015873,
+        0.8125,
+        0.875,
+        0.875,
+        0.6587301587301587,
+        0.873015873015873,
+        0.6875,
+        0.8125,
+        0.875
+      ]
+    }
+  },
+  "legacy_signed_model": {
+    "source_commit": "014d65b4e0298dcab5f401ea9eabe0de3fe9a898",
+    "prediction_rows": 40,
+    "same_predictions_as_previous_browser": true,
+    "new_fits": 0
+  },
+  "scope": "Eight actual public workflows; independent saved-pipeline reuse, labelled metrics and curves. Binary fixtures share one input; no new independent clinical cohorts."
+}

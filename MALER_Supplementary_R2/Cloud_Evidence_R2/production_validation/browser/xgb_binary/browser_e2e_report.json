@@ -1,0 +1,77 @@
+{
+  "scope": "Actual public HTTPS production upload-to-Predict workflow; no SSH forwarding for browser requests",
+  "completed_utc": "2026-10-24T07:31:49.289Z",
+  "mode": "custom",
+  "source": {
+    "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "declared_commit_matches": true,
+    "dirty": false,
+    "verified": true
+  },
+  "browser_version": "155.0.4283.62",
+  "origin": "https://www.inbirg.com",
+  "tls_verification_disabled": false,
+  "email_address_supplied": false,
+  "analysis_project_id": "BCC-AZ-cbb985-i1jvzv-34c250f8",
+  "prediction_project_id": "PRED-BCLASS-6942f8-dbba67-2dfd9709",
+  "model_file_name": "XGBoost.maler",
+  "analysis_input_sha256": "57336962e3e39e581195bbf7efe689d6c4a3d5abde6c5088bcf2dd9c1cc4d232",
+  "prediction_input_sha256": "3a52bb3aa2550330b7ca0c1068af1c966dac54e8ed39b7c8a7911fb390170f50",
+  "model_bundle_sha256": "1e94da36c81f984dfaecfc42df9695fe4f0976c72f515b4f6c53841323e07320",
+  "selection_lock_sha256": "fcd6bd583148ad53b2a5f5d6c468678058c8f814a3a1416da4940a75e84d80af",
+  "positive_class": "case",
+  "threshold_policy": "explicit_probability_threshold",
+  "threshold_value": 0.65,
+  "actual_budget": {
+    "actual_inner_splits": 3,
+    "actual_outer_evaluations": 10,
+    "actual_outer_repeats": 2,
+    "actual_outer_splits": 5,
+    "requested_inner_splits": 3,
+    "requested_outer_repeats": 2,
+    "requested_outer_splits": 5
+  },
+  "csrf_missing_token_status": 403,
+  "concurrent_compute_probe_status": null,
+  "successful_form_posts": [
+    {
+      "path": "/maler/preview",
+      "status": 200,
+      "referer_origin_only": true
+    },
+    {
+      "path": "/maler/classification_cp_result/BCC-AZ-cbb985-i1jvzv-34c250f8",
+      "status": 200,
+      "referer_origin_only": true
+    },
+    {
+      "path": "/maler/predict_preview",
+      "status": 200,
+      "referer_origin_only": true
+    },
+    {
+      "path": "/maler/predict_result/PRED-BCLASS-6942f8-dbba67-2dfd9709",
+      "status": 200,
+      "referer_origin_only": true
+    }
+  ],
+  "page_errors": [],
+  "expected_download_aborts": [
+    {
+      "url": "https://www.inbirg.com/maler/task/BCC-AZ-cbb985-i1jvzv-34c250f8/model/XGBoost.maler",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "unexpected_failed_requests": [],
+  "browser_prediction_count": 40,
+  "steps": [
+    "public HTTPS upload",
+    "parse preview",
+    "explicit positive class/cutoff",
+    "development/result",
+    "signed model download",
+    "Predict upload",
+    "Predict preview",
+    "Predict reuse"
+  ]
+}

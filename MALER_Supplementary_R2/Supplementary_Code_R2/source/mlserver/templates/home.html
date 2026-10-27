@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MALER</title>
+    {% include 'public_templates/bootstrap.html' %}
+	<script type="text/javascript">
+		// 加载提示框
+		$(document).ready(function() {
+			$("#nav_home").addClass("active");
+
+		});
+		// browse加href属性
+	</script>
+</head>
+<style>
+	body{
+		font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+		line-height: 1.55;
+	}
+	.card-header{
+		text-align: center;
+		font-style: normal;
+		font-weight: 600;
+	}
+	.addborder {
+		border-radius: unset;
+		border: 1px solid #ababab;
+	}
+	#stats_table {
+		width: 100%;
+	}
+	#stats_table td {
+		padding: 0.1em;
+	}
+	#stats_table td.right-align{
+		text-align: right;
+	}
+
+	#news_table {
+		width: 100%;
+	}
+	#news_table td {
+		padding: 0.1em;
+	}
+	#news_table td.right-align{
+		text-align: right;
+	}
+
+	.sum_row>td{
+		font-weight: bold;
+	}
+	.card-body{
+		padding: 1em;
+	}
+
+</style>
+<body>
+    {% include 'public_templates/nav_tem.html' %}
+{% include 'public_templates/service_notice.html' %}
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-3 col-sm-2 mb-4"></div>
+			<div class="col-lg-6 col-sm-8 mb-4">
+				<h1 class="text-center " style="margin-top: 2rem;color: #17a2b8;font-size: 50px;">MALER</h1>
+
+				<p style="margin: 0 120px 0rem 0;color: darkgray;text-align: right;">Version: 1.0</p>
+			</div>
+			<div class="col-lg-3 col-sm-2 mb-4"></div>
+		</div>
+		<div class="card col-12">
+			<div class="card-body">
+				<h4 style="margin: 0 0 10px 0;">Welcome to MALER</h4>
+				<p>A web server to build, evaluate, and apply machine learning models for numerical biological and biomedical data analysis.</p>
+			</div>
+			<div class="row no-gutters">
+				<div class="col-lg-6 col-sm-12 mb-12">
+				<div class="card-body" >
+				<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bolder;">
+				What is MALER?
+				</nav>
+				<div class="card mb-3" style="border-radius: unset;border: 1px solid #ababab;">
+				<div class="card-body">
+				<p class="card-text">
+					Machine learning (ML) methods have accelerated discoveries in biological and biomedical research,
+                    especially in the analysis of big omics data. However, biologists often lack knowledge of ML theories
+                    and programming skills to easily apply ML in their research. The lack of a one-stop web server to
+                    build, evaluate, and compare the performance of different ML models for biological data has been a
+                    major obstacle for biologists to apply ML widely.
+				</p>
+                <p class="card-text">
+                    We developed <b>MALER</b> (Machine Learning Evaluation and Reporting server), a guided web application
+                    that helps biologists apply ML models to biological and biomedical data without writing code. MALER provides modules for
+                    (i) binary and (ii) multi-class classification, and (iii) regression and (iv) survival analysis that
+                    allow users to build, quantitatively evaluate, and compare multiple ML models with task-appropriate
+                    metrics. The reviewed local workflow refits learned transforms within model-search training folds.
+                    One-click compares per-family outer development estimates; choosing a family from those scores
+                    can make the winning mean optimistic. Only the chosen family is retuned and fitted on development
+                    data, then its fitted configuration is locked before held-out evaluation. Predict reuses its signed
+                    pipeline without retraining. Grouped and explicit-cutoff FSS/BSS are rejected; the sequential
+                    selectors' additional internal scores do not refit enclosing-fold preprocessing.
+                </p>
+                <p class="card-text">
+					In the <a href="analysis" style="font-weight: bold">ANALYSIS</a> page, users can upload their omics
+                    profile dataset and the corresponding labels to build and compare their custom ML models with step
+                    by step guidance. In the <a href="predict" style="font-weight: bold">PREDICT</a> page, users can
+                    upload their ML model and a omics profile with unknown labels to predict outcomes. You can find detailed
+					instructions on how to use MALER on the <a href="help" style="font-weight: bold">HELP</a> page.
+                </p>
+				</div>
+				</div>
+				</div>
+				</div>
+				<div class="col-lg-6 col-sm-12 mb-12">
+					<div class="card-body" style="padding-bottom: 0;">
+					<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bolder;">
+					MALER Workflow
+					</nav>
+					<div class="card mb-3" style="border-radius: unset;border: 1px solid #ababab">
+					<div class="card-body">
+						<img src="/mlserver_static/img/workflow_validated.svg?v=20261001.R2final" style="display: block; width: 100%; height: auto;" alt="MALER per-family development, post-outer family choice, chosen-family fitting, fitted configuration lock, held-out evaluation, signed export and Predict reuse">
+<!-- 					<table id='stats_table'>
+						<tbody>
+						</tbody>
+					</table> -->
+					</div>
+					</div>
+					</div>
+					<div class="card-body" style="padding-top: 0;">
+					<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bolder;">
+					News & Updates
+					</nav>
+					<div class="card mb-3" style="border-radius: unset;border: 1px solid #ababab;padding-bottom: 70px">
+					<div class="card-body" >
+						<div style="float:left">MALER 1.0 was released.</div>
+						<div style="float:right">[2023-12-18]</div>
+					<table id='news_table'>
+						<tbody>
+<!--							<tr><td>Updated based on NAR reviewers' feedback.</td><td class="right-align">[2022-09-24]</td></tr>-->
+<!--							<tr><td>Data were updated.</td><td class="right-align">[2022-07-18]</td></tr>-->
+<!--							<tr><td>OrganoidDB 1.0 was released.</td><td class="right-align">[2022-06-17]</td></tr>-->
+						</tbody>
+					</table>
+					</div>
+					</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-12 no-gutters" >
+
+                <nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bolder;">
+                What can MALER do?
+                </nav>
+                <div class="row no-gutters" style="border: 1px solid #ababab; border-radius: unset; margin-bottom: 1em;">
+
+                    <div class="col-12" >
+                        <div class="row no-gutters" >
+                            <div class="col-4 card-header">Four Analysis Modes</div>
+                            <div class="col-4 card-header">Feature Selection methods and Optimal Feature Subset Methods</div>
+							<div class="col-4 card-header">One-click Analysis</div>
+                        </div>
+                        <div class="row col-12">
+
+                        <div class="col-4">
+                        <p class="card-text" style="text-align:center">
+							Binary classification, Multiclass classification, Regression, Survival.
+							<div><img src='/mlserver_static/img/mlstep1.png' width="300" height="200"></div>
+                        </p>
+                        <br>
+                        <br>
+<!--                        <img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/general_home.PNG" alt="general overview img">-->
+                        </div>
+
+                        <div class="col-4">
+                            <p class="card-text" style="text-align:center">
+								ANOVA, MRMR, Cox ranking; TopK, FSS, BSS subset search
+								<br></br>
+								<p ><img src='/mlserver_static/img/home2.png' width="320" height="180"></p>
+							</p>
+<!--							<img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/org_spec_home.PNG" alt="organoid specificity img">-->
+                        </div>
+						<div class="col-4">
+							<p class="card-text" style="text-align:center">
+								Compare multiple ML models in one guided workflow.
+								<p ><img src='/mlserver_static/img/home3.png' width="320" height="260"></p>
+								<!-- <p ><img src='/mlserver_static/img/home3.png' width="320" height="120"></p> -->
+
+							</p>
+<!--							<img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/org_spec_home.PNG" alt="organoid specificity img">-->
+                        </div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-4 card-header">Customized ML Analysis</div>
+							<div class="col-4 card-header">Build and Download ML Models</div>
+							<div class="col-4 card-header">Make Predictions</div>
+                        </div>
+                        <div class="row col-12">
+                             <div class="col-4">
+                            <p class="card-text" style="text-align:center">
+								Customize the ML analysis by selecting models and parameters.
+								<!-- <br></br> -->
+								<p ><img src='/mlserver_static/img/home4.png' width="320" height="240"></p>
+							</p>
+                            <br>
+<!--							<img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/org_dev_home.PNG" alt="general overview img">-->
+
+                        </div>
+                        <div class="col-4">
+                            <p class="card-text" style="text-align:center">
+								Download ML models after analysis and training with step by step guidance.
+								<p ><img src='/mlserver_static/img/home5.png' width="320" height="150"></p>
+								
+							</p>
+                            <br>
+                            <br>
+                            <br>
+<!--							<img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/corr_home.PNG" alt="organoid specificity img">-->
+
+                        </div>
+						<div class="col-4">
+                            <p class="card-text" style="text-align:center">
+								<!-- make predictions -->
+								Download the model to predict external datasets.
+								
+								<p ><img src='/mlserver_static/img/home6.png' width="320" height="200"></p>
+							</p>
+                            <br>
+                            <br>
+                            <br>
+<!--							<img class="card-img-right" style="width: 100%;" src="/organoidb_static/img/help_img/corr_home.PNG" alt="organoid specificity img">-->
+
+                        </div>
+                        </div>
+
+
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+    <div class='container'>
+        <div class="database-description">
+            <p><em>To get a better experience with this site, <b>Chrome</b>,<b>Firefox</b> are advised!<em></p>
+			<p><em>{% if public_uploads_enabled %}The public research service is free to use without a login. Upload authorized, non-sensitive numerical data to develop and reuse models online. Read the data handling policy before uploading.{% else %}Public information pages are free to browse without a login. Uploads are temporarily paused; a controlled local installation is available.{% endif %}</em></p>
+        </div>
+		
+    </div>
+
+    <div class='container'>
+        <p style="color: black;">
+        <div class="container col-12">
+            <div class="row">
+                <svg class="bi bi-link-45deg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                     style="color: #0055ff;">
+                    <path d="M4.715 6.542L3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.001 1.001 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z" />
+                    <path d="M5.712 6.96l.167-.167a1.99 1.99 0 0 1 .896-.518 1.99 1.99 0 0 1 .518-.896l.167-.167A3.004 3.004 0 0 0 6 5.499c-.22.46-.316.963-.288 1.46z" />
+                    <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 0 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 0 0-4.243-4.243L6.586 4.672z" />
+                    <path d="M10 9.5a2.99 2.99 0 0 0 .288-1.46l-.167.167a1.99 1.99 0 0 1-.896.518 1.99 1.99 0 0 1-.518.896l-.167.167A3.004 3.004 0 0 0 10 9.501z" />
+                </svg>
+				
+                <!-- <h6>RELATED RESOURCE:	<b><a target="_blank" href="https://www.ncbi.nlm.nih.gov/geo/">GEO</a> | <a target="_blank" href="https://www.ebi.ac.uk/arrayexpress/">ArrayExpress</a> | <a target="_blank" href="https://www.gtexportal.org/home/">GTEx</a> | <a target="_blank" href="https://www.proteinatlas.org/">HPA</a></b></h6> -->
+            </div>
+        </div>
+        </p>
+    </div>
+
+
+    {% include 'public_templates/footer.html' %}
+</body>
+
+	<script>
+		// (function(){
+		// 	let stats_table = $('#stats_table>tbody');
+		//
+        //     function build_stats_table(data){
+		// 		stats_table.empty();
+        //         Object.entries(data).forEach(function(row){
+		// 			if (row[0].startsWith('#')){
+		// 				stats_table.append('<tr class="sum_row"><td>'+row[0]+'</td><td class="right-align">'+row[1]+'</td></tr>');
+		// 			}else{
+		// 				stats_table.append('<tr><td>'+row[0]+'</td><td class="right-align">'+row[1]+'</td></tr>');
+		// 			}
+		// 		})
+        //     }
+		//
+		// 	$("#nav_home").addClass("active");
+		// 	$("#page_title").text('HOME');
+		//
+		// 	$(document).ready(function() {
+		// 		$.when($.ajax('/organoid_db/statistics/stats_table'))
+		// 		 .then(function(data, status){
+		// 			parsed = JSON.parse(data);
+		// 			build_stats_table(parsed)
+		// 		})
+		// 	})
+		//
+		// 	// function odb_ajax(url, postData) {
+		// 	// 	o_ajax = {
+		// 	// 		type: 'POST',
+		// 	// 		url: url,
+		// 	// 		headers: {'X-CSRFToken': '{{csrf_token}}'},
+		// 	// 		data: postData //used to pass data set choice i.e gtex or organoidDB
+		// 	// 	}
+		// 	// 	return o_ajax;
+		// 	// }
+		// })();
+	</script>
+</html>

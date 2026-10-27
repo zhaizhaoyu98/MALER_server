@@ -1,0 +1,12 @@
+{
+  "client_utc": "2026-10-24T07:53:45.975728+00:00",
+  "controller_shutdown_accepted": {
+    "shutdown_requested": true
+  },
+  "health_unreachable": true,
+  "listening": false,
+  "scope": "Temporary authenticated maintenance controller and SSH forward; production systemd service is separate",
+  "tcp_listener_checked": true,
+  "production_information_checks_after_shutdown_passed": true,
+  "post_shutdown_checks_utc": "2026-10-24T07:55:05.540248+00:00"
+}

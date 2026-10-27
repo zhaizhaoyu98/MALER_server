@@ -1,0 +1,18 @@
+[uwsgi]
+chdir = /srv/maler/MLSERVER
+module = ML_WebServer.wsgi:application
+master = true
+processes = 4
+threads = 2
+socket = /run/maler/maler.sock
+chmod-socket = 660
+vacuum = true
+die-on-term = true
+need-app = true
+harakiri = 1800
+max-requests = 500
+reload-on-rss = 2048
+disable-logging = false
+
+# Public calculation routes use ordinary WSGI responses. Historical
+# dwebsocket calculation endpoints are disabled by the Django URL map.

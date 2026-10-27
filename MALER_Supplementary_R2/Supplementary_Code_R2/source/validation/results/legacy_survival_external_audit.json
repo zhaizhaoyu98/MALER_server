@@ -1,0 +1,52 @@
+{
+  "data_path": "E:\\CodeProject\\Server\\MLSERVER\\mlserver\\static\\cache\\example\\survival_example.csv",
+  "data_sha256": "85d2df86473c90018d98f90a30d77935a2c57a0877cbc1d62f639b4be0b88189",
+  "external_events": 110,
+  "external_metrics": {
+    "c_index": 0.5806608950128033,
+    "c_index_bootstrap_95_ci": [
+      0.522872858503301,
+      0.6392432636151186
+    ],
+    "integrated_brier_score": 0.2591745644027389,
+    "integrated_brier_score_samples": 129,
+    "time_auc_mean": 0.6102955390246111,
+    "time_auc_times": [
+      250.0,
+      401.0,
+      710.0
+    ],
+    "time_auc_values": [
+      0.5841635645502377,
+      0.6024824483858551,
+      0.6436752797601756
+    ]
+  },
+  "external_samples": 133,
+  "features": [
+    "RGS14",
+    "SLC39A10",
+    "SEMA4F",
+    "HOXB2",
+    "EFEMP2",
+    "ANK1",
+    "NDUFB2-AS1",
+    "MAP1LC3A",
+    "MDK",
+    "G6PC3",
+    "TMEM233",
+    "IGFBP2",
+    "EEF1A1",
+    "TRABD2A"
+  ],
+  "interpretation": "The pre-existing model transports better than the de-novo single-tree reference, but its historical feature-selection provenance prevents use as the primary unbiased estimate.",
+  "model_class": "sksurv.ensemble.forest.ExtraSurvivalTrees",
+  "model_path": "E:\\CodeProject\\Server\\MLSERVER\\mlserver\\static\\cache\\example\\Survival_ExtraSurvivalTrees.pkl",
+  "model_sha256": "66d0c27a46fcbb216db12c18239b5e1601fc1358b534813a90dbd104a9dfdd0c",
+  "n_features": 14,
+  "status": "supporting external audit; historical selection provenance not fully reconstructable",
+  "training_c_index_descriptive": 0.8314280529849392,
+  "training_samples": 167,
+  "trusted_repository_artifact": true,
+  "user_pickle_policy": "user-provided pickle remains rejected"
+}

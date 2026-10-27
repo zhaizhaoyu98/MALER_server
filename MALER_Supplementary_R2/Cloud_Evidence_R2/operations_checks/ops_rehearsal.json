@@ -1,0 +1,80 @@
+{
+  "server_utc": "2026-10-22T13:04:11.318120Z",
+  "identity_before": {
+    "server_utc": "2026-10-22T13:04:10.976612Z",
+    "source_commit": "0b2435434a5fde670e317670980619dbabdfc372",
+    "source_clean": true,
+    "source_directory": "/mnt/home/liqiang/maler_revision2_20260930/source_public_0b24354",
+    "process_exe": "/mnt/home/liqiang/.conda/envs/gene_edit/bin/python3.7",
+    "master_pid": 2428053,
+    "public_uploads_enabled": true,
+    "task_root": "/var/lib/maler_public_r2/tasks",
+    "database_path": "/var/lib/maler_public_r2/state/public.sqlite3"
+  },
+  "certificate_renewal_dry_run": {
+    "exit_code": 0,
+    "output": "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\nProcessing /etc/letsencrypt/renewal/www.inbirg.com.conf\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\nSimulating renewal of an existing certificate for www.inbirg.com\n\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\nCongratulations, all simulated renewals succeeded: \n  /etc/letsencrypt/live/www.inbirg.com/fullchain.pem (success)\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\nSaving debug log to /var/log/letsencrypt/letsencrypt.log"
+  },
+  "certificate_bytes_unchanged": true,
+  "nginx_config_unchanged": true,
+  "nginx_test": {
+    "exit_code": 0,
+    "output": "nginx: the configuration file /etc/nginx/nginx.conf syntax is ok\nnginx: configuration file /etc/nginx/nginx.conf test is successful"
+  },
+  "certificate_renewal_scope": "ACME staging dry run, existing nginx authenticator/installer; no deploy/pre/post hooks configured; no production certificate replacement",
+  "startup_recovery_rehearsal": {
+    "scope": "Isolated 32-MiB tmpfs and cloned dependency chain; existing initializer with only fixture paths replaced, same production source/interpreter/env with isolated task/database overrides. No public service restart or host reboot.",
+    "mount_to_storage_to_migration_succeeded": true,
+    "migrations_applied": 15,
+    "tables": [
+      "django_migrations",
+      "sqlite_sequence",
+      "auth_group",
+      "auth_group_permissions",
+      "auth_user_groups",
+      "auth_user_user_permissions",
+      "django_admin_log",
+      "django_content_type",
+      "auth_permission",
+      "auth_user",
+      "django_session"
+    ],
+    "private_directories_mode": "0700",
+    "fixture_units": {
+      "run-maler_recovery_check_20261022-volume.mount": {
+        "exit_code": 0,
+        "output": "Result=success\nId=run-maler_recovery_check_20261022-volume.mount\nRequires=system.slice -.mount\nWants=\nBefore=maler-recovery-audit-storage.service umount.target\nAfter=local-fs-pre.target swap.target systemd-journald.socket system.slice -.mount\nOnFailure=\nLoadState=loaded\nActiveState=active\nSubState=mounted\nUnitFileState=static"
+      },
+      "maler-recovery-audit-storage.service": {
+        "exit_code": 0,
+        "output": "Result=success\nExecMainStartTimestamp=Thu 2026-10-22 21:04:11 CST\nExecMainExitTimestamp=Thu 2026-10-22 21:04:12 CST\nExecMainStatus=0\nId=maler-recovery-audit-storage.service\nRequires=sysinit.target system.slice run-maler_recovery_check_20261022-volume.mount\nWants=\nBefore=maler-recovery-audit-app.service shutdown.target\nAfter=basic.target systemd-journald.socket run-maler_recovery_check_20261022-volume.mount system.slice sysinit.target\nOnFailure=\nLoadState=loaded\nActiveState=active\nSubState=exited\nUnitFileState=static"
+      },
+      "maler-recovery-audit-app.service": {
+        "exit_code": 0,
+        "output": "Result=success\nExecMainStartTimestamp=Thu 2026-10-22 21:04:12 CST\nExecMainExitTimestamp=Thu 2026-10-22 21:04:14 CST\nExecMainStatus=0\nId=maler-recovery-audit-app.service\nRequires=-.mount sysinit.target system.slice maler-recovery-audit-storage.service mnt.mount\nWants=\nBefore=shutdown.target\nAfter=mnt.mount maler-recovery-audit-storage.service system.slice sysinit.target systemd-journald.socket basic.target -.mount\nOnFailure=\nLoadState=loaded\nActiveState=active\nSubState=exited\nUnitFileState=static"
+      }
+    },
+    "prior_fixture_attempts": "Initial attempts exposed a real hard-coded candidate_settings database override. The overlay was corrected; previous migration attempts reported no pending migrations. Final rehearsal uses a second EnvironmentFile and checks resolved Django database path before migration. Prior failures retained; no public task contents inspected.",
+    "fixture_removed": true
+  },
+  "failure_handler_rehearsal": {
+    "intentional_isolated_failure_detected": true,
+    "local_marker": {
+      "server_utc": "2026-10-22T13:04:15.269750Z",
+      "failed_unit": "maler-ops-audit-intentional-failure.service",
+      "external_notification_sent": false
+    },
+    "external_notification_sent": false
+  },
+  "identity_after": {
+    "server_utc": "2026-10-22T13:04:15.545029Z",
+    "source_commit": "0b2435434a5fde670e317670980619dbabdfc372",
+    "source_clean": true,
+    "source_directory": "/mnt/home/liqiang/maler_revision2_20260930/source_public_0b24354",
+    "process_exe": "/mnt/home/liqiang/.conda/envs/gene_edit/bin/python3.7",
+    "master_pid": 2428053,
+    "public_uploads_enabled": true,
+    "task_root": "/var/lib/maler_public_r2/tasks",
+    "database_path": "/var/lib/maler_public_r2/state/public.sqlite3"
+  }
+}

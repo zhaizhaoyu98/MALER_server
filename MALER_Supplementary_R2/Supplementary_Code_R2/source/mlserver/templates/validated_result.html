@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MALER validated analysis</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% include 'public_templates/bootstrap.html' %}
+</head>
+<body>
+{% include 'public_templates/nav_tem.html' %}
+<main class="container" style="max-width: 1100px; min-height: calc(100vh - 180px); padding: 30px 15px;">
+    <h2>Validated analysis</h2>
+    <p><strong>Project:</strong> {{ projectid }}</p>
+    <div class="alert alert-info">
+        Learned preprocessing, feature reduction and hyperparameter tuning are refit inside each
+        training fold. Each CV estimate is for a fixed estimator family. The family selected from
+        these development scores is evaluated once on the heldout cohort.
+    </div>
+    {% if error %}
+    <div class="alert alert-danger"><strong>Analysis failed:</strong> {{ error }}</div>
+    <p>The uploaded project remains available so that the input or configuration can be corrected.</p>
+    {% elif result %}
+    {% if notification %}<div class="alert alert-secondary">{{ notification }}</div>{% endif %}
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Dataset</h4>
+            <ul>
+                <li>{{ result.dataset.training_samples }} training samples</li>
+                <li>{{ result.dataset.testing_samples }} held-out testing samples</li>
+                <li>{{ result.dataset.blind_samples }} blind samples</li>
+                <li>{{ result.dataset.features }} input features</li>
+                <li>Split level: {{ result.dataset.split_level }}{% if result.dataset.development_subjects %} ({{ result.dataset.development_subjects }} development subjects){% endif %}</li>
+                <li>Cohort origin: a supplied label alone does not establish independent external validation.</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h4>Validation design</h4>
+            <ul>
+                <li>{{ result.validation.outer_repeats }} × {{ result.validation.outer_splits }} configured outer folds; each model records its actual repeat count</li>
+                <li>{{ result.validation.inner_splits }} inner folds</li>
+                <li>Feature reduction: {{ result.feature_reduction }}</li>
+                <li>Selection metric: {{ result.validation.selection_metric }}</li>
+                {% if result.positive_class != None %}<li>Positive class: {{ result.positive_class }}</li>
+                <li>Threshold policy: {{ result.validation.threshold_policy }}{% if result.validation.threshold_value != None %} ({{ result.validation.threshold_value }}){% endif %}</li>{% endif %}
+                <li>Registry version: {{ result.registry_version }}</li>
+                <li>Source commit: {{ result.software.commit }}{% if result.software.dirty %} (modified checkout){% endif %}</li>
+            </ul>
+        </div>
+    </div>
+    <p><strong>Selected family:</strong> {{ result.selected_family }}. Selection was recorded at {{ result.selection.selected_at }} UTC before heldout evaluation. Candidate CV summaries describe development performance and may be optimistic after family selection.</p>
+    <h4>Performance</h4>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead><tr><th>Model</th><th>Evidence</th><th>Metric</th><th>Value</th></tr></thead>
+            <tbody>
+            {% for row in metric_rows %}
+                <tr><td>{{ row.model }}</td><td>{{ row.source }}</td><td>{{ row.metric }}</td><td>{{ row.value }}</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if result.failures %}
+    <div class="alert alert-warning">
+        <strong>Models not completed:</strong>
+        <ul>{% for failure in result.failures %}<li>{{ failure.key }}: {{ failure.error }}</li>{% endfor %}</ul>
+    </div>
+    {% endif %}
+    {% if result.warnings %}
+    <div class="alert alert-secondary"><ul>{% for warning in result.warnings %}<li>{{ warning }}</li>{% endfor %}</ul></div>
+    {% endif %}
+    <h4>Reproducibility artifacts</h4>
+    <ul>{% for model in result.models %}<li>{{ model.key }}: {{ model.nested_cv.actual_repeats }} distinct outer repeats,
+        {{ model.nested_cv.folds|length }} outer evaluations; {{ model.candidate_count }} candidate configurations.
+        {% if model.best_params != None %}Final development refit: {{ model.best_params }}{% endif %}</li>{% endfor %}</ul>
+    <p><a class="btn btn-outline-info" href="/maler/task/{{ projectid }}/result.json?token={{ access_token|urlencode }}">Download complete JSON result</a></p>
+    {% for model in result.models %}
+        {% if model.model_bundle %}
+        <a class="btn btn-outline-secondary btn-sm" href="/maler/task/{{ projectid }}/model/{{ model.model_bundle }}?token={{ access_token|urlencode }}">{{ model.key }} signed model</a>
+        {% endif %}
+        {% for cohort, filename in model.prediction_files.items %}
+        <a class="btn btn-outline-secondary btn-sm" href="/maler/task/{{ projectid }}/artifact/{{ filename }}?token={{ access_token|urlencode }}">{{ model.key }} {{ cohort }} predictions</a>
+        {% endfor %}
+    {% endfor %}
+    {% else %}
+    <div class="alert alert-secondary">No validated result has been generated for this project.</div>
+    {% endif %}
+    <hr>
+    <p>Result links expire after {{ task_retention_hours }} hours. The Delete button removes this project's active task directory. New public task files use private volatile storage and may disappear earlier after a host reboot or operational failure. Expired active files are removed by scheduled cleanup; token expiry alone does not delete files. Other copies remain outside an all-copy erasure guarantee. Read the <a href="/maler/help#public-data-policy">data handling and retention policy</a> and download required results promptly.</p>
+    <form method="post" action="/maler/task/{{ projectid }}/delete" onsubmit="return confirm('Permanently delete this project and all generated files?');">
+        {% csrf_token %}
+        <input type="hidden" name="access_token" value="{{ access_token }}">
+        <button type="submit" class="btn btn-danger">Delete this project now</button>
+    </form>
+</main>
+{% include 'public_templates/footer.html' %}
+</body>
+</html>

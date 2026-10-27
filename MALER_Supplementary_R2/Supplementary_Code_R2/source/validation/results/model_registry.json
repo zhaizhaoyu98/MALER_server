@@ -1,0 +1,591 @@
+{
+  "feature_reduction": {
+    "none": {
+      "description": "No feature reduction",
+      "parameters": {}
+    },
+    "pca": {
+      "description": "Fold-local principal component analysis; components are not gene signatures",
+      "parameters": {
+        "n_components": [
+          10,
+          20,
+          50
+        ]
+      }
+    },
+    "select_k_best": {
+      "description": "Fold-local univariate task-specific ranking",
+      "parameters": {
+        "k": [
+          10,
+          20,
+          50,
+          100
+        ]
+      }
+    }
+  },
+  "model_registry": {
+    "classification": {
+      "models": {
+        "adaboost": {
+          "class": "sklearn.ensemble.AdaBoostClassifier",
+          "defaults": {
+            "learning_rate": 0.1,
+            "n_estimators": 100,
+            "random_state": 10
+          },
+          "grid": {
+            "learning_rate": [
+              0.03,
+              0.1,
+              0.3
+            ],
+            "n_estimators": [
+              50,
+              100,
+              250
+            ]
+          },
+          "requires_scaling": false
+        },
+        "decision_tree": {
+          "class": "sklearn.tree.DecisionTreeClassifier",
+          "defaults": {
+            "random_state": 10
+          },
+          "grid": {
+            "max_depth": [
+              null,
+              3,
+              5,
+              10
+            ],
+            "min_samples_leaf": [
+              1,
+              3,
+              5,
+              10
+            ]
+          },
+          "requires_scaling": false
+        },
+        "gradient_boosting": {
+          "class": "sklearn.ensemble.GradientBoostingClassifier",
+          "defaults": {
+            "learning_rate": 0.1,
+            "n_estimators": 100,
+            "random_state": 10
+          },
+          "grid": {
+            "learning_rate": [
+              0.03,
+              0.1
+            ],
+            "max_depth": [
+              1,
+              2,
+              3
+            ],
+            "n_estimators": [
+              100,
+              250
+            ]
+          },
+          "requires_scaling": false
+        },
+        "knn": {
+          "class": "sklearn.neighbors.KNeighborsClassifier",
+          "defaults": {
+            "n_neighbors": 5,
+            "p": 2,
+            "weights": "uniform"
+          },
+          "grid": {
+            "n_neighbors": [
+              3,
+              5,
+              9,
+              15
+            ],
+            "p": [
+              1,
+              2
+            ],
+            "weights": [
+              "uniform",
+              "distance"
+            ]
+          },
+          "requires_scaling": true
+        },
+        "lightgbm": {
+          "class": "lightgbm.LGBMClassifier",
+          "defaults": {
+            "n_estimators": 100,
+            "n_jobs": 1,
+            "random_state": 10
+          },
+          "grid": {
+            "learning_rate": [
+              0.03,
+              0.1
+            ],
+            "n_estimators": [
+              100,
+              250
+            ],
+            "num_leaves": [
+              15,
+              31,
+              63
+            ]
+          },
+          "requires_scaling": false
+        },
+        "logistic_regression": {
+          "class": "sklearn.linear_model.LogisticRegression",
+          "defaults": {
+            "C": 1.0,
+            "max_iter": 4000,
+            "random_state": 10,
+            "solver": "liblinear"
+          },
+          "grid": {
+            "C": [
+              0.1,
+              1.0,
+              10.0
+            ],
+            "penalty": [
+              "l1",
+              "l2"
+            ]
+          },
+          "requires_scaling": true
+        },
+        "naive_bayes": {
+          "class": "sklearn.naive_bayes.GaussianNB",
+          "defaults": {
+            "var_smoothing": 1e-09
+          },
+          "grid": {
+            "var_smoothing": [
+              1e-11,
+              1e-09,
+              1e-07
+            ]
+          },
+          "requires_scaling": false
+        },
+        "random_forest": {
+          "class": "sklearn.ensemble.RandomForestClassifier",
+          "defaults": {
+            "n_estimators": 300,
+            "n_jobs": 1,
+            "random_state": 10
+          },
+          "grid": {
+            "max_depth": [
+              null,
+              5,
+              10
+            ],
+            "max_features": [
+              "sqrt",
+              0.5
+            ],
+            "min_samples_leaf": [
+              1,
+              3,
+              5
+            ]
+          },
+          "requires_scaling": false
+        },
+        "svm": {
+          "class": "sklearn.svm.SVC",
+          "defaults": {
+            "C": 1.0,
+            "gamma": "scale",
+            "kernel": "rbf",
+            "probability": true
+          },
+          "grid": {
+            "C": [
+              0.1,
+              1.0,
+              10.0
+            ],
+            "gamma": [
+              "scale",
+              "auto"
+            ],
+            "kernel": [
+              "linear",
+              "rbf"
+            ]
+          },
+          "requires_scaling": true
+        },
+        "xgboost": {
+          "class": "xgboost.XGBClassifier",
+          "defaults": {
+            "learning_rate": 0.3,
+            "n_estimators": 100,
+            "n_jobs": 1,
+            "random_state": 10
+          },
+          "grid": {
+            "learning_rate": [
+              0.03,
+              0.1,
+              0.3
+            ],
+            "max_depth": [
+              3,
+              6
+            ],
+            "n_estimators": [
+              100,
+              250
+            ]
+          },
+          "requires_scaling": false
+        }
+      },
+      "primary_metric": "balanced_accuracy",
+      "splitter": "RepeatedStratifiedKFold"
+    },
+    "regression": {
+      "models": {
+        "adaboost": {
+          "class": "sklearn.ensemble.AdaBoostRegressor",
+          "defaults": {
+            "learning_rate": 0.1,
+            "n_estimators": 100,
+            "random_state": 10
+          },
+          "grid": {
+            "learning_rate": [
+              0.03,
+              0.1,
+              0.3
+            ],
+            "n_estimators": [
+              50,
+              100,
+              250
+            ]
+          },
+          "requires_scaling": false
+        },
+        "decision_tree": {
+          "class": "sklearn.tree.DecisionTreeRegressor",
+          "defaults": {
+            "random_state": 10
+          },
+          "grid": {
+            "max_depth": [
+              null,
+              3,
+              5,
+              10
+            ],
+            "min_samples_leaf": [
+              1,
+              3,
+              5,
+              10
+            ]
+          },
+          "requires_scaling": false
+        },
+        "gradient_boosting": {
+          "class": "sklearn.ensemble.GradientBoostingRegressor",
+          "defaults": {
+            "learning_rate": 0.1,
+            "n_estimators": 100,
+            "random_state": 10
+          },
+          "grid": {
+            "learning_rate": [
+              0.03,
+              0.1
+            ],
+            "max_depth": [
+              1,
+              2,
+              3
+            ],
+            "n_estimators": [
+              100,
+              250
+            ]
+          },
+          "requires_scaling": false
+        },
+        "lasso": {
+          "class": "sklearn.linear_model.Lasso",
+          "defaults": {
+            "alpha": 1.0,
+            "max_iter": 5000,
+            "random_state": 10
+          },
+          "grid": {
+            "alpha": [
+              0.001,
+              0.01,
+              0.1,
+              1.0
+            ]
+          },
+          "requires_scaling": true
+        },
+        "linear_regression": {
+          "class": "sklearn.linear_model.LinearRegression",
+          "defaults": {},
+          "grid": {
+            "fit_intercept": [
+              true,
+              false
+            ]
+          },
+          "requires_scaling": false
+        },
+        "random_forest": {
+          "class": "sklearn.ensemble.RandomForestRegressor",
+          "defaults": {
+            "n_estimators": 300,
+            "n_jobs": 1,
+            "random_state": 10
+          },
+          "grid": {
+            "max_depth": [
+              null,
+              5,
+              10
+            ],
+            "max_features": [
+              "sqrt",
+              0.5,
+              1.0
+            ],
+            "min_samples_leaf": [
+              1,
+              3,
+              5
+            ]
+          },
+          "requires_scaling": false
+        },
+        "ridge": {
+          "class": "sklearn.linear_model.Ridge",
+          "defaults": {
+            "alpha": 1.0,
+            "random_state": 10
+          },
+          "grid": {
+            "alpha": [
+              0.1,
+              1.0,
+              10.0,
+              100.0
+            ]
+          },
+          "requires_scaling": true
+        },
+        "svr": {
+          "class": "sklearn.svm.SVR",
+          "defaults": {
+            "C": 1.0,
+            "gamma": "scale",
+            "kernel": "rbf"
+          },
+          "grid": {
+            "C": [
+              0.1,
+              1.0,
+              10.0
+            ],
+            "epsilon": [
+              0.01,
+              0.1
+            ],
+            "kernel": [
+              "linear",
+              "rbf"
+            ]
+          },
+          "requires_scaling": true
+        },
+        "xgboost": {
+          "class": "xgboost.XGBRegressor",
+          "defaults": {
+            "learning_rate": 0.3,
+            "n_estimators": 100,
+            "n_jobs": 1,
+            "random_state": 10
+          },
+          "grid": {
+            "learning_rate": [
+              0.03,
+              0.1,
+              0.3
+            ],
+            "max_depth": [
+              3,
+              6
+            ],
+            "n_estimators": [
+              100,
+              250
+            ]
+          },
+          "requires_scaling": false
+        }
+      },
+      "primary_metric": "r2",
+      "splitter": "RepeatedKFold"
+    },
+    "survival": {
+      "models": {
+        "coxnet": {
+          "class": "sksurv.linear_model.CoxnetSurvivalAnalysis",
+          "defaults": {
+            "alpha_min_ratio": 0.01,
+            "fit_baseline_model": true,
+            "l1_ratio": 0.5,
+            "n_alphas": 50
+          },
+          "grid": {
+            "l1_ratio": [
+              0.1,
+              0.5,
+              0.9
+            ]
+          },
+          "requires_scaling": true
+        },
+        "coxph": {
+          "class": "sksurv.linear_model.CoxPHSurvivalAnalysis",
+          "defaults": {
+            "alpha": 1.0
+          },
+          "grid": {
+            "alpha": [
+              0.1,
+              1.0,
+              10.0
+            ]
+          },
+          "requires_scaling": true
+        },
+        "extra_survival_trees": {
+          "class": "sksurv.ensemble.ExtraSurvivalTrees",
+          "defaults": {
+            "n_estimators": 300,
+            "n_jobs": 1,
+            "random_state": 10
+          },
+          "grid": {
+            "max_features": [
+              "sqrt",
+              0.5
+            ],
+            "min_samples_leaf": [
+              3,
+              5,
+              10
+            ]
+          },
+          "requires_scaling": false
+        },
+        "gradient_boosting_survival": {
+          "class": "sksurv.ensemble.GradientBoostingSurvivalAnalysis",
+          "defaults": {
+            "learning_rate": 0.1,
+            "n_estimators": 100,
+            "random_state": 10
+          },
+          "grid": {
+            "learning_rate": [
+              0.03,
+              0.1
+            ],
+            "max_depth": [
+              1,
+              2
+            ],
+            "n_estimators": [
+              100,
+              250
+            ]
+          },
+          "requires_scaling": false
+        },
+        "random_survival_forest": {
+          "class": "sksurv.ensemble.RandomSurvivalForest",
+          "defaults": {
+            "n_estimators": 300,
+            "n_jobs": 1,
+            "random_state": 10
+          },
+          "grid": {
+            "max_features": [
+              "sqrt",
+              0.5
+            ],
+            "min_samples_leaf": [
+              5,
+              10,
+              20
+            ]
+          },
+          "requires_scaling": false
+        },
+        "survival_svm": {
+          "class": "sksurv.svm.FastSurvivalSVM",
+          "defaults": {
+            "alpha": 1.0,
+            "max_iter": 1000,
+            "random_state": 10
+          },
+          "grid": {
+            "alpha": [
+              0.01,
+              0.1,
+              1.0,
+              10.0
+            ]
+          },
+          "requires_scaling": true
+        },
+        "survival_tree": {
+          "class": "sksurv.tree.SurvivalTree",
+          "defaults": {
+            "min_samples_leaf": 10,
+            "random_state": 10
+          },
+          "grid": {
+            "max_depth": [
+              2,
+              3,
+              5
+            ],
+            "min_samples_leaf": [
+              5,
+              10,
+              20
+            ]
+          },
+          "requires_scaling": false
+        }
+      },
+      "primary_metric": "c_index",
+      "splitter": "RepeatedStratifiedKFold(event indicator)"
+    }
+  },
+  "registry_version": 1
+}

@@ -1,0 +1,230 @@
+{
+  "server_utc": "2026-10-22T12:42:53.308175Z",
+  "identity": {
+    "server_utc": "2026-10-22T12:42:52.979050Z",
+    "source_commit": "0b2435434a5fde670e317670980619dbabdfc372",
+    "source_clean": true,
+    "source_directory": "/mnt/home/liqiang/maler_revision2_20260930/source_public_0b24354",
+    "process_exe": "/mnt/home/liqiang/.conda/envs/gene_edit/bin/python3.7",
+    "master_pid": 2283688,
+    "public_uploads_enabled": true,
+    "task_root": "/var/lib/maler_public_r2/tasks",
+    "database_path": "/var/lib/maler_public_r2/state/public.sqlite3"
+  },
+  "units": {
+    "maler-r2-restricted.service": {
+      "exit_code": 0,
+      "output": "Result=success\nExecMainStartTimestamp=Thu 2026-10-22 16:34:17 CST\nExecMainExitTimestamp=\nExecMainStatus=0\nId=maler-r2-restricted.service\nRequires=maler-public-storage.service sysinit.target system.slice -.mount mnt.mount\nWants=\nBefore=shutdown.target multi-user.target\nAfter=systemd-tmpfiles-setup.service maler-public-storage.service sysinit.target system.slice systemd-journald.socket network.target basic.target -.mount mnt.mount tmp.mount\nOnFailure=\nLoadState=loaded\nActiveState=active\nSubState=running\nUnitFileState=enabled"
+    },
+    "nginx.service": {
+      "exit_code": 0,
+      "output": "Result=success\nExecMainStartTimestamp=Wed 2026-06-10 11:09:03 CST\nExecMainExitTimestamp=\nExecMainStatus=0\nId=nginx.service\nRequires=-.mount system.slice sysinit.target\nWants=\nBefore=shutdown.target multi-user.target\nAfter=basic.target nss-lookup.target system.slice network.target systemd-journald.socket sysinit.target systemd-tmpfiles-setup.service tmp.mount -.mount remote-fs.target\nOnFailure=\nLoadState=loaded\nActiveState=active\nSubState=running\nUnitFileState=enabled"
+    },
+    "var-lib-maler_public_r2.mount": {
+      "exit_code": 0,
+      "output": "Result=success\nId=var-lib-maler_public_r2.mount\nRequires=-.mount system.slice\nWants=\nBefore=umount.target maler-public-storage.service multi-user.target\nAfter=swap.target local-fs-pre.target system.slice -.mount systemd-journald.socket\nOnFailure=\nLoadState=loaded\nActiveState=active\nSubState=mounted\nUnitFileState=enabled"
+    },
+    "maler-public-storage.service": {
+      "exit_code": 0,
+      "output": "Result=success\nExecMainStartTimestamp=Thu 2026-10-22 15:58:08 CST\nExecMainExitTimestamp=Thu 2026-10-22 15:58:08 CST\nExecMainStatus=0\nId=maler-public-storage.service\nRequires=sysinit.target system.slice var-lib-maler_public_r2.mount\nWants=\nBefore=maler-public-cleanup.service multi-user.target shutdown.target maler-r2-restricted.service\nAfter=sysinit.target systemd-journald.socket var-lib-maler_public_r2.mount basic.target system.slice\nOnFailure=\nLoadState=loaded\nActiveState=active\nSubState=exited\nUnitFileState=enabled"
+    },
+    "maler-public-cleanup.service": {
+      "exit_code": 0,
+      "output": "Result=success\nExecMainStartTimestamp=Thu 2026-10-22 20:39:08 CST\nExecMainExitTimestamp=Thu 2026-10-22 20:39:18 CST\nExecMainStatus=0\nId=maler-public-cleanup.service\nRequires=system.slice maler-public-storage.service -.mount sysinit.target mnt.mount\nWants=\nBefore=shutdown.target\nAfter=mnt.mount basic.target -.mount sysinit.target systemd-journald.socket maler-public-cleanup.timer system.slice maler-public-storage.service tmp.mount systemd-tmpfiles-setup.service\nOnFailure=\nLoadState=loaded\nActiveState=inactive\nSubState=dead\nUnitFileState=static"
+    },
+    "maler-public-cleanup.timer": {
+      "exit_code": 0,
+      "output": "TimersMonotonic={ OnUnitActiveUSec=5min ; next_elapse=1y 3month 1w 6d 20h 4min 28.600982s }\nTimersMonotonic={ OnBootUSec=1min ; next_elapse=1min }\nNextElapseUSecRealtime=\nNextElapseUSecMonotonic=1y 3month 1w 6d 20h 4min 28.600982s\nLastTriggerUSec=Thu 2026-10-22 20:39:08 CST\nResult=success\nId=maler-public-cleanup.timer\nRequires=sysinit.target\nWants=\nBefore=timers.target maler-public-cleanup.service shutdown.target\nAfter=sysinit.target\nOnFailure=\nLoadState=loaded\nActiveState=active\nSubState=waiting\nUnitFileState=enabled"
+    },
+    "chronyd.service": {
+      "exit_code": 0,
+      "output": "Result=timeout\nExecMainStartTimestamp=Wed 2025-07-09 11:09:42 CST\nExecMainExitTimestamp=Wed 2025-07-09 11:11:12 CST\nExecMainStatus=0\nId=chronyd.service\nRequires=sysinit.target system.slice -.mount\nWants=\nBefore=shutdown.target multi-user.target\nAfter=ntpd.service sntp.service -.mount systemd-journald.socket tmp.mount basic.target ntpdate.service system.slice systemd-tmpfiles-setup.service sysinit.target\nOnFailure=\nLoadState=loaded\nActiveState=failed\nSubState=failed\nUnitFileState=enabled"
+    },
+    "ntpd.service": {
+      "exit_code": 0,
+      "output": "Result=success\nExecMainStartTimestamp=\nExecMainExitTimestamp=\nExecMainStatus=0\nId=ntpd.service\nRequires=\nWants=\nBefore=chronyd.service mysqld.service\nAfter=\nOnFailure=\nLoadState=not-found\nActiveState=inactive\nSubState=dead\nUnitFileState="
+    },
+    "systemd-timesyncd.service": {
+      "exit_code": 0,
+      "output": "Result=success\nExecMainStartTimestamp=\nExecMainExitTimestamp=\nExecMainStatus=0\nId=systemd-timesyncd.service\nRequires=\nWants=\nBefore=\nAfter=\nOnFailure=\nLoadState=not-found\nActiveState=inactive\nSubState=dead\nUnitFileState="
+    },
+    "certbot-renew.timer": {
+      "exit_code": 0,
+      "output": "NextElapseUSecRealtime=Fri 2026-10-23 10:14:33 CST\nNextElapseUSecMonotonic=0\nLastTriggerUSec=Thu 2026-10-22 15:58:22 CST\nResult=success\nId=certbot-renew.timer\nRequires=sysinit.target -.mount\nWants=\nBefore=shutdown.target timers.target certbot-renew.service\nAfter=-.mount time-sync.target sysinit.target\nOnFailure=\nLoadState=loaded\nActiveState=active\nSubState=waiting\nUnitFileState=enabled"
+    },
+    "certbot.timer": {
+      "exit_code": 0,
+      "output": "NextElapseUSecRealtime=\nNextElapseUSecMonotonic=infinity\nLastTriggerUSec=\nResult=success\nId=certbot.timer\nRequires=\nWants=\nBefore=\nAfter=\nOnFailure=\nLoadState=not-found\nActiveState=inactive\nSubState=dead\nUnitFileState="
+    }
+  },
+  "time_status": {
+    "exit_code": 0,
+    "output": ""
+  },
+  "chrony_tracking": {
+    "exit_code": 1,
+    "output": "506 Cannot talk to daemon"
+  },
+  "chrony_sources": {
+    "exit_code": 1,
+    "output": "506 Cannot talk to daemon"
+  },
+  "ntpq": {
+    "exit_code": -1,
+    "output": "FileNotFoundError"
+  },
+  "timers": {
+    "exit_code": 0,
+    "output": "NEXT                         LEFT          LAST                         PASSED       UNIT                         ACTIVATES\nThu 2026-10-22 20:44:08 CST  1min 14s left Thu 2026-10-22 20:39:08 CST  3min 45s ago maler-public-cleanup.timer   maler-public-cleanup.service\nThu 2026-10-22 20:50:00 CST  7min left     Thu 2026-10-22 20:40:01 CST  2min 51s ago sysstat-collect.timer        sysstat-collect.service\nThu 2026-10-22 21:07:40 CST  24min left    Thu 2026-10-22 19:41:08 CST  1h 1min ago  dnf-makecache.timer          dnf-makecache.service\nFri 2026-10-23 00:00:00 CST  3h 17min left Thu 2026-10-22 00:00:01 CST  20h ago      atop-rotate.timer            atop-rotate.service\nFri 2026-10-23 00:00:00 CST  3h 17min left Thu 2026-10-22 00:00:01 CST  20h ago      unbound-anchor.timer         unbound-anchor.service\nFri 2026-10-23 00:07:00 CST  3h 24min left Thu 2026-10-22 00:07:22 CST  20h ago      sysstat-summary.timer        sysstat-summary.service\nFri 2026-10-23 10:14:33 CST  13h left      Thu 2026-10-22 15:58:22 CST  4h 44min ago certbot-renew.timer          certbot-renew.service\nFri 2026-10-23 15:20:01 CST  18h left      Thu 2026-10-22 15:20:01 CST  5h 22min ago systemd-tmpfiles-clean.timer systemd-tmpfiles-clean.service\nMon 2026-10-26 00:44:07 CST  3 days left   Mon 2026-10-19 00:48:35 CST  3 days ago   fstrim.timer                 fstrim.service\n\n9 timers listed."
+  },
+  "certificate_tools": {
+    "certbot": "/bin/certbot",
+    "acme.sh": null,
+    "openssl": "/bin/openssl",
+    "chronyc": "/bin/chronyc",
+    "timedatectl": "/bin/timedatectl"
+  },
+  "no_swap_configured": true,
+  "mount": {
+    "exit_code": 0,
+    "output": "/var/lib/maler_public_r2 tmpfs  rw,nosuid,nodev,noexec,relatime,size=1572864k,mode=755"
+  },
+  "nginx_test": {
+    "exit_code": 0,
+    "output": "nginx: the configuration file /etc/nginx/nginx.conf syntax is ok\nnginx: configuration file /etc/nginx/nginx.conf test is successful"
+  },
+  "public_key_files": [
+    {
+      "exit_code": 0,
+      "output": "subject=CN = www.inbirg.com\nissuer=C = US, O = Let's Encrypt, CN = YR2\nnotBefore=Oct  9 06:10:05 2026 GMT\nnotAfter=Jan  7 06:10:04 2027 GMT\nserial=06EC75932B1521156E1EA31214C23EDBC359\nSHA256 Fingerprint=2B:67:5C:DC:45:65:31:67:1D:85:E7:CE:FA:B1:52:30:5A:47:6E:8C:C0:B7:E3:4D:84:9A:64:AF:F8:7C:B2:08",
+      "certificate_path": "/etc/letsencrypt/live/www.inbirg.com/fullchain.pem"
+    }
+  ],
+  "renewal_profiles": [
+    {
+      "path": "/etc/letsencrypt/renewal/www.inbirg.com.conf",
+      "sha256": "74234c502ff01b19dfb62b062c9a5cd20d0eee885330b430195b93aeb5f07b9a",
+      "selected_fields": {
+        "authenticator": "nginx",
+        "installer": "nginx",
+        "server": "https://acme-v02.api.letsencrypt.org/directory"
+      }
+    }
+  ],
+  "renewal_schedulers": [],
+  "public_config_files": {
+    "/etc/systemd/system/maler-r2-restricted.service": {
+      "sha256": "6249672ac3d4d7ee4bde5ae362e4963df73ad036682f89422c60919b89184e59",
+      "content": "[Unit]\nDescription=MALER R2 public research web service\nRequires=maler-public-storage.service\nAfter=network.target maler-public-storage.service\n\n[Service]\nType=simple\nUser=liqiang\nGroup=liqiang\nWorkingDirectory=/mnt/home/liqiang/maler_revision2_20260930/source_public_0b24354\nEnvironmentFile=/mnt/home/liqiang/maler_revision2_20260930/runtime/public_online_environment.env\nExecStartPre=/mnt/home/liqiang/.conda/envs/gene_edit/bin/python3.7 manage.py migrate --noinput\nExecStart=/mnt/home/liqiang/.conda/envs/gene_edit/bin/python3.7 -m gunicorn --bind 127.0.0.1:19043 --workers 2 --timeout 900 --pid /mnt/home/liqiang/maler_revision2_20260930/runtime/public_gunicorn.pid ML_WebServer.wsgi:application\nRestart=on-failure\nRestartSec=5\nUMask=0077\nNoNewPrivileges=true\nPrivateTmp=true\nProtectSystem=full\nMemoryMax=4G\nCPUQuota=200%\nTasksMax=256\nLimitNOFILE=8192\nLimitCORE=0\nKillSignal=SIGTERM\nTimeoutStopSec=60\n\n[Install]\nWantedBy=multi-user.target\n"
+    },
+    "/etc/systemd/system/var-lib-maler_public_r2.mount": {
+      "sha256": "ab938a4c9163fd67102115dc7c2df2deefca5989c54c678b00646bab4d07f8c5",
+      "content": "[Unit]\nDescription=MALER public volatile research task storage\n\n[Mount]\nWhat=tmpfs\nWhere=/var/lib/maler_public_r2\nType=tmpfs\nOptions=size=1536M,mode=0755,nodev,nosuid,noexec\n\n[Install]\nWantedBy=multi-user.target\n"
+    },
+    "/etc/systemd/system/maler-public-storage.service": {
+      "sha256": "2cae4060607cee7b87f91e377259cfe44a79d166f6ccac95ea198ccd687f1710",
+      "content": "[Unit]\nDescription=Initialize private MALER public temporary directories\nRequires=var-lib-maler_public_r2.mount\nAfter=var-lib-maler_public_r2.mount\n\n[Service]\nType=oneshot\nExecStart=/mnt/home/liqiang/.conda/envs/gene_edit/bin/python3.7 /usr/local/libexec/maler_public_storage.py\nRemainAfterExit=yes\n\n[Install]\nWantedBy=multi-user.target\n"
+    },
+    "/etc/systemd/system/maler-public-cleanup.service": {
+      "sha256": "de344466e0e8eb835b893c1a390e4edc0df16f6cb5445e096b69bb9682c5a4ea",
+      "content": "[Unit]\nDescription=Delete expired MALER public temporary tasks\nRequires=maler-public-storage.service\nAfter=maler-public-storage.service\n\n[Service]\nType=oneshot\nUser=liqiang\nGroup=liqiang\nUMask=0077\nWorkingDirectory=/mnt/home/liqiang/maler_revision2_20260930/source_public_0b24354\nEnvironmentFile=/mnt/home/liqiang/maler_revision2_20260930/runtime/public_online_environment.env\nExecStart=/mnt/home/liqiang/.conda/envs/gene_edit/bin/python3.7 /usr/local/libexec/maler_public_cleanup.py\nNoNewPrivileges=true\nPrivateTmp=true\nProtectSystem=full\nLimitCORE=0\n"
+    },
+    "/etc/systemd/system/maler-public-cleanup.timer": {
+      "sha256": "63745b6d618fda3acad23a229180a9203e091ef5576761a37682de287bb55be4",
+      "content": "[Unit]\nDescription=Five-minute MALER public temporary-data cleanup\n\n[Timer]\nOnBootSec=60s\nOnUnitActiveSec=300s\nAccuracySec=1s\nUnit=maler-public-cleanup.service\n\n[Install]\nWantedBy=timers.target\n"
+    },
+    "/usr/local/libexec/maler_public_storage.py": {
+      "sha256": "42eab18232a43c4738373b560be2359e0dadcf5400c5a2a527252048a0fb2311",
+      "content": "\"\"\"Initialize only the dedicated new public tmpfs after each host boot.\"\"\"\nimport os\nfrom pathlib import Path\nimport pwd\nimport subprocess\n\nroot=Path('/var/lib/maler_public_r2')\nkind=subprocess.check_output(['findmnt','-n','-o','FSTYPE','-T',str(root)]).decode().strip()\nassert os.geteuid()==0 and kind=='tmpfs' and root.resolve()==root\nfor name,account in [('tasks','liqiang'),('django_tmp','liqiang'),('work_tmp','liqiang'),('state','liqiang'),('nginx_tmp','nginx')]:\n    target=root/name\n    assert not target.is_symlink() and target.parent==root\n    target.mkdir(mode=0o700,exist_ok=True)\n    user=pwd.getpwnam(account)\n    os.chown(str(target),user.pw_uid,user.pw_gid);os.chmod(str(target),0o700)\nlog=Path('/var/log/maler_public_cleanup')\nassert not log.is_symlink()\nlog.mkdir(mode=0o700,exist_ok=True)\nuser=pwd.getpwnam('liqiang')\nos.chown(str(log),user.pw_uid,user.pw_gid);os.chmod(str(log),0o700)\nprint('Dedicated public volatile task, upload-buffer and state directories ready.')\n"
+    },
+    "/usr/local/libexec/maler_public_cleanup.py": {
+      "sha256": "ce006a6a3b14b463a2dfc27691f6d9b698671c4d2aad643f505f9af8bd3a09fc",
+      "content": "\"\"\"Scheduled cleanup of the new public tmpfs only; logs contain counts only.\"\"\"\nimport datetime\nimport json\nimport os\nfrom pathlib import Path\nimport shutil\nimport subprocess\nimport sys\nimport time\n\nroot=Path('/var/lib/maler_public_r2')\nassert Path(os.environ['MALER_TASK_ROOT']).resolve()==root/'tasks'\nassert subprocess.check_output(['findmnt','-n','-o','FSTYPE','-T',str(root)]).decode().strip()=='tmpfs'\nos.umask(0o077)\nprocess=subprocess.run([sys.executable,'manage.py','cleanup_maler_cache','--apply'],stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=90)\ntext=process.stdout.decode('utf-8',errors='replace').strip()\ndeadline=time.time()-float(os.environ.get('MALER_CACHE_RETENTION_HOURS','24'))*3600\ntemporary_deleted=0\nfor name in ('django_tmp','work_tmp'):\n    folder=root/name\n    assert folder.resolve()==folder and not folder.is_symlink()\n    for item in folder.iterdir():\n        if item.is_symlink() or item.lstat().st_mtime>=deadline:\n            continue\n        assert item.resolve().parent==folder\n        if item.is_dir():shutil.rmtree(str(item))\n        else:item.unlink()\n        temporary_deleted+=1\nrecord={'server_utc':datetime.datetime.utcnow().isoformat()+'Z','exit_code':process.returncode,\n        'task_cleanup_summary':text,'expired_temporary_entries_deleted':temporary_deleted,\n        'scope':'New public volatile task and upload/work buffers only; no NAS or backup traversal'}\nlog=Path('/var/log/maler_public_cleanup')\nwith (log/'runs.jsonl').open('a',encoding='utf-8') as output:output.write(json.dumps(record)+'\\n')\ntemp=log/'health.tmp';temp.write_text(json.dumps(record,indent=2)+'\\n',encoding='utf-8');temp.replace(log/'health.json')\nprint(json.dumps(record))\nsys.exit(process.returncode)\n"
+    }
+  },
+  "cleanup_health": {
+    "server_utc": "2026-10-22T12:39:18.261720Z",
+    "exit_code": 0,
+    "task_cleanup_summary": "cleanup mode=apply expired=0 deleted=0 failed=0",
+    "expired_temporary_entries_deleted": 0,
+    "scope": "New public volatile task and upload/work buffers only; no NAS or backup traversal"
+  },
+  "time_status_compat": {
+    "exit_code": 0,
+    "output": "Local time: Thu 2026-10-22 20:42:53 CST\n           Universal time: Thu 2026-10-22 12:42:53 UTC\n                 RTC time: Thu 2026-10-22 12:51:09\n                Time zone: Asia/Shanghai (CST, +0800)\nSystem clock synchronized: no\n              NTP service: inactive\n          RTC in local TZ: no"
+  },
+  "chrony_version": {
+    "exit_code": 0,
+    "output": "chronyd (chrony) version 4.2 (+CMDMON +NTP +REFCLOCK +RTC +PRIVDROP +SCFILTER +SIGND +ASYNCDNS +NTS +SECHASH +IPV6 +DEBUG)"
+  },
+  "chrony_unit": {
+    "exit_code": 0,
+    "output": "# /usr/lib/systemd/system/chronyd.service\n[Unit]\nDescription=NTP client/server\nDocumentation=man:chronyd(8) man:chrony.conf(5)\nAfter=ntpdate.service sntp.service ntpd.service\nConflicts=ntpd.service systemd-timesyncd.service\nConditionCapability=CAP_SYS_TIME\n\n[Service]\nType=forking\nPIDFile=/run/chrony/chronyd.pid\nEnvironmentFile=-/etc/sysconfig/chronyd\nExecStart=/usr/sbin/chronyd $OPTIONS\nExecStartPost=/usr/libexec/chrony-helper update-daemon\nExecStopPost=/usr/libexec/chrony-helper remove-daemon-state\nPrivateTmp=yes\nProtectHome=yes\nProtectSystem=full\n\n[Install]\nWantedBy=multi-user.target"
+  },
+  "chrony_log": {
+    "exit_code": 0,
+    "output": "-- Logs begin at Mon 2026-07-20 04:16:56 CST, end at Thu 2026-10-22 20:42:53 CST. --\n-- No entries --"
+  },
+  "chrony_config": {
+    "/etc/chrony.conf": {
+      "sha256": "8787fe081ebd4d90a854e3d4491ed33b033093bf1e7590ed73bc28ece1c35904",
+      "lines": [
+        "server ntp.cloud.aliyuncs.com minpoll 4 maxpoll 10 iburst",
+        "server ntp.aliyun.com minpoll 4 maxpoll 10 iburst",
+        "server ntp1.aliyun.com minpoll 4 maxpoll 10 iburst",
+        "server ntp1.cloud.aliyuncs.com minpoll 4 maxpoll 10 iburst",
+        "server ntp10.cloud.aliyuncs.com minpoll 4 maxpoll 10 iburst",
+        "server ntp11.cloud.aliyuncs.com minpoll 4 maxpoll 10 iburst",
+        "server ntp12.cloud.aliyuncs.com minpoll 4 maxpoll 10 iburst",
+        "server ntp2.aliyun.com minpoll 4 maxpoll 10 iburst",
+        "server ntp2.cloud.aliyuncs.com minpoll 4 maxpoll 10 iburst",
+        "server ntp3.aliyun.com minpoll 4 maxpoll 10 iburst",
+        "server ntp3.cloud.aliyuncs.com minpoll 4 maxpoll 10 iburst",
+        "server ntp4.aliyun.com minpoll 4 maxpoll 10 iburst",
+        "server ntp4.cloud.aliyuncs.com minpoll 4 maxpoll 10 iburst",
+        "server ntp5.aliyun.com minpoll 4 maxpoll 10 iburst",
+        "server ntp5.cloud.aliyuncs.com minpoll 4 maxpoll 10 iburst",
+        "server ntp6.aliyun.com minpoll 4 maxpoll 10 iburst",
+        "server ntp6.cloud.aliyuncs.com minpoll 4 maxpoll 10 iburst",
+        "server ntp7.cloud.aliyuncs.com minpoll 4 maxpoll 10 iburst",
+        "server ntp8.cloud.aliyuncs.com minpoll 4 maxpoll 10 iburst",
+        "server ntp9.cloud.aliyuncs.com minpoll 4 maxpoll 10 iburst",
+        "stratumweight 0.05",
+        "driftfile /var/lib/chrony/drift",
+        "rtcsync",
+        "makestep 10 3",
+        "bindcmdaddress 127.0.0.1",
+        "bindcmdaddress ::1",
+        "noclientlog",
+        "logchange 0.5",
+        "logdir /var/log/chrony"
+      ]
+    },
+    "/etc/sysconfig/chronyd": {
+      "sha256": "5a45c4e8b194ca1287be9649b24263e10f93c16c17fd0465d881b78183bf4ac3",
+      "lines": [
+        "OPTIONS=\"\""
+      ]
+    }
+  },
+  "certbot_version": {
+    "exit_code": 0,
+    "output": "certbot 1.22.0"
+  },
+  "certbot_unit": {
+    "exit_code": 0,
+    "output": "# /usr/lib/systemd/system/certbot-renew.service\n[Unit]\nDescription=This service automatically renews any certbot certificates found\n\n[Service]\nEnvironmentFile=/etc/sysconfig/certbot\nType=oneshot\nExecStart=/usr/bin/certbot renew --noninteractive --no-random-sleep-on-renew $PRE_HOOK $POST_HOOK $RENEW_HOOK $DEPLOY_HOOK $CERTBOT_ARGS\n\n# /usr/lib/systemd/system/certbot-renew.timer\n[Unit]\nDescription=This is the timer to set the schedule for automated renewals\n\n[Timer]\nOnCalendar=*-*-* 00/12:00:00\nRandomizedDelaySec=12hours\nPersistent=true\n\n[Install]\nWantedBy=timers.target"
+  },
+  "certbot_hooks": [],
+  "certbot_global": {
+    "/etc/letsencrypt/cli.ini": [
+      "preconfigured-renewal = True"
+    ],
+    "/etc/sysconfig/certbot": [
+      "PRE_HOOK=\"\"",
+      "POST_HOOK=\"\"",
+      "DEPLOY_HOOK=\"\"",
+      "CERTBOT_ARGS=\"\""
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "task": "regression",
+  "completed_utc": "2026-10-24T07:24:52.360Z",
+  "scope": "Actual public HTTPS production upload-to-Predict",
+  "origin": "https://www.inbirg.com",
+  "tls_verification_disabled": false,
+  "browser_version": "155.0.4283.62",
+  "source": {
+    "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "declared_commit_matches": true,
+    "dirty": false,
+    "verified": true
+  },
+  "analysis_project_id": "RC-AZ-89fdeb-zggz2q-d7bd2682",
+  "prediction_project_id": "PRED-REG-209803-4b6fad-62533af3",
+  "model_file_name": "Ridge.maler",
+  "model_bundle_sha256": "f46fe2c09a2146bbb7693d8ddc24273217b5737fa519e65daa15585710c57dd9",
+  "selection_lock_sha256": "9a72901fbeeef638c97365dd9a8988a04e9f959d2b33b7ca7064c791c237dda7",
+  "successful_posts": [
+    {
+      "path": "/maler/preview",
+      "status": 200,
+      "origin_only_referer": true
+    },
+    {
+      "path": "/maler/regression_cp_result/RC-AZ-89fdeb-zggz2q-d7bd2682",
+      "status": 200,
+      "origin_only_referer": true
+    },
+    {
+      "path": "/maler/predict_preview",
+      "status": 200,
+      "origin_only_referer": true
+    },
+    {
+      "path": "/maler/predict_result/PRED-REG-209803-4b6fad-62533af3",
+      "status": 200,
+      "origin_only_referer": true
+    }
+  ],
+  "page_errors": [],
+  "unexpected_failed_requests": [],
+  "expected_download_aborts": [
+    {
+      "url": "https://www.inbirg.com/maler/task/RC-AZ-89fdeb-zggz2q-d7bd2682/model/Ridge.maler",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "prediction_rows": 40,
+  "blind_rows": 10,
+  "validation_rows": 30,
+  "actual_budget": {
+    "actual_inner_splits": 3,
+    "actual_outer_evaluations": 10,
+    "actual_outer_repeats": 2,
+    "actual_outer_splits": 5,
+    "requested_inner_splits": 3,
+    "requested_outer_repeats": 2,
+    "requested_outer_splits": 5
+  },
+  "email_address_supplied": false
+}

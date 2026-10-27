@@ -1,0 +1,3032 @@
+{
+  "dataset": {
+    "dataset": "survival",
+    "missing_test": 0,
+    "missing_train": 0,
+    "n_features": 3032,
+    "n_test": 133,
+    "n_train": 160,
+    "patient_level_audit": {
+      "collapsed_within_partition_patients": [
+        {
+          "partition": "train",
+          "patient": "TCGA-06-0125",
+          "samples": [
+            "TCGA-06-0125-01A",
+            "TCGA-06-0125-02A"
+          ],
+          "selected": "TCGA-06-0125-01A"
+        },
+        {
+          "partition": "train",
+          "patient": "TCGA-06-0190",
+          "samples": [
+            "TCGA-06-0190-01A",
+            "TCGA-06-0190-02A"
+          ],
+          "selected": "TCGA-06-0190-01A"
+        },
+        {
+          "partition": "train",
+          "patient": "TCGA-06-0210",
+          "samples": [
+            "TCGA-06-0210-01A",
+            "TCGA-06-0210-02A"
+          ],
+          "selected": "TCGA-06-0210-01A"
+        },
+        {
+          "partition": "train",
+          "patient": "TCGA-06-0211",
+          "samples": [
+            "TCGA-06-0211-02A",
+            "TCGA-06-0211-01B",
+            "TCGA-06-0211-01A"
+          ],
+          "selected": "TCGA-06-0211-01A"
+        },
+        {
+          "partition": "train",
+          "patient": "TCGA-14-1034",
+          "samples": [
+            "TCGA-14-1034-02B",
+            "TCGA-14-1034-01A"
+          ],
+          "selected": "TCGA-14-1034-01A"
+        },
+        {
+          "partition": "train",
+          "patient": "TCGA-19-4065",
+          "samples": [
+            "TCGA-19-4065-01A",
+            "TCGA-19-4065-02A"
+          ],
+          "selected": "TCGA-19-4065-01A"
+        }
+      ],
+      "excluded_cross_partition_patients": [],
+      "retained_patients": 293,
+      "rule": "Exclude cross-partition patients from both sets; otherwise keep one aliquot per patient, preferring sample type 01 and vial A without using outcomes.",
+      "source_samples": 300
+    },
+    "source_path": "E:\\CodeProject\\Server\\maler_revision2\\r2_site_source\\mlserver\\static\\cache\\example\\survival_example.csv",
+    "source_sha256": "85d2df86473c90018d98f90a30d77935a2c57a0877cbc1d62f639b4be0b88189",
+    "task": "survival",
+    "test_events": 110,
+    "test_followup_median": 459.0,
+    "train_events": 131,
+    "train_followup_median": 361.0
+  },
+  "feature_stability": {
+    "mean_pairwise_jaccard": 0.22050317014831697,
+    "std_pairwise_jaccard": 0.08999079439217593,
+    "top_selection_frequency": [
+      {
+        "feature": "TSPAN4",
+        "folds": 47,
+        "fraction": 0.94
+      },
+      {
+        "feature": "PTPRN2",
+        "folds": 44,
+        "fraction": 0.88
+      },
+      {
+        "feature": "TRABD2A",
+        "folds": 39,
+        "fraction": 0.78
+      },
+      {
+        "feature": "HPCAL1",
+        "folds": 38,
+        "fraction": 0.76
+      },
+      {
+        "feature": "EFEMP2",
+        "folds": 38,
+        "fraction": 0.76
+      },
+      {
+        "feature": "RGS14",
+        "folds": 36,
+        "fraction": 0.72
+      },
+      {
+        "feature": "PTPRN",
+        "folds": 36,
+        "fraction": 0.72
+      },
+      {
+        "feature": "STEAP2",
+        "folds": 33,
+        "fraction": 0.66
+      },
+      {
+        "feature": "PDIA4",
+        "folds": 30,
+        "fraction": 0.6
+      },
+      {
+        "feature": "SLC43A3",
+        "folds": 30,
+        "fraction": 0.6
+      },
+      {
+        "feature": "SH3RF2",
+        "folds": 30,
+        "fraction": 0.6
+      },
+      {
+        "feature": "STEAP3",
+        "folds": 30,
+        "fraction": 0.6
+      },
+      {
+        "feature": "DKK3",
+        "folds": 25,
+        "fraction": 0.5
+      },
+      {
+        "feature": "DLEU1",
+        "folds": 24,
+        "fraction": 0.48
+      },
+      {
+        "feature": "CNPY4",
+        "folds": 22,
+        "fraction": 0.44
+      },
+      {
+        "feature": "SEMA4F",
+        "folds": 22,
+        "fraction": 0.44
+      },
+      {
+        "feature": "MTHFD2",
+        "folds": 22,
+        "fraction": 0.44
+      },
+      {
+        "feature": "TCF12",
+        "folds": 21,
+        "fraction": 0.42
+      },
+      {
+        "feature": "FAM174A",
+        "folds": 20,
+        "fraction": 0.4
+      },
+      {
+        "feature": "MDK",
+        "folds": 19,
+        "fraction": 0.38
+      },
+      {
+        "feature": "ITPKA",
+        "folds": 18,
+        "fraction": 0.36
+      },
+      {
+        "feature": "G6PC3",
+        "folds": 18,
+        "fraction": 0.36
+      },
+      {
+        "feature": "PLCH1",
+        "folds": 17,
+        "fraction": 0.34
+      },
+      {
+        "feature": "MICAL2",
+        "folds": 17,
+        "fraction": 0.34
+      },
+      {
+        "feature": "MAP1LC3A",
+        "folds": 17,
+        "fraction": 0.34
+      },
+      {
+        "feature": "EEF1A1",
+        "folds": 17,
+        "fraction": 0.34
+      },
+      {
+        "feature": "RPP25",
+        "folds": 15,
+        "fraction": 0.3
+      },
+      {
+        "feature": "TMEM60",
+        "folds": 14,
+        "fraction": 0.28
+      },
+      {
+        "feature": "LEF1-AS1",
+        "folds": 14,
+        "fraction": 0.28
+      },
+      {
+        "feature": "MARVELD1",
+        "folds": 14,
+        "fraction": 0.28
+      },
+      {
+        "feature": "HOXB2",
+        "folds": 13,
+        "fraction": 0.26
+      },
+      {
+        "feature": "ANK1",
+        "folds": 13,
+        "fraction": 0.26
+      },
+      {
+        "feature": "IKBIP",
+        "folds": 13,
+        "fraction": 0.26
+      },
+      {
+        "feature": "ARMCX6",
+        "folds": 12,
+        "fraction": 0.24
+      },
+      {
+        "feature": "SLC9A7",
+        "folds": 12,
+        "fraction": 0.24
+      },
+      {
+        "feature": "TMEM233",
+        "folds": 12,
+        "fraction": 0.24
+      },
+      {
+        "feature": "NDUFB2-AS1",
+        "folds": 11,
+        "fraction": 0.22
+      },
+      {
+        "feature": "SLC39A10",
+        "folds": 10,
+        "fraction": 0.2
+      },
+      {
+        "feature": "KDELR2",
+        "folds": 10,
+        "fraction": 0.2
+      },
+      {
+        "feature": "PLK2",
+        "folds": 9,
+        "fraction": 0.18
+      },
+      {
+        "feature": "PLD3",
+        "folds": 9,
+        "fraction": 0.18
+      },
+      {
+        "feature": "IGFBP2",
+        "folds": 9,
+        "fraction": 0.18
+      },
+      {
+        "feature": "KCNH6",
+        "folds": 9,
+        "fraction": 0.18
+      },
+      {
+        "feature": "PGBD5",
+        "folds": 8,
+        "fraction": 0.16
+      },
+      {
+        "feature": "LYNX1",
+        "folds": 8,
+        "fraction": 0.16
+      },
+      {
+        "feature": "TMEM150A",
+        "folds": 8,
+        "fraction": 0.16
+      },
+      {
+        "feature": "P4HB",
+        "folds": 7,
+        "fraction": 0.14
+      },
+      {
+        "feature": "EIF4A2",
+        "folds": 7,
+        "fraction": 0.14
+      },
+      {
+        "feature": "ILF2",
+        "folds": 7,
+        "fraction": 0.14
+      },
+      {
+        "feature": "FN1",
+        "folds": 7,
+        "fraction": 0.14
+      }
+    ]
+  },
+  "final_best_params": {
+    "model__max_depth": 5,
+    "selector__k": 50
+  },
+  "final_selected_features": [
+    "MARVELD1",
+    "SLC39A10",
+    "SLC9A7",
+    "TRABD2A",
+    "IGFBP2",
+    "ANK1",
+    "CNPY4",
+    "PLK2",
+    "KCNH6",
+    "LEF1-AS1",
+    "RPP25",
+    "KDELR2",
+    "PLD3",
+    "PGBD5",
+    "TCF12",
+    "PTPRN2",
+    "MMP14",
+    "PTPRN",
+    "MAP1LC3A",
+    "IKBIP",
+    "SH3RF2",
+    "LYNX1",
+    "G6PC3",
+    "ANXA2",
+    "ARMCX6",
+    "HPCAL1",
+    "MTHFD2",
+    "TMEM60",
+    "DKK3",
+    "STEAP2",
+    "NDUFB2-AS1",
+    "DLEU1",
+    "STEAP3",
+    "SLC43A3",
+    "EEF1A1",
+    "TMEM233",
+    "SEMA4F",
+    "MDK",
+    "FAM174A",
+    "PLCH1",
+    "RGS14",
+    "HOXB2",
+    "RPL30",
+    "TSPAN4",
+    "MICAL2",
+    "PDIA4",
+    "RBBP4",
+    "ITPKA",
+    "EFEMP2",
+    "EIF4A2"
+  ],
+  "model_bundle": {
+    "path": "E:\\CodeProject\\Server\\maler_revision2\\r2_validation\\results_py37\\survival_pipeline.maler",
+    "sha256": "1ee3646d82d38b850bcbbef31b202c12c6270e999d84433c9681338f82365bef"
+  },
+  "nested_cv": {
+    "actual_repeats": 10,
+    "folds": [
+      {
+        "best_params": {
+          "model__max_depth": 2,
+          "selector__k": 20
+        },
+        "c_index": 0.4676258992805755,
+        "fold": 1,
+        "integrated_brier_score": 0.278567192833997,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "TRABD2A",
+          "CNPY4",
+          "MMP14",
+          "SH3RF2",
+          "CD276",
+          "HPCAL1",
+          "MTHFD2",
+          "DLEU1",
+          "STEAP3",
+          "SLC43A3",
+          "SEMA4F",
+          "PLCH1",
+          "RGS14",
+          "ITGA5",
+          "TSPAN4",
+          "P4HB",
+          "MICAL2",
+          "PDIA4",
+          "ITPKA",
+          "EFEMP2"
+        ],
+        "time_auc_mean": 0.4946283922880298,
+        "time_auc_times": [
+          138.0,
+          388.0,
+          485.0
+        ],
+        "time_auc_values": [
+          0.4701684000975055,
+          0.5776047466202731,
+          0.44383051038816995
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 50
+        },
+        "c_index": 0.6434010152284264,
+        "fold": 2,
+        "integrated_brier_score": 0.26180093546841765,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "OGDHL",
+          "ISLR2",
+          "SLC9A7",
+          "TRABD2A",
+          "CNPY4",
+          "PLK2",
+          "RPP25",
+          "PLD3",
+          "PGBD5",
+          "ACTL6A",
+          "ZNF561",
+          "PTPRN2",
+          "PTPRN",
+          "NACAD",
+          "MAP1LC3A",
+          "LSM2",
+          "LYNX1",
+          "G6PC3",
+          "SCG5",
+          "ARMCX6",
+          "RPL10",
+          "HPCAL1",
+          "DKK3",
+          "EIF3E",
+          "STEAP2",
+          "ILF2",
+          "RBMX",
+          "NDUFB2-AS1",
+          "DLEU1",
+          "EEF1A1",
+          "NAGLU",
+          "SEMA4F",
+          "APLP1",
+          "CLTB",
+          "FAM174A",
+          "ASPHD1",
+          "ZNF581",
+          "PPP1CC",
+          "E2F5",
+          "RPL30",
+          "TSPAN4",
+          "ABCB7",
+          "NRXN3",
+          "HMGN4",
+          "C1orf112",
+          "RBBP4",
+          "ITPKA",
+          "EFEMP2",
+          "SEZ6L2",
+          "EIF4A2"
+        ],
+        "time_auc_mean": 0.7110834464259351,
+        "time_auc_times": [
+          224.75,
+          437.0,
+          516.25
+        ],
+        "time_auc_values": [
+          0.6286926836045935,
+          0.7477311947151777,
+          0.7561573012335849
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 3,
+          "selector__k": 20
+        },
+        "c_index": 0.5481481481481482,
+        "fold": 3,
+        "integrated_brier_score": 0.2881782547958389,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "CNPY4",
+          "TCF12",
+          "PTPRN2",
+          "PTPRN",
+          "G6PC3",
+          "HPCAL1",
+          "MTHFD2",
+          "TMEM60",
+          "DKK3",
+          "STEAP2",
+          "STEAP3",
+          "SLC43A3",
+          "MDK",
+          "RGS14",
+          "HOXB2",
+          "TSPAN4",
+          "HOXC8",
+          "PDIA4",
+          "HOXC10",
+          "EFEMP2"
+        ],
+        "time_auc_mean": 0.5520054202907418,
+        "time_auc_times": [
+          231.5,
+          384.5,
+          543.25
+        ],
+        "time_auc_values": [
+          0.6023856724544736,
+          0.5478084326992383,
+          0.5048519879798773
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 3,
+          "selector__k": 10
+        },
+        "c_index": 0.5039787798408488,
+        "fold": 4,
+        "integrated_brier_score": 0.26632010418083735,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "TRABD2A",
+          "LEF1-AS1",
+          "PTPRN2",
+          "PTPRN",
+          "HPCAL1",
+          "SLC43A3",
+          "HOXB2",
+          "TSPAN4",
+          "PDIA4",
+          "HOXC10"
+        ],
+        "time_auc_mean": 0.5372527918617651,
+        "time_auc_times": [
+          110.25,
+          321.0,
+          593.25
+        ],
+        "time_auc_values": [
+          0.5527950310559006,
+          0.5958634077000748,
+          0.4710618573526183
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 3,
+          "selector__k": 10
+        },
+        "c_index": 0.5761154855643045,
+        "fold": 5,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "SLC39A10",
+          "TRABD2A",
+          "SOX2",
+          "PTPRN2",
+          "PTPRN",
+          "SH3RF2",
+          "STEAP2",
+          "TMEM233",
+          "RGS14",
+          "TSPAN4"
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 3,
+          "selector__k": 50
+        },
+        "c_index": 0.49391727493917276,
+        "fold": 6,
+        "integrated_brier_score": 0.27994805730260186,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "ADTRP",
+          "CLEC5A",
+          "MARVELD1",
+          "SLC39A10",
+          "TUBA1C",
+          "TRABD2A",
+          "IGFBP2",
+          "ANK1",
+          "CNPY4",
+          "HTR7",
+          "ANXA1",
+          "GRN",
+          "KDELR2",
+          "TCF12",
+          "PTPRN2",
+          "MMP14",
+          "PTPRN",
+          "MAP1LC3A",
+          "TNFRSF12A",
+          "IKBIP",
+          "FN1",
+          "ANXA2",
+          "HPCAL1",
+          "STEAP2",
+          "ILF2",
+          "MSN",
+          "NDUFB2-AS1",
+          "DLEU1",
+          "TMEM171",
+          "STEAP3",
+          "TMEM150A",
+          "SLC43A3",
+          "EEF1A1",
+          "DUSP3",
+          "PTPN7",
+          "SLC2A10",
+          "SEMA4F",
+          "MDK",
+          "TVP23B",
+          "FAM174A",
+          "RGS14",
+          "ITGA5",
+          "TSPAN4",
+          "P4HB",
+          "PDIA4",
+          "KLHDC3",
+          "RCN1",
+          "EFEMP2",
+          "RAB11FIP5",
+          "CD44"
+        ],
+        "time_auc_mean": 0.480059173152812,
+        "time_auc_times": [
+          94.0,
+          225.0,
+          460.0
+        ],
+        "time_auc_values": [
+          0.41282389108476064,
+          0.4478306464881849,
+          0.5822161511803657
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 3,
+          "selector__k": 50
+        },
+        "c_index": 0.46384039900249374,
+        "fold": 7,
+        "integrated_brier_score": 0.3721000007782258,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "ISLR2",
+          "B3GNT4",
+          "TRABD2A",
+          "ANK1",
+          "HS3ST2",
+          "KCNH6",
+          "VWA7",
+          "DMTN",
+          "PRKAR1B",
+          "AACS",
+          "PLD3",
+          "ACTL6A",
+          "PTPRN2",
+          "PTPRN",
+          "UBE2E1",
+          "STX1A",
+          "KCNS1",
+          "TOLLIP",
+          "SH3RF2",
+          "ARMCX6",
+          "HPCAL1",
+          "MTHFD2",
+          "GABRG3",
+          "DKK3",
+          "STEAP2",
+          "DLEU1",
+          "STEAP3",
+          "SH2D5",
+          "SDR16C5",
+          "TMEM233",
+          "LRRC73",
+          "SEMA4F",
+          "RGS4",
+          "EPHA8",
+          "FAM174A",
+          "PLCH1",
+          "RGS14",
+          "SPRYD3",
+          "YWHAG",
+          "TSPAN4",
+          "MICAL2",
+          "PDIA4",
+          "CCBE1",
+          "NDEL1",
+          "HOXC10",
+          "NRXN3",
+          "ITPKA",
+          "EFEMP2",
+          "AGBL4",
+          "HOXC6"
+        ],
+        "time_auc_mean": 0.43905521534119085,
+        "time_auc_times": [
+          270.0,
+          432.0,
+          548.0
+        ],
+        "time_auc_values": [
+          0.4835056767421563,
+          0.5188805114493344,
+          0.3172356874696695
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 2,
+          "selector__k": 50
+        },
+        "c_index": 0.5558312655086849,
+        "fold": 8,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "KLK10",
+          "MARVELD1",
+          "SLC39A10",
+          "TUBA1C",
+          "ZCCHC12",
+          "TRABD2A",
+          "CNPY4",
+          "HS3ST2",
+          "LEF1-AS1",
+          "CACNB2",
+          "AQP3",
+          "S100A4",
+          "PTPRN2",
+          "DDHD1",
+          "PTPRN",
+          "MAP1LC3A",
+          "IKBIP",
+          "SH3RF2",
+          "G6PC3",
+          "SCG5",
+          "HBS1L",
+          "HPCAL1",
+          "MTHFD2",
+          "TMEM60",
+          "STEAP2",
+          "NDUFB2-AS1",
+          "STEAP3",
+          "SLC43A3",
+          "IL10RB",
+          "TMEM233",
+          "SSBP1",
+          "MDK",
+          "RNF11",
+          "RGS4",
+          "TIMP4",
+          "SNRNP40",
+          "RGS14",
+          "HOXB2",
+          "TSPAN4",
+          "ABCB7",
+          "IQGAP2",
+          "MICAL2",
+          "NELL1",
+          "PDIA4",
+          "RBBP4",
+          "RAB42",
+          "ITPKA",
+          "EFEMP2",
+          "TMEM191A",
+          "RPLP0P2"
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 10
+        },
+        "c_index": 0.568870523415978,
+        "fold": 9,
+        "integrated_brier_score": 0.2076159739530017,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "CNPY4",
+          "PTPRN2",
+          "PTPRN",
+          "SH3RF2",
+          "HPCAL1",
+          "STEAP2",
+          "STEAP3",
+          "HOXB2",
+          "TSPAN4",
+          "EFEMP2"
+        ],
+        "time_auc_mean": 0.5882711670204263,
+        "time_auc_times": [
+          246.5,
+          377.5,
+          462.5
+        ],
+        "time_auc_values": [
+          0.5496604436194995,
+          0.6893209447139387,
+          0.5245487658051566
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 20
+        },
+        "c_index": 0.5259067357512953,
+        "fold": 10,
+        "integrated_brier_score": 0.3699398141792435,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "TRABD2A",
+          "IGFBP2",
+          "PLK2",
+          "RPP25",
+          "KBTBD6",
+          "PLD3",
+          "TCF12",
+          "MAP1LC3A",
+          "G6PC3",
+          "HPCAL1",
+          "DKK3",
+          "DLEU1",
+          "SLC43A3",
+          "SEMA4F",
+          "MDK",
+          "FAM174A",
+          "TSPAN4",
+          "P4HB",
+          "EFEMP2",
+          "EIF4A2"
+        ],
+        "time_auc_mean": 0.5739832561700637,
+        "time_auc_times": [
+          276.5,
+          470.0,
+          670.25
+        ],
+        "time_auc_values": [
+          0.4934842582519806,
+          0.6477746462314443,
+          0.5838994728856467
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 10
+        },
+        "c_index": 0.6012345679012345,
+        "fold": 11,
+        "integrated_brier_score": 0.25266066065515164,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "PTPRN2",
+          "SH3RF2",
+          "HPCAL1",
+          "MTHFD2",
+          "STEAP2",
+          "DLEU1",
+          "STEAP3",
+          "SLC43A3",
+          "TSPAN4",
+          "EFEMP2"
+        ],
+        "time_auc_mean": 0.6633469209691022,
+        "time_auc_times": [
+          178.0,
+          375.0,
+          455.0
+        ],
+        "time_auc_values": [
+          0.7157000761634256,
+          0.6068638164807427,
+          0.659588370270164
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 3,
+          "selector__k": 10
+        },
+        "c_index": 0.5114942528735632,
+        "fold": 12,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "TRABD2A",
+          "LEF1-AS1",
+          "PTPRN2",
+          "PTPRN",
+          "SH3RF2",
+          "G6PC3",
+          "MTHFD2",
+          "TSPAN4",
+          "PDIA4",
+          "MMP9"
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 10
+        },
+        "c_index": 0.5971014492753624,
+        "fold": 13,
+        "integrated_brier_score": 0.29023202959513966,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "CNPY4",
+          "PTPRN2",
+          "NDUFB2-AS1",
+          "STEAP3",
+          "TMEM150A",
+          "SLC43A3",
+          "CERCAM",
+          "RGS14",
+          "TSPAN4",
+          "EFEMP2"
+        ],
+        "time_auc_mean": 0.6328893613694985,
+        "time_auc_times": [
+          360.0,
+          485.0,
+          803.0
+        ],
+        "time_auc_values": [
+          0.6031588417140398,
+          0.6106684435211145,
+          0.6861254509572186
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 10
+        },
+        "c_index": 0.49744897959183676,
+        "fold": 14,
+        "integrated_brier_score": 0.31486378011479255,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "TRABD2A",
+          "PTPRN2",
+          "PTPRN",
+          "IKBIP",
+          "SH3RF2",
+          "HPCAL1",
+          "STEAP2",
+          "SEMA4F",
+          "FAM174A",
+          "MICAL2"
+        ],
+        "time_auc_mean": 0.4731233352282561,
+        "time_auc_times": [
+          142.0,
+          331.0,
+          514.75
+        ],
+        "time_auc_values": [
+          0.4906832298136646,
+          0.4779629597819816,
+          0.45017010632555043
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 10
+        },
+        "c_index": 0.6173469387755102,
+        "fold": 15,
+        "integrated_brier_score": 0.2170332746307284,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "RPP25",
+          "TCF12",
+          "ARMCX6",
+          "HPCAL1",
+          "STEAP3",
+          "SLC43A3",
+          "HOXB2",
+          "TSPAN4",
+          "PDIA4",
+          "EFEMP2"
+        ],
+        "time_auc_mean": 0.7010574812555778,
+        "time_auc_times": [
+          211.75,
+          400.0,
+          499.75
+        ],
+        "time_auc_values": [
+          0.6775405382168981,
+          0.8243916281203032,
+          0.617027355310406
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 2,
+          "selector__k": 10
+        },
+        "c_index": 0.5697399527186762,
+        "fold": 16,
+        "integrated_brier_score": 0.25805555797971763,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "TRABD2A",
+          "KCNH6",
+          "TCF12",
+          "PTPRN2",
+          "G6PC3",
+          "HPCAL1",
+          "TMEM60",
+          "SLC43A3",
+          "RGS14",
+          "TSPAN4"
+        ],
+        "time_auc_mean": 0.6058570124452907,
+        "time_auc_times": [
+          150.0,
+          414.0,
+          510.0
+        ],
+        "time_auc_values": [
+          0.620019059111035,
+          0.5941593774674846,
+          0.6004342912773877
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 2,
+          "selector__k": 20
+        },
+        "c_index": 0.558252427184466,
+        "fold": 17,
+        "integrated_brier_score": 0.27511258969501823,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "SLC9A7",
+          "TRABD2A",
+          "ANK1",
+          "PTPRN",
+          "SH3RF2",
+          "FN1",
+          "HPCAL1",
+          "DKK3",
+          "STEAP3",
+          "TMEM233",
+          "SEMA4F",
+          "MAP2K1",
+          "FAM174A",
+          "ITGA5",
+          "TSPAN4",
+          "MICAL2",
+          "PDIA4",
+          "NRXN3",
+          "ITPKA",
+          "EFEMP2"
+        ],
+        "time_auc_mean": 0.5278350908256854,
+        "time_auc_times": [
+          309.75,
+          399.5,
+          546.0
+        ],
+        "time_auc_values": [
+          0.47455014163376785,
+          0.6022435413284972,
+          0.5131708764845384
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 2,
+          "selector__k": 20
+        },
+        "c_index": 0.4389920424403183,
+        "fold": 18,
+        "integrated_brier_score": 0.26698242002864864,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "MARVELD1",
+          "TRABD2A",
+          "CNPY4",
+          "LEF1-AS1",
+          "TCF12",
+          "PTPRN2",
+          "SH3RF2",
+          "HPCAL1",
+          "DKK3",
+          "STEAP2",
+          "MSN",
+          "DLEU1",
+          "STEAP3",
+          "SLC43A3",
+          "PLCH1",
+          "RGS14",
+          "HOXB2",
+          "TSPAN4",
+          "PDIA4",
+          "EFEMP2"
+        ],
+        "time_auc_mean": 0.4082556801743625,
+        "time_auc_times": [
+          208.5,
+          351.5,
+          466.25
+        ],
+        "time_auc_values": [
+          0.4211365212512227,
+          0.44213099019523183,
+          0.3619765972646649
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 20
+        },
+        "c_index": 0.5738786279683378,
+        "fold": 19,
+        "integrated_brier_score": 0.2755662024925809,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "PLK2",
+          "GRN",
+          "PTPRN2",
+          "UBE2E1",
+          "SH3RF2",
+          "STXBP4",
+          "ARMCX6",
+          "HPCAL1",
+          "MTHFD2",
+          "DKK3",
+          "DLEU1",
+          "STEAP3",
+          "EEF1A1",
+          "FAM174A",
+          "ZNF140",
+          "RGS14",
+          "SMIM17",
+          "TSPAN4",
+          "GALNT6",
+          "EFEMP2"
+        ],
+        "time_auc_mean": 0.631648227500337,
+        "time_auc_times": [
+          177.25,
+          495.0,
+          589.5
+        ],
+        "time_auc_values": [
+          0.6455551692093359,
+          0.7090149848450279,
+          0.5425699197313082
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 50
+        },
+        "c_index": 0.37146529562982006,
+        "fold": 20,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "PRKACB",
+          "SLC39A10",
+          "TUBA1C",
+          "TRABD2A",
+          "ANK1",
+          "KCNH6",
+          "LEF1-AS1",
+          "NUDT1",
+          "RPP25",
+          "KDELR2",
+          "LINGO2",
+          "TCF12",
+          "RUFY2",
+          "CAMSAP2",
+          "PTPRN2",
+          "DDHD1",
+          "PTPRN",
+          "MAP1LC3A",
+          "IKBIP",
+          "SH3RF2",
+          "HBS1L",
+          "MTHFD2",
+          "TMEM60",
+          "STEAP2",
+          "ACO2",
+          "CDC40",
+          "NDUFB2-AS1",
+          "MAPK1",
+          "SRBD1",
+          "FAM169A",
+          "SLC43A3",
+          "BTBD3",
+          "IL10RB",
+          "TMEM233",
+          "SEMA4F",
+          "MDK",
+          "RGS4",
+          "MAPRE1",
+          "CLEC4G",
+          "RGS14",
+          "FAXDC2",
+          "TSPAN4",
+          "ABCB7",
+          "ATE1",
+          "NELL1",
+          "RBBP4",
+          "EFEMP2",
+          "TMEM191A",
+          "TCEA1",
+          "RPLP0P2"
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 20
+        },
+        "c_index": 0.4735576923076923,
+        "fold": 21,
+        "integrated_brier_score": 0.3225630889003,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "TRABD2A",
+          "CNPY4",
+          "PTPRN2",
+          "PTPRN",
+          "LYNX1",
+          "HPCAL1",
+          "MTHFD2",
+          "DKK3",
+          "STEAP2",
+          "DLEU1",
+          "EEF1A1",
+          "SEMA4F",
+          "FAM174A",
+          "PLCH1",
+          "RGS14",
+          "RTN4",
+          "TSPAN4",
+          "PDIA4",
+          "EFEMP2",
+          "RAB11FIP5"
+        ],
+        "time_auc_mean": 0.47150001403249386,
+        "time_auc_times": [
+          150.25,
+          372.0,
+          437.5
+        ],
+        "time_auc_values": [
+          0.4316263926961676,
+          0.5369601019638601,
+          0.4512458956671561
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 3,
+          "selector__k": 50
+        },
+        "c_index": 0.5463659147869674,
+        "fold": 22,
+        "integrated_brier_score": 0.2438834213682111,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "MARVELD1",
+          "SLC39A10",
+          "SLC9A7",
+          "TRABD2A",
+          "ANK1",
+          "CNPY4",
+          "PLK2",
+          "LEF1-AS1",
+          "RPP25",
+          "KDELR2",
+          "TCF12",
+          "ZNF561",
+          "PTPRN2",
+          "PTPRN",
+          "MAP1LC3A",
+          "IKBIP",
+          "SH3RF2",
+          "FN1",
+          "G6PC3",
+          "HPCAL1",
+          "MTHFD2",
+          "TMEM60",
+          "DKK3",
+          "CRLS1",
+          "STEAP2",
+          "NDUFB2-AS1",
+          "DLEU1",
+          "STEAP3",
+          "SLC43A3",
+          "EEF1A1",
+          "PAK1",
+          "TMEM233",
+          "PDE4C",
+          "SEMA4F",
+          "MDK",
+          "GPR68",
+          "FAM174A",
+          "PLCH1",
+          "RGS14",
+          "ITGA5",
+          "LINC01018",
+          "TSPAN4",
+          "MICAL2",
+          "PDIA4",
+          "HOXC10",
+          "ITPKA",
+          "EFEMP2",
+          "RAB11FIP5",
+          "EIF4A2",
+          "HOXC6"
+        ],
+        "time_auc_mean": 0.5999638985203083,
+        "time_auc_times": [
+          144.0,
+          367.5,
+          538.75
+        ],
+        "time_auc_values": [
+          0.5087902264600714,
+          0.4901674509259619,
+          0.7784185064221746
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 20
+        },
+        "c_index": 0.5100502512562815,
+        "fold": 23,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "SLC39A10",
+          "TUBA1C",
+          "ORMDL2",
+          "S100A4",
+          "PTPRN2",
+          "DDHD1",
+          "PTPRN",
+          "IKBIP",
+          "ANXA2",
+          "HBS1L",
+          "MTHFD2",
+          "TMEM60",
+          "STEAP3",
+          "SLC43A3",
+          "TMEM233",
+          "RGS14",
+          "KIAA0040",
+          "TSPAN4",
+          "PDIA4",
+          "EFEMP2"
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 3,
+          "selector__k": 20
+        },
+        "c_index": 0.5706666666666667,
+        "fold": 24,
+        "integrated_brier_score": 0.23730986387048764,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "MARVELD1",
+          "CNPY4",
+          "GRN",
+          "PTPRN2",
+          "PTPRN",
+          "MAP1LC3A",
+          "HOXB4",
+          "STEAP2",
+          "NDUFB2-AS1",
+          "STEAP3",
+          "SLC43A3",
+          "HOXB7",
+          "MDK",
+          "PLCH1",
+          "RGS14",
+          "HOXB2",
+          "HOXB3",
+          "TSPAN4",
+          "PDIA4",
+          "EFEMP2"
+        ],
+        "time_auc_mean": 0.6074454889517528,
+        "time_auc_times": [
+          206.5,
+          470.0,
+          771.25
+        ],
+        "time_auc_values": [
+          0.6675113612986479,
+          0.6863761820586033,
+          0.48365543616784673
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 3,
+          "selector__k": 10
+        },
+        "c_index": 0.5479274611398963,
+        "fold": 25,
+        "integrated_brier_score": 0.23990841193189272,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "TRABD2A",
+          "RPP25",
+          "PLD3",
+          "PTPRN2",
+          "PTPRN",
+          "ARMCX6",
+          "HPCAL1",
+          "DKK3",
+          "DLEU1",
+          "ITPKA"
+        ],
+        "time_auc_mean": 0.5982120427143941,
+        "time_auc_times": [
+          160.5,
+          387.5,
+          477.25
+        ],
+        "time_auc_values": [
+          0.553475350044691,
+          0.5532901699510577,
+          0.6838863285604717
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 2,
+          "selector__k": 20
+        },
+        "c_index": 0.6825980392156863,
+        "fold": 26,
+        "integrated_brier_score": 0.21767890142554028,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "TRABD2A",
+          "CNPY4",
+          "TCF12",
+          "PTPRN2",
+          "PTPRN",
+          "SH3RF2",
+          "HPCAL1",
+          "DKK3",
+          "STEAP2",
+          "MSN",
+          "STEAP3",
+          "SLC43A3",
+          "FAM174A",
+          "TIMP4",
+          "PLCH1",
+          "RGS14",
+          "TSPAN4",
+          "MICAL2",
+          "PDIA4",
+          "EFEMP2"
+        ],
+        "time_auc_mean": 0.6996025369123527,
+        "time_auc_times": [
+          155.25,
+          346.5,
+          454.25
+        ],
+        "time_auc_values": [
+          0.7274425625026538,
+          0.6987647267594026,
+          0.6705988513175957
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 10
+        },
+        "c_index": 0.47150259067357514,
+        "fold": 27,
+        "integrated_brier_score": 0.42476445529738244,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "IGFBP2",
+          "KDELR2",
+          "DPP10",
+          "SLC43A3",
+          "MDK",
+          "RGS14",
+          "TSPAN4",
+          "P4HB",
+          "PDIA4",
+          "EFEMP2"
+        ],
+        "time_auc_mean": 0.48382919612866543,
+        "time_auc_times": [
+          323.0,
+          454.0,
+          675.0
+        ],
+        "time_auc_values": [
+          0.5112667186301237,
+          0.43000790687193324,
+          0.5065400670115708
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 50
+        },
+        "c_index": 0.46185286103542234,
+        "fold": 28,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "ADTRP",
+          "SLC39A10",
+          "TRABD2A",
+          "CNPY4",
+          "ANXA1",
+          "CCSAP",
+          "DPH5",
+          "RPP25",
+          "ALDH8A1",
+          "PGBD5",
+          "TCF12",
+          "EMP3",
+          "CAMSAP2",
+          "PTPRN2",
+          "DDHD1",
+          "PTPRN",
+          "MAP1LC3A",
+          "PRKD3",
+          "GORAB",
+          "BRI3",
+          "G6PC3",
+          "CTPS2",
+          "SCG5",
+          "ANXA2",
+          "HBS1L",
+          "ARMCX6",
+          "HPCAL1",
+          "MTHFD2",
+          "TMEM60",
+          "RALGAPA1",
+          "STEAP2",
+          "ILF2",
+          "CDC40",
+          "DLEU1",
+          "STEAP3",
+          "TMEM150A",
+          "SLC43A3",
+          "HACE1",
+          "USP3",
+          "NAGLU",
+          "LRRC73",
+          "SEMA4F",
+          "RGS14",
+          "HMGCR",
+          "TSPAN4",
+          "PDIA4",
+          "RBBP4",
+          "ITPKA",
+          "EFEMP2",
+          "SEZ6L2"
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 3,
+          "selector__k": 10
+        },
+        "c_index": 0.4838337182448037,
+        "fold": 29,
+        "integrated_brier_score": 0.32244462575382,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "TRABD2A",
+          "LEF1-AS1",
+          "PTPRN2",
+          "PTPRN",
+          "HPCAL1",
+          "DKK3",
+          "FAM174A",
+          "TSPAN4",
+          "MICAL2",
+          "EIF4A2"
+        ],
+        "time_auc_mean": 0.45681505011088736,
+        "time_auc_times": [
+          141.0,
+          342.0,
+          448.0
+        ],
+        "time_auc_values": [
+          0.4141241465309293,
+          0.37521205548107256,
+          0.5853972251722718
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 10
+        },
+        "c_index": 0.5964673913043478,
+        "fold": 30,
+        "integrated_brier_score": 0.2376907000486269,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "SLC9A7",
+          "TRABD2A",
+          "LEF1-AS1",
+          "PTPRN2",
+          "PTPRN",
+          "SH3RF2",
+          "HPCAL1",
+          "STEAP2",
+          "EEF1A1",
+          "SEMA4F"
+        ],
+        "time_auc_mean": 0.6434892066265131,
+        "time_auc_times": [
+          250.25,
+          409.0,
+          493.0
+        ],
+        "time_auc_values": [
+          0.5408603950649531,
+          0.6880357587933912,
+          0.7063368519222043
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 3,
+          "selector__k": 50
+        },
+        "c_index": 0.5049751243781094,
+        "fold": 31,
+        "integrated_brier_score": 0.3638513733490624,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "KLK10",
+          "MARVELD1",
+          "SLC9A7",
+          "TRABD2A",
+          "ANK1",
+          "CNPY4",
+          "PLK2",
+          "KCNH6",
+          "KDELR2",
+          "PLD3",
+          "PGBD5",
+          "TCF12",
+          "PTPRN2",
+          "PTPRN",
+          "NACAD",
+          "UBE2E1",
+          "STX1A",
+          "SH3RF2",
+          "LSM2",
+          "LYNX1",
+          "HPCAL1",
+          "MTHFD2",
+          "DKK3",
+          "STEAP2",
+          "IQSEC2",
+          "DLEU1",
+          "STEAP3",
+          "SLC43A3",
+          "EEF1A1",
+          "SEMA4F",
+          "MYO15A",
+          "MDK",
+          "FAM174A",
+          "PLCH1",
+          "RGS14",
+          "HOXB2",
+          "ZNF581",
+          "YWHAG",
+          "RPL30",
+          "TSPAN4",
+          "P4HB",
+          "MICAL2",
+          "NELL1",
+          "PDIA4",
+          "NDEL1",
+          "NRXN3",
+          "PANX2",
+          "ITPKA",
+          "EFEMP2",
+          "RAB11FIP5"
+        ],
+        "time_auc_mean": 0.473530437944593,
+        "time_auc_times": [
+          323.0,
+          454.0,
+          585.0
+        ],
+        "time_auc_values": [
+          0.5281890442249766,
+          0.4784805549699197,
+          0.404363096226457
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 2,
+          "selector__k": 50
+        },
+        "c_index": 0.5725593667546174,
+        "fold": 32,
+        "integrated_brier_score": 0.2623300818603094,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "SLC9A7",
+          "TRABD2A",
+          "IGFBP2",
+          "CNPY4",
+          "DPH5",
+          "LEF1-AS1",
+          "PLD3",
+          "PGBD5",
+          "ACTL6A",
+          "TCF12",
+          "ZNF561",
+          "EMP3",
+          "PTPRN2",
+          "MMP14",
+          "PTPRN",
+          "MAP1LC3A",
+          "TOLLIP",
+          "LSM2",
+          "LYNX1",
+          "G6PC3",
+          "ANXA2",
+          "STXBP4",
+          "ARMCX6",
+          "HPCAL1",
+          "DKK3",
+          "STEAP2",
+          "ILF2",
+          "TUBA4A",
+          "DLEU1",
+          "STEAP3",
+          "SLC43A3",
+          "EEF1A1",
+          "PTK2B",
+          "SEMA4F",
+          "CLTB",
+          "FAM174A",
+          "RPS10",
+          "PLCH1",
+          "RGS14",
+          "TSPAN4",
+          "NOL11",
+          "PICK1",
+          "MICAL2",
+          "PDIA4",
+          "KLHDC3",
+          "C1orf112",
+          "ITPKA",
+          "EFEMP2",
+          "SEZ6L2",
+          "AGBL4"
+        ],
+        "time_auc_mean": 0.5687562876523672,
+        "time_auc_times": [
+          231.75,
+          412.5,
+          551.5
+        ],
+        "time_auc_values": [
+          0.4522593702425973,
+          0.6423324106049096,
+          0.6078842433090861
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 20
+        },
+        "c_index": 0.6365914786967418,
+        "fold": 33,
+        "integrated_brier_score": 0.2185307001094148,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "MARVELD1",
+          "TRABD2A",
+          "CNPY4",
+          "HTR7",
+          "RPP25",
+          "PTPRN2",
+          "PTPRN",
+          "MAP1LC3A",
+          "IKBIP",
+          "STEAP2",
+          "SLC43A3",
+          "PDE4C",
+          "SEMA4F",
+          "MDK",
+          "PLCH1",
+          "LINC01018",
+          "TSPAN4",
+          "MICAL2",
+          "PDIA4",
+          "EFEMP2"
+        ],
+        "time_auc_mean": 0.6709885086647461,
+        "time_auc_times": [
+          146.5,
+          355.5,
+          532.25
+        ],
+        "time_auc_values": [
+          0.6382145099812214,
+          0.6928847037331933,
+          0.6985286901494248
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 20
+        },
+        "c_index": 0.511990407673861,
+        "fold": 34,
+        "integrated_brier_score": 0.30459479202256384,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "CYP2E1",
+          "CLEC5A",
+          "TRABD2A",
+          "PTPRN2",
+          "PTPRN",
+          "IKBIP",
+          "SH3RF2",
+          "FN1",
+          "HPCAL1",
+          "MTHFD2",
+          "DKK3",
+          "STEAP3",
+          "SLC43A3",
+          "EEF1A1",
+          "RGS14",
+          "ITGA5",
+          "TSPAN4",
+          "PDIA4",
+          "EFEMP2",
+          "EIF4A2"
+        ],
+        "time_auc_mean": 0.4986262059641481,
+        "time_auc_times": [
+          97.25,
+          331.0,
+          451.0
+        ],
+        "time_auc_values": [
+          0.44004773269689745,
+          0.44156713180048246,
+          0.6104184683379633
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 20
+        },
+        "c_index": 0.5948717948717949,
+        "fold": 35,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "SLC39A10",
+          "LEF1-AS1",
+          "TCF12",
+          "CAMSAP2",
+          "PTPRN2",
+          "SH3RF2",
+          "G6PC3",
+          "HBS1L",
+          "STEAP2",
+          "TMEM150A",
+          "MAPK1",
+          "FAM169A",
+          "MDK",
+          "RGS14",
+          "HOXB2",
+          "TSPAN4",
+          "ABCB7",
+          "ATE1",
+          "ITPKA",
+          "EFEMP2"
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 50
+        },
+        "c_index": 0.44216867469879517,
+        "fold": 36,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "SLC39A10",
+          "SLC9A7",
+          "TRABD2A",
+          "ANK1",
+          "HS3ST2",
+          "KCNH6",
+          "DMTN",
+          "PLD3",
+          "PGBD5",
+          "AQP3",
+          "LINGO2",
+          "L1CAM",
+          "PTPRN2",
+          "PTPRN",
+          "MAP1LC3A",
+          "STX1A",
+          "TOLLIP",
+          "SH3RF2",
+          "HBS1L",
+          "HPCAL1",
+          "MTHFD2",
+          "DKK3",
+          "STEAP2",
+          "DLEU1",
+          "TMEM171",
+          "SH2D5",
+          "EEF1A1",
+          "SDR16C5",
+          "TMEM233",
+          "ALOXE3",
+          "ANKRD36BP2",
+          "SYT5",
+          "LRRC73",
+          "SEMA4F",
+          "RGS4",
+          "GPR68",
+          "EPHA8",
+          "RGS14",
+          "CHGB",
+          "OLFM1",
+          "TSPAN4",
+          "ABCB7",
+          "IQGAP2",
+          "MICAL2",
+          "NELL1",
+          "ITPKA",
+          "RAB11FIP5",
+          "AGBL4",
+          "CETP",
+          "RPLP0P2"
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 20
+        },
+        "c_index": 0.517426273458445,
+        "fold": 37,
+        "integrated_brier_score": 0.33698584502562084,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "CNPY4",
+          "TCF12",
+          "PTPRN2",
+          "PTPRN",
+          "IKBIP",
+          "G6PC3",
+          "HPCAL1",
+          "TMEM60",
+          "STEAP2",
+          "DLEU1",
+          "STEAP3",
+          "TMEM150A",
+          "EEF1A1",
+          "FAM174A",
+          "PLCH1",
+          "ZNF581",
+          "TSPAN4",
+          "PDIA4",
+          "EFEMP2",
+          "PRNP"
+        ],
+        "time_auc_mean": 0.5073844079972875,
+        "time_auc_times": [
+          309.25,
+          405.5,
+          556.75
+        ],
+        "time_auc_values": [
+          0.4940230328663561,
+          0.43894656855895764,
+          0.5856915938875292
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 50
+        },
+        "c_index": 0.6020408163265306,
+        "fold": 38,
+        "integrated_brier_score": 0.30871459419839603,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "CLEC5A",
+          "MARVELD1",
+          "SLC9A7",
+          "TRABD2A",
+          "ANK1",
+          "CNPY4",
+          "PLK2",
+          "LEF1-AS1",
+          "RPP25",
+          "KDELR2",
+          "PTPRN2",
+          "MMP14",
+          "PTPRN",
+          "MAP1LC3A",
+          "IKBIP",
+          "TTC26",
+          "SH3RF2",
+          "LYNX1",
+          "FN1",
+          "G6PC3",
+          "CD276",
+          "BFSP1",
+          "GUSB",
+          "ARMCX6",
+          "HPCAL1",
+          "MTHFD2",
+          "TMEM60",
+          "DKK3",
+          "STEAP2",
+          "MSN",
+          "NDUFB2-AS1",
+          "DLEU1",
+          "STEAP3",
+          "SLC43A3",
+          "TMEM233",
+          "SLC2A10",
+          "LRRC73",
+          "SEMA4F",
+          "MYO15A",
+          "MDK",
+          "FAM174A",
+          "PLCH1",
+          "RGS14",
+          "MYD88",
+          "TSPAN4",
+          "MICAL2",
+          "PDIA4",
+          "NDEL1",
+          "ITPKA",
+          "EFEMP2"
+        ],
+        "time_auc_mean": 0.6118218673273818,
+        "time_auc_times": [
+          175.0,
+          419.0,
+          506.0
+        ],
+        "time_auc_values": [
+          0.689220707205436,
+          0.6044448721293101,
+          0.5395790124595938
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 3,
+          "selector__k": 50
+        },
+        "c_index": 0.5208333333333334,
+        "fold": 39,
+        "integrated_brier_score": 0.27137551917573494,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "PLP2",
+          "CYP2E1",
+          "ZNF248",
+          "CLEC5A",
+          "TRABD2A",
+          "IGFBP2",
+          "CNPY4",
+          "TTC33",
+          "GRN",
+          "CLASP2",
+          "RPP25",
+          "KBTBD6",
+          "SEC61A2",
+          "TCF12",
+          "ZNF561",
+          "EMP3",
+          "PTPRN2",
+          "MAP1LC3A",
+          "UBE2E1",
+          "SH3RF2",
+          "G6PC3",
+          "SUGT1P3",
+          "ANXA2",
+          "STXBP4",
+          "ARMCX6",
+          "HPCAL1",
+          "MTHFD2",
+          "DKK3",
+          "CRLS1",
+          "RBMX",
+          "DLEU1",
+          "STEAP3",
+          "SLC43A3",
+          "BTBD3",
+          "EEF1A1",
+          "USP3",
+          "SLC40A1",
+          "MDK",
+          "ZNF25",
+          "TRUB1",
+          "RGS14",
+          "HMGCR",
+          "SMIM17",
+          "HOXB2",
+          "IKZF5",
+          "PPP1CC",
+          "TSPAN4",
+          "PDIA4",
+          "EFEMP2",
+          "EIF4A2"
+        ],
+        "time_auc_mean": 0.5416501826266918,
+        "time_auc_times": [
+          147.0,
+          315.0,
+          443.5
+        ],
+        "time_auc_values": [
+          0.47240620675715594,
+          0.611092087497652,
+          0.5470537242713341
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 10
+        },
+        "c_index": 0.5178117048346056,
+        "fold": 40,
+        "integrated_brier_score": 0.2995827446971283,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "MARVELD1",
+          "TRABD2A",
+          "TCF12",
+          "PTPRN2",
+          "SH3RF2",
+          "STEAP2",
+          "NDUFB2-AS1",
+          "PDE4C",
+          "RGS14",
+          "TSPAN4"
+        ],
+        "time_auc_mean": 0.5509767901972386,
+        "time_auc_times": [
+          211.75,
+          390.0,
+          690.5
+        ],
+        "time_auc_values": [
+          0.6199538035012283,
+          0.5614016222158308,
+          0.47567812938895265
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 20
+        },
+        "c_index": 0.503731343283582,
+        "fold": 41,
+        "integrated_brier_score": 0.28433343945079664,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "TRABD2A",
+          "ANK1",
+          "RPP25",
+          "PTPRN2",
+          "PTPRN",
+          "SH3RF2",
+          "HPCAL1",
+          "TMEM60",
+          "STEAP2",
+          "DLEU1",
+          "SLC43A3",
+          "EEF1A1",
+          "TMEM233",
+          "TIMP4",
+          "PLCH1",
+          "RGS14",
+          "TSPAN4",
+          "MICAL2",
+          "ITPKA",
+          "EFEMP2"
+        ],
+        "time_auc_mean": 0.4668029344201911,
+        "time_auc_times": [
+          148.0,
+          360.0,
+          454.0
+        ],
+        "time_auc_values": [
+          0.3720576147063219,
+          0.5596049728904953,
+          0.4781293868538884
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 2,
+          "selector__k": 50
+        },
+        "c_index": 0.5238693467336684,
+        "fold": 42,
+        "integrated_brier_score": 0.2667391047277472,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "PLOD1",
+          "MARVELD1",
+          "SLC9A7",
+          "TRABD2A",
+          "IGFBP2",
+          "IFT52",
+          "ANK1",
+          "CNPY4",
+          "KDELR2",
+          "PTPRN2",
+          "PTPRN",
+          "UBE2E1",
+          "SH3RF2",
+          "LYNX1",
+          "G6PC3",
+          "ARF3",
+          "RPL10",
+          "HPCAL1",
+          "TMEM60",
+          "DKK3",
+          "STEAP2",
+          "ILF2",
+          "DLEU1",
+          "STEAP3",
+          "EEF1A1",
+          "RPL18A",
+          "RPS28",
+          "PDE4C",
+          "ENO2",
+          "SEMA4F",
+          "MAP2K1",
+          "ID3",
+          "FAM174A",
+          "RGS14",
+          "SPRYD3",
+          "RPS19",
+          "ZNF581",
+          "YWHAG",
+          "RPL30",
+          "TSPAN4",
+          "RPL29",
+          "HOXC8",
+          "PDIA4",
+          "RCN1",
+          "RAB31",
+          "NDEL1",
+          "SLC10A5",
+          "NRXN3",
+          "EFEMP2",
+          "HOXC6"
+        ],
+        "time_auc_mean": 0.5343925803740656,
+        "time_auc_times": [
+          157.0,
+          300.0,
+          543.0
+        ],
+        "time_auc_values": [
+          0.5822607363312248,
+          0.48327277489098586,
+          0.5330865748301811
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 50
+        },
+        "c_index": 0.4812206572769953,
+        "fold": 43,
+        "integrated_brier_score": 0.42605706401831206,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "MARVELD1",
+          "SLC9A7",
+          "TRABD2A",
+          "IGFBP2",
+          "PLK2",
+          "KCNH6",
+          "DMTN",
+          "RPP25",
+          "PLD3",
+          "TCF12",
+          "EMP3",
+          "PTPRN2",
+          "MMP14",
+          "PTPRN",
+          "NACAD",
+          "MAP1LC3A",
+          "SH3RF2",
+          "LYNX1",
+          "FN1",
+          "G6PC3",
+          "KLK5",
+          "CD276",
+          "ARMCX6",
+          "HPCAL1",
+          "MTHFD2",
+          "DKK3",
+          "STEAP2",
+          "ILF2",
+          "MSN",
+          "DLEU1",
+          "STEAP3",
+          "SLC43A3",
+          "USP3",
+          "SLC2A10",
+          "SEMA4F",
+          "MDK",
+          "FAM174A",
+          "PLCH1",
+          "RGS14",
+          "LINC01018",
+          "RPL30",
+          "TSPAN4",
+          "P4HB",
+          "MICAL2",
+          "PDIA4",
+          "RBBP4",
+          "ITPKA",
+          "EFEMP2",
+          "RAB11FIP5",
+          "CETP"
+        ],
+        "time_auc_mean": 0.44941067835174425,
+        "time_auc_times": [
+          307.5,
+          423.0,
+          506.25
+        ],
+        "time_auc_values": [
+          0.5571221280050581,
+          0.36579206701478134,
+          0.4149401364803143
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 20
+        },
+        "c_index": 0.6161879895561357,
+        "fold": 44,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "SLC39A10",
+          "TUBA1C",
+          "TRABD2A",
+          "PTPRN2",
+          "PTPRN",
+          "IKBIP",
+          "SH3RF2",
+          "HBS1L",
+          "MTHFD2",
+          "TMEM60",
+          "DKK3",
+          "STEAP2",
+          "STEAP3",
+          "MAPK1",
+          "MDK",
+          "RGS14",
+          "HOXB2",
+          "TSPAN4",
+          "PDIA4",
+          "EFEMP2"
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 50
+        },
+        "c_index": 0.5650406504065041,
+        "fold": 45,
+        "integrated_brier_score": 0.34787265179484655,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "CLEC5A",
+          "TRABD2A",
+          "RNF135",
+          "CNPY4",
+          "KCNH6",
+          "GRN",
+          "LEF1-AS1",
+          "RPP25",
+          "NEK10",
+          "KDELR2",
+          "PGBD5",
+          "TCF12",
+          "PDE6B",
+          "SH3BP2",
+          "EMP3",
+          "PTPRN2",
+          "MMP14",
+          "HOTAIRM1",
+          "MAP1LC3A",
+          "KHDRBS2",
+          "SH3RF2",
+          "BRI3",
+          "GSTK1",
+          "GUSB",
+          "ANXA2",
+          "HPCAL1",
+          "STEAP2",
+          "DENND2D",
+          "ABCC3",
+          "NDUFB2-AS1",
+          "DLEU1",
+          "STEAP3",
+          "TMEM150A",
+          "SLC43A3",
+          "PTPN7",
+          "IL10RB",
+          "MDK",
+          "GPR68",
+          "ADPRH",
+          "PLCH1",
+          "RGS14",
+          "HOXB2",
+          "MYD88",
+          "TSPAN4",
+          "ATAD1",
+          "PDIA4",
+          "TRIP6",
+          "EFEMP2",
+          "CD99",
+          "EPHB6"
+        ],
+        "time_auc_mean": 0.5396682646453196,
+        "time_auc_times": [
+          265.25,
+          484.5,
+          707.0
+        ],
+        "time_auc_values": [
+          0.5685173615013277,
+          0.5759123944633346,
+          0.47388633274131226
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 50
+        },
+        "c_index": 0.4780361757105943,
+        "fold": 46,
+        "integrated_brier_score": 0.34277143155536277,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "ZNF248",
+          "TRABD2A",
+          "IGFBP2",
+          "RPP25",
+          "PRKAR1B",
+          "PLD3",
+          "TCF12",
+          "ZNF561",
+          "EMP3",
+          "PTPRN2",
+          "PTPRN",
+          "MAP1LC3A",
+          "TNFRSF12A",
+          "TOLLIP",
+          "BRI3",
+          "ANXA2",
+          "STXBP4",
+          "ARMCX6",
+          "HPCAL1",
+          "MTHFD2",
+          "DKK3",
+          "TUBA4A",
+          "ZMYM1",
+          "RBMX",
+          "DLEU1",
+          "STEAP3",
+          "SLC43A3",
+          "USP3",
+          "ANG",
+          "SLC40A1",
+          "LRRC73",
+          "TBCCD1",
+          "MDK",
+          "FAM174A",
+          "MAPRE1",
+          "ZNF140",
+          "TRUB1",
+          "RGS14",
+          "IKZF5",
+          "TSPAN4",
+          "NOL11",
+          "ATE1",
+          "NELL1",
+          "GART",
+          "KBTBD7",
+          "C1orf112",
+          "RBBP4",
+          "ITPKA",
+          "EFEMP2",
+          "TAGLN2"
+        ],
+        "time_auc_mean": 0.5104656220775086,
+        "time_auc_times": [
+          343.0,
+          432.0,
+          675.0
+        ],
+        "time_auc_values": [
+          0.5644051335807518,
+          0.46948589297963955,
+          0.4881147189945049
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 20
+        },
+        "c_index": 0.5932642487046632,
+        "fold": 47,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "MARVELD1",
+          "TRABD2A",
+          "ANK1",
+          "PLK2",
+          "KCNH6",
+          "LEF1-AS1",
+          "AQP3",
+          "PTPRN",
+          "SH3RF2",
+          "MTHFD2",
+          "DKK3",
+          "TMEM233",
+          "SEMA4F",
+          "MDK",
+          "RGS14",
+          "HOXB2",
+          "TSPAN4",
+          "P4HB",
+          "MICAL2",
+          "NELL1"
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 20
+        },
+        "c_index": 0.5617433414043583,
+        "fold": 48,
+        "integrated_brier_score": 0.26245037666873317,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "MARVELD1",
+          "TRABD2A",
+          "KDELR2",
+          "PTPRN2",
+          "IKBIP",
+          "FN1",
+          "G6PC3",
+          "CD276",
+          "HPCAL1",
+          "TMEM60",
+          "STEAP2",
+          "MSN",
+          "STEAP3",
+          "TMEM150A",
+          "SLC43A3",
+          "EEF1A1",
+          "RGS14",
+          "TSPAN4",
+          "PDIA4",
+          "EFEMP2"
+        ],
+        "time_auc_mean": 0.5382523999480322,
+        "time_auc_times": [
+          130.5,
+          299.5,
+          538.5
+        ],
+        "time_auc_values": [
+          0.562593555385162,
+          0.5632184677057018,
+          0.4960360510344059
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 2,
+          "selector__k": 50
+        },
+        "c_index": 0.4627906976744186,
+        "fold": 49,
+        "integrated_brier_score": 0.2770944617388662,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "KLK10",
+          "SLC9A7",
+          "CYS1",
+          "TRABD2A",
+          "ANK1",
+          "PLK2",
+          "KCNH6",
+          "VWA7",
+          "LEF1-AS1",
+          "RPP25",
+          "PGBD5",
+          "TCF12",
+          "PRRG3",
+          "ZNF561",
+          "PTPRN2",
+          "PTPRN",
+          "VSTM2L",
+          "SH3RF2",
+          "LYNX1",
+          "G6PC3",
+          "KLK5",
+          "TCEAL6",
+          "ARMCX6",
+          "RPL10",
+          "HPCAL1",
+          "DKK3",
+          "STEAP2",
+          "IQSEC2",
+          "CHST1",
+          "EEF1A1",
+          "LMO7",
+          "TMEM233",
+          "TENM2",
+          "SEMA4F",
+          "RGS4",
+          "GPR68",
+          "CLTB",
+          "FAM174A",
+          "TIMP4",
+          "PLCH1",
+          "SNRNP40",
+          "RGS14",
+          "ZNF581",
+          "LINC01018",
+          "TSPAN4",
+          "ABCB7",
+          "MICAL2",
+          "NRXN3",
+          "ITPKA",
+          "PRNP"
+        ],
+        "time_auc_mean": 0.3981146922252075,
+        "time_auc_times": [
+          120.75,
+          326.0,
+          454.0
+        ],
+        "time_auc_values": [
+          0.4017089313601547,
+          0.40685917128064353,
+          0.38825248308695537
+        ]
+      },
+      {
+        "best_params": {
+          "model__max_depth": 5,
+          "selector__k": 50
+        },
+        "c_index": 0.5578512396694215,
+        "fold": 50,
+        "integrated_brier_score": 0.24944819168613278,
+        "n_test": 32,
+        "n_train": 128,
+        "selected_features": [
+          "CLEC5A",
+          "MARVELD1",
+          "SLC9A7",
+          "TRABD2A",
+          "IGFBP2",
+          "ANK1",
+          "CNPY4",
+          "KDELR2",
+          "PGBD5",
+          "TCF12",
+          "PTPRN2",
+          "PTPRN",
+          "MAP1LC3A",
+          "UBE2E1",
+          "IKBIP",
+          "TTC26",
+          "KHDRBS2",
+          "SH3RF2",
+          "G6PC3",
+          "HPCAL1",
+          "MTHFD2",
+          "TMEM60",
+          "DKK3",
+          "STEAP2",
+          "ILF2",
+          "MSN",
+          "NDUFB2-AS1",
+          "DLEU1",
+          "STEAP3",
+          "TMEM150A",
+          "SLC43A3",
+          "EEF1A1",
+          "NAGLU",
+          "SLC2A10",
+          "SEMA4F",
+          "MDK",
+          "FAM174A",
+          "PLCH1",
+          "RGS14",
+          "IKZF5",
+          "YWHAG",
+          "RPL30",
+          "TSPAN4",
+          "PDIA4",
+          "RCN1",
+          "NDEL1",
+          "ITPKA",
+          "EFEMP2",
+          "AGBL4",
+          "EIF4A2"
+        ],
+        "time_auc_mean": 0.5724902404348086,
+        "time_auc_times": [
+          157.0,
+          384.0,
+          506.0
+        ],
+        "time_auc_values": [
+          0.6849632304785931,
+          0.5779962717377929,
+          0.46311549933392815
+        ]
+      }
+    ],
+    "split_ids_hash": "e7d12f11177f9d41551df70135ea05e084e10f7bddf29819b574249bdb2eb38c",
+    "summary": {
+      "c_index": {
+        "max": 0.6825980392156863,
+        "mean": 0.5358883462623514,
+        "min": 0.37146529562982006,
+        "n": 50,
+        "std": 0.06102392533036568
+      },
+      "fold": {
+        "max": 50.0,
+        "mean": 25.5,
+        "min": 1.0,
+        "n": 50,
+        "std": 14.577379737113251
+      },
+      "integrated_brier_score": {
+        "max": 0.42605706401831206,
+        "mean": 0.28859881723398073,
+        "min": 0.2076159739530017,
+        "n": 40,
+        "std": 0.05280014017868456
+      },
+      "n_test": {
+        "max": 32.0,
+        "mean": 32.0,
+        "min": 32.0,
+        "n": 50,
+        "std": 0.0
+      },
+      "n_train": {
+        "max": 128.0,
+        "mean": 128.0,
+        "min": 128.0,
+        "n": 50,
+        "std": 0.0
+      },
+      "time_auc_mean": {
+        "max": 0.7110834464259351,
+        "mean": 0.5503635376791943,
+        "min": 0.3981146922252075,
+        "n": 40,
+        "std": 0.08126392428038279
+      }
+    }
+  },
+  "nested_cv_fold_intervals": {
+    "c_index": {
+      "fold_percentile_2.5": 0.43970678469847563,
+      "fold_percentile_97.5": 0.6418688695087974
+    },
+    "fold": {
+      "fold_percentile_2.5": 2.225,
+      "fold_percentile_97.5": 48.775
+    },
+    "integrated_brier_score": {
+      "fold_percentile_2.5": 0.21679784211378525,
+      "fold_percentile_97.5": 0.42479677051540565
+    },
+    "n_test": {
+      "fold_percentile_2.5": 32.0,
+      "fold_percentile_97.5": 32.0
+    },
+    "n_train": {
+      "fold_percentile_2.5": 128.0,
+      "fold_percentile_97.5": 128.0
+    },
+    "time_auc_mean": {
+      "fold_percentile_2.5": 0.4080021554756336,
+      "fold_percentile_97.5": 0.7013081303848366
+    }
+  },
+  "no_feature_selection_baseline": {
+    "protocol": "event-stratified 5-fold x 2; fixed max_depth=3",
+    "summary": {
+      "c_index": {
+        "max": 0.6363636363636364,
+        "mean": 0.5187778168681784,
+        "min": 0.42326139088729015,
+        "n": 10,
+        "std": 0.07419467345375697
+      },
+      "fold": {
+        "max": 10.0,
+        "mean": 5.5,
+        "min": 1.0,
+        "n": 10,
+        "std": 3.0276503540974917
+      },
+      "integrated_brier_score": {
+        "max": 0.3593399534696442,
+        "mean": 0.29122819244981657,
+        "min": 0.1990645842268659,
+        "n": 8,
+        "std": 0.04862921524058887
+      },
+      "n_test": {
+        "max": 32.0,
+        "mean": 32.0,
+        "min": 32.0,
+        "n": 10,
+        "std": 0.0
+      },
+      "n_train": {
+        "max": 128.0,
+        "mean": 128.0,
+        "min": 128.0,
+        "n": 10,
+        "std": 0.0
+      },
+      "time_auc_mean": {
+        "max": 0.6458915804671325,
+        "mean": 0.5205184787853364,
+        "min": 0.38783800342333596,
+        "n": 8,
+        "std": 0.093476591735773
+      }
+    }
+  },
+  "null_test_c_index": 0.5,
+  "performance": {
+    "baseline_seconds": 60.15715669999986,
+    "nested_cv_seconds": 87.02335060000019
+  },
+  "protocol": {
+    "inner_cv": "event-stratified 3-fold",
+    "outer_cv": "event-stratified 5-fold x 10"
+  },
+  "test_bootstrap": {
+    "c_index": {
+      "bootstrap_95_ci": [
+        0.4848277877739761,
+        0.6007304156041549
+      ],
+      "estimate": 0.5405438361175466,
+      "n_bootstrap": 1000
+    }
+  },
+  "test_metrics": {
+    "c_index": 0.5405438361175466,
+    "time_auc_mean": 0.5500518280826598,
+    "time_auc_times": [
+      250.0,
+      401.0,
+      710.0
+    ],
+    "time_auc_values": [
+      0.5469577666870001,
+      0.5153510451325491,
+      0.5857746090994099
+    ]
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "primary_source_commit": "60351c5a787ad104b383612f18237592cfee1314",
+  "primary_environment": "gene_edit Python 3.7.11 / Django 2.1.8",
+  "primary_scope": "Preserved 50-fold fixed-family results; not rerun on the final follow-up source.",
+  "followup_scope": "Independent four-task refits and current-helper fixed refits are repeated separately. Product missingness and real-browser evidence record their own final source commit.",
+  "copied_files": [
+    {
+      "file": "binary_classification.json",
+      "sha256": "16c9d9673b8bc4aeb87ece32cbdd3e299ed760979669b60fcb37093d3cfa471d"
+    },
+    {
+      "file": "binary_classification_pipeline.maler",
+      "sha256": "a8c438de6dde2dc00a49d01d744a0c9eb43acd9713942452b58c1e315d93837d"
+    },
+    {
+      "file": "final_selected_features.csv",
+      "sha256": "017a7cfdf877d00dcb54c5ce66a5122dea7d4d0476a710c5b4af12fe77fbb76b"
+    },
+    {
+      "file": "heldout_test_summary.csv",
+      "sha256": "9d97a261481d466da8c9743fb48da657321e5c168ba981f06dbefcac4db970c0"
+    },
+    {
+      "file": "internal_cv_summary.csv",
+      "sha256": "d704cb010c606e7e099ad686f9452f9ccb37e7cd5b8fdc99823d5dcdabbac9ee"
+    },
+    {
+      "file": "multiclass_classification.json",
+      "sha256": "1e02c2c0c62ae09a44df44f0095f73d8fe5d2d773e51c657c62b9c4ec76c254d"
+    },
+    {
+      "file": "multiclass_classification_pipeline.maler",
+      "sha256": "7b08b2c9c03797a99ce8bf154e16495f0f12a9571c1fee531ec1a91b622097f7"
+    },
+    {
+      "file": "reference_parity_check.json",
+      "sha256": "2676d8b4f88f84cf5bb307ce9c312ae9a9ea65afcbbb3f179523dab6a144e9ee"
+    },
+    {
+      "file": "regression.json",
+      "sha256": "863ee28b54a34f7596b360def0a577c26300043535eaa125d032b66ec9060cd9"
+    },
+    {
+      "file": "regression_pipeline.maler",
+      "sha256": "94c089f3a374f7ac9ac2f5d2595db10e24e31622f927e1fd43ce606a08b8c0ed"
+    },
+    {
+      "file": "survival.json",
+      "sha256": "02af3558e08e0d8186c18b8320b53bdbcef9ad5452d267494ad53b883d83595f"
+    },
+    {
+      "file": "survival_pipeline.maler",
+      "sha256": "1ee3646d82d38b850bcbbef31b202c12c6270e999d84433c9681338f82365bef"
+    },
+    {
+      "file": "validation_results.json",
+      "sha256": "2e9791e426636ce08231f5a4727678c63f83b3803c699af434e0c834ed0ec1be"
+    }
+  ]
+}

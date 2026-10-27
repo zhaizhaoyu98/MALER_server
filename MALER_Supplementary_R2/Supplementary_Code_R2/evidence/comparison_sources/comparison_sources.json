@@ -1,0 +1,25 @@
+{
+  "checked_date": "2026-10-22",
+  "sources": [
+    {
+      "name": "Auto-WEKA",
+      "url": "https://github.com/automl/autoweka/releases/tag/v2.6.4",
+      "verified_scope": "Official versioned release v2.6.4"
+    },
+    {
+      "name": "auto-sklearn",
+      "url": "https://automl.github.io/auto-sklearn/master/releases.html",
+      "verified_scope": "Official release documentation identifies 0.15.0"
+    },
+    {
+      "name": "iLearnPlus",
+      "url": "https://github.com/Superzchen/iLearnPlus",
+      "verified_scope": "Official repository describes nucleic-acid/protein sequence application"
+    },
+    {
+      "name": "JADBio",
+      "url": "https://jadbio.com/pricing/",
+      "verified_scope": "Vendor lists Survival Analysis among Team additions; access remains plan-dependent; no price or permanent entitlement inferred"
+    }
+  ]
+}

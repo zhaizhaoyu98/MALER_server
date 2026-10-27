@@ -1,0 +1,56 @@
+{
+  "server_utc": "2026-10-24T07:15:06.995856Z",
+  "source_commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+  "identity": {
+    "server_utc": "2026-10-24T07:15:05.180860Z",
+    "source_commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "source_clean": true,
+    "source_directory": "/mnt/home/liqiang/maler_revision2_20260930/source_public_961b45a",
+    "process_exe": "/mnt/home/liqiang/.conda/envs/gene_edit/bin/python3.7",
+    "master_pid": 2817537,
+    "public_uploads_enabled": true,
+    "task_root": "/var/lib/maler_public_r2/tasks"
+  },
+  "resolved_settings": {
+    "settings_module": "public_online_settings",
+    "database_path": "/var/lib/maler_public_r2/state/public.sqlite3",
+    "task_root": "/var/lib/maler_public_r2/tasks",
+    "upload_tmp": "/var/lib/maler_public_r2/django_tmp",
+    "static_root": "/mnt/home/liqiang/maler_revision2_20260930/public_static",
+    "ssl_redirect": true,
+    "hsts_seconds": 0
+  },
+  "tests_passed": 95,
+  "registry_version": 4,
+  "readiness_attempts": [
+    "HTTPError",
+    200
+  ],
+  "health": {
+    "server_utc": "2026-10-24T07:15:06.987770Z",
+    "checks": {
+      "maler-r2-restricted.service": true,
+      "nginx.service": true,
+      "maler-public-cleanup.timer": true,
+      "certbot-renew.timer": true,
+      "chronyd.service": true,
+      "cleanup_recent_success": true,
+      "cleanup_failed_count_zero": true,
+      "tmpfs": true,
+      "no_swap": true,
+      "resolved_private_storage_paths": true,
+      "certificate_21_days": true,
+      "clock_synchronized_within_one_second": true
+    },
+    "healthy": true,
+    "external_notifications_configured": false
+  },
+  "runtime_upgraded": false,
+  "nas_policy_changed": false,
+  "hsts_changed": false,
+  "changed_source_files": [
+    "README.md",
+    "mlserver/templates/analysis.html",
+    "mlserver/templates/predict.html"
+  ]
+}

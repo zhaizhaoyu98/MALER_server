@@ -1,0 +1,70 @@
+{
+  "client_utc": "2026-10-24T07:55:05.540248+00:00",
+  "scope": "Final certificate-verifying public information/control checks; no biomedical upload",
+  "tls_verification_disabled": false,
+  "configured_50MiB_descriptions_verified": true,
+  "passed": true,
+  "records": [
+    {
+      "page": "home",
+      "status": 200,
+      "no_store": true,
+      "uploads_available_notice": true,
+      "referrer_policy": "strict-origin",
+      "sha256": "b0850f62dad57cab3684b2da4eea8d74b547d68ed6d7fb90e2e07f27903befac"
+    },
+    {
+      "page": "analysis",
+      "status": 200,
+      "no_store": true,
+      "uploads_available_notice": true,
+      "referrer_policy": "strict-origin",
+      "sha256": "8df4a26ac9cc0b1570380980c55121c23885f355307cea27ca5a6e659a9f16d9"
+    },
+    {
+      "page": "predict",
+      "status": 200,
+      "no_store": true,
+      "uploads_available_notice": true,
+      "referrer_policy": "strict-origin",
+      "sha256": "462c70624af343dd31f60293937ef4acf98ad5cd28463485024e0f891bff17f8"
+    },
+    {
+      "page": "help",
+      "status": 200,
+      "no_store": true,
+      "uploads_available_notice": true,
+      "referrer_policy": "strict-origin",
+      "sha256": "bc69c4610b43192d3ac08313fae7b373b826108e03bae402f8d556b681bb6b89"
+    },
+    {
+      "route": "http_home",
+      "status": 308,
+      "location": "https://www.inbirg.com/maler/home"
+    },
+    {
+      "method": "GET",
+      "route": "preview",
+      "status": 400
+    },
+    {
+      "method": "POST",
+      "route": "preview",
+      "status": 403
+    },
+    {
+      "method": "GET",
+      "route": "predict_preview",
+      "status": 400
+    },
+    {
+      "method": "POST",
+      "route": "predict_preview",
+      "status": 403
+    },
+    {
+      "route": "declared_oversize_only_no_dataset",
+      "status": 413
+    }
+  ]
+}

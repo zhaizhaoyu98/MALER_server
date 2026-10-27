@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+		<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	</head>
+
+	<style>
+		.card {
+			cursor: pointer
+		}
+
+		.f_white {
+			color: black;
+		}
+
+		.hidden {
+			display: none;
+		}
+
+		.card:hover {
+			border: 2px solid #0d6efd;
+		}
+
+		.select {
+			border: 1px solid #0d6efd;
+		}
+
+		.select .card-body {
+			background-color: #e8f1ff;
+		}
+	</style>
+
+	<body>
+		<div class="my-3">
+			<div class="card-deck">
+				<div class="card" id="task_ext" onclick="selectactive(this.id)">
+					<div class="border-bottom" style="padding: 20px">
+						<!-- <img src="../img/feature_extraction.jpg" class="card-img-top" alt="..."> -->
+					</div>
+					<div class="card-body">
+						<h6 class="card-title">Feature extraction</h6>
+						<p class="card-text m-0">A process of reducing the dimension of dataset by summarizing original features into new
+							informative and non-redundant features.</p>
+						<p class="card-text m-0">The extracted features can be used to data clustering.</p>
+					</div>
+				</div>
+				<div class="card" id="task_gen" onclick="selectactive(this.id)">
+					<div class="border-bottom" style="padding: 20px">
+						<!-- <img src="../img/data_generation.jpg" class="card-img-top" alt="..."> -->
+					</div>
+					<div class="card-body">
+						<h6 class="card-title">Data generation</h6>
+						<p class="card-text m-0">A process of generating the synthetic data that mimics the input dataset.</p>
+						<p class="card-text m-0">The generative model conducts the process for learning the patterns in input dataset to
+							generate data.</p>
+					</div>
+				</div>
+				<div class="card" id="task_clf" onclick="selectactive(this.id)">
+					<div class="border-bottom" style="padding: 20px">
+						<!-- <img src="../img/classification.jpg" class="card-img-top" alt="..."> -->
+					</div>
+					<div class="card-body">
+						<h6 class="card-title">Classification</h6>
+						<p class="card-text m-1">The process of organizing data into pre-defined categories based on the features of
+							data.</p>
+						<br />
+						<p class="card-text m-0"> * It requires the label data (pre-defined categories) * </p>
+					</div>
+				</div>
+				<div class="card" id="task_reg" onclick="selectactive(this.id)">
+					<div class="border-bottom" style="padding: 20px">
+						<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+					</div>
+					<div class="card-body">
+						<h6 class="card-title"> Regression </h6>
+						<p class="card-text m-1"> The process of investigating the relationship between a dependent (outcomes) and
+							independent variables (features). </p>
+						<p class="card-text m-0"> * It requires the label data (outcomes) * </p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		function selectactive(id) {
+			document.getElementById('task_ext').setAttribute("class", "card");
+			document.getElementById('task_gen').setAttribute("class", "card")
+			document.getElementById('task_clf').setAttribute("class", "card")
+			document.getElementById('task_reg').setAttribute("class", "card")
+			document.getElementById(id).className = 'card select';
+		}
+	</script>
+</html>

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MALER-help</title>
+    {% include 'public_templates/bootstrap.html' %}
+</head>
+<style>
+	.card-header{
+		text-align: center;
+		font-style: oblique;
+	}
+
+	@media (max-width: 950px) {
+		#spy_nav_div {
+			display: none;
+		}
+	}
+
+	.nav-stacked>ul{
+		list-style: none;
+	}
+	.nav-stacked>ul li{
+		margin-top: 1.5rem;
+		margin-bottom: 1.5rem;
+	}
+	.nav-stacked>ul a:hover{
+		text-decoration: none;
+	}
+	#intro_table, th, td{
+		border-collapse: collapse;
+		border: 1px solid #ababab;
+		text-align: center;
+	}
+	.flex-container {    
+		display: -webkit-flex;   
+		display: flex;    
+		flex-flow: wrap;    
+		justify-content: center;    
+		align-items: center;
+		}
+	.flex-cell {width: 20%;}
+	.line{    height:1px;  background-color:#333; }
+	
+	table
+	{
+	border-collapse: collapse;
+	margin: 1px,1px,1px,1px;
+	text-align: center;
+	}
+	table td, table th
+	{
+	border: 2px solid #cad9ea;
+	color: #666;
+	height: 25px;
+	}
+	table thead th
+	{
+	background-color: #17a2b8;
+	width: 35px;
+	/* min-width: 150px; */
+	height: 30px;
+	color: white;
+	}
+/* 	table tr:nth-child(odd)
+	{
+	background: #fff;
+	}
+	table tr:nth-child(even)
+	{
+	background: #f0f1f2;
+	} */
+	
+/* 	.textver {
+	    font-weight: bold;
+	    position: absolute;
+	    margin: 5px;
+	} */
+	.abc{ border:2px solid #17a2b8; width:300px;margin-top: 100px;margin-left: 0px;border-radius: 25px 25px 25px 25px;}
+	
+</style>
+<body data-spy="scroll" data-target="#help_spy_scroll" style="padding-top: 0px;">
+    {% include 'public_templates/nav_tem.html' %}
+{% include 'public_templates/service_notice.html' %}
+	<div class="col-xl-2 col-lg-2 " id='spy_nav_div'>
+		<nav class="nav nav-pills nav-stacked" style="position:fixed;border-color: #000000;border: 1px;" id="help_spy_scroll" >
+			<ul data-spy="affix" data-offset-top="0" class="abc">
+				<li><a href="#top">Introduction</a></li>
+				<li><a href="#os_compat">Browser and OS Compatibility</a></li>
+				<li><a href="#public-data-policy">Data Handling and Retention</a></li>
+				<li><a href="#gen">Machine Learning Analysis</a></li>
+				<li><a href="#oc">&nbsp; &nbsp; Binary Classification</a></li>
+				<li><a href="#od">&nbsp; &nbsp; Multiclass Classification</a></li>
+				<li><a href="#os">&nbsp; &nbsp; Regression</a></li>
+				<li><a href="#ts">&nbsp; &nbsp; Survival Analysis</a></li>
+				<li><a href="#browse">Feature Selection Methods</a></li>
+	            <li><a href="#one_click">One-click Modeling</a></li>
+				<li><a href="#cus_model">Customized Modeling</a></li>
+	            <li><a href="#predict">External Prediction</a></li>
+	            <li><a href="#samp">Sample Data</a></li>
+				<li><a href="#item-3">Contact Us</a></li>
+			</ul>
+		</nav>
+	</div>
+	<div class="container row col-xl-8 col-lg-8 col-12" style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
+		<div class="col-xl-1 col-lg-1 ">
+			</div>
+		<div class='col-xl-10 col-lg-10'>
+			<br>
+			</br>
+			<h1>Introduction</h1>
+			<hr>
+				<p>MALER is a web application that helps biologists apply ML models to
+                    biological and biomedical data. This page provides documentation on how to use MALER.</p>
+				<p>MALER provides four types of machine learning analysis, each with multiple model building algorithms, 
+				evaluation methods, as well as feature selection methods for users to choose from to build their custom 
+				machine learning pipeline. Below is a table summary of our features:</p>
+				<table id="intro_table" width="100%">
+					<thead>
+					<tr>
+						<th style="font-weight: bold;"></th>
+						<th>ML algorithms</th>
+						<th>Evaluation</th>
+						<th>Feature Selection</th>
+						<th>Optimal Feature Subset</th>
+					</tr>
+					</thead>
+					<tr>
+						<td style="font-weight: bold;">Binary Classification</td>
+						<td rowspan="2">Naive Bayes, SVM, Random Forest, Logistic Regression, KNN, 
+							XGBoost, lightGBM, Adaboost, DecisionTree, GBDT
+						</td>
+					<td rowspan="2">Balanced accuracy, precision, recall, F1, MCC, ROC-AUC, average precision (AP), and per-class sensitivity/specificity</td>
+					<td rowspan="2">ANOVA and MRMR (maximum relevance and minimum redundancy)</td>
+					<td rowspan="4">TopK, FSS, BSS, PCA, or no reduction; each option is fitted within training folds</td>
+					</tr>
+					<tr>
+						<td style="font-weight: bold;">Multiclass Classification</td>
+					</tr>
+					<tr>
+						<td style="font-weight: bold;">Regression</td>
+						<td>Linear Regression, SVR, Ridge, Lasso, Decision Tree,
+							XGBoost, AdaBoost, Random Forest, Gradient Boosting Regressor
+						</td>
+					<td>R-squared, MAE, MSE, and RMSE</td>
+					<td>ANOVA (f_regression) or MRMR</td>
+					</tr>
+					<tr>
+						<td style="font-weight: bold;">Survival Analysis</td>
+						<td>SurvivalSVM, SurvivalTree, ExtraSurvivalTrees, RandomSurvivalForest,
+							GradientBoostingSurvival
+						</td>
+					<td>C-index, cumulative/dynamic time AUC, and integrated Brier score when estimable</td>
+					<td>Censoring-aware univariate Cox ranking</td>
+					</tr>
+				</table>
+				<br>
+				<br>
+				
+				
+				
+			<h3 id='os_compat'>Browser and Operating System (OS) Compatibility</h3>
+				<hr>
+				MALER is free to access without a user account and can be opened in current desktop browsers and
+				operating systems as shown below.
+<!-- 				<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;font-weight: bolder;">
+				What can MALER do?
+				</nav> -->
+				<br></br>
+
+			<div class="row no-gutters ;"style="margin-bottom: 1em;" >
+			    <div class="flex-cell" style="text-align: center;"><b>OS</b></div>
+			    <div class="flex-cell" style="text-align: center;"><b>Chorme</b></div>
+				<div class="flex-cell" style="text-align: center;"><b>Firefox</b></div>
+				<div class="flex-cell" style="text-align: center;"><b>Edge</b></div>
+				<div class="flex-cell" style="text-align: center;"><b>Safari</b></div>
+			</div>
+			
+			<div class="line"></div>
+			<div class="row no-gutters card-header" >
+			    <div class="flex-cell" style="text-align: center;">Windows(v10)</div>
+			    <div class="flex-cell" style="text-align: center;">v78.0.3904.108</div>
+				<div class="flex-cell" style="text-align: center;">v70.0.1</div>
+				<div class="flex-cell" style="text-align: center;">v44.18362.449.0</div>
+				<div class="flex-cell" style="text-align: center;">n/a</div>
+				
+			</div>
+			<div class="row no-gutters card-header" >
+			    <div class="flex-cell" style="text-align: center">MacOS(v10.1)</div>
+			    <div class="flex-cell" style="text-align: center;">v78</div>
+				<div class="flex-cell" style="text-align: center;">v71</div>
+				<div class="flex-cell" style="text-align: center;">n/a</div>
+				<div class="flex-cell" style="text-align: center;">v8</div>
+			
+			</div>
+			<div class="row no-gutters card-header" style="">
+			    <div class="flex-cell" style="text-align: center;">Linux(Ubuntu-17.04)</div>
+			    <div class="flex-cell" style="text-align: center;">v78.0.3904.108</div>
+				<div class="flex-cell" style="text-align: center;">v52.0.1</div>
+				<div class="flex-cell" style="text-align: center;">n/a</div>
+				<div class="flex-cell" style="text-align: center;">n/a</div>
+			</div>
+			<!-- <hr> -->
+
+			<!-- <hr> -->
+
+			
+			<div class="line"></div>
+			
+
+				
+                <br>
+                </br>
+			<h3 id='gen'>Machine Learning Analysis</h3>
+				<hr>
+                <p><b>Module selection</b></p>
+				
+				
+				<p>
+                    MALER provides four modules including binary classification, multi-class classification, regression
+                    and survival analysis. Classification is a supervised process that involves predicting the class of
+                    given data points. Regression is a supervised machine learning technique which is used to predict
+                    continuous values. Survival analysis aims to predict time to an event.
+                </p>
+				<!-- <img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/gen_tab.png" alt="general tab img"/> -->
+				<p><b>Data submit</b></p>
+
+				<p>Choose a task and upload the corresponding feature-by-sample CSV, or try a bundled example. User uploads require authorization and de-identification confirmation.</p>
+                <p><b>Format of input files</b></p>
+				<p>MALER accepts one feature-by-sample CSV. The first rows contain the task-specific outcome and train/test partition labels; remaining rows contain numeric features. Use the downloadable examples to check the exact row names and layout.</p>
+				<!-- <img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/general_home.PNG" alt="general overview img"/> -->
+				<br>
+				<p><b>Preview</b></p>
+				<p>In the preview page, users can view the information and distribution about the uploaded data.
+					After checking the data, click the 'Analysis' button to analyze the input data.
+				</p>
+				<br>
+				
+			<h3 id='oc'>Binary Classification</h3>
+				<hr>
+				<p>
+                    In this module, the sample name, class of samples and ML set are sequentially provided in the first
+                    3 rows of input file. The class of samples indicates 2 sample groups, or “NA” for blind test set.
+                    ML set must contain “training”, and can also contain “testing”. Sample data of this data type can
+                    be downloaded.
+                </p>
+				<!-- <img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/comp_tab_help.png" alt="organoid compare tab img"/>
+				<p>In comparison search, you can choose to 1) search by gene or search by organoid. When searching by gene, you will be able to 2) select a comparison type and its related comparison data sets to display. And 3) filter your search by fold change and P-value.</p>
+				<p>Parameters</p>
+				<ul>
+					<p><strong>Search By</strong>: Select to search by gene or search by organoid type.</p>
+					<p><strong>Options</strong>: Select between human and mouse samples as well as bulk and single-cell samples.</p>
+					<br>
+					<p><strong>Select Comparison Type</strong>: Query the selected comparison type.</p>
+					<p><strong>Select Comparison</strong>: Query the selected comparison. Click <a data-toggle="modal" data-target="#abbrev_modal" href="###">abbrev.</a> for list of comparison abbreviations.</p>
+					<p><strong>Gene Name / Entrez ID</strong>: Search for expression by gene name or entrez ID, searching by gene name will have an autocomplete feature after entering 2 characters.</p>
+					<p><strong>Select Organoid</strong>: When <i>Search by organoid</i> is selected, choose an organoid type.</p>
+					<p><strong>Log<sub>2</sub>FC cutoff</strong>: Results will have fold-change greater than user defined threshold.</p>
+					<p><strong>P-value cutoff</strong>: Results will have P-values less than user defined threshold.</p>
+					<br>
+					<p>Note: Only top 50,000 results sorted by P-value are shown.</p>
+				</ul>
+				<p>Results</p>
+				<ul><p>As show in picture below, in the search results, you can 1) download the table of differentially expressed genes in the comparison. 2) sort the table by clicking on the column headers, e.g. sort by fold change. 3) See more detailed information about the related study by clicking on the Dataset ID link. 4) get a quick view of the expression box plot.</p></ul>
+				<img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/org_comp_result_help.png" alt="organoid compare result help img"/>
+				<ul><p>Clicking on 4) boxplot icons will display the expression comparison as shown below.</p></ul>
+				<img style="width: 85%; padding-left: 15%" src="/organoidb_static/img/help_img/org_compare.PNG" alt="organoid compare img"/> -->
+				<br>
+				<br>
+			<h3 id='od'>Multiclass Classification</h3>
+				<hr>
+				<p>
+                    In this module, the sample name, class of samples and ML set are sequentially provided in the first
+                    3 rows of input file. The class of samples indicates more than 2 sample groups, or “NA” for blind
+                    test set. ML set must contain “training”, and can also contain “testing”. Sample data of this data
+                    type can be downloaded.
+				</p>
+				<br>
+				<br>
+			<h3 id='os'>Regression</h3>
+				<hr>
+				<p>
+                    In this module, the sample name, label of samples and ML set are sequentially provided in the first
+                    3 rows of input file. The label of samples should be continuous/real values as outcome for regression,
+                    or “NA” for blind test set. ML set must contain “training”, and can also contain “testing”. Sample
+                    data of this data type can be downloaded.
+				</p>
+				<br>
+				<br>
+			<h3 id='ts'>Survival Analysis</h3>
+				<hr>
+				<p>
+                    In this module, the sample name, status, time, and ML set are sequentially provided in the first 4
+                    rows of input file. Time is the follow up time until the event occurs. Status denotes the status of
+                    the patient as “dead” or “alive”. The label of samples indicates the information for regression, or
+                    “NA” for blind test set. ML set must contain “training”, and can also contain “testing”. Sample data
+                    of this data type can be downloaded.
+				</p>
+				<p><b>C-index (concordance index): </b> A commonly used metric in Survival Analysis to evaluate performance of 
+				prediction models. The C-index is the proportion of concordant pairs (two predictions having same relative order 
+				as their true observations) divided by the total number of possible observation pairs. The C-index is widely adopted 
+				in survival model performance evaluation, where the order of predicted survival times is compared to the order of the observations.
+				</p>
+				<p><b>Time dependent AUC: </b> Calculating the areas under the time-dependent ROC curves results in the time-dependent AUC curve, 
+				which is a measure of the discriminative ability of markers at each time point under consideration. </p>
+				<br></br>
+            <h3 id='browse'>Feature Selection Methods</h3>
+				<hr>
+            <h5>Feature Selection</h5>
+            	<hr>
+            	<p>
+            		<b>classfication: f_classif</b>
+            		ANOVA is performed using the f_classif function from scikit-learn selectKBest package, and features are 
+            		ranked based on F-statistics.
+            	</p>
+            	<p>
+            		<b>regression: f_regression</b>
+            		Pearson's correlation between each feature and the target is caculated using f_regression from scikit-learn 
+            		selectKBeset package. The resulting F-statistics and P-values are used for ranking and filtering features.
+            	</p>
+				<p>
+					<b>Multivariate feature selection algorithm: MRMR</b>
+					The MRMR method aims to identify features with the maximum correlation to the target labels while maintaining minimal redundancy among the selected features.
+					Here, we use the F-statistic to assess the correlation between features and the label, while employing Pearson correlation to evaluate redundancy among features.
+					 
+				</p>
+				<p>
+					<b>Survival analysis: univariate Cox ranking</b>
+					A censoring-aware univariate Cox score is used for training-fold feature ranking. Sequential selection may use a
+					fold-local prescreen capped at 50 candidates as a computational guardrail.
+				</p>
+				<hr>
+            <h5>Optimal Feature Subset Selection</h5>
+            	<hr>
+            	<p>
+            		<b>Top K:</b> Top K method selects the first k features from the ordered feature ranking set after univariate 
+            		feature selection to create the model.
+            	</p>
+            	<p>
+					<b>FSS (Forward Stepwise Selection): </b>The method starts with an empty subset and adds the candidate that
+									yields the highest task-specific inner-CV score at each step. Selection stops at the configured feature count,
+									not when score improvement ceases. Prescreening and subset search are refitted inside each training fold.
+            	</p>
+            	<p>
+					<b>BSS (Backward Stepwise Selection): </b>The method starts with the fold-local candidate set and removes the
+					feature whose exclusion gives the best task-specific training score at each step. Selection is not fitted on a held-out
+					test or external cohort.
+				</p>
+				<p><b>PCA:</b> Principal component analysis is an unsupervised optional reduction branch. Components and loadings are
+				fitted within training folds and are exported with the complete pipeline; PCA components are not reported as genes.</p>
+				<p><b>No reduction:</b> All validated input features are retained. Archived no-reduction/PCA comparisons use earlier configurations and unequal search budgets; they are sensitivity evidence rather than matched final-release performance comparisons.</p>
+				<p>The <a href="/maler/analysis/methods.json">machine-readable method registry</a> lists current models, parameter grids, and defaults. TopK, MRMR, and PCA test 10, 20, or 50 features/components when feasible; FSS and BSS use a 50-feature prescreen and test 5, 10, or 20 retained features. Each family hyperparameter grid is capped at 24 combinations before combining it with feature-count candidates; the total candidate count can be larger and is recorded per run.</p>
+				<br></br>
+			
+            <h3 id="public-data-policy">Public Research Service: Data Handling and Retention</h3>
+            <hr>
+            <p>The HTTPS service accepts authorized, non-sensitive numerical research data for Analysis and Predict. Do not submit direct identifiers, confidential records or sensitive patient data. De-identified genomic and other molecular data can still be sensitive. Where confidentiality, regulated processing or a specific erasure deadline is required, use an appropriately controlled deployment.</p>
+            <p>SVM probability calibration uses random seed 10. Registry version 4 adds a classification adapter for the retained XGBoost 1.6.2 interface: each training fold learns its own label mapping to consecutive integers. Predictions restore the original labels, and probability columns follow the saved original class order. The mapping is included in the fitted signed pipeline; Predict reuses it without fitting. Text labels such as case/control and nonconsecutive integer labels are supported. Explicitly select the binary positive class. One-click reports a failed family and excludes it from comparison; a successful one-click result does not mean every candidate family fitted successfully.</p>
+            <p>New uploads, temporary upload buffers, fitted models and derived results use private, capacity-limited volatile storage, outside publicly served static files. They may disappear earlier after a host reboot or an operational failure; download required results promptly. Access links are private capabilities: keep them confidential. Links expire {{ task_retention_hours }} hours after issue. The scheduled cleanup runs every five minutes and removes expired active task directories; an explicit Delete request also removes the active task directory. Token expiry alone does not perform deletion, and a failed cleanup run can delay removal.</p>
+            <p>Active-directory removal does not establish erasure from provider snapshots, backups, replicas, legacy folders or other previously created copies. Their retention remains unverified, and no guarantee of deleting every copy within {{ task_retention_hours }} hours is made. Avoid data that require such a guarantee. Operators can access task storage; access tokens do not restrict host/provider administrators.</p>
+            <p>The service retains unsupported Python 3.7/Django 2.1. HTTPS, signed models and access controls address specific risks; they do not provide a security certification or clinical approval. The public service is for exploratory research. A model can be computationally correct and still have poor predictive performance.</p>
+            <p>Data and signed-model upload limits are {{ data_upload_limit_mb }} and {{ model_upload_limit_mb }} MiB respectively. Requests and concurrent computations are limited; retry later if the service is busy. Download required results before expiry. Optional email notification is not needed to run an analysis.</p>
+			<h3 id='one_click'>One-click Modeling</h3>
+				<hr>
+				{% include 'public_templates/validation_budget.html' %}
+<p>One-click Modeling computes a fold-local nested-CV estimate for each fixed estimator family. It then selects a family by the development CV metric, records the decision, and evaluates only that family on the heldout cohort. Candidate CV summaries are not an unbiased estimate of the selected family. When repeated samples share a patient, family or site, supply a <code>subject_id</code> row; otherwise sample-level independence is assumed. Grouped FSS/BSS are rejected; sequential selection supports native prediction only and its internal scoring uses preprocessing learned in the enclosing training fold. Z-score scaling is recommended for scale-sensitive estimators; users can override it, but unscaled cross-model comparisons may be unfair.</p>
+				
+			    <!-- <img style="width: 100%; padding-left: 10%; padding-right: 10%" src="/organoidb_static/img/help_img/Detailed_information_page.PNG" alt="Detailed information img"/> -->
+			<h3 id='cus_model'>Customized Modeling</h3>
+				<hr>
+				<p>Customized Modeling lets users select one supported estimator and submit validated parameter values. The completed result records the fitted preprocessing, selected parameters, metrics, and a private access link. Exported signed models can be reused for external prediction.</p>
+				
+				
+				
+			<h3 id='predict'>External Prediction</h3>
+                <hr>
+				<!-- <p style="text-align: center"><img src='/mlserver_static/img/home5.png' width="900" height="400"></p> -->
+				<p>Use a signed model exported from MALER Analysis with an identifier-compatible CSV, TSV, or delimited TXT. For labeled classification or regression, place a <code>label</code> row first; numeric labels and a missing first outcome are supported. For survival, place <code>status</code> and <code>time</code> first (case insensitive). Samples with missing outcomes receive blind predictions. Numeric feature cells are required; invalid text is rejected. Binary signed models retain the positive class and decision policy, including cutoff zero. Survival exports provide risk scores and curves when supported by the estimator. Labeled survival data receive C-index when comparable pairs exist. Predict does not report IPCW time AUC or integrated Brier score: exports omit the development censoring reference. Analysis reports these metrics when estimable. Older binary bundles without endpoint fields require retraining. Uploads require de-identification and authorization confirmation.</p>
+                <!-- <img style="width: 75%; padding-left: 25%;" src="/organoidb_static/img/help_img/Feedback.png" alt="Feedback img"/> -->
+
+            <h3 id='samp'>Sample Data</h3>
+                <hr>
+                <p>
+                    In analysis page, MALER provides sample data to do the analysis using MALER.
+				</p>
+
+			<div class="card-body" style="width: 100%;">
+				<nav class="navbar navbar-dark text-white bg-info" style="border-radius: 10px 10px 0px 0px;">
+					<h3 id="item-3" style=" padding-top: 400px;margin-top: -400px;">Contact Us</h3>
+				</nav>
+				<div class="card mb-3" style="border-radius: unset;border: 1px solid #ababab;">
+					<h5 id="item-3-1"></h5>
+					<div>
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">
+							Please feel free to contact Professor <b><a href="https://www.inbirg.com/team-jacob.html">Jianbo Pan</a></b> with respect to any details pertaining to MALER
+							</li>
+							<li class="list-group-item">
+							<div class="row">
+							<p class="card-text"><span class="mark-symbol" style="padding-left: 0;">&gt;</span><b>Address :</b></p>
+							</div>
+							<p style="padding:20px 0 0 0px;line-height: 1.0;">Basic Medicine Research and Innovation Center for Novel Target and Therapeutic Intervention, 
+							Ministry of Education, College of Pharmacy, Chongqing Medical University, </p>
+							<p style="padding-left: 0px;line-height: 1.0;">No. 1 Yixueyuan Road, Yuzhong District, Chongqing, 400016,
+							P. R. China.</p>
+							</li>
+							<li class="list-group-item">
+							<div class="row">
+							<p class="card-text"><span class="mark-symbol" style="padding-left: 0;">&gt;</span><b>Email :</b></p>
+							</div>
+							<p style="padding:20px 0 0 0px;">panjianbo@cqmu.edu.cn</p>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    {% include 'public_templates/footer.html' %}
+</body>
+
+	<script>
+
+		$("#nav_help").addClass("active");
+		$("#page_title").text('HELP');
+
+	</script>
+</html>

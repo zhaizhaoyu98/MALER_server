@@ -1,0 +1,15 @@
+{
+  "binary_classification": {
+    "balanced_accuracy": 0.9398657718120805,
+    "pr_auc": 0.9872025694007529,
+    "roc_auc": 0.9833109619686802
+  },
+  "protocol": "Independent direct scikit-learn refit using archived patient exclusions, best parameters, input hashes, and held-out partitions; no MALER pipeline/metric helpers imported.",
+  "regression": {
+    "mae": 0.026219655495800208,
+    "mse": 0.0012396378223728957,
+    "r2": 0.9083079930483887,
+    "rmse": 0.035208490771018515
+  },
+  "tolerance": 1e-10
+}

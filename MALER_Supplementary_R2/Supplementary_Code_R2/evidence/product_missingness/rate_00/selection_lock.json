@@ -1,0 +1,88 @@
+{
+  "best_params": {
+    "model__C": 10.0,
+    "model__penalty": "l2",
+    "selector__k": 8
+  },
+  "candidate_counts": {
+    "logistic_regression": 3
+  },
+  "candidate_families": [
+    "logistic_regression"
+  ],
+  "candidate_grids": {
+    "logistic_regression": {
+      "model__C": [
+        0.1,
+        1.0,
+        10.0
+      ],
+      "model__penalty": [
+        "l2"
+      ],
+      "selector__k": [
+        8
+      ]
+    }
+  },
+  "class_order": [
+    "case",
+    "control"
+  ],
+  "estimator": "sklearn.linear_model._logistic.LogisticRegression",
+  "family_selected_at": "2026-10-01T15:40:31.024341Z",
+  "feature_method": "select",
+  "fitted_model_sha256": "69a6553d81d5ea87eae7a76de2b916d63072bc5d116081facb798379f71406ea",
+  "heldout_unlocked_at": "2026-10-01T15:40:31.060421Z",
+  "imputer_strategy": "median",
+  "inner_split_policy": "fold-local task-aware CV; grouped when subject_id supplied",
+  "input_features": [
+    "gene0",
+    "gene1",
+    "gene2",
+    "gene3",
+    "gene4",
+    "gene5",
+    "gene6",
+    "gene7"
+  ],
+  "input_sha256": "d451baac70befbe922dc507ebd4e5422a50a2e6da93ef9c6aa2ba557eb1e2923",
+  "outer_split_ids_hash": "cefca37d7ae6ec76a7c60716c29ffa955eb50b46454634370a58c97d7de3db4d",
+  "positive_class": "case",
+  "project_id": "BCO-AZ-synthetic-TopK-abaf9f5f",
+  "random_seed": 10,
+  "scaler": "standard",
+  "schema_version": 3,
+  "selected_at": "2026-10-01T15:40:31.060421Z",
+  "selected_family": "logistic_regression",
+  "selected_features": [
+    "gene0",
+    "gene1",
+    "gene2",
+    "gene3",
+    "gene4",
+    "gene5",
+    "gene6",
+    "gene7"
+  ],
+  "selection_metric": "balanced_accuracy",
+  "selection_rule": "highest development per-family outer-CV mean; lexicographic tie-break",
+  "software_commit": "5d3d1a3df516233566e20b206a96c2eb33d45877",
+  "software_identity": {
+    "commit": "5d3d1a3df516233566e20b206a96c2eb33d45877",
+    "declared_commit_matches": true,
+    "dirty": false,
+    "verified": true
+  },
+  "threshold_policy": "explicit_probability_threshold",
+  "threshold_value": 0.65,
+  "validation_budget": {
+    "actual_inner_splits": 2,
+    "actual_outer_evaluations": 3,
+    "actual_outer_repeats": 1,
+    "actual_outer_splits": 3,
+    "requested_inner_splits": 2,
+    "requested_outer_repeats": 1,
+    "requested_outer_splits": 3
+  }
+}

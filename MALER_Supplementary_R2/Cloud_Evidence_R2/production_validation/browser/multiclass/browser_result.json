@@ -1,0 +1,698 @@
+{
+  "created_utc": "2026-10-24T07:24:08Z",
+  "dataset": {
+    "blind_samples": 0,
+    "cohort_provenance_supplied": false,
+    "development_subjects": null,
+    "features": 8,
+    "independent_external_cohort_verified": false,
+    "patient_level_audit": {
+      "collapsed_within_partition_patients": 0,
+      "excluded_cross_partition_patients": 0,
+      "retained_patients": 120,
+      "source_samples": 120
+    },
+    "split_level": "sample",
+    "testing_samples": 40,
+    "training_samples": 80
+  },
+  "failures": [],
+  "feature_reduction": "select",
+  "models": [
+    {
+      "best_params": {
+        "selector__k": 8
+      },
+      "candidate_count": 1,
+      "candidate_grid": {
+        "selector__k": [
+          8
+        ]
+      },
+      "effective_feature_method": "select",
+      "estimator": "sklearn.linear_model._logistic.LogisticRegression",
+      "heldout_test": {
+        "accuracy": 0.575,
+        "balanced_accuracy": 0.5677655677655677,
+        "f1": 0.51930596285435,
+        "mcc": 0.3876879249022891,
+        "per_class": {
+          "groupA": {
+            "sensitivity": 0.6923076923076923,
+            "specificity": 0.6666666666666666
+          },
+          "groupB": {
+            "sensitivity": 0.15384615384615385,
+            "specificity": 0.9629629629629629
+          },
+          "groupC": {
+            "sensitivity": 0.8571428571428571,
+            "specificity": 0.7307692307692307
+          }
+        },
+        "pr_auc_macro": 0.571941175286662,
+        "precision": 0.5994152046783625,
+        "recall_sensitivity": 0.5677655677655677,
+        "roc_auc_ovr_macro": 0.7098765432098766,
+        "specificity": 0.7867996201329533
+      },
+      "hyperparameter_candidate_count": 1,
+      "key": "Logistic",
+      "model_bundle": "Logistic.maler",
+      "nested_cv": {
+        "actual_repeats": 2,
+        "candidate_count": 1,
+        "candidate_grid": {
+          "selector__k": [
+            8
+          ]
+        },
+        "folds": [
+          {
+            "accuracy": 0.5625,
+            "balanced_accuracy": 0.5444444444444444,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.4805194805194805,
+            "fold": 1,
+            "mcc": 0.34837082125540764,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "groupA": {
+                "sensitivity": 0.8333333333333334,
+                "specificity": 0.7
+              },
+              "groupB": {
+                "sensitivity": 0,
+                "specificity": 0.8181818181818182
+              },
+              "groupC": {
+                "sensitivity": 0.8,
+                "specificity": 0.8181818181818182
+              }
+            },
+            "pr_auc_macro": 0.5791412291412291,
+            "precision": 0.4305555555555555,
+            "recall_sensitivity": 0.5444444444444444,
+            "roc_auc_ovr_macro": 0.648989898989899,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "specificity": 0.7787878787878788
+          },
+          {
+            "accuracy": 0.625,
+            "balanced_accuracy": 0.6111111111111112,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.5757575757575757,
+            "fold": 2,
+            "mcc": 0.4479053416140955,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "groupA": {
+                "sensitivity": 0.8333333333333334,
+                "specificity": 0.7
+              },
+              "groupB": {
+                "sensitivity": 0.2,
+                "specificity": 0.9090909090909091
+              },
+              "groupC": {
+                "sensitivity": 0.8,
+                "specificity": 0.8181818181818182
+              }
+            },
+            "pr_auc_macro": 0.6444986494986495,
+            "precision": 0.5972222222222222,
+            "recall_sensitivity": 0.6111111111111112,
+            "roc_auc_ovr_macro": 0.7277777777777777,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "specificity": 0.8090909090909091
+          },
+          {
+            "accuracy": 0.5,
+            "balanced_accuracy": 0.5111111111111111,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.5090909090909091,
+            "fold": 3,
+            "mcc": 0.2529411764705882,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "groupA": {
+                "sensitivity": 0.8,
+                "specificity": 0.9090909090909091
+              },
+              "groupB": {
+                "sensitivity": 0.3333333333333333,
+                "specificity": 0.7
+              },
+              "groupC": {
+                "sensitivity": 0.4,
+                "specificity": 0.6363636363636364
+              }
+            },
+            "pr_auc_macro": 0.6452686202686203,
+            "precision": 0.5111111111111112,
+            "recall_sensitivity": 0.5111111111111111,
+            "roc_auc_ovr_macro": 0.6919191919191919,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "specificity": 0.7484848484848484
+          },
+          {
+            "accuracy": 0.6875,
+            "balanced_accuracy": 0.7222222222222223,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.6294261294261294,
+            "fold": 4,
+            "mcc": 0.6114415850515943,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "groupA": {
+                "sensitivity": 1,
+                "specificity": 0.8181818181818182
+              },
+              "groupB": {
+                "sensitivity": 0.16666666666666666,
+                "specificity": 1
+              },
+              "groupC": {
+                "sensitivity": 1,
+                "specificity": 0.7272727272727273
+              }
+            },
+            "pr_auc_macro": 0.7003475228475228,
+            "precision": 0.7797619047619048,
+            "recall_sensitivity": 0.7222222222222223,
+            "roc_auc_ovr_macro": 0.75,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "specificity": 0.8484848484848486
+          },
+          {
+            "accuracy": 0.625,
+            "balanced_accuracy": 0.6222222222222222,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.611111111111111,
+            "fold": 5,
+            "mcc": 0.44591260773834884,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "groupA": {
+                "sensitivity": 0.8,
+                "specificity": 0.7272727272727273
+              },
+              "groupB": {
+                "sensitivity": 0.4,
+                "specificity": 0.9090909090909091
+              },
+              "groupC": {
+                "sensitivity": 0.6666666666666666,
+                "specificity": 0.8
+              }
+            },
+            "pr_auc_macro": 0.7347835497835496,
+            "precision": 0.6349206349206349,
+            "recall_sensitivity": 0.6222222222222222,
+            "roc_auc_ovr_macro": 0.8156565656565656,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "specificity": 0.8121212121212121
+          },
+          {
+            "accuracy": 0.5,
+            "balanced_accuracy": 0.5,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.515151515151515,
+            "fold": 6,
+            "mcc": 0.25597052009566246,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "groupA": {
+                "sensitivity": 0.5,
+                "specificity": 0.8
+              },
+              "groupB": {
+                "sensitivity": 0.4,
+                "specificity": 0.5454545454545454
+              },
+              "groupC": {
+                "sensitivity": 0.6,
+                "specificity": 0.9090909090909091
+              }
+            },
+            "pr_auc_macro": 0.5800252525252526,
+            "precision": 0.5452380952380952,
+            "recall_sensitivity": 0.5,
+            "roc_auc_ovr_macro": 0.701010101010101,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "specificity": 0.7515151515151515
+          },
+          {
+            "accuracy": 0.625,
+            "balanced_accuracy": 0.6111111111111112,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.5757575757575757,
+            "fold": 7,
+            "mcc": 0.4479053416140955,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "groupA": {
+                "sensitivity": 0.8333333333333334,
+                "specificity": 0.7
+              },
+              "groupB": {
+                "sensitivity": 0.2,
+                "specificity": 0.9090909090909091
+              },
+              "groupC": {
+                "sensitivity": 0.8,
+                "specificity": 0.8181818181818182
+              }
+            },
+            "pr_auc_macro": 0.6607251082251081,
+            "precision": 0.5972222222222222,
+            "recall_sensitivity": 0.6111111111111112,
+            "roc_auc_ovr_macro": 0.7247474747474748,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "specificity": 0.8090909090909091
+          },
+          {
+            "accuracy": 0.6875,
+            "balanced_accuracy": 0.7000000000000001,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.688888888888889,
+            "fold": 8,
+            "mcc": 0.5476578569488593,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "groupA": {
+                "sensitivity": 0.8,
+                "specificity": 0.7272727272727273
+              },
+              "groupB": {
+                "sensitivity": 0.5,
+                "specificity": 0.9
+              },
+              "groupC": {
+                "sensitivity": 0.8,
+                "specificity": 0.9090909090909091
+              }
+            },
+            "pr_auc_macro": 0.8279100529100529,
+            "precision": 0.7071428571428572,
+            "recall_sensitivity": 0.7000000000000001,
+            "roc_auc_ovr_macro": 0.8666666666666667,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "specificity": 0.8454545454545456
+          },
+          {
+            "accuracy": 0.625,
+            "balanced_accuracy": 0.6444444444444444,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.6111111111111112,
+            "fold": 9,
+            "mcc": 0.4524130122621011,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "groupA": {
+                "sensitivity": 1,
+                "specificity": 0.8181818181818182
+              },
+              "groupB": {
+                "sensitivity": 0.3333333333333333,
+                "specificity": 0.8
+              },
+              "groupC": {
+                "sensitivity": 0.6,
+                "specificity": 0.8181818181818182
+              }
+            },
+            "pr_auc_macro": 0.7106389906389906,
+            "precision": 0.6047619047619048,
+            "recall_sensitivity": 0.6444444444444444,
+            "roc_auc_ovr_macro": 0.73989898989899,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "specificity": 0.8121212121212121
+          },
+          {
+            "accuracy": 0.75,
+            "balanced_accuracy": 0.7444444444444445,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.7261072261072261,
+            "fold": 10,
+            "mcc": 0.6327138353044138,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "groupA": {
+                "sensitivity": 1,
+                "specificity": 0.9090909090909091
+              },
+              "groupB": {
+                "sensitivity": 0.4,
+                "specificity": 0.9090909090909091
+              },
+              "groupC": {
+                "sensitivity": 0.8333333333333334,
+                "specificity": 0.8
+              }
+            },
+            "pr_auc_macro": 0.7741666666666666,
+            "precision": 0.7380952380952381,
+            "recall_sensitivity": 0.7444444444444445,
+            "roc_auc_ovr_macro": 0.8565656565656564,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ],
+            "specificity": 0.8727272727272727
+          }
+        ],
+        "split_ids_hash": "abece3d8db9fc89472c8277385b949bd3ec3257d86655f626f637e08d33f8670",
+        "summary": {
+          "accuracy": {
+            "max": 0.75,
+            "mean": 0.61875,
+            "min": 0.5,
+            "n": 10,
+            "std": 0.08041774610674493
+          },
+          "balanced_accuracy": {
+            "max": 0.7444444444444445,
+            "mean": 0.6211111111111112,
+            "min": 0.5,
+            "n": 10,
+            "std": 0.08501593492206129
+          },
+          "f1": {
+            "max": 0.7261072261072261,
+            "mean": 0.5922921522921524,
+            "min": 0.4805194805194805,
+            "n": 10,
+            "std": 0.07834232682228816
+          },
+          "fold": {
+            "max": 10,
+            "mean": 5.5,
+            "min": 1,
+            "n": 10,
+            "std": 3.0276503540974917
+          },
+          "mcc": {
+            "max": 0.6327138353044138,
+            "mean": 0.44432320983551665,
+            "min": 0.2529411764705882,
+            "n": 10,
+            "std": 0.13144578186037878
+          },
+          "n_test": {
+            "max": 16,
+            "mean": 16,
+            "min": 16,
+            "n": 10,
+            "std": 0
+          },
+          "n_train": {
+            "max": 64,
+            "mean": 64,
+            "min": 64,
+            "n": 10,
+            "std": 0
+          },
+          "pr_auc_macro": {
+            "max": 0.8279100529100529,
+            "mean": 0.6857505642505642,
+            "min": 0.5791412291412291,
+            "n": 10,
+            "std": 0.08012049231656637
+          },
+          "precision": {
+            "max": 0.7797619047619048,
+            "mean": 0.6146031746031746,
+            "min": 0.4305555555555555,
+            "n": 10,
+            "std": 0.10624959139956049
+          },
+          "recall_sensitivity": {
+            "max": 0.7444444444444445,
+            "mean": 0.6211111111111112,
+            "min": 0.5,
+            "n": 10,
+            "std": 0.08501593492206129
+          },
+          "roc_auc_ovr_macro": {
+            "max": 0.8666666666666667,
+            "mean": 0.7523232323232323,
+            "min": 0.648989898989899,
+            "n": 10,
+            "std": 0.0718286072486546
+          },
+          "specificity": {
+            "max": 0.8727272727272727,
+            "mean": 0.8087878787878788,
+            "min": 0.7484848484848484,
+            "n": 10,
+            "std": 0.040616863732033666
+          }
+        }
+      },
+      "prediction_files": {
+        "testing": "Logistic_testing_predictions.csv"
+      },
+      "scaler": "standard",
+      "selected_features": [
+        "feature0",
+        "feature1",
+        "feature2",
+        "feature3",
+        "feature4",
+        "feature5",
+        "feature6",
+        "feature7"
+      ]
+    }
+  ],
+  "positive_class": null,
+  "project_id": "MCC-AZ-ec99a2-rg9bw0-f707f31a",
+  "registry_version": 4,
+  "schema_version": 3,
+  "selected_family": "Logistic",
+  "selection": {
+    "best_params": {
+      "selector__k": 8
+    },
+    "candidate_counts": {
+      "Logistic": 1
+    },
+    "candidate_families": [
+      "Logistic"
+    ],
+    "candidate_grids": {
+      "Logistic": {
+        "selector__k": [
+          8
+        ]
+      }
+    },
+    "class_order": [
+      "groupA",
+      "groupB",
+      "groupC"
+    ],
+    "estimator": "sklearn.linear_model._logistic.LogisticRegression",
+    "family_selected_at": "2026-10-24T07:24:09.211290Z",
+    "feature_method": "select",
+    "fitted_model_sha256": "37b7d71aef4883e35a167891a8c2b76fe32f438e76b5ed3c7531adb2d487e639",
+    "heldout_unlocked_at": "2026-10-24T07:24:09.244732Z",
+    "imputer_strategy": "median",
+    "inner_split_policy": "fold-local task-aware CV; grouped when subject_id supplied",
+    "input_features": [
+      "feature0",
+      "feature1",
+      "feature2",
+      "feature3",
+      "feature4",
+      "feature5",
+      "feature6",
+      "feature7"
+    ],
+    "input_sha256": "154ed38d5b608ccacdc19b1e33e5e75e98e8c3fbbf2c96329c6fcdb9483deda8",
+    "outer_split_ids_hash": "abece3d8db9fc89472c8277385b949bd3ec3257d86655f626f637e08d33f8670",
+    "positive_class": null,
+    "project_id": "MCC-AZ-ec99a2-rg9bw0-f707f31a",
+    "random_seed": 10,
+    "scaler": "standard",
+    "schema_version": 3,
+    "selected_at": "2026-10-24T07:24:09.244600Z",
+    "selected_family": "Logistic",
+    "selected_features": [
+      "feature0",
+      "feature1",
+      "feature2",
+      "feature3",
+      "feature4",
+      "feature5",
+      "feature6",
+      "feature7"
+    ],
+    "selection_metric": "balanced_accuracy",
+    "selection_rule": "highest development per-family outer-CV mean; lexicographic tie-break",
+    "software_commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "software_identity": {
+      "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+      "declared_commit_matches": true,
+      "dirty": false,
+      "verified": true
+    },
+    "threshold_policy": null,
+    "threshold_value": null,
+    "validation_budget": {
+      "actual_inner_splits": 3,
+      "actual_outer_evaluations": 10,
+      "actual_outer_repeats": 2,
+      "actual_outer_splits": 5,
+      "requested_inner_splits": 3,
+      "requested_outer_repeats": 2,
+      "requested_outer_splits": 5
+    }
+  },
+  "selection_lock_sha256": "f1c209ce07cdf328764e85ec851c3f5fc551815e9541b78cd438c49986464edb",
+  "software": {
+    "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "declared_commit_matches": true,
+    "dirty": false,
+    "verified": true
+  },
+  "strategy": "custom",
+  "task": "classification",
+  "validation": {
+    "family_scope": "fixed family per outer CV; family selected from development summaries",
+    "inner_splits": 3,
+    "outer_repeats": 2,
+    "outer_splits": 5,
+    "preprocessing_scope": "fit within inner and outer training folds; FSS/BSS internal scoring uses upstream training-fold preprocessing",
+    "random_state": 10,
+    "requested_budget": {
+      "inner_splits": 3,
+      "outer_repeats": 2,
+      "outer_splits": 5
+    },
+    "selection_metric": "balanced_accuracy",
+    "threshold_policy": "not applicable",
+    "threshold_value": null
+  },
+  "warnings": [
+    "The development outer-CV scores describe fixed estimator families; the winning family was selected using those scores. Only the selected family has a heldout result."
+  ]
+}

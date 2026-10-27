@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ANALYSIS</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		{% include 'public_templates/bootstrap.html' %}
+		<script src="/mlserver_static/cdn/js/plotly-2.8.3.min.js"></script>
+<!-- 		<script crossorigin="anonymous" integrity="sha512-vMD/IRB4/cFDdU2MrTwKXOLmIJ1ULs18mzmMIWLCNYg/nZZkCdjBX+UPrtQdkleuuf0YaqXssaKk8ZXOpHo3qg=="
+		 src="https://lib.baomitu.com/echarts/5.0.1/echarts.min.js"></script> -->
+		 <!-- DataTables CSS -->
+		 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"> 
+		 <!-- jQuery -->
+		 <!-- <script type="text/javascript" charset="utf8" src="http://code.jquery.com/jquery-1.10.2.min.js"></script> -->
+		 <!-- DataTables -->
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+		 <script type="text/javascript" charset="utf8" src="https://cdn.bootcdn.net/ajax/libs/datatables-buttons/2.2.3/js/dataTables.buttons.js"></script>
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>		
+		 <!-- responsive -->
+		 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>		 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css">
+		<style type="text/css">
+			
+			.dataTable {
+				text-align: center;
+				vertical-align: middle !important;
+			}
+			
+			#home span {
+				background-color: aliceblue;
+			}
+
+			.btn.btn-outline-danger {
+				height: 38px;
+				/* margin-top: 30px; */
+			}
+
+			#one_class_test_form .form-row {
+				margin: 0;
+				padding: 0;
+				height: 40px;
+			}
+
+			/* table tbody {
+				font-size: 5px;
+			} */
+			table * {
+				font-size: 15px;
+			}
+			
+			#list-item-1,
+			#list-item-2,
+			#list-item-3,
+			#list-item-4,
+			#list-item-5,
+			#list-item-6,
+			#list-item-7,
+			#list-item-8,
+			#list-item-9,
+			#list-item-10{
+				padding-top: 10px;
+				padding-bottom: 10px;
+				padding-left: 1rem;
+			}
+			
+			.list-group-item.active {
+				background-color: #17a2b8;
+				border: 1px solid rgba(0, 0, 0, .125);
+			}
+			#list-example a {
+				padding-left: 15px;
+			}
+			
+			h3 {
+				/* color: cornflowerblue; */
+				color: #17a2b8; margin-bottom: 20px;
+				font-weight: bolder;
+			}
+			
+/* 			div.dataTables_wrapper {
+			        width: 800px;
+			        margin: 0 auto;
+			    } */
+		</style>
+		<script>
+			$(document).ready(function(){
+			// 导航栏
+
+			var id = '{{projectid}}'
+			if (id.substring(0,4) == "PRED") {
+				$("#nav_predict").addClass("active");
+				$("tbody").addClass("bg-white");
+				$("#page_title").text('PREDICT');
+			} else{
+				$("#nav_tools").addClass("active");
+				$("tbody").addClass("bg-white");
+				$("#page_title").text('ANALYSIS');
+			}
+			
+			});
+		</script>
+	</head>
+	<body data-spy="scroll" data-target="#list-example" style="padding-top: 0px;">
+		<!-- 导航栏 -->
+		{% include 'public_templates/nav_tem.html' %}
+		<div class="container" style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
+		<div id="loading">loading...</div>
+		<!-- 主体内容 -->
+		<div class="col-12" id="main" style="display: none;">
+			<br />
+			<div class="row">
+				<div class="col-2 d-none d-xl-block" style="">
+				</div>
+				<div class="col-xl-12 col-lg-12">
+					
+					<form action="{{form_action}}/{{ projectid }}" id="status_form" method="POST" >
+						{% csrf_token %}
+						<div class="alert alert-info">
+							{% if "predict_result" in form_action %}
+							<strong>Predict reuse:</strong> the saved imputer, scaler, selected features and model are applied unchanged. No preprocessing or model is refitted on these data.
+							{% else %}
+							<strong>Model development:</strong> preprocessing parameters and estimator settings are learned from development training folds. Only the chosen family's locked final pipeline is scored on the held-out partition. Family comparison uses per-family development estimates and may be optimistic after selection.
+							{% endif %}
+						</div>
+						<div class="col">
+							<div style="text-align: center;">
+								<h3>&nbsp;PROJECTID: {{ projectid }}</h3>
+							</div>
+						</div>
+						
+						<hr />
+						<div class="col">
+							<div style="text-align: center;">
+								<h3 id="status">STATUS: {{ status|safe }}</h3>
+							</div>
+						</div>
+						<div class="col-12">
+							<div class="row">
+								<div class="col">
+									<h3 class="panel-heading" id="list-item-9" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+										Input Data Information
+									</h3>
+									<table id="data_stat" class="display" style="width: 100%;" lazyload="True">
+										 <thead>
+											{% if projectid|slice:':4' != 'PRED' %}
+											<tr>
+												<th>Class</th>
+												<th>Train</th>
+												<th>Test</th>
+												<th>Blind</th>
+											</tr>
+											{% else %}
+											<tr>
+												<th>Class</th>
+												<th>Blind</th>
+												<th>Validation</th>
+											</tr>
+											{% endif %}
+										</thead>
+										</table>
+										{% if "predict_result" not in form_action %}{% if group_summary %}<p>Group aware validation: {{ group_summary.development_subjects }} development subjects, {{ group_summary.heldout_subjects }} heldout subjects; at most {{ group_summary.largest_subject_sample_count }} samples per development subject. Subject IDs are excluded from predictors. Cross partition subject overlap is rejected.</p>{% else %}<p>Sample level validation: no subject ID was supplied. Rows from the same patient, family or site must be grouped before analysis.</p>{% endif %}{% endif %}
+										<br />
+									<h3 class="panel-heading" id="list-item-9" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+										Visualization of Data Distribution
+									</h3>
+									<div style="display: flex; min-width: 0;">
+										<div id="histplotDiv" style="margin: auto; text-align: center; width: 100%; min-width: 0;"></div>
+									</div>
+									
+								</div>
+								
+							</div>
+						</div>
+						<br />
+						<div class="col">
+							<div class="row">
+								<div class="col">
+									<h3 class="panel-heading" id="list-item-9" style="margin: 1rem 0 0rem 0 ;background-color: #17a2b8;color: #ffffff;">
+										Preview of Data (top 50 rows)
+									</h3>
+									<table id="inputdata_display" class="display" style="width: 100%;" lazyload="True">
+										 <thead>
+											<tr id="data_display_cols">
+												<!-- <th>Class</th>
+												<th>Train</th>
+												<th>Test</th>
+												<th>Blind</th> -->
+											</tr>
+										</thead>
+									</table>
+								</div>
+								
+							</div>
+						</div>
+						
+						<!-- 获取从preview后端传来的数据 -->
+						<input name="projectid" id="projectid" style="display: none;" value="{{ projectid }}"/>
+						<input name="feature_select_method" id="feature_select_method" style="display: none;" value="{{ feature_select_method }}"/>
+						<input name="model_md5" id="model_md5" style="display: none;" value="{{ model_md5 }}"/>
+						<input name="fsm" id="fsm" style="display: none;" value="{{ fsm }}"/>
+						<input name="form_action" id="form_action" style="display: none;" value="{{ form_action }}"/>
+						<input name="to_mail" id="to_mail" style="display: none;" value="{{ to_mail }}"/>
+						<input name="gridsearch_para" id="gridsearch_para" style="display: none;" value="{{ gridsearch_para }}"/>
+						<input name="feature_norm" id="feature_norm" style="display: none;" value="{{ feature_norm }}"/>
+						<input name="access_token" id="access_token" type="hidden" value="{{ access_token }}"/>
+						{% if positive_classes %}
+						<div class="form-group">
+							<label for="positive_class"><strong>Clinical positive class</strong></label>
+							<select class="form-control" id="positive_class" name="positive_class" required>
+								<option value="">Choose the event or case label</option>
+								{% for class_name in positive_classes %}<option value="{{ class_name }}">{{ class_name }}</option>{% endfor %}
+							</select>
+							<small>All sensitivity, specificity, ROC and PR metrics use this exact label. The choice is saved with the final model.</small>
+						</div>
+						<div class="form-group">
+							<label for="threshold_policy">Decision threshold policy</label>
+							<select class="form-control" id="threshold_policy" name="threshold_policy">
+								<option value="estimator_native_predict">Estimator native prediction (default)</option>
+								<option value="explicit_probability_threshold">Prespecified positive-class probability cutoff</option>
+							</select>
+							<label for="threshold_value">Probability cutoff</label>
+							<input class="form-control" id="threshold_value" name="threshold_value" type="number" min="0" max="1" step="any" value="0.5" disabled/>
+							<small>Fix a value in [0,1] before analysis. The same cutoff is used for inner tuning, outer evaluation and Predict. No held-out optimization is performed. FSS/BSS support native prediction only.</small>
+						</div>
+						{% endif %}
+					
+					<br />
+					<br />
+					{% if status == 'Preview' %}
+					<button type="button" id="button_submit" onclick="" class="btn btn-info" style="width: 100%;">Analysis</button>
+					</form>
+					{% else %}
+					<div id="link">
+						<h5><p><b>Please check the analysis status via this link:</b></p></h5>
+						<h5><p><b><a id="link1" href="">www.inbirg.com/maler/{{form_action}}/{{projectid}}</a></b></p></h5>
+						
+					</div>
+					{% endif %}
+					<div id="link">
+						<h5><p><b>Please check the analysis status via this link:</b></p></h5>
+						<h5><p><b><a id="link2" href=""></a></b></p></h5>
+						<br />
+						<br />
+					</div>
+					<br />
+					<br />
+					
+					
+				</div>
+			</div>
+		</div>
+		</div>
+		<!-- 底部 -->
+		{% include 'public_templates/footer.html' %}
+
+		<script>
+			
+			// }
+			window.onpageshow = function(event) {
+				if (event.persisted || window.performance &&
+					window.performance.navigation.type == 2) {
+					window.location.reload();
+				}
+			}
+			$(document).ready(function() {
+				$("#threshold_policy").on('change', function () {
+					var enabled = this.value === 'explicit_probability_threshold';
+					$("#threshold_value").prop('disabled', !enabled).prop('required', enabled);
+				});
+				
+				$("#data_display_cols")[0].innerHTML = '{{title_str|safe}}'
+				$("#link").hide();
+				$("#button_submit").click(function () {
+					if ($("#positive_class").length && !$("#positive_class").val()) {
+						alert('Choose the clinical positive class before analysis.');
+						return;
+					}
+					if ($("#threshold_value").length && !$("#threshold_value")[0].checkValidity()) {
+						$("#threshold_value")[0].reportValidity();
+						return;
+					}
+					$("#status").text('STATUS: Running validated analysis');
+					$("#button_submit").prop('disabled', true).text('Running...');
+					$("#status_form").submit();
+					
+				});
+				
+				var sublink = '{{form_action|safe}}';
+				console.log(sublink);
+				// console.log(sublink.split('_')[1] == 'cp')
+				var sublink2 =''
+				if (sublink.split('_')[1] == 'cp') {
+					sublink2 = sublink + '/' + '{{projectid}}' + '?token=' + encodeURIComponent('{{access_token|escapejs}}')
+				} else {
+					sublink2 = sublink + '/' + '{{projectid}}' + '?token=' + encodeURIComponent('{{access_token|escapejs}}')
+				};
+				// console.log(sublink);
+				$("#link1").attr('href', sublink2);
+				$("#link2").attr('href', sublink2);
+				
+				$("#link1").text('www.inbirg.com/maler/' + sublink2);
+				$("#link2").text('www.inbirg.com/maler/' + sublink2);
+				// console.log($('#link1'))
+			});
+			var id = '{{ projectid|safe }}';
+			// document.write(id)
+			if (id.substring(0,4) == 'PRED'){
+				$('#data_stat').DataTable({
+					data: {{display_samples_dict|safe}},
+					searching: false, 
+					paging: false, 
+					info: false,
+					sort: false,
+					columns: [
+						{ 'data': 'class' },
+						{ 'data': 'Blind' },
+						{ 'data': 'Validation'},],
+					}); 
+				} else {
+				$('#data_stat').DataTable({
+					data: {{display_samples_dict|safe}},
+					searching: false, 
+					paging: false, 
+					info: false,
+					sort: false,
+					columns: [
+						{ 'data': 'class' },
+						{ 'data': 'Train'},
+						{ 'data': 'Test' },
+						{ 'data': 'Blind' },
+					],
+				});
+			}
+
+				
+
+
+			
+			$('#inputdata_display').DataTable({
+				data: {{inputdata_display|safe}},
+				searching: false, 
+				paging: false, 
+				info: false,
+				sort: false,
+				// serverSide: true,
+				  // processing: true,
+				  // responsive: false, //关闭响应拓展
+				  // scrollX: true,//设置X轴滚动
+				  // scrollY: false,//设置X轴滚动
+				  // scrollCollapse: true,//滚动折叠
+				// "scrollX": true,
+				// 'scrollY': "170px",
+				// 'scrollY': "calc(100vh - 50px)",
+				// order: [[ 4, "asc" ],[ 1, "desc"]],
+				// "dom": "<'row'<'col-sm-12 col-md-1'B><'col-sm-12 col-md-8'i><'col-sm-12 col-md-3'f>>" +
+				// 	"<'row'<'col-sm-12'tr>>" +
+				// 	"<'row'<'col-sm-12 col-md-5'l><'col-sm-12 col-md-7'p>>",
+				// buttons: [{
+				// 	extend: 'csv',
+				// 	text: "",
+				// 	className: "icon_",
+				// 	}],
+				//使用对象数组，一定要配置columns，告诉 DataTables 每列对应的属性
+				//data 这里是固定不变的，name，position，salary，office 为你数据里对应的属性
+				columns: {{inputdata_columns|safe}}
+			});
+			var hist_layout = {
+				autosize: true,
+				plot_bgcolor: '#ffffff',
+				paper_bgcolor: '#ffffff',
+				height: 550,
+				margin: {
+				  'b': 40,
+				  'l': 50,
+				  'r': 30,
+				  't': 30
+				},
+				bargap: 0.01,
+				xaxis: {title: 'Bins', standoff:10}, 
+				yaxis: {title: 'Density', standoff:10}, 
+			}
+			$('#inputdata_display').wrapAll("<div style='overflow-x:auto;width:100%;overflow-y:auto;height:500px'>");
+			$("#loading").hide();
+			$("#main").attr('style','');
+			Plotly.react('histplotDiv', {{ hist_trace|safe }}, hist_layout, {responsive: true});
+			
+			
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,664 @@
+{
+  "created_utc": "2026-10-24T07:31:12Z",
+  "dataset": {
+    "blind_samples": 0,
+    "cohort_provenance_supplied": false,
+    "development_subjects": null,
+    "features": 8,
+    "independent_external_cohort_verified": false,
+    "patient_level_audit": {
+      "collapsed_within_partition_patients": 0,
+      "excluded_cross_partition_patients": 0,
+      "retained_patients": 120,
+      "source_samples": 120
+    },
+    "split_level": "sample",
+    "testing_samples": 40,
+    "training_samples": 80
+  },
+  "failures": [],
+  "feature_reduction": "select",
+  "models": [
+    {
+      "best_params": {
+        "selector__k": 8
+      },
+      "candidate_count": 1,
+      "candidate_grid": {
+        "selector__k": [
+          8
+        ]
+      },
+      "effective_feature_method": "select",
+      "estimator": "mlserver.labelled_xgboost.LabelledXGBClassifier",
+      "heldout_test": {
+        "accuracy": 0.775,
+        "balanced_accuracy": 0.74,
+        "f1": 0.6666666666666665,
+        "mcc": 0.50709255283711,
+        "per_class": {
+          "case": {
+            "sensitivity": 0.6,
+            "specificity": 0.88
+          },
+          "control": {
+            "sensitivity": 0.88,
+            "specificity": 0.6
+          }
+        },
+        "positive_class": "case",
+        "pr_auc": 0.804934293470099,
+        "precision": 0.75,
+        "recall_sensitivity": 0.6,
+        "roc_auc": 0.8613333333333334,
+        "specificity": 0.88
+      },
+      "hyperparameter_candidate_count": 1,
+      "key": "XGBoost",
+      "model_bundle": "XGBoost.maler",
+      "nested_cv": {
+        "actual_repeats": 2,
+        "candidate_count": 1,
+        "candidate_grid": {
+          "selector__k": [
+            8
+          ]
+        },
+        "folds": [
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9285714285714286,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.923076923076923,
+            "fold": 1,
+            "mcc": 0.8783100656536799,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.8571428571428571,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.8571428571428571
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9821428571428572,
+            "precision": 1,
+            "recall_sensitivity": 0.8571428571428571,
+            "roc_auc": 0.9841269841269841,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.6875,
+            "balanced_accuracy": 0.6746031746031746,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.6153846153846153,
+            "fold": 2,
+            "mcc": 0.3578300267477955,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.5714285714285714,
+                "specificity": 0.7777777777777778
+              },
+              "control": {
+                "sensitivity": 0.7777777777777778,
+                "specificity": 0.5714285714285714
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.803174603174603,
+            "precision": 0.6666666666666666,
+            "recall_sensitivity": 0.5714285714285714,
+            "roc_auc": 0.746031746031746,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.7777777777777778
+          },
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9375,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.9333333333333333,
+            "fold": 3,
+            "mcc": 0.8819171036881969,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.9375,
+            "balanced_accuracy": 0.9375,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.9333333333333333,
+            "fold": 4,
+            "mcc": 0.8819171036881969,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9861111111111112,
+            "precision": 1,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.984375,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8125,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.8421052631578948,
+            "fold": 5,
+            "mcc": 0.674199862463242,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 0.625
+              },
+              "control": {
+                "sensitivity": 0.625,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.959375,
+            "precision": 0.7272727272727273,
+            "recall_sensitivity": 1,
+            "roc_auc": 0.953125,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.625
+          },
+          {
+            "accuracy": 0.875,
+            "balanced_accuracy": 0.8571428571428572,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.8333333333333333,
+            "fold": 6,
+            "mcc": 0.7644707871564383,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.7142857142857143,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 0.7142857142857143
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9004329004329004,
+            "precision": 1,
+            "recall_sensitivity": 0.7142857142857143,
+            "roc_auc": 0.8888888888888888,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8015873015873016,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.7692307692307692,
+            "fold": 7,
+            "mcc": 0.6180700462007377,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.7142857142857143,
+                "specificity": 0.8888888888888888
+              },
+              "control": {
+                "sensitivity": 0.8888888888888888,
+                "specificity": 0.7142857142857143
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.8843537414965985,
+            "precision": 0.8333333333333334,
+            "recall_sensitivity": 0.7142857142857143,
+            "roc_auc": 0.8571428571428572,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.8888888888888888
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8125,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.823529411764706,
+            "fold": 8,
+            "mcc": 0.629940788348712,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9415178571428572,
+            "precision": 0.7777777777777778,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.9375,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 0.8125,
+            "balanced_accuracy": 0.8125,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 0.823529411764706,
+            "fold": 9,
+            "mcc": 0.629940788348712,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.875,
+                "specificity": 0.75
+              },
+              "control": {
+                "sensitivity": 0.75,
+                "specificity": 0.875
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.7885912698412698,
+            "precision": 0.7777777777777778,
+            "recall_sensitivity": 0.875,
+            "roc_auc": 0.8125,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.75
+          },
+          {
+            "accuracy": 1,
+            "balanced_accuracy": 1,
+            "best_params": {
+              "selector__k": 8
+            },
+            "f1": 1,
+            "fold": 10,
+            "mcc": 1,
+            "n_test": 16,
+            "n_train": 64,
+            "per_class": {
+              "case": {
+                "sensitivity": 1,
+                "specificity": 1
+              },
+              "control": {
+                "sensitivity": 1,
+                "specificity": 1
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 1,
+            "precision": 1,
+            "recall_sensitivity": 1,
+            "roc_auc": 1,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1
+          }
+        ],
+        "split_ids_hash": "068aaa39daf051e3f0d389fb379e3ab9355ce751390506d28e1de254bb961558",
+        "summary": {
+          "accuracy": {
+            "max": 1,
+            "mean": 0.8625,
+            "min": 0.6875,
+            "n": 10,
+            "std": 0.09223309842157773
+          },
+          "balanced_accuracy": {
+            "max": 1,
+            "mean": 0.8574404761904763,
+            "min": 0.6746031746031746,
+            "n": 10,
+            "std": 0.09475698078264985
+          },
+          "f1": {
+            "max": 1,
+            "mean": 0.8496856394379613,
+            "min": 0.6153846153846153,
+            "n": 10,
+            "std": 0.1080317203507875
+          },
+          "fold": {
+            "max": 10,
+            "mean": 5.5,
+            "min": 1,
+            "n": 10,
+            "std": 3.0276503540974917
+          },
+          "mcc": {
+            "max": 1,
+            "mean": 0.7316596572295712,
+            "min": 0.3578300267477955,
+            "n": 10,
+            "std": 0.1874952827483444
+          },
+          "n_test": {
+            "max": 16,
+            "mean": 16,
+            "min": 16,
+            "n": 10,
+            "std": 0
+          },
+          "n_train": {
+            "max": 64,
+            "mean": 64,
+            "min": 64,
+            "n": 10,
+            "std": 0
+          },
+          "pr_auc": {
+            "max": 1,
+            "mean": 0.9245699340342197,
+            "min": 0.7885912698412698,
+            "n": 10,
+            "std": 0.07846225870695486
+          },
+          "precision": {
+            "max": 1,
+            "mean": 0.8782828282828283,
+            "min": 0.6666666666666666,
+            "n": 10,
+            "std": 0.13494187529312834
+          },
+          "recall_sensitivity": {
+            "max": 1,
+            "mean": 0.8357142857142857,
+            "min": 0.5714285714285714,
+            "n": 10,
+            "std": 0.13331207313494683
+          },
+          "roc_auc": {
+            "max": 1,
+            "mean": 0.9163690476190476,
+            "min": 0.746031746031746,
+            "n": 10,
+            "std": 0.08760277343579502
+          },
+          "specificity": {
+            "max": 1,
+            "mean": 0.8791666666666667,
+            "min": 0.625,
+            "n": 10,
+            "std": 0.14194930652927706
+          }
+        }
+      },
+      "prediction_files": {
+        "testing": "XGBoost_testing_predictions.csv"
+      },
+      "scaler": "standard",
+      "selected_features": [
+        "gene0",
+        "gene1",
+        "gene2",
+        "gene3",
+        "gene4",
+        "gene5",
+        "gene6",
+        "gene7"
+      ]
+    }
+  ],
+  "positive_class": "case",
+  "project_id": "BCC-AZ-cbb985-i1jvzv-34c250f8",
+  "registry_version": 4,
+  "schema_version": 3,
+  "selected_family": "XGBoost",
+  "selection": {
+    "best_params": {
+      "selector__k": 8
+    },
+    "candidate_counts": {
+      "XGBoost": 1
+    },
+    "candidate_families": [
+      "XGBoost"
+    ],
+    "candidate_grids": {
+      "XGBoost": {
+        "selector__k": [
+          8
+        ]
+      }
+    },
+    "class_order": [
+      "case",
+      "control"
+    ],
+    "estimator": "mlserver.labelled_xgboost.LabelledXGBClassifier",
+    "family_selected_at": "2026-10-24T07:31:23.224572Z",
+    "feature_method": "select",
+    "fitted_model_sha256": "95de66069bfa9c250540905096c020cda6f8a609ce5161174683448e5a9de268",
+    "heldout_unlocked_at": "2026-10-24T07:31:24.285476Z",
+    "imputer_strategy": "median",
+    "inner_split_policy": "fold-local task-aware CV; grouped when subject_id supplied",
+    "input_features": [
+      "gene0",
+      "gene1",
+      "gene2",
+      "gene3",
+      "gene4",
+      "gene5",
+      "gene6",
+      "gene7"
+    ],
+    "input_sha256": "57336962e3e39e581195bbf7efe689d6c4a3d5abde6c5088bcf2dd9c1cc4d232",
+    "outer_split_ids_hash": "068aaa39daf051e3f0d389fb379e3ab9355ce751390506d28e1de254bb961558",
+    "positive_class": "case",
+    "project_id": "BCC-AZ-cbb985-i1jvzv-34c250f8",
+    "random_seed": 10,
+    "scaler": "standard",
+    "schema_version": 3,
+    "selected_at": "2026-10-24T07:31:24.285325Z",
+    "selected_family": "XGBoost",
+    "selected_features": [
+      "gene0",
+      "gene1",
+      "gene2",
+      "gene3",
+      "gene4",
+      "gene5",
+      "gene6",
+      "gene7"
+    ],
+    "selection_metric": "balanced_accuracy",
+    "selection_rule": "highest development per-family outer-CV mean; lexicographic tie-break",
+    "software_commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "software_identity": {
+      "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+      "declared_commit_matches": true,
+      "dirty": false,
+      "verified": true
+    },
+    "threshold_policy": "explicit_probability_threshold",
+    "threshold_value": 0.65,
+    "validation_budget": {
+      "actual_inner_splits": 3,
+      "actual_outer_evaluations": 10,
+      "actual_outer_repeats": 2,
+      "actual_outer_splits": 5,
+      "requested_inner_splits": 3,
+      "requested_outer_repeats": 2,
+      "requested_outer_splits": 5
+    }
+  },
+  "selection_lock_sha256": "fcd6bd583148ad53b2a5f5d6c468678058c8f814a3a1416da4940a75e84d80af",
+  "software": {
+    "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "declared_commit_matches": true,
+    "dirty": false,
+    "verified": true
+  },
+  "strategy": "custom",
+  "task": "classification",
+  "validation": {
+    "family_scope": "fixed family per outer CV; family selected from development summaries",
+    "inner_splits": 3,
+    "outer_repeats": 2,
+    "outer_splits": 5,
+    "preprocessing_scope": "fit within inner and outer training folds; FSS/BSS internal scoring uses upstream training-fold preprocessing",
+    "random_state": 10,
+    "requested_budget": {
+      "inner_splits": 3,
+      "outer_repeats": 2,
+      "outer_splits": 5
+    },
+    "selection_metric": "balanced_accuracy",
+    "threshold_policy": "explicit_probability_threshold",
+    "threshold_value": 0.65
+  },
+  "warnings": [
+    "The development outer-CV scores describe fixed estimator families; the winning family was selected using those scores. Only the selected family has a heldout result."
+  ]
+}

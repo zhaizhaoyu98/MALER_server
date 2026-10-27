@@ -1,0 +1,5 @@
+{
+  "server_utc": "2026-10-24T07:47:42.003982Z",
+  "stdout": "{\"verified_workflows\": 8, \"source_commit\": \"961b45a0c1cee66c91c15efac1546af3262cc7db\", \"application_checks_ran_as_root\": false}",
+  "run_as": "liqiang"
+}

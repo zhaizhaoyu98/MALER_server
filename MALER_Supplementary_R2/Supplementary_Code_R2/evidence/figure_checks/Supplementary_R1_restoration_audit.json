@@ -1,0 +1,59 @@
+{
+  "figures": [
+    {
+      "figure": "Figure_S1_internal_validation",
+      "numeric_artist_sha256": "dccaa90bbf681d6e2883445f1dfed13d5f45e5bf416b79657a080db7e1e8e174",
+      "numeric_values_unchanged": true,
+      "local_label_edit": "Panel A scope title",
+      "r1_native_style_preserved": true,
+      "png_sha256": "19f03383ce36e711bcf2e57c862e1a4ad8ba075488e3f08b15f006f057c70524",
+      "byte_identical_to_r1": false
+    },
+    {
+      "figure": "Figure_S2_external_GSE37745",
+      "numeric_artist_sha256": "8a7e3d229afa8561c5877c9e71ce93972f0bbb8319b434553d706ec53939d23c",
+      "numeric_values_unchanged": true,
+      "local_label_edit": null,
+      "r1_native_style_preserved": true,
+      "png_sha256": "37a204b3558fc0149f56e7c4bc9d93098ba2ca98ff667484173a6860ae802ce0",
+      "byte_identical_to_r1": true
+    },
+    {
+      "figure": "Figure_S3_external_feature_stability",
+      "numeric_artist_sha256": "edab1f37a07fc2be9f49421bc7b262388bc7e5cd819dac1dea5f9818d6bb1e6f",
+      "numeric_values_unchanged": true,
+      "local_label_edit": null,
+      "r1_native_style_preserved": true,
+      "png_sha256": "1959d24ccaa1479db64978e6efff5b70202c7e730abbe3f08c9ac749de003e5d",
+      "byte_identical_to_r1": true
+    },
+    {
+      "figure": "Figure_S4_survival_expanded",
+      "numeric_artist_sha256": "d853d14cdda79d78d8be04c10eb8fc67a1d4a80e6ac07c5ebb557d9fbe8255d3",
+      "numeric_values_unchanged": true,
+      "local_label_edit": null,
+      "r1_native_style_preserved": true,
+      "png_sha256": "4026897a300ef392b054ef6db0ec70821b48252b7975095b1158bc643f681ea5",
+      "byte_identical_to_r1": true
+    },
+    {
+      "figure": "Figure_S5_external_GSE50081",
+      "numeric_artist_sha256": "6f86b88b2494a240bf797a1c9d80130bcf7422a5ef495a8331efb7a55971b73b",
+      "numeric_values_unchanged": true,
+      "local_label_edit": null,
+      "r1_native_style_preserved": true,
+      "png_sha256": "eebcb0e10526bc5943d35428f5a359d32a146ec07ff63e5731483255d4808c36",
+      "byte_identical_to_r1": true
+    },
+    {
+      "figure": "Figure_S6_capacity",
+      "numeric_artist_sha256": "4ebd19d945ffe35e58c3155160f956fffc360c410db3653f1be16fedd613b95f",
+      "numeric_values_unchanged": true,
+      "local_label_edit": "MB to MiB axis label",
+      "r1_native_style_preserved": true,
+      "png_sha256": "e1a62160bd47954892e1db9dfbf11fc6ccd25c766e685e4b52dd172656c745f8",
+      "byte_identical_to_r1": false
+    }
+  ],
+  "all_numeric_values_preserved": true
+}

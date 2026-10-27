@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>PREDICT</title>
+		{% include 'public_templates/bootstrap.html' %}
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.13/lib/theme-chalk/index.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"></script>
+		<!-- 引入组件库 -->
+		<script src="https://unpkg.com/element-ui@2.15.13/lib/index.js"></script>
+		<style type="text/css">
+			#home span {
+				background-color: aliceblue;
+			}
+		
+			.btn.btn-outline-danger {
+				height: 38px;
+				/* margin-top: 30px; */
+			}
+		
+			#one_class_test_form .form-row {
+				margin: 0;
+				padding: 0;
+				height: 40px;
+			}
+		
+			/* table tbody {
+				font-size: 5px;
+			} */
+			table * {
+				font-size: 15px;
+			}
+			
+			.card {
+				cursor: pointer;
+				height: 100%;
+			}
+			
+			.f_white {
+				color: black;
+			}
+			
+			.hidden {
+				display: none;
+			}
+			
+			.card:hover {
+				border: 2px solid #0d6efd;
+			}
+			
+			.select {
+				border: 2px solid #0d6efd;
+			}
+			
+			.select .card-body {
+				background-color: #e8f1ff;
+			}
+			
+			.md-3 {
+				margin-bottom: 15px;
+			}
+			
+			table
+			{
+			border-collapse: collapse;
+			margin: 1px,1px,1px,1px;
+			text-align: center;
+			}
+			table td, table th
+			{
+			border: 2px solid #cad9ea;
+			color: #666;
+			height: 25px;
+			}
+			table thead th
+			{
+			background-color: #17a2b8;
+			width: auto;
+			height: 50px;
+			color: white;
+			}
+			table tr:nth-child(odd)
+			{
+			background: #fff;
+			}
+			table tr:nth-child(even)
+			{
+			background: #f0f1f2;
+			}
+			
+			.textver {
+			    font-weight: bold;
+			    position: absolute;
+			    margin: 5px;
+			}
+			h4{
+				/* font-family: arial; */
+				font-weight: bold;
+			}
+			#card .el-card__header {
+			    background-color: rgba(0,0,0,.03);
+			}
+		</style>
+		<script>
+			$(document).ready(function(){
+				// 导航栏
+				$("#nav_predict").addClass("active");
+				$("tbody").addClass("bg-white");
+				$("#page_title").text('PREDICT');
+			});
+		</script>
+	</head>
+	<body>
+		<!-- 导航栏 -->
+		{% include 'public_templates/nav_tem.html' %}
+{% include 'public_templates/service_notice.html' %}
+		<!-- 主体 -->
+		<div class="container col-9" style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
+			<br />
+			<div id="card" class="row">
+			<div class="col-12">
+			<el-card shadow="never">
+				<div slot="header" >
+					<h4>Step1: Please select an analysis mode.</h4>
+				</div>
+			<div>
+			<div class="row row-cols-1 row-cols-md-3">
+				<div class="col md-3">
+					<div class="card" id="model_bclass" onclick="">
+						<div class="border-bottom" style="padding: 20px">
+							<p class=class="card-img-top" style="text-align:center" ><img src='/mlserver_static/img/binary.png' width="200" height="200"></p>
+						</div>
+						<div class="card-body">
+							<h6 class="card-title" style="text-align:center">Binary classification</h6>
+							<p class="card-title" style="font-size: 16px" >The process of dividing new observations into distinct two categories based on the features of a set of input data.</p>
+							<!--<p class="card-text m-0">description</p> -->
+							<!--<p class="card-text m-0">description</p> -->
+						</div>
+					</div>
+				</div>
+			
+				<div class="col md-3">
+					<div class="card" id="model_mclass" onclick="">
+						<div class="border-bottom" style="padding: 20px">
+							<p class=class="card-img-top" style="text-align:center"><img src='/mlserver_static/img/muliti.png' width="200" height="200"></p>
+						</div>
+						<div class="card-body">
+							<h6 class="card-title" style="text-align:center">Multiclass classfication</h6>
+							<p class="card-title" style="font-size: 16px" >The process of dividing new observations into distinct at least three categories based on the features of a set of input data.</p>
+							<!--<p class="card-text m-0">description</p> -->
+							<!--<p class="card-text m-0">description</p> -->
+						</div>
+					</div>
+				</div>
+			
+				<div class="col md-3">
+					<div class="card" id="model_reg" onclick="">
+						<div class="border-bottom" style="padding: 20px">
+							<p class=class="card-img-top" style="text-align:center"><img src='/mlserver_static/img/regression.png' width="200" height="200"></p>
+						</div>
+						<div class="card-body">
+							<h6 class="card-title" style="text-align:center">Regression</h6>
+							<p class="card-title" style="font-size: 16px" >The process of exploring the relationships between dependent variables (labels) and a series of  indenpendent variables (features).</p>
+							<!--<p class="card-text m-0">description</p> -->
+							<!--<p class="card-text m-0">description</p> -->
+						</div>
+					</div>
+				</div>
+			
+				<div class="col md-3">
+					<div class="card" id="model_sur" onclick="">
+						<div class="border-bottom" style="padding: 20px">
+							<p class=class="card-img-top" style="text-align:center"><img src='/mlserver_static/img/survival.png' width="200" height="200"></p>
+						</div>
+						<div class="card-body">
+							<h6 class="card-title" style="text-align:center"> Survival </h6>
+							<p class="card-title" style="font-size: 16px" >The process of establishing the connection between covariates (features) and the time of events (labels) to predict the risk of future events. </p>
+							<!--<p class="card-text m-0">description</p> -->
+							<!--<p class="card-text m-0">description</p> -->
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+			</el-card>
+			</div>
+			
+			
+			
+			<div class="col-12">
+			<br />
+			<el-card shadow="never">
+				<div slot="header" >
+					<h4>Step2: Please upload the files and models.</h4>
+				</div>
+			<div>
+			<form action="predict_preview" method="POST" id="form_data" enctype="multipart/form-data">
+				<div class="row">
+					<input name="file_upload_type" id="file_upload_type" style="display: none;" value="user_data"/>
+					<div class="col-3" id="data_up_select">
+						<label style="font-weight: bold; color: #666">Choose data to upload: </label>
+						<div class="form-check">
+							<label class="form-check-label" for="usr_up">
+								<input type="radio" id='usr_up' value="usr_data" name="data_up" checked>
+								Upload Your Own Data
+							</label>
+						</div>
+						<div class="form-check">
+							<label class="form-check-label" for="samp_up">
+								<input type="radio" id='samp_up' value="samp_data" name="data_up" disabled>
+								Legacy example models retired
+							</label>
+									
+						</div>
+					</div>
+			
+			
+			<div class="col-9">
+				<div id="pred_usr_data">
+					{% csrf_token %}
+					<input name="select_model" id="select_model" style="display: none;" value=""/>
+					<input type="file" name="upload_model" id="upload_model" accept=".maler" style="display: none;" />
+					<input type="file" name="upload_file" id="upload_file" accept=".csv,.tsv,.txt" style="display: none;" />
+					<div class="row align-items-center mb-3">
+						<div class="col-md-6 col-12 mb-2">
+							<b>Model:</b>
+							<button id="upmodel" type="button" class="btn btn-info ml-2">Upload .maler</button>
+							<span id="showModelName" class="ml-2 text-muted"></span>
+						</div>
+						<div class="col-md-6 col-12 mb-2">
+							<b>Data:</b>
+							<button id="upfile" type="button" class="btn btn-info ml-2">Upload CSV</button>
+							<span class="showFileName ml-2 text-muted"></span>
+						</div>
+					</div>
+					<div class="alert alert-light border mb-2"><b>Model:</b> Upload a signed <code>.maler</code> model bundle downloaded from MALER Analysis.</div>
+					<div class="alert alert-light border mb-2"><b>File:</b> Upload a CSV file with features in rows and samples in columns, no larger than {{ data_upload_limit_mb }} MiB.</div>
+										{% if not public_uploads_enabled %}<div class="alert alert-danger"><b>Public uploads are temporarily unavailable while the revised service is being validated.</b> Use a local installation to develop and reuse a current signed model.</div>{% endif %}
+                    <div class="alert alert-warning mb-0"><b>Privacy:</b> Submit only authorized, non-sensitive research data and compatible MALER-signed models. Do not upload direct identifiers, confidential records or sensitive patient data. Access expires after {{ task_retention_hours }} hours; scheduled active-file deletion is separate from other copies. Read the <a href="/maler/help#public-data-policy">data handling and retention policy</a>. Data/model limits: {{ data_upload_limit_mb }}/{{ model_upload_limit_mb }} MiB.</div>
+					<div class="form-check mt-3">
+						<input class="form-check-input" type="checkbox" id="data_consent" name="data_consent" value="confirmed">
+						<label class="form-check-label" for="data_consent">I am authorized to submit these non-sensitive research data and model, and have read the data handling, retention and security limitations. De-identified molecular data may still be sensitive.</label>
+					</div>
+				</div>
+					
+			<!-- </div> -->
+
+			
+			
+			<div id="pred_samp_data" class='row' style="display: none;">
+				<div class="col-12" id="sample_select" display="none">
+					<!-- <h6>Model: <input type="file" name="upload_model2" id="upload_model2" /> Please upload the pickle file model downloaded from ML Analysis.</h6> -->
+					<!-- <p /> -->
+					<!-- <table border="1" style="border: #000000;background-color: #f8f9fa;text-align: center;"> -->
+					<b>Legacy sample models are retired. CSV examples remain downloadable for local development.</b>
+					<table width="90%" class="" >
+						<thead>
+						<tr>
+							<th> Example </th>
+							<th> Description </th>
+							<th> Source </th>
+							<th> Download data</th>
+						<th> Model status </th>
+						</tr>
+						</thead>
+						<tr>
+							<td>Binary Classfication</td>
+							<td>LUAD and LUSC are classified based on gene expression profiles</td>
+							<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
+							<td><a href="download/binary_pred.csv">download</a></td>
+							<td>Legacy model retired; train and export a current signed bundle locally.</td>
+						</tr>
+						<tr>
+							<td>Multiclass Classfication</td>
+							<td>LUAD, LUSC and KIRC are classified based on gene expression profiles</td>
+							<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
+							<td><a href="download/multi_pred.csv">download</a></td>
+							<td>Legacy model retired; train and export a current signed bundle locally.</td>
+						</tr>
+						<tr>
+							<td>Regression</td>
+							<td width="400px">Tumor purity of KIRC is predicted based on gene expression profiles</td>
+							<td>
+								<a href="https://xenabrowser.net/">UCSC Xena</a><br />
+							</td>
+							<td><a href="download/reg_pred.csv">download</a></td>
+							<td>Legacy model retired; train and export a current signed bundle locally.</td>
+						</tr>
+						<tr>
+							<td>Survival</td>
+							<td>Survival in GBM is predicted based on gene expression profiles</td>
+							<td>
+								<a href="http://www.cgga.org.cn">CGGA</a>
+							</td>
+							<td><a href="download/survival_pred.csv">download</a></td>
+							<td>Legacy model retired; train and export a current signed bundle locally.</td>
+						</tr>
+					</table>
+					<br/>
+					
+					<br/>
+				</div>
+			</div>
+		</div>
+	</div>
+	</form>
+	</el-card>
+	</div>
+	</div>
+		<br />
+		<p />
+		<div class="col-12">
+		<button type="button" id="button_submit" onclick="form_sub()" {% if not public_uploads_enabled %}disabled aria-disabled="true"{% endif %} class="btn btn-info" style="width: 100%;">Submit</button>
+		<br />
+		<br />
+		</div>
+		</div>
+		<!-- 底部 -->
+		{% include 'public_templates/footer.html' %}
+		<script>
+			new Vue().$mount('#card')
+			function form_sub() {
+				// $("#form_data").submit()
+			}
+			
+			$(document).ready(function() {
+					$("#button_submit").hide()
+					// $("#cp_model_select").hide()
+					// $("#cp_model_detail").hide()
+					
+					// $("#survival_child_model").hide()
+					// $("#regression_child_model").hide()
+					
+					// $("#alphas").hide();
+			// 		$("#button_oc").click(function() {
+			// 			var temp_action = $("#form_step23").attr("action")
+			// 			var temp_action = (temp_action + "_oc_result").replace("_cp_result","")
+			// 			$("#form_step23").attr("action",temp_action)
+			// 			$(this).attr("style", "width: 100%;");
+			// 			$("#button_cp").attr("style", "width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;");
+			// 			$("#cp_model_select").hide()
+			// 			$("#button_submit").show()
+			// 			$(".cp_model_detail").hide()
+			// 		})
+			
+			// 		$("#button_cp").click(function() {
+			// 			var temp_action = $("#form_step23").attr("action")
+			// 			var temp_action = (temp_action + "_cp_result").replace("_oc_result","")
+			// 			$("#form_step23").attr("action",temp_action)
+			// 			$(this).attr("style", "width: 100%;");
+			// 			$("#button_oc").attr("style", "width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;");
+			// 			$("#button_submit").hide();
+			// 			$("#cp_model_select").show();
+			// 			$("#cp_model_detail").show();
+			// 			$("*[id^=task_]").attr('class','card');
+			// 			$("*[id^=detail_]").hide();
+			// 		});
+					
+					$("#model_bclass").click(function(){
+						// $("#classification_child_model").show()
+						// $("#regression_child_model").hide()
+						// $("#survival_child_model").hide()
+						
+						
+						// $("#select_child_model").val("task_naivebayes")
+						$("*[id^=model_]").attr('class','card');
+						$(this).attr('class','card select');
+						var id = $(this).attr('id');
+						$("#select_model").val(id)
+						// document.getElementById('task_naivebayes').className = 'card select';
+						// $("*[id^=detail_]").hide();
+						$("#button_submit").show()
+					})
+					
+					$("#model_mclass").click(function(){
+						// $("#classification_child_model").show()
+						// $("#regression_child_model").hide()
+						// $("#survival_child_model").hide()
+						
+						// var temp_action = $("#form_step23").attr("action")
+						// var temp_action = ("classification_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
+						// $("#form_step23").attr("action",temp_action)
+						// $("#select_child_model").val("task_naivebayes")
+						$("*[id^=model_]").attr('class','card');
+						$(this).attr('class','card select');
+						var id = $(this).attr('id');
+						$("#select_model").val(id)
+						// document.getElementById('task_naivebayes').className = 'card select';
+						// $("*[id^=detail_]").hide();
+						$("#button_submit").show()
+					})
+					
+					$("#model_reg").click(function(){
+						// $("#regression_child_model").show()
+						// $("#classification_child_model").hide()
+						// $("#survival_child_model").hide()
+						
+						// var temp_action = $("#form_step23").attr("action")
+						// var temp_action = ("regression_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
+						// $("#form_step23").attr("action",temp_action)
+						// $("#select_child_model").val("task_linearregression")
+						$("*[id^=model_]").attr('class','card');
+						$(this).attr('class','card select');
+						var id = $(this).attr('id');
+						$("#select_model").val(id)
+						// $("*[id^=detail_]").hide();
+						$("#button_submit").show()
+						// document.getElementById('task_linearregression').className = 'card select';
+					})
+					
+					$("#model_sur").click(function(){
+						// $("#survival_child_model").show()
+						// $("#classification_child_model").hide()
+						// $("#regression_child_model").hide()
+						
+						// var temp_action = $("#form_step23").attr("action")
+						// var temp_action = ("survival_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
+						// $("#form_step23").attr("action",temp_action)
+						// $("#select_child_model").val("task_survivalsvm")
+						$("*[id^=model_]").attr('class','card');
+						$(this).attr('class','card select');
+						var id = $(this).attr('id');
+						$("#select_model").val(id)
+						// $("*[id^=detail_]").hide();
+						$("#button_submit").show()
+						// document.getElementById('task_survivalsvm').className = 'card select';
+					})
+
+				})
+					$("#button_submit").click(function () {
+						// if ($("#upload_file").val() == "" || $("#upload_model").val() == "") {
+						// 	alert("Please select a file and upload!");
+						// } else {
+						// 	$("#form_data").submit();
+						// }
+						if ($("#file_upload_type").val() == 'user_data'){
+							if ($("#upload_file").val() == "" || $("#upload_model").val() == "") {
+								alert("Please select a file and a model to upload!");
+								location.reload();
+							} else if (!$("#upload_model").val().toLowerCase().endsWith(".maler")){
+								alert("Please select a signed .maler model bundle downloaded from MALER Analysis.");
+							} else if (!$("#data_consent").is(":checked")) {
+								alert("Please confirm data authorization and privacy before uploading.");
+							}else {
+							    $("#form_data").submit();
+							}
+						} else{
+							 $("#form_data").submit();
+						}
+						
+					})
+
+					
+					
+				$('input[type=radio][name=data_up]').change(function() {
+				    if (this.value == 'samp_data'){
+						$('#pred_usr_data').hide();
+						$('#pred_samp_data').show();
+						
+					}
+					else{
+						$('#pred_usr_data').show();
+						$('#pred_samp_data').hide();
+						
+					}
+				});
+				$('input[name="samp_data"]').click(function () {
+					// console.log(this)
+				    $(this).tab('show');
+					$(this).removeClass('active');
+				});
+				
+				$("#upmodel").click(function () {
+					// $("#upload_model").show()
+					$("#upload_model").click();
+				});
+				$("#upfile").click(function () {
+					// $("#upload_model").show()
+					$("#upload_file").click();
+				});
+				var mymodel = document.getElementById('upload_model');
+				mymodel.addEventListener('change',function() {
+					// $(".showModelName").html(mymodel.files[0].name);
+					document.getElementById("showModelName").textContent = mymodel.files.length ? mymodel.files[0].name : '';
+				});
+				var myfile = document.getElementById('upload_file');
+				myfile.addEventListener('change',function() {
+					// location.reload();
+					$(".showFileName").text(myfile.files.length ? myfile.files[0].name : '');
+				});
+					
+
+				$("#usr_up").click(function (){
+					$("#file_upload_type").val('user_data')
+				})
+				$("#samp_up").click(function (){
+					$("#file_upload_type").val('example_data')
+				})
+				
+				// $("*[id^=task_]").click(function() {
+				// 	$("*[id^=detail_]").hide();
+				// 	var a = $(this).attr('id')
+				// 	var detail_id = "#detail_" + a.replace('task_','')
+				// 	$(detail_id).show();
+				// 	$("#select_child_model").val(a);
+				// 	$("#button_submit").show();
+				// })
+				
+		{% if messages %}
+		window.onload=function(){
+			// location.reload(true)
+							{% for msg in messages %}
+								alert('{{msg.message}}');
+							{% endfor  %}
+		}
+		{%  endif %}
+				
+			</script>
+		</script>
+	</body>
+	
+</html>

@@ -1,0 +1,150 @@
+{
+  "captured_utc": "2026-10-24T07:19:00.154Z",
+  "capture_date": "2026-10-24",
+  "origin": "https://www.inbirg.com",
+  "source_commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+  "browser": "155.0.4283.62",
+  "viewport_css": {
+    "width": 1440,
+    "height": 1100
+  },
+  "device_scale_factor": 2,
+  "page_content_or_style_modified": false,
+  "form_submitted": false,
+  "panels": [
+    {
+      "letter": "A",
+      "title": "Home page and reviewed workflow",
+      "url": "https://www.inbirg.com/maler/home",
+      "selector_scope": "Home content crop",
+      "bounds_css": {
+        "x": 150,
+        "y": 0.171875,
+        "width": 1140,
+        "height": 2242.34375
+      },
+      "crop_height_css": 1180,
+      "bytes": 497859,
+      "sha256": "d3bd4f5a031f147a34f0f91f89169b26e5edc9f2b8ce951fe9a64f675ae443a7"
+    },
+    {
+      "letter": "B",
+      "title": "Analysis task selection",
+      "url": "https://www.inbirg.com/maler/analysis",
+      "selector_scope": "Visible original card",
+      "bounds_css": {
+        "x": 195,
+        "y": 119.96875,
+        "width": 1050,
+        "height": 980.953125
+      },
+      "crop_height_css": null,
+      "bytes": 202534,
+      "sha256": "da5d4ebee3d4fcf6ef93a5100a43bcaaa70d06913d482c832eb5f150d0326ae2"
+    },
+    {
+      "letter": "C",
+      "title": "Upload and authorization",
+      "url": "https://www.inbirg.com/maler/analysis",
+      "selector_scope": "Visible original card",
+      "bounds_css": {
+        "x": 195,
+        "y": 91.71875,
+        "width": 1050,
+        "height": 915.71875
+      },
+      "crop_height_css": null,
+      "bytes": 350754,
+      "sha256": "a1a271e2d75c2f8839a03666e9678cd49e12e9fdd2987204f3f7b846be1a8cbe"
+    },
+    {
+      "letter": "D",
+      "title": "Feature scaling",
+      "url": "https://www.inbirg.com/maler/analysis",
+      "selector_scope": "Visible original card",
+      "bounds_css": {
+        "x": 180,
+        "y": 762.234375,
+        "width": 1080,
+        "height": 337.578125
+      },
+      "crop_height_css": null,
+      "bytes": 86718,
+      "sha256": "ca1ccc614ca6a2db1d00a98a0537973b6fe51e6edd9882aadccb26361c61c803"
+    },
+    {
+      "letter": "E",
+      "title": "Feature ranking and subset search",
+      "url": "https://www.inbirg.com/maler/analysis",
+      "selector_scope": "Visible original card",
+      "bounds_css": {
+        "x": 195,
+        "y": 253.609375,
+        "width": 1050,
+        "height": 592.359375
+      },
+      "crop_height_css": null,
+      "bytes": 146025,
+      "sha256": "e2daef00dab8b9ccdba47ab6f83ab48c0d508e69cf10a81b6f1984a6c7e82ad4"
+    },
+    {
+      "letter": "F",
+      "title": "One-click and customized analysis",
+      "url": "https://www.inbirg.com/maler/analysis",
+      "selector_scope": "Visible original card",
+      "bounds_css": {
+        "x": 195,
+        "y": 534.765625,
+        "width": 1050,
+        "height": 566.609375
+      },
+      "crop_height_css": null,
+      "bytes": 180066,
+      "sha256": "95467ad0a40e95af33e65486bb159fb92f8d50001652ad4128b3930e5137fb1a"
+    },
+    {
+      "letter": "G",
+      "title": "Signed-model reuse and data handling",
+      "url": "https://www.inbirg.com/maler/predict",
+      "selector_scope": "Visible original card",
+      "bounds_css": {
+        "x": 195,
+        "y": 507.953125,
+        "width": 1050,
+        "height": 479.796875
+      },
+      "crop_height_css": null,
+      "bytes": 163428,
+      "sha256": "72193be47bad64f8d26a6d1bd23edcc12440bef4b9de0790b562354351b74115"
+    }
+  ],
+  "records": [
+    {
+      "page": "home",
+      "status": 200,
+      "body_sha256": "3aa2ecc2c29411dfdc4e3dd7e95d6d86898969e952605f050d81c568f55d7d1e",
+      "tls_verification_disabled": false,
+      "public_uploads_enabled_notice": true,
+      "old_200MB_description_absent": true
+    },
+    {
+      "page": "analysis",
+      "status": 200,
+      "body_sha256": "c2be94e92dc2560cd727aa2acd4b47b2fa66a78d321620944f9a98d527ad7d8b",
+      "tls_verification_disabled": false,
+      "public_uploads_enabled_notice": true,
+      "old_200MB_description_absent": true
+    },
+    {
+      "page": "predict",
+      "status": 200,
+      "body_sha256": "7a985fa6e1466c3fe7551cd71ef913a75ebcaee1c7a10006b9a50bab7278c25f",
+      "tls_verification_disabled": false,
+      "public_uploads_enabled_notice": true,
+      "old_200MB_description_absent": true
+    }
+  ],
+  "page_errors": [],
+  "unexpected_failed_requests": [],
+  "scope": "Seven authentic public HTTPS interface crops. Original page text, styles and controls are unchanged; no upload or model run is performed by this capture."
+}

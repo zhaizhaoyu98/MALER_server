@@ -1,0 +1,68 @@
+{
+  "scope": "Real Edge browser on local loopback Django process; not public Aliyun E2E",
+  "completed_utc": "2026-10-01T15:44:13.671Z",
+  "source": {
+    "commit": "5d3d1a3df516233566e20b206a96c2eb33d45877",
+    "declared_commit_matches": true,
+    "dirty": false,
+    "verified": true
+  },
+  "browser_version": "153.0.4234.32",
+  "origin": "http://127.0.0.1:8795",
+  "analysis_project_id": "BCO-AZ-cbb985-TopK-26235354",
+  "prediction_project_id": "PRED-BCLASS-c9b2cc-dbba67-7b8753cc",
+  "analysis_input_sha256": "57336962e3e39e581195bbf7efe689d6c4a3d5abde6c5088bcf2dd9c1cc4d232",
+  "prediction_input_sha256": "3a52bb3aa2550330b7ca0c1068af1c966dac54e8ed39b7c8a7911fb390170f50",
+  "model_bundle_sha256": "bfc49d569a55fad509323a5e0c991c9909d13cf72892107e5f44412504ec37bf",
+  "selection_lock_sha256": "5d0c497755e1c4b84b648e906e0992ec390ce797775307e9e95b3af9abc70c89",
+  "positive_class": "case",
+  "threshold_policy": "explicit_probability_threshold",
+  "threshold_value": 0.65,
+  "actual_budget": {
+    "actual_inner_splits": 3,
+    "actual_outer_evaluations": 10,
+    "actual_outer_repeats": 2,
+    "actual_outer_splits": 5,
+    "requested_inner_splits": 3,
+    "requested_outer_repeats": 2,
+    "requested_outer_splits": 5
+  },
+  "csrf_missing_token_status": 403,
+  "successful_form_posts": [
+    {
+      "path": "/maler/preview",
+      "status": 200
+    },
+    {
+      "path": "/maler/classification_oc_result/BCO-AZ-cbb985-TopK-26235354",
+      "status": 200
+    },
+    {
+      "path": "/maler/predict_preview",
+      "status": 200
+    },
+    {
+      "path": "/maler/predict_result/PRED-BCLASS-c9b2cc-dbba67-7b8753cc",
+      "status": 200
+    }
+  ],
+  "page_errors": [],
+  "expected_download_aborts": [
+    {
+      "url": "http://127.0.0.1:8795/maler/task/BCO-AZ-cbb985-TopK-26235354/model/logistic_regression.maler",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "unexpected_failed_requests": [],
+  "browser_prediction_count": 40,
+  "steps": [
+    "browser upload",
+    "parse preview",
+    "explicit positive class and cutoff",
+    "development and result",
+    "signed export download",
+    "Predict upload",
+    "Predict preview",
+    "Predict reuse"
+  ]
+}

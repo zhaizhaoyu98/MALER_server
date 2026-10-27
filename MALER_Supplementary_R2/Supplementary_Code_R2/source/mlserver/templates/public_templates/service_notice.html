@@ -1,0 +1,15 @@
+{% if public_uploads_enabled %}
+<div class="container mt-3"><div class="alert alert-info" role="status">
+<strong>Public research uploads are available.</strong> Use HTTPS to build, export and reuse models online.
+Submit only authorized, non-sensitive research data. De-identified molecular data can remain sensitive.
+The service retains unsupported Python 3.7/Django 2.1; use a controlled deployment where confidentiality or specific erasure requirements apply.
+Read the <a href="/maler/help#public-data-policy">data handling and retention policy</a> before uploading.
+</div></div>
+{% else %}
+<div class="container mt-3"><div class="alert alert-warning" role="status">
+<strong>Public uploads are temporarily paused.</strong> HTTPS is enabled at the public domain.
+Please retry later or use a controlled local installation.
+Python 3.7/Django 2.1 remain unsupported. Token expiry does not delete files or backups.
+See the <a href="/maler/help#public-data-policy">data handling and retention policy</a>.
+</div></div>
+{% endif %}

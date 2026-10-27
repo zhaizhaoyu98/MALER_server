@@ -1,0 +1,75 @@
+{
+  "best_params": {
+    "selector__k": 8
+  },
+  "candidate_counts": {
+    "SurvivalTree": 1
+  },
+  "candidate_families": [
+    "SurvivalTree"
+  ],
+  "candidate_grids": {
+    "SurvivalTree": {
+      "selector__k": [
+        8
+      ]
+    }
+  },
+  "class_order": null,
+  "estimator": "sksurv.tree.tree.SurvivalTree",
+  "family_selected_at": "2026-10-24T07:24:58.537250Z",
+  "feature_method": "select",
+  "fitted_model_sha256": "5f0ec26e7f5f66da0cee1ea3e4c3620c40fe955f9e3f3c2af4360f0a26741e54",
+  "heldout_unlocked_at": "2026-10-24T07:24:58.577664Z",
+  "imputer_strategy": "median",
+  "inner_split_policy": "fold-local task-aware CV; grouped when subject_id supplied",
+  "input_features": [
+    "feature0",
+    "feature1",
+    "feature2",
+    "feature3",
+    "feature4",
+    "feature5",
+    "feature6",
+    "feature7"
+  ],
+  "input_sha256": "c62f1762121bd0f51a208e5c4787d043afe1a330db81646d9be147b6bfe8dbd6",
+  "outer_split_ids_hash": "12acad2672e782608a4d86f132f67edd321c427aeb55fc264df05b5da153ab7f",
+  "positive_class": null,
+  "project_id": "SC-CZ-cb4352-x9l3ly-b143c3db",
+  "random_seed": 10,
+  "scaler": "standard",
+  "schema_version": 3,
+  "selected_at": "2026-10-24T07:24:58.577533Z",
+  "selected_family": "SurvivalTree",
+  "selected_features": [
+    "feature0",
+    "feature1",
+    "feature2",
+    "feature3",
+    "feature4",
+    "feature5",
+    "feature6",
+    "feature7"
+  ],
+  "selection_metric": "c_index",
+  "selection_rule": "highest development per-family outer-CV mean; lexicographic tie-break",
+  "software_commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+  "software_identity": {
+    "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "declared_commit_matches": true,
+    "dirty": false,
+    "verified": true
+  },
+  "threshold_policy": null,
+  "threshold_value": null,
+  "validation_budget": {
+    "actual_inner_splits": 3,
+    "actual_outer_evaluations": 10,
+    "actual_outer_repeats": 2,
+    "actual_outer_splits": 5,
+    "requested_inner_splits": 3,
+    "requested_outer_repeats": 2,
+    "requested_outer_splits": 5
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "server_utc": "2026-10-22T13:02:56.814711Z",
+  "identity_before": {
+    "server_utc": "2026-10-22T13:02:44.809959Z",
+    "source_commit": "0b2435434a5fde670e317670980619dbabdfc372",
+    "source_clean": true,
+    "source_directory": "/mnt/home/liqiang/maler_revision2_20260930/source_public_0b24354",
+    "process_exe": "/mnt/home/liqiang/.conda/envs/gene_edit/bin/python3.7",
+    "master_pid": 2427663,
+    "public_uploads_enabled": true,
+    "task_root": "/var/lib/maler_public_r2/tasks",
+    "database_path": "/var/lib/maler_public_r2/state/public.sqlite3"
+  },
+  "identity_after": {
+    "server_utc": "2026-10-22T13:02:56.749227Z",
+    "source_commit": "0b2435434a5fde670e317670980619dbabdfc372",
+    "source_clean": true,
+    "source_directory": "/mnt/home/liqiang/maler_revision2_20260930/source_public_0b24354",
+    "process_exe": "/mnt/home/liqiang/.conda/envs/gene_edit/bin/python3.7",
+    "master_pid": 2428053,
+    "public_uploads_enabled": true,
+    "task_root": "/var/lib/maler_public_r2/tasks",
+    "database_path": "/var/lib/maler_public_r2/state/public.sqlite3"
+  },
+  "resolved_before": {
+    "settings_module": "candidate_settings",
+    "overlay_file": "/mnt/home/liqiang/maler_revision2_20260930/runtime/candidate_settings.py",
+    "base_settings_file": "/mnt/home/liqiang/maler_revision2_20260930/source_public_0b24354/ML_WebServer/settings.py",
+    "database_path": "/mnt/home/liqiang/maler_revision2_20260930/state/candidate.sqlite3",
+    "task_root": "/var/lib/maler_public_r2/tasks",
+    "upload_tmp": "/var/lib/maler_public_r2/django_tmp",
+    "static_root": "/mnt/home/liqiang/maler_revision2_20260930/public_static"
+  },
+  "resolved_after": {
+    "settings_module": "public_online_settings",
+    "overlay_file": "/mnt/home/liqiang/maler_revision2_20260930/runtime/public_online_settings.py",
+    "base_settings_file": "/mnt/home/liqiang/maler_revision2_20260930/source_public_0b24354/ML_WebServer/settings.py",
+    "database_path": "/var/lib/maler_public_r2/state/public.sqlite3",
+    "task_root": "/var/lib/maler_public_r2/tasks",
+    "upload_tmp": "/var/lib/maler_public_r2/django_tmp",
+    "static_root": "/mnt/home/liqiang/maler_revision2_20260930/public_static"
+  },
+  "new_overlay": {
+    "path": "/mnt/home/liqiang/maler_revision2_20260930/runtime/public_online_settings.py",
+    "sha256": "f3ef0e6cd4bf4c4b8674657015937e35a714f2f527612881d17790b5ea288ce7",
+    "content": "from ML_WebServer.settings import *\nSTATIC_ROOT = '/mnt/home/liqiang/maler_revision2_20260930/public_static'\nEMAIL_HOST_USER = ''\n"
+  },
+  "service_restart": {
+    "exit_code": 0,
+    "output": ""
+  },
+  "readiness_attempts": [
+    "HTTPError",
+    200
+  ],
+  "runtime_upgraded": false,
+  "source_commit_changed": false,
+  "legacy_database_deleted": false,
+  "scope": "Corrected deployment settings overlay; new application state honours tmpfs path. Historical candidate database and settings preserved. Initial synthetic migration attempts reported no pending migrations against that old state; final recovery guard checks resolved Django settings before migration."
+}

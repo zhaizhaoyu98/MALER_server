@@ -1,0 +1,3471 @@
+{
+  "best_params": {
+    "model__C": 10.0,
+    "selector__k": 20
+  },
+  "elapsed_seconds": 39.9617243,
+  "external_confusion_matrix": [
+    [
+      61,
+      45
+    ],
+    [
+      0,
+      66
+    ]
+  ],
+  "external_dataset": {
+    "accession": "GSE37745 / E-GEOD-37745",
+    "archive_bytes": 91588774,
+    "archive_sha256": "3b331e2a531b314b503d0e65d6d2f2259ad32fde1f40c0f3271998dc38753b27",
+    "class_counts": {
+      "LUAD": 106,
+      "LUSC": 66
+    },
+    "design": "independent single-institute NSCLC cohort; Affymetrix HG-U133 Plus 2.0",
+    "excluded_histology": "large-cell carcinoma (not part of LUAD/LUSC target)",
+    "metadata_sha256": "1d09314d10b6bcc895042e2e10c37229c9321eafea02730c303f445e64f72fae",
+    "n_included": 172,
+    "normalization_from_submitter": "log2 RMA signal",
+    "sdrf_sha256": "f6b07cc8edb0dd4563fce36835da518b95223c31a7f9c31dd296c22d4e022226",
+    "source_urls": {
+      "ebi_api": "https://www.ebi.ac.uk/biostudies/api/v1/studies/E-GEOD-37745",
+      "ebi_processed_archive": "https://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/GEOD/E-GEOD-37745/E-GEOD-37745.processed.1.zip",
+      "ncbi_geo": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE37745"
+    }
+  },
+  "external_primary_bootstrap": {
+    "accuracy": {
+      "bootstrap_95_ci": [
+        0.6744186046511628,
+        0.8023255813953488
+      ],
+      "estimate": 0.7383720930232558,
+      "n_bootstrap": 2000
+    },
+    "balanced_accuracy": {
+      "bootstrap_95_ci": [
+        0.7448953018707484,
+        0.8349056603773585
+      ],
+      "estimate": 0.7877358490566038,
+      "n_bootstrap": 2000
+    },
+    "f1": {
+      "bootstrap_95_ci": [
+        0.6706586826347305,
+        0.8128342245989304
+      ],
+      "estimate": 0.7457627118644068,
+      "n_bootstrap": 2000
+    },
+    "mcc": {
+      "bootstrap_95_ci": [
+        0.5078682909176044,
+        0.6680145908418831
+      ],
+      "estimate": 0.584955007705965,
+      "n_bootstrap": 2000
+    },
+    "pr_auc": {
+      "bootstrap_95_ci": [
+        0.9464888187763764,
+        0.994536447655861
+      ],
+      "estimate": 0.974703508259374,
+      "n_bootstrap": 2000
+    },
+    "precision": {
+      "bootstrap_95_ci": [
+        0.5045045045045045,
+        0.6846846846846847
+      ],
+      "estimate": 0.5945945945945946,
+      "n_bootstrap": 2000
+    },
+    "recall_sensitivity": {
+      "bootstrap_95_ci": [
+        1.0,
+        1.0
+      ],
+      "estimate": 1.0,
+      "n_bootstrap": 2000
+    },
+    "roc_auc": {
+      "bootstrap_95_ci": [
+        0.967803303639853,
+        0.9963352089775456
+      ],
+      "estimate": 0.9839908519153802,
+      "n_bootstrap": 2000
+    },
+    "specificity": {
+      "bootstrap_95_ci": [
+        0.4897906037414966,
+        0.6698113207547169
+      ],
+      "estimate": 0.5754716981132075,
+      "n_bootstrap": 2000
+    }
+  },
+  "external_primary_metrics": {
+    "accuracy": 0.7383720930232558,
+    "balanced_accuracy": 0.7877358490566038,
+    "f1": 0.7457627118644068,
+    "mcc": 0.584955007705965,
+    "per_class": {
+      "LUAD": {
+        "sensitivity": 0.5754716981132075,
+        "specificity": 1.0
+      },
+      "LUSC": {
+        "sensitivity": 1.0,
+        "specificity": 0.5754716981132075
+      }
+    },
+    "pr_auc": 0.974703508259374,
+    "precision": 0.5945945945945946,
+    "recall_sensitivity": 1.0,
+    "roc_auc": 0.9839908519153802,
+    "specificity": 0.5754716981132075
+  },
+  "feature_mapping": {
+    "bioconductor_sqlite_sha256": "2b0d31790d78c4a98135b20ce9cafdc87e114b615f7e970569dd7f4b7cd61724",
+    "final_model_selected_features": [
+      "DSC3",
+      "RORC",
+      "ALDH3B1",
+      "KRT6B",
+      "SERPINB13",
+      "CALML3",
+      "SPDEF",
+      "KRT5",
+      "CLCA2",
+      "KRT6C",
+      "BNC1",
+      "DSG3",
+      "FMO5",
+      "DDAH1",
+      "LONRF3",
+      "BCL2L15",
+      "TP63",
+      "ARHGEF38",
+      "HNF1B",
+      "CERS3"
+    ],
+    "gpl570_mapped_features": 42,
+    "mapped_features": [
+      "DSC3",
+      "RORC",
+      "TPRXL",
+      "ALDH3B1",
+      "KRT6B",
+      "SERPINB13",
+      "CALML3",
+      "SPDEF",
+      "ATP1B3",
+      "XXYLT1",
+      "JAG1",
+      "NECTIN1",
+      "KRT5",
+      "KRT14",
+      "CLCA2",
+      "KRT6C",
+      "BNC1",
+      "FAT2",
+      "DSG3",
+      "S1PR5",
+      "HR",
+      "KCNG1",
+      "GABRQ",
+      "FMO5",
+      "DDAH1",
+      "LONRF3",
+      "LOC105378231",
+      "BCL2L15",
+      "A2ML1",
+      "VSNL1",
+      "TP63",
+      "HAP1",
+      "DLX5",
+      "YEATS2",
+      "ARHGEF38",
+      "MIR205HG",
+      "DAPL1",
+      "HNF1B",
+      "PARD6G",
+      "CERS3",
+      "EN1",
+      "PNCK"
+    ],
+    "mygene_response_sha256": "261415ec47ae1c59721d0070ea7f261c71691a8e162c836929a39bce0f2f570c",
+    "starting_internal_selected_features": 50,
+    "unmapped_features": [
+      "LINC01451",
+      "SMIM14",
+      "SMIM6",
+      "TMPRSS11A",
+      "SPRR2A",
+      "LOC642484",
+      "FAM83B",
+      "RAET1L"
+    ]
+  },
+  "feature_stability": {
+    "mean_pairwise_jaccard": 0.6426258029344142,
+    "std_pairwise_jaccard": 0.2494639122890577,
+    "top_selection_frequency": [
+      {
+        "feature": "DDAH1",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "LONRF3",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "RORC",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "FMO5",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "HNF1B",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "BCL2L15",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "ARHGEF38",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "ALDH3B1",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "SPDEF",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "DSG3",
+        "folds": 49,
+        "fraction": 0.98
+      },
+      {
+        "feature": "DSC3",
+        "folds": 39,
+        "fraction": 0.78
+      },
+      {
+        "feature": "SERPINB13",
+        "folds": 38,
+        "fraction": 0.76
+      },
+      {
+        "feature": "CLCA2",
+        "folds": 38,
+        "fraction": 0.76
+      },
+      {
+        "feature": "TP63",
+        "folds": 38,
+        "fraction": 0.76
+      },
+      {
+        "feature": "CALML3",
+        "folds": 38,
+        "fraction": 0.76
+      },
+      {
+        "feature": "CERS3",
+        "folds": 38,
+        "fraction": 0.76
+      },
+      {
+        "feature": "KRT6B",
+        "folds": 38,
+        "fraction": 0.76
+      },
+      {
+        "feature": "KRT5",
+        "folds": 38,
+        "fraction": 0.76
+      },
+      {
+        "feature": "BNC1",
+        "folds": 35,
+        "fraction": 0.7
+      },
+      {
+        "feature": "KRT6C",
+        "folds": 27,
+        "fraction": 0.54
+      },
+      {
+        "feature": "MIR205HG",
+        "folds": 21,
+        "fraction": 0.42
+      },
+      {
+        "feature": "KRT14",
+        "folds": 14,
+        "fraction": 0.28
+      },
+      {
+        "feature": "YEATS2",
+        "folds": 12,
+        "fraction": 0.24
+      },
+      {
+        "feature": "TPRXL",
+        "folds": 11,
+        "fraction": 0.22
+      },
+      {
+        "feature": "NECTIN1",
+        "folds": 11,
+        "fraction": 0.22
+      },
+      {
+        "feature": "ATP1B3",
+        "folds": 11,
+        "fraction": 0.22
+      },
+      {
+        "feature": "GABRQ",
+        "folds": 11,
+        "fraction": 0.22
+      },
+      {
+        "feature": "JAG1",
+        "folds": 11,
+        "fraction": 0.22
+      },
+      {
+        "feature": "PARD6G",
+        "folds": 11,
+        "fraction": 0.22
+      },
+      {
+        "feature": "EN1",
+        "folds": 11,
+        "fraction": 0.22
+      },
+      {
+        "feature": "LOC105378231",
+        "folds": 11,
+        "fraction": 0.22
+      },
+      {
+        "feature": "A2ML1",
+        "folds": 11,
+        "fraction": 0.22
+      },
+      {
+        "feature": "DAPL1",
+        "folds": 11,
+        "fraction": 0.22
+      },
+      {
+        "feature": "PNCK",
+        "folds": 11,
+        "fraction": 0.22
+      },
+      {
+        "feature": "DLX5",
+        "folds": 11,
+        "fraction": 0.22
+      },
+      {
+        "feature": "FAT2",
+        "folds": 11,
+        "fraction": 0.22
+      },
+      {
+        "feature": "VSNL1",
+        "folds": 11,
+        "fraction": 0.22
+      },
+      {
+        "feature": "XXYLT1",
+        "folds": 11,
+        "fraction": 0.22
+      },
+      {
+        "feature": "S1PR5",
+        "folds": 11,
+        "fraction": 0.22
+      },
+      {
+        "feature": "HAP1",
+        "folds": 5,
+        "fraction": 0.1
+      },
+      {
+        "feature": "HR",
+        "folds": 3,
+        "fraction": 0.06
+      },
+      {
+        "feature": "KCNG1",
+        "folds": 3,
+        "fraction": 0.06
+      }
+    ]
+  },
+  "internal_heldout_test_bootstrap": {
+    "accuracy": {
+      "bootstrap_95_ci": [
+        0.9464882943143813,
+        0.9866220735785953
+      ],
+      "estimate": 0.9665551839464883,
+      "n_bootstrap": 2000
+    },
+    "balanced_accuracy": {
+      "bootstrap_95_ci": [
+        0.9451833525371479,
+        0.9863066654447704
+      ],
+      "estimate": 0.9665324384787473,
+      "n_bootstrap": 2000
+    },
+    "f1": {
+      "bootstrap_95_ci": [
+        0.942526668320516,
+        0.9857193158953722
+      ],
+      "estimate": 0.9662162162162162,
+      "n_bootstrap": 2000
+    },
+    "mcc": {
+      "bootstrap_95_ci": [
+        0.8917081432089475,
+        0.9731359101955981
+      ],
+      "estimate": 0.9331901457876162,
+      "n_bootstrap": 2000
+    },
+    "pr_auc": {
+      "bootstrap_95_ci": [
+        0.9731272186538711,
+        0.9978164013864467
+      ],
+      "estimate": 0.988445416851335,
+      "n_bootstrap": 2000
+    },
+    "precision": {
+      "bootstrap_95_ci": [
+        0.9428571428571428,
+        0.9937116745283019
+      ],
+      "estimate": 0.9727891156462585,
+      "n_bootstrap": 2000
+    },
+    "recall_sensitivity": {
+      "bootstrap_95_ci": [
+        0.9230769230769231,
+        0.9870967741935484
+      ],
+      "estimate": 0.959731543624161,
+      "n_bootstrap": 2000
+    },
+    "roc_auc": {
+      "bootstrap_95_ci": [
+        0.9764065870410874,
+        0.9976119671983418
+      ],
+      "estimate": 0.9886800894854587,
+      "n_bootstrap": 2000
+    },
+    "specificity": {
+      "bootstrap_95_ci": [
+        0.9455751391465678,
+        0.9937106918238994
+      ],
+      "estimate": 0.9733333333333334,
+      "n_bootstrap": 2000
+    }
+  },
+  "internal_heldout_test_metrics": {
+    "accuracy": 0.9665551839464883,
+    "balanced_accuracy": 0.9665324384787473,
+    "f1": 0.9662162162162162,
+    "mcc": 0.9331901457876162,
+    "per_class": {
+      "LUAD": {
+        "sensitivity": 0.9733333333333334,
+        "specificity": 0.959731543624161
+      },
+      "LUSC": {
+        "sensitivity": 0.959731543624161,
+        "specificity": 0.9733333333333334
+      }
+    },
+    "pr_auc": 0.988445416851335,
+    "precision": 0.9727891156462585,
+    "recall_sensitivity": 0.959731543624161,
+    "roc_auc": 0.9886800894854587,
+    "specificity": 0.9733333333333334
+  },
+  "model_bundle": {
+    "manifest": {
+      "bundle_version": 1,
+      "created_utc": "2026-09-23T12:33:18Z",
+      "feature_names": [
+        "DSC3",
+        "RORC",
+        "TPRXL",
+        "ALDH3B1",
+        "KRT6B",
+        "SERPINB13",
+        "CALML3",
+        "SPDEF",
+        "ATP1B3",
+        "XXYLT1",
+        "JAG1",
+        "NECTIN1",
+        "KRT5",
+        "KRT14",
+        "CLCA2",
+        "KRT6C",
+        "BNC1",
+        "FAT2",
+        "DSG3",
+        "S1PR5",
+        "HR",
+        "KCNG1",
+        "GABRQ",
+        "FMO5",
+        "DDAH1",
+        "LONRF3",
+        "LOC105378231",
+        "BCL2L15",
+        "A2ML1",
+        "VSNL1",
+        "TP63",
+        "HAP1",
+        "DLX5",
+        "YEATS2",
+        "ARHGEF38",
+        "MIR205HG",
+        "DAPL1",
+        "HNF1B",
+        "PARD6G",
+        "CERS3",
+        "EN1",
+        "PNCK"
+      ],
+      "metadata": {
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 20
+        },
+        "classes": {
+          "LUAD": "LUAD",
+          "LUSC": "LUSC"
+        },
+        "external_validation_dataset": "GSE37745 / E-GEOD-37745",
+        "method": "model_bclass",
+        "model_name": "CrossPlatformRankLogisticRegression",
+        "normalization": "within-sample percentile ranks",
+        "pipeline_complete": true,
+        "training_dataset": "binary_classification_example.csv"
+      },
+      "model_class": "sklearn.pipeline.Pipeline",
+      "task": "binary",
+      "versions": {
+        "joblib": "1.3.2",
+        "numpy": "1.21.2",
+        "pandas": "1.3.5",
+        "python": "3.7.11",
+        "scikit_learn": "1.0.2",
+        "scipy": "1.7.3"
+      }
+    },
+    "path": "E:\\CodeProject\\Server\\MLSERVER\\validation\\results\\gse37745_cross_platform_pipeline.maler",
+    "round_trip_verified": true,
+    "sha256": "425ca0cbd437943dc069755d5ae9e295b4c7e7a3f7790c13c5199623a57b7f06"
+  },
+  "protocol": {
+    "external_validation": "all adeno/squamous GSE37745 samples, evaluated once",
+    "feature_availability_filter": "GPL570 mapping only; no external outcome used",
+    "internal_validation": "repository-declared TCGA internal held-out partition, excluded from current selection and tuning",
+    "positive_class": "LUSC",
+    "primary_normalization": "within-sample percentile ranks; independent per sample",
+    "training_selection": "TCGA training partition only, inner 5-fold CV"
+  },
+  "sensitivity_cohort_zscore": {
+    "external_bootstrap": {
+      "accuracy": {
+        "bootstrap_95_ci": [
+          0.8372093023255814,
+          0.9302325581395349
+        ],
+        "estimate": 0.8837209302325582,
+        "n_bootstrap": 2000
+      },
+      "balanced_accuracy": {
+        "bootstrap_95_ci": [
+          0.8593622484874067,
+          0.9392549171607826
+        ],
+        "estimate": 0.8999428244711264,
+        "n_bootstrap": 2000
+      },
+      "f1": {
+        "bootstrap_95_ci": [
+          0.8055555555555556,
+          0.9189273124055732
+        ],
+        "estimate": 0.8648648648648648,
+        "n_bootstrap": 2000
+      },
+      "mcc": {
+        "bootstrap_95_ci": [
+          0.6946775759249817,
+          0.8622023516675044
+        ],
+        "estimate": 0.7787976358806126,
+        "n_bootstrap": 2000
+      },
+      "pr_auc": {
+        "bootstrap_95_ci": [
+          0.9307374950147204,
+          0.9895797406033446
+        ],
+        "estimate": 0.9648575430493079,
+        "n_bootstrap": 2000
+      },
+      "precision": {
+        "bootstrap_95_ci": [
+          0.692283950617284,
+          0.8648648648648649
+        ],
+        "estimate": 0.7804878048780488,
+        "n_bootstrap": 2000
+      },
+      "recall_sensitivity": {
+        "bootstrap_95_ci": [
+          0.9230519480519481,
+          1.0
+        ],
+        "estimate": 0.9696969696969697,
+        "n_bootstrap": 2000
+      },
+      "roc_auc": {
+        "bootstrap_95_ci": [
+          0.9548367895545314,
+          0.9927902757577516
+        ],
+        "estimate": 0.9759862778730702,
+        "n_bootstrap": 2000
+      },
+      "specificity": {
+        "bootstrap_95_ci": [
+          0.7618836915297091,
+          0.8983050847457628
+        ],
+        "estimate": 0.8301886792452831,
+        "n_bootstrap": 2000
+      }
+    },
+    "external_metrics": {
+      "accuracy": 0.8837209302325582,
+      "balanced_accuracy": 0.8999428244711264,
+      "f1": 0.8648648648648648,
+      "mcc": 0.7787976358806126,
+      "per_class": {
+        "LUAD": {
+          "sensitivity": 0.8301886792452831,
+          "specificity": 0.9696969696969697
+        },
+        "LUSC": {
+          "sensitivity": 0.9696969696969697,
+          "specificity": 0.8301886792452831
+        }
+      },
+      "pr_auc": 0.9648575430493079,
+      "precision": 0.7804878048780488,
+      "recall_sensitivity": 0.9696969696969697,
+      "roc_auc": 0.9759862778730702,
+      "specificity": 0.8301886792452831
+    },
+    "internal_heldout_test_metrics": {
+      "accuracy": 0.9632107023411371,
+      "balanced_accuracy": 0.9632438478747204,
+      "f1": 0.9634551495016611,
+      "mcc": 0.9266120815586538,
+      "per_class": {
+        "LUAD": {
+          "sensitivity": 0.9533333333333334,
+          "specificity": 0.9731543624161074
+        },
+        "LUSC": {
+          "sensitivity": 0.9731543624161074,
+          "specificity": 0.9533333333333334
+        }
+      },
+      "pr_auc": 0.9884586146983528,
+      "precision": 0.9539473684210527,
+      "recall_sensitivity": 0.9731543624161074,
+      "roc_auc": 0.9868903803131991,
+      "specificity": 0.9533333333333334
+    },
+    "note": "External feature-wise z-scores use the unlabeled external cohort distribution."
+  },
+  "training_nested_cv": {
+    "folds": [
+      {
+        "accuracy": 0.967741935483871,
+        "balanced_accuracy": 0.9677083333333334,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 10
+        },
+        "f1": 0.96875,
+        "fold": 1,
+        "mcc": 0.9354166666666667,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9666666666666667,
+            "specificity": 0.96875
+          },
+          "LUSC": {
+            "sensitivity": 0.96875,
+            "specificity": 0.9666666666666667
+          }
+        },
+        "pr_auc": 0.9934144631410257,
+        "precision": 0.96875,
+        "recall_sensitivity": 0.96875,
+        "roc_auc": 0.9916666666666666,
+        "selected_features": [
+          "RORC",
+          "ALDH3B1",
+          "SPDEF",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "ARHGEF38",
+          "HNF1B"
+        ],
+        "specificity": 0.9666666666666667
+      },
+      {
+        "accuracy": 0.967741935483871,
+        "balanced_accuracy": 0.967741935483871,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 40
+        },
+        "f1": 0.96875,
+        "fold": 2,
+        "mcc": 0.937436866561092,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9354838709677419,
+            "specificity": 1.0
+          },
+          "LUSC": {
+            "sensitivity": 1.0,
+            "specificity": 0.9354838709677419
+          }
+        },
+        "pr_auc": 0.9979513527575442,
+        "precision": 0.9393939393939394,
+        "recall_sensitivity": 1.0,
+        "roc_auc": 0.9979188345473465,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "TPRXL",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "ATP1B3",
+          "XXYLT1",
+          "JAG1",
+          "NECTIN1",
+          "KRT5",
+          "KRT14",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "FAT2",
+          "DSG3",
+          "S1PR5",
+          "HR",
+          "GABRQ",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "LOC105378231",
+          "BCL2L15",
+          "A2ML1",
+          "VSNL1",
+          "TP63",
+          "DLX5",
+          "YEATS2",
+          "ARHGEF38",
+          "MIR205HG",
+          "DAPL1",
+          "HNF1B",
+          "PARD6G",
+          "CERS3",
+          "EN1",
+          "PNCK"
+        ],
+        "specificity": 0.9354838709677419
+      },
+      {
+        "accuracy": 0.9516129032258065,
+        "balanced_accuracy": 0.9516129032258065,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 20
+        },
+        "f1": 0.9491525423728813,
+        "fold": 3,
+        "mcc": 0.9074852129730301,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9032258064516129
+          },
+          "LUSC": {
+            "sensitivity": 0.9032258064516129,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9980449657869013,
+        "precision": 1.0,
+        "recall_sensitivity": 0.9032258064516129,
+        "roc_auc": 0.9979188345473465,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "MIR205HG",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9354838709677419,
+        "balanced_accuracy": 0.935483870967742,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 10
+        },
+        "f1": 0.9310344827586207,
+        "fold": 4,
+        "mcc": 0.8783100656536799,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.8709677419354839
+          },
+          "LUSC": {
+            "sensitivity": 0.8709677419354839,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9823619257086997,
+        "precision": 1.0,
+        "recall_sensitivity": 0.8709677419354839,
+        "roc_auc": 0.9781477627471384,
+        "selected_features": [
+          "RORC",
+          "ALDH3B1",
+          "SPDEF",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "ARHGEF38",
+          "HNF1B"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9180327868852459,
+        "balanced_accuracy": 0.9188172043010753,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 10
+        },
+        "f1": 0.9152542372881356,
+        "fold": 5,
+        "mcc": 0.8403496001916638,
+        "n_test": 61,
+        "n_train": 248,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9666666666666667,
+            "specificity": 0.8709677419354839
+          },
+          "LUSC": {
+            "sensitivity": 0.8709677419354839,
+            "specificity": 0.9666666666666667
+          }
+        },
+        "pr_auc": 0.968171692796731,
+        "precision": 0.9642857142857143,
+        "recall_sensitivity": 0.8709677419354839,
+        "roc_auc": 0.9559139784946237,
+        "selected_features": [
+          "RORC",
+          "ALDH3B1",
+          "SPDEF",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "ARHGEF38",
+          "HNF1B"
+        ],
+        "specificity": 0.9666666666666667
+      },
+      {
+        "accuracy": 0.9193548387096774,
+        "balanced_accuracy": 0.9208333333333334,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 20
+        },
+        "f1": 0.9180327868852458,
+        "fold": 6,
+        "mcc": 0.8429848611574928,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9666666666666667,
+            "specificity": 0.875
+          },
+          "LUSC": {
+            "sensitivity": 0.875,
+            "specificity": 0.9666666666666667
+          }
+        },
+        "pr_auc": 0.9755296960673094,
+        "precision": 0.9655172413793104,
+        "recall_sensitivity": 0.875,
+        "roc_auc": 0.9666666666666666,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "MIR205HG",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 0.9666666666666667
+      },
+      {
+        "accuracy": 0.967741935483871,
+        "balanced_accuracy": 0.967741935483871,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 20
+        },
+        "f1": 0.967741935483871,
+        "fold": 7,
+        "mcc": 0.9354838709677419,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.967741935483871,
+            "specificity": 0.967741935483871
+          },
+          "LUSC": {
+            "sensitivity": 0.967741935483871,
+            "specificity": 0.967741935483871
+          }
+        },
+        "pr_auc": 0.9857903326327403,
+        "precision": 0.967741935483871,
+        "recall_sensitivity": 0.967741935483871,
+        "roc_auc": 0.980228928199792,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 0.967741935483871
+      },
+      {
+        "accuracy": 1.0,
+        "balanced_accuracy": 1.0,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 20
+        },
+        "f1": 1.0,
+        "fold": 8,
+        "mcc": 1.0,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUSC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9999999999999998,
+        "precision": 1.0,
+        "recall_sensitivity": 1.0,
+        "roc_auc": 1.0,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.8870967741935484,
+        "balanced_accuracy": 0.8870967741935484,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 10
+        },
+        "f1": 0.8771929824561403,
+        "fold": 9,
+        "mcc": 0.7844645405527362,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.967741935483871,
+            "specificity": 0.8064516129032258
+          },
+          "LUSC": {
+            "sensitivity": 0.8064516129032258,
+            "specificity": 0.967741935483871
+          }
+        },
+        "pr_auc": 0.9646463901976801,
+        "precision": 0.9615384615384616,
+        "recall_sensitivity": 0.8064516129032258,
+        "roc_auc": 0.9521331945889698,
+        "selected_features": [
+          "RORC",
+          "ALDH3B1",
+          "SPDEF",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "ARHGEF38",
+          "HNF1B"
+        ],
+        "specificity": 0.967741935483871
+      },
+      {
+        "accuracy": 0.9672131147540983,
+        "balanced_accuracy": 0.9672043010752689,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 40
+        },
+        "f1": 0.967741935483871,
+        "fold": 10,
+        "mcc": 0.9344086021505377,
+        "n_test": 61,
+        "n_train": 248,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9666666666666667,
+            "specificity": 0.967741935483871
+          },
+          "LUSC": {
+            "sensitivity": 0.967741935483871,
+            "specificity": 0.9666666666666667
+          }
+        },
+        "pr_auc": 0.9971537001897532,
+        "precision": 0.967741935483871,
+        "recall_sensitivity": 0.967741935483871,
+        "roc_auc": 0.9967741935483871,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "TPRXL",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "ATP1B3",
+          "XXYLT1",
+          "JAG1",
+          "NECTIN1",
+          "KRT5",
+          "KRT14",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "FAT2",
+          "DSG3",
+          "S1PR5",
+          "GABRQ",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "LOC105378231",
+          "BCL2L15",
+          "A2ML1",
+          "VSNL1",
+          "TP63",
+          "HAP1",
+          "DLX5",
+          "YEATS2",
+          "ARHGEF38",
+          "MIR205HG",
+          "DAPL1",
+          "HNF1B",
+          "PARD6G",
+          "CERS3",
+          "EN1",
+          "PNCK"
+        ],
+        "specificity": 0.9666666666666667
+      },
+      {
+        "accuracy": 0.9354838709677419,
+        "balanced_accuracy": 0.9354166666666667,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 10
+        },
+        "f1": 0.9375,
+        "fold": 11,
+        "mcc": 0.8708333333333333,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9333333333333333,
+            "specificity": 0.9375
+          },
+          "LUSC": {
+            "sensitivity": 0.9375,
+            "specificity": 0.9333333333333333
+          }
+        },
+        "pr_auc": 0.9887999661246613,
+        "precision": 0.9375,
+        "recall_sensitivity": 0.9375,
+        "roc_auc": 0.9854166666666666,
+        "selected_features": [
+          "RORC",
+          "ALDH3B1",
+          "SPDEF",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "ARHGEF38",
+          "HNF1B"
+        ],
+        "specificity": 0.9333333333333333
+      },
+      {
+        "accuracy": 0.9354838709677419,
+        "balanced_accuracy": 0.935483870967742,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 20
+        },
+        "f1": 0.9333333333333333,
+        "fold": 12,
+        "mcc": 0.8727860481775684,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.967741935483871,
+            "specificity": 0.9032258064516129
+          },
+          "LUSC": {
+            "sensitivity": 0.9032258064516129,
+            "specificity": 0.967741935483871
+          }
+        },
+        "pr_auc": 0.9826896127134875,
+        "precision": 0.9655172413793104,
+        "recall_sensitivity": 0.9032258064516129,
+        "roc_auc": 0.9791883454734651,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 0.967741935483871
+      },
+      {
+        "accuracy": 0.967741935483871,
+        "balanced_accuracy": 0.967741935483871,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 20
+        },
+        "f1": 0.9666666666666666,
+        "fold": 13,
+        "mcc": 0.937436866561092,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9354838709677419
+          },
+          "LUSC": {
+            "sensitivity": 0.9354838709677419,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.992041595925297,
+        "precision": 1.0,
+        "recall_sensitivity": 0.9354838709677419,
+        "roc_auc": 0.9906347554630592,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9193548387096774,
+        "balanced_accuracy": 0.9193548387096775,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 20
+        },
+        "f1": 0.9122807017543859,
+        "fold": 14,
+        "mcc": 0.8498365855987975,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.8387096774193549
+          },
+          "LUSC": {
+            "sensitivity": 0.8387096774193549,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9880066170388748,
+        "precision": 1.0,
+        "recall_sensitivity": 0.8387096774193549,
+        "roc_auc": 0.9854318418314256,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "MIR205HG",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9344262295081968,
+        "balanced_accuracy": 0.9344086021505376,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 20
+        },
+        "f1": 0.9354838709677419,
+        "fold": 15,
+        "mcc": 0.8688172043010752,
+        "n_test": 61,
+        "n_train": 248,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9333333333333333,
+            "specificity": 0.9354838709677419
+          },
+          "LUSC": {
+            "sensitivity": 0.9354838709677419,
+            "specificity": 0.9333333333333333
+          }
+        },
+        "pr_auc": 0.9928353242497094,
+        "precision": 0.9354838709677419,
+        "recall_sensitivity": 0.9354838709677419,
+        "roc_auc": 0.9924731182795699,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "KRT14",
+          "CLCA2",
+          "KRT6C",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 0.9333333333333333
+      },
+      {
+        "accuracy": 0.967741935483871,
+        "balanced_accuracy": 0.96875,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 20
+        },
+        "f1": 0.967741935483871,
+        "fold": 16,
+        "mcc": 0.9375,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9375
+          },
+          "LUSC": {
+            "sensitivity": 0.9375,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9914772727272727,
+        "precision": 1.0,
+        "recall_sensitivity": 0.9375,
+        "roc_auc": 0.9875,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9838709677419355,
+        "balanced_accuracy": 0.9838709677419355,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 10
+        },
+        "f1": 0.9841269841269841,
+        "fold": 17,
+        "mcc": 0.9682458365518543,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.967741935483871,
+            "specificity": 1.0
+          },
+          "LUSC": {
+            "sensitivity": 1.0,
+            "specificity": 0.967741935483871
+          }
+        },
+        "pr_auc": 0.998991935483871,
+        "precision": 0.96875,
+        "recall_sensitivity": 1.0,
+        "roc_auc": 0.9989594172736733,
+        "selected_features": [
+          "RORC",
+          "ALDH3B1",
+          "SPDEF",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "ARHGEF38",
+          "HNF1B"
+        ],
+        "specificity": 0.967741935483871
+      },
+      {
+        "accuracy": 0.8870967741935484,
+        "balanced_accuracy": 0.8870967741935484,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 40
+        },
+        "f1": 0.8727272727272727,
+        "fold": 18,
+        "mcc": 0.7947194142390263,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.7741935483870968
+          },
+          "LUSC": {
+            "sensitivity": 0.7741935483870968,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9961131174634266,
+        "precision": 1.0,
+        "recall_sensitivity": 0.7741935483870968,
+        "roc_auc": 0.995837669094693,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "TPRXL",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "ATP1B3",
+          "XXYLT1",
+          "JAG1",
+          "NECTIN1",
+          "KRT5",
+          "KRT14",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "FAT2",
+          "DSG3",
+          "S1PR5",
+          "HR",
+          "GABRQ",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "LOC105378231",
+          "BCL2L15",
+          "A2ML1",
+          "VSNL1",
+          "TP63",
+          "DLX5",
+          "YEATS2",
+          "ARHGEF38",
+          "MIR205HG",
+          "DAPL1",
+          "HNF1B",
+          "PARD6G",
+          "CERS3",
+          "EN1",
+          "PNCK"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9032258064516129,
+        "balanced_accuracy": 0.9032258064516129,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 40
+        },
+        "f1": 0.9032258064516129,
+        "fold": 19,
+        "mcc": 0.8064516129032258,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9032258064516129,
+            "specificity": 0.9032258064516129
+          },
+          "LUSC": {
+            "sensitivity": 0.9032258064516129,
+            "specificity": 0.9032258064516129
+          }
+        },
+        "pr_auc": 0.97595495831778,
+        "precision": 0.9032258064516129,
+        "recall_sensitivity": 0.9032258064516129,
+        "roc_auc": 0.967741935483871,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "TPRXL",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "ATP1B3",
+          "XXYLT1",
+          "JAG1",
+          "NECTIN1",
+          "KRT5",
+          "KRT14",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "FAT2",
+          "DSG3",
+          "S1PR5",
+          "GABRQ",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "LOC105378231",
+          "BCL2L15",
+          "A2ML1",
+          "VSNL1",
+          "TP63",
+          "HAP1",
+          "DLX5",
+          "YEATS2",
+          "ARHGEF38",
+          "MIR205HG",
+          "DAPL1",
+          "HNF1B",
+          "PARD6G",
+          "CERS3",
+          "EN1",
+          "PNCK"
+        ],
+        "specificity": 0.9032258064516129
+      },
+      {
+        "accuracy": 0.9344262295081968,
+        "balanced_accuracy": 0.9349462365591398,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 20
+        },
+        "f1": 0.9333333333333333,
+        "fold": 20,
+        "mcc": 0.8708293527361997,
+        "n_test": 61,
+        "n_train": 248,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9666666666666667,
+            "specificity": 0.9032258064516129
+          },
+          "LUSC": {
+            "sensitivity": 0.9032258064516129,
+            "specificity": 0.9666666666666667
+          }
+        },
+        "pr_auc": 0.982831158665419,
+        "precision": 0.9655172413793104,
+        "recall_sensitivity": 0.9032258064516129,
+        "roc_auc": 0.9795698924731182,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "MIR205HG",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 0.9666666666666667
+      },
+      {
+        "accuracy": 0.9354838709677419,
+        "balanced_accuracy": 0.9364583333333334,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 20
+        },
+        "f1": 0.9354838709677419,
+        "fold": 21,
+        "mcc": 0.8729166666666667,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9666666666666667,
+            "specificity": 0.90625
+          },
+          "LUSC": {
+            "sensitivity": 0.90625,
+            "specificity": 0.9666666666666667
+          }
+        },
+        "pr_auc": 0.9855339361918309,
+        "precision": 0.9666666666666667,
+        "recall_sensitivity": 0.90625,
+        "roc_auc": 0.9822916666666668,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 0.9666666666666667
+      },
+      {
+        "accuracy": 0.967741935483871,
+        "balanced_accuracy": 0.967741935483871,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 10
+        },
+        "f1": 0.967741935483871,
+        "fold": 22,
+        "mcc": 0.9354838709677419,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.967741935483871,
+            "specificity": 0.967741935483871
+          },
+          "LUSC": {
+            "sensitivity": 0.967741935483871,
+            "specificity": 0.967741935483871
+          }
+        },
+        "pr_auc": 0.9917013527575442,
+        "precision": 0.967741935483871,
+        "recall_sensitivity": 0.967741935483871,
+        "roc_auc": 0.9895941727367326,
+        "selected_features": [
+          "RORC",
+          "ALDH3B1",
+          "SPDEF",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "ARHGEF38",
+          "HNF1B"
+        ],
+        "specificity": 0.967741935483871
+      },
+      {
+        "accuracy": 0.9354838709677419,
+        "balanced_accuracy": 0.9354838709677419,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 20
+        },
+        "f1": 0.9354838709677419,
+        "fold": 23,
+        "mcc": 0.8709677419354839,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9354838709677419,
+            "specificity": 0.9354838709677419
+          },
+          "LUSC": {
+            "sensitivity": 0.9354838709677419,
+            "specificity": 0.9354838709677419
+          }
+        },
+        "pr_auc": 0.9810085396947725,
+        "precision": 0.9354838709677419,
+        "recall_sensitivity": 0.9354838709677419,
+        "roc_auc": 0.9760665972944849,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 0.9354838709677419
+      },
+      {
+        "accuracy": 0.9354838709677419,
+        "balanced_accuracy": 0.935483870967742,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 20
+        },
+        "f1": 0.9310344827586207,
+        "fold": 24,
+        "mcc": 0.8783100656536799,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.8709677419354839
+          },
+          "LUSC": {
+            "sensitivity": 0.8709677419354839,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9772577320642194,
+        "precision": 1.0,
+        "recall_sensitivity": 0.8709677419354839,
+        "roc_auc": 0.9667013527575443,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "MIR205HG",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9672131147540983,
+        "balanced_accuracy": 0.967741935483871,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 20
+        },
+        "f1": 0.9666666666666666,
+        "fold": 25,
+        "mcc": 0.9364913929301529,
+        "n_test": 61,
+        "n_train": 248,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9354838709677419
+          },
+          "LUSC": {
+            "sensitivity": 0.9354838709677419,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9999999999999998,
+        "precision": 1.0,
+        "recall_sensitivity": 0.9354838709677419,
+        "roc_auc": 1.0,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9516129032258065,
+        "balanced_accuracy": 0.953125,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 20
+        },
+        "f1": 0.9508196721311475,
+        "fold": 26,
+        "mcc": 0.9076693430779935,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.90625
+          },
+          "LUSC": {
+            "sensitivity": 0.90625,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9821336548625792,
+        "precision": 1.0,
+        "recall_sensitivity": 0.90625,
+        "roc_auc": 0.9760416666666667,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9838709677419355,
+        "balanced_accuracy": 0.9838709677419355,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 20
+        },
+        "f1": 0.9836065573770492,
+        "fold": 27,
+        "mcc": 0.9682458365518543,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.967741935483871
+          },
+          "LUSC": {
+            "sensitivity": 0.967741935483871,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9999999999999998,
+        "precision": 1.0,
+        "recall_sensitivity": 0.967741935483871,
+        "roc_auc": 1.0,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9193548387096774,
+        "balanced_accuracy": 0.9193548387096774,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 10
+        },
+        "f1": 0.9180327868852459,
+        "fold": 28,
+        "mcc": 0.8391463916782737,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9354838709677419,
+            "specificity": 0.9032258064516129
+          },
+          "LUSC": {
+            "sensitivity": 0.9032258064516129,
+            "specificity": 0.9354838709677419
+          }
+        },
+        "pr_auc": 0.978176509252705,
+        "precision": 0.9333333333333333,
+        "recall_sensitivity": 0.9032258064516129,
+        "roc_auc": 0.9708636836628513,
+        "selected_features": [
+          "RORC",
+          "ALDH3B1",
+          "SPDEF",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "ARHGEF38",
+          "HNF1B"
+        ],
+        "specificity": 0.9354838709677419
+      },
+      {
+        "accuracy": 0.9354838709677419,
+        "balanced_accuracy": 0.9354838709677419,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 40
+        },
+        "f1": 0.9354838709677419,
+        "fold": 29,
+        "mcc": 0.8709677419354839,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9354838709677419,
+            "specificity": 0.9354838709677419
+          },
+          "LUSC": {
+            "sensitivity": 0.9354838709677419,
+            "specificity": 0.9354838709677419
+          }
+        },
+        "pr_auc": 0.992305543918447,
+        "precision": 0.9354838709677419,
+        "recall_sensitivity": 0.9354838709677419,
+        "roc_auc": 0.991675338189386,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "TPRXL",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "ATP1B3",
+          "XXYLT1",
+          "JAG1",
+          "NECTIN1",
+          "KRT5",
+          "KRT14",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "FAT2",
+          "DSG3",
+          "S1PR5",
+          "GABRQ",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "LOC105378231",
+          "BCL2L15",
+          "A2ML1",
+          "VSNL1",
+          "TP63",
+          "HAP1",
+          "DLX5",
+          "YEATS2",
+          "ARHGEF38",
+          "MIR205HG",
+          "DAPL1",
+          "HNF1B",
+          "PARD6G",
+          "CERS3",
+          "EN1",
+          "PNCK"
+        ],
+        "specificity": 0.9354838709677419
+      },
+      {
+        "accuracy": 0.9508196721311475,
+        "balanced_accuracy": 0.9510752688172043,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 20
+        },
+        "f1": 0.9508196721311476,
+        "fold": 30,
+        "mcc": 0.9021505376344086,
+        "n_test": 61,
+        "n_train": 248,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9666666666666667,
+            "specificity": 0.9354838709677419
+          },
+          "LUSC": {
+            "sensitivity": 0.9354838709677419,
+            "specificity": 0.9666666666666667
+          }
+        },
+        "pr_auc": 0.9917978815552918,
+        "precision": 0.9666666666666667,
+        "recall_sensitivity": 0.9354838709677419,
+        "roc_auc": 0.9913978494623656,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "YEATS2",
+          "ARHGEF38",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 0.9666666666666667
+      },
+      {
+        "accuracy": 0.9354838709677419,
+        "balanced_accuracy": 0.9375,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 10
+        },
+        "f1": 0.9333333333333333,
+        "fold": 31,
+        "mcc": 0.8786687791935092,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.875
+          },
+          "LUSC": {
+            "sensitivity": 0.875,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9753258945951429,
+        "precision": 1.0,
+        "recall_sensitivity": 0.875,
+        "roc_auc": 0.9635416666666667,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "SPDEF",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "ARHGEF38",
+          "HNF1B"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.8870967741935484,
+        "balanced_accuracy": 0.8870967741935484,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 10
+        },
+        "f1": 0.8813559322033899,
+        "fold": 32,
+        "mcc": 0.7778444682625972,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9354838709677419,
+            "specificity": 0.8387096774193549
+          },
+          "LUSC": {
+            "sensitivity": 0.8387096774193549,
+            "specificity": 0.9354838709677419
+          }
+        },
+        "pr_auc": 0.9635892267935117,
+        "precision": 0.9285714285714286,
+        "recall_sensitivity": 0.8387096774193549,
+        "roc_auc": 0.9604578563995838,
+        "selected_features": [
+          "RORC",
+          "ALDH3B1",
+          "SPDEF",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "ARHGEF38",
+          "HNF1B"
+        ],
+        "specificity": 0.9354838709677419
+      },
+      {
+        "accuracy": 0.967741935483871,
+        "balanced_accuracy": 0.967741935483871,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 20
+        },
+        "f1": 0.967741935483871,
+        "fold": 33,
+        "mcc": 0.9354838709677419,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.967741935483871,
+            "specificity": 0.967741935483871
+          },
+          "LUSC": {
+            "sensitivity": 0.967741935483871,
+            "specificity": 0.967741935483871
+          }
+        },
+        "pr_auc": 0.9927419354838709,
+        "precision": 0.967741935483871,
+        "recall_sensitivity": 0.967741935483871,
+        "roc_auc": 0.9906347554630595,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 0.967741935483871
+      },
+      {
+        "accuracy": 0.9516129032258065,
+        "balanced_accuracy": 0.9516129032258065,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 10
+        },
+        "f1": 0.9491525423728813,
+        "fold": 34,
+        "mcc": 0.9074852129730301,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9032258064516129
+          },
+          "LUSC": {
+            "sensitivity": 0.9032258064516129,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9940623023402909,
+        "precision": 1.0,
+        "recall_sensitivity": 0.9032258064516129,
+        "roc_auc": 0.9937565036420395,
+        "selected_features": [
+          "RORC",
+          "ALDH3B1",
+          "SPDEF",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "ARHGEF38",
+          "HNF1B"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9836065573770492,
+        "balanced_accuracy": 0.9833333333333334,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 40
+        },
+        "f1": 0.9841269841269841,
+        "fold": 35,
+        "mcc": 0.9677077726944914,
+        "n_test": 61,
+        "n_train": 248,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9666666666666667,
+            "specificity": 1.0
+          },
+          "LUSC": {
+            "sensitivity": 1.0,
+            "specificity": 0.9666666666666667
+          }
+        },
+        "pr_auc": 0.9999999999999998,
+        "precision": 0.96875,
+        "recall_sensitivity": 1.0,
+        "roc_auc": 1.0,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "TPRXL",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "ATP1B3",
+          "XXYLT1",
+          "JAG1",
+          "NECTIN1",
+          "KRT5",
+          "KRT14",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "FAT2",
+          "DSG3",
+          "S1PR5",
+          "HR",
+          "GABRQ",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "LOC105378231",
+          "BCL2L15",
+          "A2ML1",
+          "VSNL1",
+          "TP63",
+          "DLX5",
+          "YEATS2",
+          "ARHGEF38",
+          "MIR205HG",
+          "DAPL1",
+          "HNF1B",
+          "PARD6G",
+          "CERS3",
+          "EN1",
+          "PNCK"
+        ],
+        "specificity": 0.9666666666666667
+      },
+      {
+        "accuracy": 0.9193548387096774,
+        "balanced_accuracy": 0.921875,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 20
+        },
+        "f1": 0.9152542372881356,
+        "fold": 36,
+        "mcc": 0.8504200642707612,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.84375
+          },
+          "LUSC": {
+            "sensitivity": 0.84375,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9741953850900116,
+        "precision": 1.0,
+        "recall_sensitivity": 0.84375,
+        "roc_auc": 0.9656250000000001,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "MIR205HG",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.967741935483871,
+        "balanced_accuracy": 0.967741935483871,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 20
+        },
+        "f1": 0.9666666666666666,
+        "fold": 37,
+        "mcc": 0.937436866561092,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9354838709677419
+          },
+          "LUSC": {
+            "sensitivity": 0.9354838709677419,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9901606675800223,
+        "precision": 1.0,
+        "recall_sensitivity": 0.9354838709677419,
+        "roc_auc": 0.9885535900104058,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.967741935483871,
+        "balanced_accuracy": 0.967741935483871,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 20
+        },
+        "f1": 0.967741935483871,
+        "fold": 38,
+        "mcc": 0.9354838709677419,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.967741935483871,
+            "specificity": 0.967741935483871
+          },
+          "LUSC": {
+            "sensitivity": 0.967741935483871,
+            "specificity": 0.967741935483871
+          }
+        },
+        "pr_auc": 0.986034247205646,
+        "precision": 0.967741935483871,
+        "recall_sensitivity": 0.967741935483871,
+        "roc_auc": 0.9791883454734651,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "MIR205HG",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 0.967741935483871
+      },
+      {
+        "accuracy": 0.9516129032258065,
+        "balanced_accuracy": 0.9516129032258065,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 20
+        },
+        "f1": 0.9523809523809523,
+        "fold": 39,
+        "mcc": 0.9036961141150639,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9354838709677419,
+            "specificity": 0.967741935483871
+          },
+          "LUSC": {
+            "sensitivity": 0.967741935483871,
+            "specificity": 0.9354838709677419
+          }
+        },
+        "pr_auc": 0.991941873414024,
+        "precision": 0.9375,
+        "recall_sensitivity": 0.967741935483871,
+        "roc_auc": 0.9906347554630592,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "KRT14",
+          "CLCA2",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 0.9354838709677419
+      },
+      {
+        "accuracy": 0.9672131147540983,
+        "balanced_accuracy": 0.967741935483871,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 40
+        },
+        "f1": 0.9666666666666666,
+        "fold": 40,
+        "mcc": 0.9364913929301529,
+        "n_test": 61,
+        "n_train": 248,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9354838709677419
+          },
+          "LUSC": {
+            "sensitivity": 0.9354838709677419,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9971537001897532,
+        "precision": 1.0,
+        "recall_sensitivity": 0.9354838709677419,
+        "roc_auc": 0.9967741935483871,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "TPRXL",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "ATP1B3",
+          "XXYLT1",
+          "JAG1",
+          "NECTIN1",
+          "KRT5",
+          "KRT14",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "FAT2",
+          "DSG3",
+          "S1PR5",
+          "KCNG1",
+          "GABRQ",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "LOC105378231",
+          "BCL2L15",
+          "A2ML1",
+          "VSNL1",
+          "TP63",
+          "DLX5",
+          "YEATS2",
+          "ARHGEF38",
+          "MIR205HG",
+          "DAPL1",
+          "HNF1B",
+          "PARD6G",
+          "CERS3",
+          "EN1",
+          "PNCK"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9838709677419355,
+        "balanced_accuracy": 0.984375,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 20
+        },
+        "f1": 0.9841269841269841,
+        "fold": 41,
+        "mcc": 0.9682458365518543,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.96875
+          },
+          "LUSC": {
+            "sensitivity": 0.96875,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9900265957446809,
+        "precision": 1.0,
+        "recall_sensitivity": 0.96875,
+        "roc_auc": 0.984375,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9516129032258065,
+        "balanced_accuracy": 0.9516129032258065,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 40
+        },
+        "f1": 0.9491525423728813,
+        "fold": 42,
+        "mcc": 0.9074852129730301,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9032258064516129
+          },
+          "LUSC": {
+            "sensitivity": 0.9032258064516129,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9944791305353219,
+        "precision": 1.0,
+        "recall_sensitivity": 0.9032258064516129,
+        "roc_auc": 0.9937565036420396,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "TPRXL",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "ATP1B3",
+          "XXYLT1",
+          "JAG1",
+          "NECTIN1",
+          "KRT5",
+          "KRT14",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "FAT2",
+          "DSG3",
+          "S1PR5",
+          "GABRQ",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "LOC105378231",
+          "BCL2L15",
+          "A2ML1",
+          "VSNL1",
+          "TP63",
+          "HAP1",
+          "DLX5",
+          "YEATS2",
+          "ARHGEF38",
+          "MIR205HG",
+          "DAPL1",
+          "HNF1B",
+          "PARD6G",
+          "CERS3",
+          "EN1",
+          "PNCK"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.8870967741935484,
+        "balanced_accuracy": 0.8870967741935484,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 10
+        },
+        "f1": 0.8888888888888888,
+        "fold": 43,
+        "mcc": 0.7745966692414834,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.8709677419354839,
+            "specificity": 0.9032258064516129
+          },
+          "LUSC": {
+            "sensitivity": 0.9032258064516129,
+            "specificity": 0.8709677419354839
+          }
+        },
+        "pr_auc": 0.9761006722339496,
+        "precision": 0.875,
+        "recall_sensitivity": 0.9032258064516129,
+        "roc_auc": 0.9729448491155047,
+        "selected_features": [
+          "RORC",
+          "ALDH3B1",
+          "SPDEF",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "ARHGEF38",
+          "HNF1B"
+        ],
+        "specificity": 0.8709677419354839
+      },
+      {
+        "accuracy": 0.967741935483871,
+        "balanced_accuracy": 0.967741935483871,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 20
+        },
+        "f1": 0.9666666666666666,
+        "fold": 44,
+        "mcc": 0.937436866561092,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9354838709677419
+          },
+          "LUSC": {
+            "sensitivity": 0.9354838709677419,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9818040119273517,
+        "precision": 1.0,
+        "recall_sensitivity": 0.9354838709677419,
+        "roc_auc": 0.9698231009365245,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "MIR205HG",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9508196721311475,
+        "balanced_accuracy": 0.9516129032258065,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 20
+        },
+        "f1": 0.9491525423728813,
+        "fold": 45,
+        "mcc": 0.9061536125301638,
+        "n_test": 61,
+        "n_train": 248,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9032258064516129
+          },
+          "LUSC": {
+            "sensitivity": 0.9032258064516129,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.9824248939698853,
+        "precision": 1.0,
+        "recall_sensitivity": 0.9032258064516129,
+        "roc_auc": 0.978494623655914,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "KRT6C",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "MIR205HG",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.967741935483871,
+        "balanced_accuracy": 0.96875,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 40
+        },
+        "f1": 0.967741935483871,
+        "fold": 46,
+        "mcc": 0.9375,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9375
+          },
+          "LUSC": {
+            "sensitivity": 0.9375,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.995777027027027,
+        "precision": 1.0,
+        "recall_sensitivity": 0.9375,
+        "roc_auc": 0.9947916666666667,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "TPRXL",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "ATP1B3",
+          "XXYLT1",
+          "JAG1",
+          "NECTIN1",
+          "KRT5",
+          "KRT14",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "FAT2",
+          "DSG3",
+          "S1PR5",
+          "KCNG1",
+          "GABRQ",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "LOC105378231",
+          "BCL2L15",
+          "A2ML1",
+          "VSNL1",
+          "TP63",
+          "DLX5",
+          "YEATS2",
+          "ARHGEF38",
+          "MIR205HG",
+          "DAPL1",
+          "HNF1B",
+          "PARD6G",
+          "CERS3",
+          "EN1",
+          "PNCK"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9032258064516129,
+        "balanced_accuracy": 0.9032258064516129,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 40
+        },
+        "f1": 0.8928571428571428,
+        "fold": 47,
+        "mcc": 0.8219949365267863,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.8064516129032258
+          },
+          "LUSC": {
+            "sensitivity": 0.8064516129032258,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc": 0.98660021541888,
+        "precision": 1.0,
+        "recall_sensitivity": 0.8064516129032258,
+        "roc_auc": 0.9843912591050988,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "TPRXL",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "ATP1B3",
+          "XXYLT1",
+          "JAG1",
+          "NECTIN1",
+          "KRT5",
+          "KRT14",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "FAT2",
+          "DSG3",
+          "S1PR5",
+          "KCNG1",
+          "GABRQ",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "LOC105378231",
+          "BCL2L15",
+          "A2ML1",
+          "VSNL1",
+          "TP63",
+          "DLX5",
+          "YEATS2",
+          "ARHGEF38",
+          "MIR205HG",
+          "DAPL1",
+          "HNF1B",
+          "PARD6G",
+          "CERS3",
+          "EN1",
+          "PNCK"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9516129032258065,
+        "balanced_accuracy": 0.9516129032258065,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 20
+        },
+        "f1": 0.9508196721311476,
+        "fold": 48,
+        "mcc": 0.9036961141150639,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.967741935483871,
+            "specificity": 0.9354838709677419
+          },
+          "LUSC": {
+            "sensitivity": 0.9354838709677419,
+            "specificity": 0.967741935483871
+          }
+        },
+        "pr_auc": 0.9942972350230415,
+        "precision": 0.9666666666666667,
+        "recall_sensitivity": 0.9354838709677419,
+        "roc_auc": 0.9937565036420395,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "CLCA2",
+          "BNC1",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "MIR205HG",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 0.967741935483871
+      },
+      {
+        "accuracy": 0.9354838709677419,
+        "balanced_accuracy": 0.935483870967742,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 20
+        },
+        "f1": 0.9333333333333333,
+        "fold": 49,
+        "mcc": 0.8727860481775684,
+        "n_test": 62,
+        "n_train": 247,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.967741935483871,
+            "specificity": 0.9032258064516129
+          },
+          "LUSC": {
+            "sensitivity": 0.9032258064516129,
+            "specificity": 0.967741935483871
+          }
+        },
+        "pr_auc": 0.9826110744045877,
+        "precision": 0.9655172413793104,
+        "recall_sensitivity": 0.9032258064516129,
+        "roc_auc": 0.9791883454734652,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "KRT5",
+          "KRT14",
+          "CLCA2",
+          "KRT6C",
+          "DSG3",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "BCL2L15",
+          "TP63",
+          "ARHGEF38",
+          "HNF1B",
+          "CERS3"
+        ],
+        "specificity": 0.967741935483871
+      },
+      {
+        "accuracy": 0.9344262295081968,
+        "balanced_accuracy": 0.9344086021505376,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 40
+        },
+        "f1": 0.9354838709677419,
+        "fold": 50,
+        "mcc": 0.8688172043010752,
+        "n_test": 61,
+        "n_train": 248,
+        "per_class": {
+          "LUAD": {
+            "sensitivity": 0.9333333333333333,
+            "specificity": 0.9354838709677419
+          },
+          "LUSC": {
+            "sensitivity": 0.9354838709677419,
+            "specificity": 0.9333333333333333
+          }
+        },
+        "pr_auc": 0.9887341153470186,
+        "precision": 0.9354838709677419,
+        "recall_sensitivity": 0.9354838709677419,
+        "roc_auc": 0.986021505376344,
+        "selected_features": [
+          "DSC3",
+          "RORC",
+          "TPRXL",
+          "ALDH3B1",
+          "KRT6B",
+          "SERPINB13",
+          "CALML3",
+          "SPDEF",
+          "ATP1B3",
+          "XXYLT1",
+          "JAG1",
+          "NECTIN1",
+          "KRT5",
+          "KRT14",
+          "CLCA2",
+          "KRT6C",
+          "BNC1",
+          "FAT2",
+          "DSG3",
+          "S1PR5",
+          "GABRQ",
+          "FMO5",
+          "DDAH1",
+          "LONRF3",
+          "LOC105378231",
+          "BCL2L15",
+          "A2ML1",
+          "VSNL1",
+          "TP63",
+          "HAP1",
+          "DLX5",
+          "YEATS2",
+          "ARHGEF38",
+          "MIR205HG",
+          "DAPL1",
+          "HNF1B",
+          "PARD6G",
+          "CERS3",
+          "EN1",
+          "PNCK"
+        ],
+        "specificity": 0.9333333333333333
+      }
+    ],
+    "summary": {
+      "accuracy": {
+        "max": 1.0,
+        "mean": 0.9453252247488102,
+        "min": 0.8870967741935484,
+        "n": 50,
+        "std": 0.02783047306442453
+      },
+      "balanced_accuracy": {
+        "max": 1.0,
+        "mean": 0.9456055107526882,
+        "min": 0.8870967741935484,
+        "n": 50,
+        "std": 0.027786834725247202
+      },
+      "f1": {
+        "max": 1.0,
+        "mean": 0.9437577791823846,
+        "min": 0.8727272727272727,
+        "n": 50,
+        "std": 0.029820605139935733
+      },
+      "fold": {
+        "max": 50.0,
+        "mean": 25.5,
+        "min": 1.0,
+        "n": 50,
+        "std": 14.577379737113251
+      },
+      "mcc": {
+        "max": 1.0,
+        "mean": 0.8937115408844569,
+        "min": 0.7745966692414834,
+        "n": 50,
+        "std": 0.05340997978571737
+      },
+      "n_test": {
+        "max": 62.0,
+        "mean": 61.8,
+        "min": 61.0,
+        "n": 50,
+        "std": 0.40406101782088427
+      },
+      "n_train": {
+        "max": 248.0,
+        "mean": 247.2,
+        "min": 247.0,
+        "n": 50,
+        "std": 0.4040610178208843
+      },
+      "pr_auc": {
+        "max": 0.9999999999999998,
+        "mean": 0.9874156286521918,
+        "min": 0.9635892267935117,
+        "n": 50,
+        "std": 0.009359852160614811
+      },
+      "precision": {
+        "max": 1.0,
+        "mean": 0.9725862562076412,
+        "min": 0.875,
+        "n": 50,
+        "std": 0.02999080054314556
+      },
+      "recall_sensitivity": {
+        "max": 1.0,
+        "mean": 0.918608870967742,
+        "min": 0.7741935483870968,
+        "n": 50,
+        "std": 0.0515668873584953
+      },
+      "roc_auc": {
+        "max": 1.0,
+        "mean": 0.9838293010752689,
+        "min": 0.9521331945889698,
+        "n": 50,
+        "std": 0.012554261784097033
+      },
+      "specificity": {
+        "max": 1.0,
+        "mean": 0.9726021505376344,
+        "min": 0.8709677419354839,
+        "n": 50,
+        "std": 0.03031935886964543
+      }
+    }
+  },
+  "training_nested_cv_fold_intervals": {
+    "accuracy": {
+      "fold_percentile_2.5": 0.8870967741935484,
+      "fold_percentile_97.5": 0.9838709677419355
+    },
+    "balanced_accuracy": {
+      "fold_percentile_2.5": 0.8870967741935484,
+      "fold_percentile_97.5": 0.9842615927419355
+    },
+    "f1": {
+      "fold_percentile_2.5": 0.8781296461492715,
+      "fold_percentile_97.5": 0.9841269841269841
+    },
+    "fold": {
+      "fold_percentile_2.5": 2.225,
+      "fold_percentile_97.5": 48.775
+    },
+    "mcc": {
+      "fold_percentile_2.5": 0.7793339845278785,
+      "fold_percentile_97.5": 0.9682458365518543
+    },
+    "n_test": {
+      "fold_percentile_2.5": 61.0,
+      "fold_percentile_97.5": 62.0
+    },
+    "n_train": {
+      "fold_percentile_2.5": 247.0,
+      "fold_percentile_97.5": 248.0
+    },
+    "pr_auc": {
+      "fold_percentile_2.5": 0.9654395832824665,
+      "fold_percentile_97.5": 0.9999999999999998
+    },
+    "precision": {
+      "fold_percentile_2.5": 0.9089285714285714,
+      "fold_percentile_97.5": 1.0
+    },
+    "recall_sensitivity": {
+      "fold_percentile_2.5": 0.8064516129032258,
+      "fold_percentile_97.5": 1.0
+    },
+    "roc_auc": {
+      "fold_percentile_2.5": 0.9569363510232397,
+      "fold_percentile_97.5": 1.0
+    },
+    "specificity": {
+      "fold_percentile_2.5": 0.91,
+      "fold_percentile_97.5": 1.0
+    }
+  }
+}

@@ -1,0 +1,5 @@
+<p><strong>Validation budget:</strong> The web default is 5 outer folds × 2 repeats with 3 inner folds.
+The manuscript's fixed-family validation scripts use 5 outer folds × 10 repeats with 3 inner folds;
+the web default does not reproduce that computational effort. Grouped regression uses one distinct
+outer repeat because GroupKFold is deterministic. The result records requested and actual budgets,
+actual distinct repeats, and each candidate grid/count. Infeasible folds produce an error or a recorded reduction.</p>

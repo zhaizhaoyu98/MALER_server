@@ -1,0 +1,432 @@
+{
+  "created_utc": "2026-10-01T15:40:30Z",
+  "dataset": {
+    "blind_samples": 0,
+    "cohort_provenance_supplied": false,
+    "development_subjects": null,
+    "features": 8,
+    "independent_external_cohort_verified": false,
+    "patient_level_audit": {
+      "collapsed_within_partition_patients": 0,
+      "excluded_cross_partition_patients": 0,
+      "retained_patients": 120,
+      "source_samples": 120
+    },
+    "split_level": "sample",
+    "testing_samples": 40,
+    "training_samples": 80
+  },
+  "failures": [],
+  "feature_reduction": "select",
+  "models": [
+    {
+      "best_params": {
+        "model__C": 10.0,
+        "model__penalty": "l2",
+        "selector__k": 8
+      },
+      "candidate_count": 3,
+      "candidate_grid": {
+        "model__C": [
+          0.1,
+          1.0,
+          10.0
+        ],
+        "model__penalty": [
+          "l2"
+        ],
+        "selector__k": [
+          8
+        ]
+      },
+      "effective_feature_method": "select",
+      "estimator": "sklearn.linear_model._logistic.LogisticRegression",
+      "heldout_test": {
+        "accuracy": 0.625,
+        "balanced_accuracy": 0.5,
+        "f1": 0.0,
+        "mcc": 0.0,
+        "per_class": {
+          "case": {
+            "sensitivity": 0.0,
+            "specificity": 1.0
+          },
+          "control": {
+            "sensitivity": 1.0,
+            "specificity": 0.0
+          }
+        },
+        "positive_class": "case",
+        "pr_auc": 0.3833333333333333,
+        "precision": 0.0,
+        "recall_sensitivity": 0.0,
+        "roc_auc": 0.512,
+        "specificity": 1.0
+      },
+      "hyperparameter_candidate_count": 3,
+      "key": "logistic_regression",
+      "model_bundle": "logistic_regression.maler",
+      "nested_cv": {
+        "actual_repeats": 1,
+        "candidate_count": 3,
+        "candidate_grid": {
+          "model__C": [
+            0.1,
+            1.0,
+            10.0
+          ],
+          "model__penalty": [
+            "l2"
+          ],
+          "selector__k": [
+            8
+          ]
+        },
+        "folds": [
+          {
+            "accuracy": 0.9259259259259259,
+            "balanced_accuracy": 0.9230769230769231,
+            "best_params": {
+              "model__C": 10.0,
+              "model__penalty": "l2",
+              "selector__k": 8
+            },
+            "f1": 0.9166666666666666,
+            "fold": 1,
+            "mcc": 0.8604560508152728,
+            "n_test": 27,
+            "n_train": 53,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.8461538461538461,
+                "specificity": 1.0
+              },
+              "control": {
+                "sensitivity": 1.0,
+                "specificity": 0.8461538461538461
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9897435897435896,
+            "precision": 1.0,
+            "recall_sensitivity": 0.8461538461538461,
+            "roc_auc": 0.989010989010989,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1.0
+          },
+          {
+            "accuracy": 0.9629629629629629,
+            "balanced_accuracy": 0.9615384615384616,
+            "best_params": {
+              "model__C": 10.0,
+              "model__penalty": "l2",
+              "selector__k": 8
+            },
+            "f1": 0.9600000000000001,
+            "fold": 2,
+            "mcc": 0.9281909617845143,
+            "n_test": 27,
+            "n_train": 53,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.9230769230769231,
+                "specificity": 1.0
+              },
+              "control": {
+                "sensitivity": 1.0,
+                "specificity": 0.9230769230769231
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9999999999999998,
+            "precision": 1.0,
+            "recall_sensitivity": 0.9230769230769231,
+            "roc_auc": 1.0,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 1.0
+          },
+          {
+            "accuracy": 0.8461538461538461,
+            "balanced_accuracy": 0.8511904761904762,
+            "best_params": {
+              "model__C": 10.0,
+              "model__penalty": "l2",
+              "selector__k": 8
+            },
+            "f1": 0.8461538461538461,
+            "fold": 3,
+            "mcc": 0.7023809523809523,
+            "n_test": 26,
+            "n_train": 54,
+            "per_class": {
+              "case": {
+                "sensitivity": 0.9166666666666666,
+                "specificity": 0.7857142857142857
+              },
+              "control": {
+                "sensitivity": 0.7857142857142857,
+                "specificity": 0.9166666666666666
+              }
+            },
+            "positive_class": "case",
+            "pr_auc": 0.9576330532212886,
+            "precision": 0.7857142857142857,
+            "recall_sensitivity": 0.9166666666666666,
+            "roc_auc": 0.9523809523809523,
+            "selected_features": [
+              "gene0",
+              "gene1",
+              "gene2",
+              "gene3",
+              "gene4",
+              "gene5",
+              "gene6",
+              "gene7"
+            ],
+            "specificity": 0.7857142857142857
+          }
+        ],
+        "split_ids_hash": "cefca37d7ae6ec76a7c60716c29ffa955eb50b46454634370a58c97d7de3db4d",
+        "summary": {
+          "accuracy": {
+            "max": 0.9629629629629629,
+            "mean": 0.9116809116809117,
+            "min": 0.8461538461538461,
+            "n": 3,
+            "std": 0.059693238859706434
+          },
+          "balanced_accuracy": {
+            "max": 0.9615384615384616,
+            "mean": 0.9119352869352869,
+            "min": 0.8511904761904762,
+            "n": 3,
+            "std": 0.056011351613081614
+          },
+          "f1": {
+            "max": 0.9600000000000001,
+            "mean": 0.9076068376068376,
+            "min": 0.8461538461538461,
+            "n": 3,
+            "std": 0.05746126576517027
+          },
+          "fold": {
+            "max": 3.0,
+            "mean": 2.0,
+            "min": 1.0,
+            "n": 3,
+            "std": 1.0
+          },
+          "mcc": {
+            "max": 0.9281909617845143,
+            "mean": 0.8303426549935798,
+            "min": 0.7023809523809523,
+            "n": 3,
+            "std": 0.11587774826361037
+          },
+          "n_test": {
+            "max": 27.0,
+            "mean": 26.666666666666668,
+            "min": 26.0,
+            "n": 3,
+            "std": 0.5773502691896258
+          },
+          "n_train": {
+            "max": 54.0,
+            "mean": 53.333333333333336,
+            "min": 53.0,
+            "n": 3,
+            "std": 0.5773502691896258
+          },
+          "pr_auc": {
+            "max": 0.9999999999999998,
+            "mean": 0.9824588809882927,
+            "min": 0.9576330532212886,
+            "n": 3,
+            "std": 0.022102936028380076
+          },
+          "precision": {
+            "max": 1.0,
+            "mean": 0.9285714285714285,
+            "min": 0.7857142857142857,
+            "n": 3,
+            "std": 0.12371791482634839
+          },
+          "recall_sensitivity": {
+            "max": 0.9230769230769231,
+            "mean": 0.8952991452991452,
+            "min": 0.8461538461538461,
+            "n": 3,
+            "std": 0.04268159050307305
+          },
+          "roc_auc": {
+            "max": 1.0,
+            "mean": 0.9804639804639805,
+            "min": 0.9523809523809523,
+            "n": 3,
+            "std": 0.024933550496535003
+          },
+          "specificity": {
+            "max": 1.0,
+            "mean": 0.9285714285714285,
+            "min": 0.7857142857142857,
+            "n": 3,
+            "std": 0.12371791482634839
+          }
+        }
+      },
+      "prediction_files": {
+        "testing": "logistic_regression_testing_predictions.csv"
+      },
+      "scaler": "standard",
+      "selected_features": [
+        "gene0",
+        "gene1",
+        "gene2",
+        "gene3",
+        "gene4",
+        "gene5",
+        "gene6",
+        "gene7"
+      ]
+    }
+  ],
+  "positive_class": "case",
+  "project_id": "BCO-AZ-synthetic-TopK-abaf9f5f",
+  "registry_version": 2,
+  "schema_version": 3,
+  "selected_family": "logistic_regression",
+  "selection": {
+    "best_params": {
+      "model__C": 10.0,
+      "model__penalty": "l2",
+      "selector__k": 8
+    },
+    "candidate_counts": {
+      "logistic_regression": 3
+    },
+    "candidate_families": [
+      "logistic_regression"
+    ],
+    "candidate_grids": {
+      "logistic_regression": {
+        "model__C": [
+          0.1,
+          1.0,
+          10.0
+        ],
+        "model__penalty": [
+          "l2"
+        ],
+        "selector__k": [
+          8
+        ]
+      }
+    },
+    "class_order": [
+      "case",
+      "control"
+    ],
+    "estimator": "sklearn.linear_model._logistic.LogisticRegression",
+    "family_selected_at": "2026-10-01T15:40:31.024341Z",
+    "feature_method": "select",
+    "fitted_model_sha256": "69a6553d81d5ea87eae7a76de2b916d63072bc5d116081facb798379f71406ea",
+    "heldout_unlocked_at": "2026-10-01T15:40:31.060421Z",
+    "imputer_strategy": "median",
+    "inner_split_policy": "fold-local task-aware CV; grouped when subject_id supplied",
+    "input_features": [
+      "gene0",
+      "gene1",
+      "gene2",
+      "gene3",
+      "gene4",
+      "gene5",
+      "gene6",
+      "gene7"
+    ],
+    "input_sha256": "d451baac70befbe922dc507ebd4e5422a50a2e6da93ef9c6aa2ba557eb1e2923",
+    "outer_split_ids_hash": "cefca37d7ae6ec76a7c60716c29ffa955eb50b46454634370a58c97d7de3db4d",
+    "positive_class": "case",
+    "project_id": "BCO-AZ-synthetic-TopK-abaf9f5f",
+    "random_seed": 10,
+    "scaler": "standard",
+    "schema_version": 3,
+    "selected_at": "2026-10-01T15:40:31.060421Z",
+    "selected_family": "logistic_regression",
+    "selected_features": [
+      "gene0",
+      "gene1",
+      "gene2",
+      "gene3",
+      "gene4",
+      "gene5",
+      "gene6",
+      "gene7"
+    ],
+    "selection_metric": "balanced_accuracy",
+    "selection_rule": "highest development per-family outer-CV mean; lexicographic tie-break",
+    "software_commit": "5d3d1a3df516233566e20b206a96c2eb33d45877",
+    "software_identity": {
+      "commit": "5d3d1a3df516233566e20b206a96c2eb33d45877",
+      "declared_commit_matches": true,
+      "dirty": false,
+      "verified": true
+    },
+    "threshold_policy": "explicit_probability_threshold",
+    "threshold_value": 0.65,
+    "validation_budget": {
+      "actual_inner_splits": 2,
+      "actual_outer_evaluations": 3,
+      "actual_outer_repeats": 1,
+      "actual_outer_splits": 3,
+      "requested_inner_splits": 2,
+      "requested_outer_repeats": 1,
+      "requested_outer_splits": 3
+    }
+  },
+  "selection_lock_sha256": "afc797d279745b47cdb495410fb3c2d2e7b1ef73810c044c67a116eef0ec2ab9",
+  "software": {
+    "commit": "5d3d1a3df516233566e20b206a96c2eb33d45877",
+    "declared_commit_matches": true,
+    "dirty": false,
+    "verified": true
+  },
+  "strategy": "one_click",
+  "task": "classification",
+  "validation": {
+    "family_scope": "fixed family per outer CV; family selected from development summaries",
+    "inner_splits": 2,
+    "outer_repeats": 1,
+    "outer_splits": 3,
+    "preprocessing_scope": "fit within inner and outer training folds; FSS/BSS internal scoring uses upstream training-fold preprocessing",
+    "random_state": 10,
+    "requested_budget": {
+      "inner_splits": 2,
+      "outer_repeats": 1,
+      "outer_splits": 3
+    },
+    "selection_metric": "balanced_accuracy",
+    "threshold_policy": "explicit_probability_threshold",
+    "threshold_value": 0.65
+  },
+  "warnings": [
+    "The development outer-CV scores describe fixed estimator families; the winning family was selected using those scores. Only the selected family has a heldout result."
+  ]
+}

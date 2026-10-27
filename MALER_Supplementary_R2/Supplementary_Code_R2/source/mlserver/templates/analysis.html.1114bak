@@ -1,0 +1,2342 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>ANALYSIS</title>
+		<script src="/mlserver_static/cdn/js/spark-md5.min.js"></script>
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.13/lib/theme-chalk/index.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"></script>
+		<!-- 引入组件库 -->
+		<script src="https://unpkg.com/element-ui@2.15.13/lib/index.js"></script>
+		<script src="https://cdn.bootcdn.net/ajax/libs/axios/1.3.6/axios.min.js"></script>
+		<script src="https://unpkg.com/element-ui@2.15.13/lib/locale/lang/en.js"></script>
+		{% include 'public_templates/bootstrap.html' %}
+		<style type="text/css">
+			#home span {
+				background-color: aliceblue;
+			}
+
+			.btn.btn-outline-danger {
+				height: 38px;
+				/* margin-top: 30px; */
+			}
+
+			#one_class_test_form .form-row {
+				margin: 0;
+				padding: 0;
+				height: 40px;
+			}
+
+			/* table tbody {
+				font-size: 5px;
+			} */
+			table * {
+				font-size: 15px;
+			}
+
+			.card {
+				cursor: pointer;
+				height: 100%;
+			}
+
+			.f_white {
+				color: black;
+			}
+
+			.hidden {
+				display: none;
+			}
+
+			.card:hover {
+				border: 2px solid #17a2b8;
+			}
+
+			.select {
+				border: 2px solid #17a2b8;
+			}
+
+			.select .card-body {
+				background-color: #99c3c7;
+			}
+
+			.md-3 {
+				margin-bottom: 15px;
+			}
+			input::placeholder{
+				font-size:10px;  
+				color: #f8f9fa;
+			} 
+			
+			table
+			{
+			border-collapse: collapse;
+			margin: 1px,1px,1px,1px;
+			text-align: center;
+			}
+			table td, table th
+			{
+			border: 2px solid #cad9ea;
+			color: #666;
+			height: 40px;
+			}
+			table thead th
+			{
+			background-color: #17a2b8;
+			width: auto;
+			height: 50px;
+			color: white;
+			}
+			table tr:nth-child(odd)
+			{
+			background: #fff;
+			}
+			table tr:nth-child(even)
+			{
+			background: #f0f1f2;
+			}
+			h4{
+				font-family: arial;
+				font-weight: bold;
+			}
+			@import url("//unpkg.com/element-ui@2.15.14/lib/theme-chalk/index.css");
+			.text {
+			    font-size: 14px;
+			  }
+			
+			  .item {
+			    margin-bottom: 18px;
+			  }
+			
+			  .clearfix:before,
+			  .clearfix:after {
+			    display: table;
+			    content: "";
+			  }
+			  .clearfix:after {
+			    clear: both
+			  }
+			
+			  .box-card {
+			    width: 480px;
+			  }
+			  #card .el-card__header {
+			      background-color: rgba(0,0,0,.03);
+			  }
+		</style>
+		<script>
+			$(document).ready(function(){
+				// 导航栏
+				$("#nav_tools").addClass("active");
+				$("tbody").addClass("bg-white");
+				$("#page_title").text('ANALYSIS');
+			});
+		</script>
+		
+	</head>
+	
+	
+	<body>
+		<!-- 导航栏 -->
+		{% include 'public_templates/nav_tem.html' %}
+		<!-- 主体 -->
+		<div class="container col-9" style="min-height: calc(100vh - 180px); margin: 1em auto; border-radius: .5rem; box-shadow: 1px 1px 5px grey;">
+			<br />
+			<h4>Step1: Please select an analysis mode.</h4>
+			<hr />
+			<div class="row row-cols-1 row-cols-md-3">
+				
+				<div class="col md-3">
+					<div class="card select" id="model_bclass" onclick="model_selectactive(this.id)">
+						<div class="border-bottom" style="padding: 20px">
+							<p class="card-img-top" style="text-align:center" ><img src='/mlserver_static/img/binary.png' width="200" height="200"></p>
+						</div>
+						<div class="card-body">
+							<h6 class="card-title" style="text-align:center">Binary classification</h6>
+							<p class="card-title" style="font-size: 16px" >The process of dividing new observations into distinct two categories based on the features of a set of input data.</p>
+							<!--<p class="card-text m-0">description</p>...-->
+						</div>
+					</div>
+				</div>
+
+				<div class="col md-3">
+					<div class="card" id="model_mclass" onclick="model_selectactive(this.id)">
+						<div class="border-bottom" style="padding: 20px">
+							<p class="card-img-top" style="text-align:center"><img src='/mlserver_static/img/muliti.png' width="200" height="200"></p>
+						</div>
+						<div class="card-body">
+							<h6 class="card-title" style="text-align:center">Multiclass classification</h6>
+							<p class="card-title" style="font-size: 16px" >The process of dividing new observations into distinct at least three categories based on the features of a set of input data.</p>
+							<!--<p class="card-text m-0">description</p>...-->
+						</div>
+					</div>
+				</div>
+
+				<div class="col md-3">
+					<div class="card" id="model_reg" onclick="model_selectactive(this.id)">
+						<div class="border-bottom" style="padding: 20px">
+							<p class="card-img-top" style="text-align:center"><img src='/mlserver_static/img/regression.png' width="200" height="200"></p>
+						</div>
+						<div class="card-body">
+							<h6 class="card-title" style="text-align:center">Regression</h6>
+							<p class="card-title" style="font-size: 16px" >The process of exploring the relationships between dependent variables (labels) and a series of  indenpendent variables (features).</p>
+							<!--<p class="card-text m-0">description</p>...-->
+						</div>
+					</div>
+				</div>
+
+				<div class="col md-3">
+					<div class="card" id="model_sur" onclick="model_selectactive(this.id)">
+						<div class="border-bottom" style="padding: 20px">
+							<p class="card-img-top" style="text-align:center"><img src='/mlserver_static/img/survival.png' width="200" height="200"></p>
+						</div>
+						<div class="card-body">
+							<h6 class="card-title" style="text-align:center"> Survival </h6>
+							<p class="card-title" style="font-size: 16px" >The process of establishing the connection between covariates (features) and the time of events (labels) to predict the risk of future events. </p>
+							<!--<p class="card-text m-0">description</p>...-->
+						</div>
+					</div>
+				</div>
+			</div>
+			<br />
+			<h4>Step2: Please upload the files.</h4>
+			<hr />
+			<form action="preview" method="POST" id="form_step23" enctype="multipart/form-data">
+				<div class="row">
+					<div class="col-3" id="data_up_select">
+						<label style="font-weight: bold; color: #666;font-size: 20px;">Choose data to upload: </label>
+						<div class="form-check">
+							<label class="form-check-label" for="usr_up">
+								<input type="radio" id='usr_up' value="usr_data" name="data_up" checked>
+								Upload Your Own Data
+							</label>
+						</div>
+						<div class="form-check">
+							<label class="form-check-label" for="samp_up">
+								<input type="radio" id='samp_up' value="samp_data" name="data_up">
+								Choose Example Data
+							</label>
+									
+						</div>
+					</div>
+					<div class="col-9">
+						
+						<div id="usr_data" class="row">
+					
+							{% csrf_token %}
+							<!-- <div class="custom-file mb-3">
+								  <input type="file" class="custom-file-input" id="customFile" name="filename">
+								  <label class="custom-file-label" for="customFile">Choose Profile</label>
+							</div> -->
+							<h6 style="position: absolute;top: 10px;">File:&nbsp;</h6>
+							<input type="file" id="upload_file" name="upload_file" style="display: none;" accept=".csv" />
+							<button id="upfile" type="button" class="btn btn-info" style="position: absolute;left: 40px;">Upload</button>
+							<!-- <h6>Label: <input type="file" name="upload_label" /></h6> -->
+					
+					
+							<div class="row">
+								<h5 style="position: absolute;left: 360px;">OR</h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<h6 style="position: absolute;left: 560px;">ProjectID:&nbsp;<input type="text" id="projectid" name="projectid"></h6>
+							</div>
+							<div class="showFileName"style="position: absolute;left: 130px;top: 10px;"></div>
+							<!-- <input type="submit" value="submit" />
+							<input type="submit" value="EXAMPLE(ZIP)" /> -->
+							<br />
+							<br />
+							<br />
+							<div>
+							<p><b> File: </b>  Please upload a csv file with features in rows and samples in columns and no larger than 200MB. Please refer to the sample file for the exact format of the file.</p>
+							<p><b> ProjectID: </b>  A unique identifier for each task, which can be used to access the results of analyzed tasks.</p>
+							</div>
+						</div>
+						
+						
+						<script type="text/javascript">
+							$("#upfile").click(function () {
+							    $("#upload_file").click();
+							});
+							var myfile = document.getElementById('upload_file');
+							myfile.addEventListener('change',function() {
+								// location.reload();
+								$(".showFileName").html(myfile.files[0].name);
+							});
+							
+						</script>
+						
+						
+						
+						<div id="samp_data" class='row' style="display: none;">
+							<div class="col-12" id="sample_select" display="none">
+								<!-- <table border="1" style="border: #000000;background-color: #f8f9fa;"> -->
+								<b>Please click the 'Submit' button to make predictions on the sample data.</b>
+								<table width="100%" class="" border="1" style="border: #000000;background-color: #f8f9fa;text-align: center;">
+									<thead>
+									<tr>
+										<th>Example</th>
+										<th>Description</th>
+										<th>Source</th>
+										<th>Download data</th>
+									</tr>
+									</thead>
+									<tr>
+										<td>Binary Classfication</td>
+										<td>LUAD and LUSC are classified based on gene expression profiles</td>
+										<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
+										<td><a href="download/binary_classification_example.csv">download</a></td>
+									</tr>
+									<tr>
+										<td>Multiclass Classfication</td>
+										<td>LUAD, LUSC and KIRC are classified based on gene expression profiles</td>
+										<td><a href="https://xenabrowser.net/">UCSC Xena</a></td>
+										<td><a href="download/multiclass_classification_example.csv">download</a></td>
+									</tr>
+									<tr>
+										<td>Regression</td>
+										<td>Tumor purity of KIRC is predicted based on gene expression profiles</td>
+										<td>
+											<a href="https://xenabrowser.net/">UCSC Xena</a><br />
+											<a href="https://pubmed.ncbi.nlm.nih.gov/26634437/">PMID: 26634437</a>
+										</td>
+										<td><a href="download/regression_example.csv">download</a></td>
+									</tr>
+									<tr>
+										<td>Survival</td>
+										<td>Survival in GBM is predicted based on gene expression profiles</td>
+										<td>
+											<a href="https://xenabrowser.net/">UCSC Xena</a><br />
+											<a href="http://www.cgga.org.cn">CGGA</a>
+										</td>
+										<td><a href="download/survival_example.csv">download</a></td>
+									</tr>
+								</table>
+								<br>
+								
+								<br>
+							</div>
+							
+							<!-- <div class="col-6" id="sample_select" display="none">
+								<label style="font-weight: bold; color: #666">Example Data: </label>
+								<div class="form-check">
+									<label class="form-check-label" for="bin_class">
+										<input type="radio" id='bin_class' value="binary_classification_example.csv" name="samp_data" checked data-target='#bin_descrpt'>
+										Binary Classfication Example
+									</label>
+								</div>
+								<div class="form-check">
+									<label class="form-check-label" for="multi_class">
+										<input type="radio" id='multi_class' value="multiclass_classification_example.csv" name="samp_data" data-target='#multi_descrpt'>
+										Multiclass Classfication Example
+									</label>
+											
+								</div>
+								<div class="form-check">
+									<label class="form-check-label" for="regres">
+										<input type="radio" id='regres' value="regression_example.csv" name="samp_data" data-target='#regr_descrpt'>
+										Regression Example
+									</label>
+								</div>
+								<div class="form-check">
+									<label class="form-check-label" for="survival">
+										<input type="radio" id='survival' value="survival_example.csv" name="samp_data" data-target='#surv_descrpt'>
+										Survival Analysis Example
+									</label>
+											
+								</div>
+							</div>
+							<div class="col-6 tab-content">
+								<div id="bin_descrpt" class="tab-pane active">
+									<p>LUAD and LUSC are classified based on gene expression profiles</p>
+									<p>Source: <a href="https://xenabrowser.net/">UCSC Xena</a></p>
+								</div>
+								<div id="multi_descrpt" class="tab-pane">
+									<p>LUAD, LUSC, KIRP and KIRC are classified based on gene expression profiles</p>
+									<p>Source: <a href="https://xenabrowser.net/">UCSC Xena</a></p>
+								</div>
+								<div id="regr_descrpt" class="tab-pane">
+									<p>Tumor purity of KIRC is predicted based on gene expression profile</p>
+									<p>Source: <a href="https://xenabrowser.net/">UCSC Xena</a> | 
+									<a href="https://pubmed.ncbi.nlm.nih.gov/26634437/">PMID: 26634437</a> </p>
+								</div>
+								<div id="surv_descrpt" class="tab-pane">
+									<p>Survival in GBM is predicted based on gene expression profile</p>
+									<p>Source: <a target="_blank" href="https://xenabrowser.net/">UCSC Xena</a> | 
+									<a href="http://www.cgga.org.cn">CGGA</a></p>
+								</div>
+								<button id="dl_sample" class="btn btn-info">Download</button>
+							</div> -->
+						</div>
+					</div>
+				</div>
+
+				
+				
+				<br />
+				<h4>Step3: Please select a feature selection method.</h4>
+				<hr>
+				<div class="col-9">
+					<div>
+						{% csrf_token %}
+						<input name="select_model" id="select_model" style="display: none;" value="model_bclass"/>
+						<!-- <input name="select_mode" id="select_mode" style="display: none;" value=""/> -->
+						<input name="select_child_model" id="select_child_model" style="display: none;" value=""/>
+						<input name="file_upload_type" id="file_upload_type" style="display: none;" value="user_data"/>
+						<input name="random_token" id="random_token" onclick="randomString()" style="display: none;" value=""/>
+						<input name="file_md5" id="file_md5" style="display: none;" value=""/>
+						<input name="strategy" id="strategy" style="display: none;" value=""/>
+						<!-- <input name="fsm" id="fsm" style="display: none;" value=""/> -->
+						<!-- 新增特征筛选方法 anova mrmr-->
+						<div class="row">
+						<label style="font-weight: bold; color: #666;font-size: 20px;">Feature Selsection Methods: </label>
+						</div>
+						
+						<div class="row">
+							<input type="radio" id="fsm" name="fsm" value="A" checked />&nbsp;ANOVA&nbsp;
+							<input type="radio" id="fsm" name="fsm" value="M" />&nbsp;MRMR&nbsp;
+						</div>
+						<br />
+						<div class="row">
+							<label style="font-weight: bold; color: #666;font-size: 20px;">Optimal Feature Subset Search Methods: </label>
+						</div>
+						
+						<div class="row">
+							<input type="radio" name="feature_select_method" value="TopK" checked />&nbsp;TopK&nbsp;
+							<input type="radio" name="feature_select_method" value="FSS" />&nbsp;FSS&nbsp;
+							<input type="radio" name="feature_select_method" value="BSS" />&nbsp;BSS&nbsp;
+						</div>
+					</div>
+					
+				</div>
+			
+			
+				<br />
+				<br>
+			<h4>Step4: Please choose a processing method.</h4>
+			<hr>
+			<div class="row">
+				<div class="col-6">
+					<button type="button" id="button_oc" onclick="" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">One-click
+						Analysis</button>
+				</div>
+				<div class="col-6">
+					<button type="button" id="button_cp" onclick="" class="btn btn-info" style="width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;">Customized 
+						Analysis</button>
+				</div>
+			</div>
+			<br />
+			
+
+			
+
+			
+			
+			<div id="cp_model_select">
+				<div id="classification_child_model">
+					<div class="row row-cols-1 row-cols-md-3">
+						<div class="col md-3">
+							<div class="card" id="task_naivebayes" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/feature_extraction.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title">Naive Bayes</h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-0">A kind of simple probabilistic classification model based on Bayes’ 
+									theorem with the assumption of independence between features.</p >
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					
+						<div class="col md-3">
+							<div class="card" id="task_svm" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/data_generation.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title">SVM</h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-0">SVM aims to create a decision boundary called maximum margin separating 
+									hyperplane that enables the prediction of labels from one or more features.</p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					
+						<div class="col md-3">
+							<div class="card" id="task_randomforest" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/classification.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title">RandomForest</h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-1">An ensemble estimator that fits a number of decision tree classifiers on various sub-samples of the dataset </p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					
+						<div class="col md-3">
+							<div class="card" id="task_logistic" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title"> Logistic </h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-1">Logistic regression adds a nonlinear function to a linear function to estimate the probability of an event occurring. </p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row row-cols-1 row-cols-md-3">
+						<div class="col md-3">
+							<div class="card" id="task_knn" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title"> KNN </h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-1">A non-parametric method which assigns the samples with labels by the majority rule on the labels of
+									 selected nearest neighbors. </p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					
+						<div class="col md-3">
+							<div class="card" id="task_xgboost" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title"> XGBoost </h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-1">A scalable and highly accurate implementation of gradient boosting which integrates multiple parallel
+									 tree models to build a more powerful learner model. </p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					
+						<div class="col md-3">
+							<div class="card" id="task_lightgbm" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title"> lightGBM </h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-1">A gradient boosting framework that uses tree based learning algorithms.it uses histogram-based algorithms 
+									to speed up training and reduce memory usage. </p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					
+						<div class="col md-3">
+							<div class="card" id="task_adaboost" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title"> Adaboost </h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-1">An ensemble estimator based on multiple weak prediction models.It can adjust the weight of misclassified instances
+									 so that subsequent classifiers focus more on difficult cases. </p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row ">
+						<div class="col-3">
+							<div class="card" id="task_decisiontree" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 10px">
+									<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title"> DecisionTree </h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-1">A non-parametric algorithm that can classify a population into branch-like segments that
+									 construct an inverted tree with a root node, internal nodes, and leaf nodes. </p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					
+						<div class="col-3">
+							<div class="card" id="task_gbdt" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 10px">
+									<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title"> GBDT </h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-1">An ensemble estimator based on multiple decision trees models.
+									 It will fit a decision tree on the residuals error of the previous tree. </p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="regression_child_model">
+					<div class="row row-cols-1 row-cols-md-3">
+						<div class="col md-3">
+							<div class="card" id="task_linearregression" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/feature_extraction.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title">LinearRegression</h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-0">It establishes a linear relationship between label and features to minimize the residual sum of squares between
+									 the observed targets and the predicted targets.</p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					
+						<div class="col md-3">
+							<div class="card" id="task_regsvm" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/data_generation.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title">SVM</h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-0">It aims to create a decision boundary called maximum margin separating hyperplane such that all data in a set 
+									are at the shortest distance from the hyperplane</p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					
+						<div class="col md-3">
+							<div class="card" id="task_ridge" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/classification.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title">Ridge</h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-0">A linear regression model where the loss function is the linear least squares function and regularization is given
+									 by the l2-norm.</p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					
+						<div class="col md-3">
+							<div class="card" id="task_lasso" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title"> Lasso </h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-1">a linear regression model that minimizes the residual sum of squares so it tends to produce some coefficients that
+									 are exactly 0 and hence gives interpretable models.</p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row row-cols-1 row-cols-md-3">
+						<div class="col md-3">
+							<div class="card" id="task_regdecisiontree" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title"> DecisionTree </h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-1">A non-parametric model that predicts the values of target variables by learning simple decision rules inferred
+									 from data features.</p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					
+						<div class="col md-3">
+							<div class="card" id="task_regxgboost" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title"> XGBoost </h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-1">A scalable and highly accurate implementation of gradient boosting which integrates multiple parallel
+									 tree models to build a more powerful learner model. </p>
+								</div>
+							</div>
+						</div>
+					
+						<div class="col md-3">
+							<div class="card" id="task_regrandomforest" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title"> RandomForest </h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-1">An ensemble estimator that fits a number of decision tree classifiers on various sub-samples of the dataset </p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					
+						<div class="col md-3">
+							<div class="card" id="task_regadaboost" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title"> Adaboost </h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-1">An ensemble estimator based on multiple weak prediction models.It can adjust the weight of misclassified instances
+									 so that subsequent classifiers focus more on difficult cases. </p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row ">
+						<div class="col-3">
+							<div class="card" id="task_gradientboost" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title"> GradientBoost </h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-1">An ensemble estimator based on multiple decision trees models.
+									 It will fit a decision tree on the residuals error of the previous tree. </p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					
+					</div>
+				</div>
+				<div id="survival_child_model">
+					<div class="row row-cols-1 row-cols-md-3">
+						<div class="col md-3">
+							<div class="card" id="task_survivalsvm" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/feature_extraction.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title">SurvivalSVM</h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-0">Support vector machine (SVM) method is used for survival analysis.</p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					
+						<div class="col md-3">
+							<div class="card" id="task_survivaltree" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/data_generation.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title">SurvivalTree</h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-0">SurvivalTree method is used for survival analysis.</p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					
+						<div class="col md-3">
+							<div class="card" id="task_extrasurvivaltrees" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/classification.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title">ExtraSurvivalTrees</h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-1">An ensemble estimator that fits a number of randomized survival trees on various sub-samples of the dataset.</p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					
+						<div class="col md-3">
+							<div class="card" id="task_randomsurvivalforest" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title"> RandomSurvivalForest </h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-1">An ensemble estimator that fits a number of survivaltrees on various sub-samples of the dataset. </p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row ">
+						<div class="col-3">
+							<div class="card" id="task_gradientboostingsurvival" onclick="cp_model_selectactive(this.id)">
+								<div class="border-bottom" style="padding: 20px">
+									<!-- <img src="../img/regression.jpg" class="card-img-top" alt="..."> -->
+									<h5 class="card-title"> GradientBoostingSurvival </h5>
+								</div>
+								<div class="card-body">
+									
+									<p style='font-size: 14px' class="card-text m-1">Gradient-boosted Cox proportional hazard loss with regression trees as base learner.</p>
+									<!--<p class="card-text m-0">description</p>...-->
+								</div>
+							</div>
+						</div>
+					
+					</div>
+					
+				</div>
+			</div>
+			
+			<div id="cp_model_detail" class="cp_model_detail">
+				<hr />
+				<!-- classification -->
+				<div id="detail_naivebayes">
+					<h5>Parameters of Naive Bayes</h5>
+					<div class="row">
+						<div class="col-6">
+							<label for="exampleFormControlSelect1">name</label>
+							<select name="naivebayes_name" class="form-control" id="naivebayes_name" required="required" onchange="">
+								<option selected value="GaussianNB">GaussianNB</option>
+								<option value="BernoulliNB">BernoulliNB</option>
+								<option value="ComplementNB">ComplementNB</option>
+								<option value="MultinomialNB">MultinomialNB</option>
+							</select>
+						</div>
+						<div class="col-6">
+							<label for="exampleFormControlSelect1">alpha</label>
+							<input name="naivebayes_alpha" type="text" class="form-control" id="naivebayes_alpha" onblur='data_check(this)' 
+							placeholder="" value="1.0">
+						</div>
+					</div>
+				</div>
+				<div id="detail_svm">
+					<h5>Parameters of SVM</h5>
+					<div class="row">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">kernels</label>
+							<select name="svm_kernel" class="form-control" id="svm_kernel" required="required" onchange="svm_select()">
+								<option value="linear">linear</option>
+								<option value="poly">poly</option>
+								<option value="sigmoid">sigmoid</option>
+								<option selected value="rbf">rbf</option>
+							</select>
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">c</label>
+							<input name="svm_c" type="text" class="form-control" id="svm_c" onblur='data_check(this)' 
+							placeholder="" value="1">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">degree</label>
+							<input name="svm_degree" type="text" class="form-control" id="svm_degree" onblur='data_check(this)' 
+							placeholder="" disabled="disabled" value="">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">coef</label>
+							<input name="svm_coef" type="text" class="form-control" id="svm_coef" onblur='data_check(this)' placeholder=""
+							 disabled="disabled" value="">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">gamma</label>
+							<input name="svm_gamma" type="text" class="form-control" id="svm_gamma" onblur='data_check(this)' 
+							placeholder="scale" value="scale">
+						</div>
+					</div>
+				</div>
+				<div id="detail_randomforest">
+					<h5>Parameters of RandomForest</h5>
+					<div class="row">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">criterion</label>
+							<select name="randomforest_criterion" class="form-control" id="randomforest_criterion" required="required" onchange="">
+								<option selected value="gini">gini</option>
+								<option value="entropy">entropy</option>
+							</select>
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">max_depth</label>
+							<input name="randomforest_max_depth" type="text" class="form-control" id="randomforest_max_depth" onblur='data_check(this)' placeholder=""
+							 value="">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">max_features</label>
+<!-- 							<input name="randomforest_max_features" type="text" class="form-control" id="randomforest_max_features" onblur='data_check(this)' placeholder=""
+							 value="auto"> -->
+							 <select name="randomforest_max_features" class="form-control" id="randomforest_max_features" required="required" onchange="">
+							 	<option value="auto">auto</option>
+							 	<option value="sqrt">sqrt</option>
+							 	<option value="log2">log2</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">min_samples_split</label>
+							<input name="randomforest_min_samples_split" type="text" class="form-control" id="randomforest_min_samples_split" onblur='data_check(this)' placeholder=""
+							 value="2">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">min_samples_leaf</label>
+							<input name="randomforest_min_samples_leaf" type="text" class="form-control" id="randomforest_min_samples_leaf" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">n_estimators</label>
+							<input name="randomforest_n_estimators" type="text" class="form-control" id="randomforest_n_estimators" onblur='data_check(this)' placeholder=""
+							 value="100">
+						</div>
+					</div>
+				</div>
+				<div id="detail_logistic">
+					<h5>Parameters of Logistic</h5>
+					<div class="row">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">penalty</label>
+							<select name="logistic_penalty" class="form-control" id="logistic_penalty" required="required" onchange="logistic_select()">
+								<option selected value="l1">l1</option>
+								<option value="l2">l2</option>
+								<option value="elasticnet">elasticnet</option>
+								<option value="none">none</option>
+							</select>
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">solver</label>
+							<select name="logistic_solver" id="logistic_solver" class="form-control" required="required" onchange="">
+								<!-- <option selected value="lbfgs">lbfgs</option> -->
+								<option value="liblinear">liblinear</option>
+								<!-- <option value="newton-cg">newton-cg</option> -->
+								<!-- <option value="newton-cholesky">newton-cholesky</option> -->
+								<!-- <option value="sag">sag</option> -->
+								<option value="saga">saga</option>
+							</select>
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">fit_intercept</label>
+							<select name="logistic_fit_intercept" class="form-control" id="logistic_fit_intercept" required="required" onchange="">
+								<option selected value="True">True</option>
+								<option value="False">False</option>
+							</select>
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">C</label>
+							<input name="logistic_C" id="logistic_C" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="1.0">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">l1_ratio</label>
+							<input name="logistic_l1_ratio" id="logistic_l1_ratio" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 disabled value="">
+						</div>
+					</div>
+				</div>
+				<div id="detail_knn">
+					<h5>Parameters of KNN</h5>
+					<div class="row">
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">algorithm</label>
+							<select name="knn_algorithm" id="knn_algorithm" class="form-control" required="required" onchange="knn_select()">
+								<option selected value="auto">auto</option>
+								<option value="ball_tree">ball_tree</option>
+								<option value="kd_tree">kd_tree</option>
+								<option value="brute">brute</option>
+							</select>
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">metric</label>
+							<select name="knn_metric" id="knn_metric" class="form-control" required="required" onchange="knn_select()">
+								<option selected value="minkowski">minkowski</option>
+								<option value="cityblock">cityblock</option>
+								<option value="euclidean">euclidean</option>
+								<option value="l1">l1</option>
+								<option value="l2">l2</option>
+								<option value="manhattan">manhattan</option>
+							</select>
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">weights</label>
+							<select name="knn_weights" id="knn_weights" class="form-control" required="required" onchange="">
+								<option selected value="uniform">uniform</option>
+								<option value="distance">distance</option>
+							</select>
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">n_neighbors</label>
+							<input name="knn_n_neighbors" id="knn_n_neighbors" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="5">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">leaf_size</label>
+							<input name="knn_leaf_size" id="knn_leaf_size" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 disabled value="">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">p</label>
+							<input name="knn_p" id="knn_p" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="2">
+						</div>
+					</div>
+				</div>
+				<div id="detail_xgboost">
+					<h5>Parameters of XGBoost</h5>
+					<div class="row">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">learning_rate</label>
+							<input name="xgboost_learning_rate" id="xgboost_learning_rate" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="0.3">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">n_estimators</label>
+							<input name="xgboost_n_estimators" id="xgboost_n_estimators" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="100">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_child_weight</label>
+							<input name="xgboost_min_child_weight" id="xgboost_min_child_weight" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">subsample</label>
+							<input name="xgboost_subsample" id="xgboost_subsample" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">colsample_bytree</label>
+							<input name="xgboost_colsample_bytree" id="xgboost_colsample_bytree" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">Gamma</label>
+							<input name="xgboost_Gamma" id="xgboost_Gamma" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="0">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">reg_alpha</label>
+							<input name="xgboost_reg_alpha" id="xgboost_reg_alpha" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">reg_lambda</label>
+							<input name="xgboost_reg_lambda" id="xgboost_reg_lambda" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+					</div>
+				</div>
+				<div id="detail_lightgbm">
+					<h5>Parameters of lightGBM</h5>
+					<div class="row">
+						<div class="col">
+							<label for="exampleFormControlSelect1">boosting_type</label>
+							<select name="lightgbm_boosting_type" id="lightgbm_boosting_type" class="form-control" required="required" onchange="">
+								<option selected value="gbdt">gbdt</option>
+								<option value="random_forest">random_forest</option>
+								<option value="dart">dart</option>
+								<option value="goss">goss</option>
+							</select>
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">reg_alpha</label>
+							<input name="lightgbm_reg_alpha" id="lightgbm_reg_alpha" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="0">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">reg_lambda</label>
+							<input name="lightgbm_reg_lambda" id="lightgbm_reg_lambda" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="0">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">min_child_samples</label>
+							<input name="lightgbm_min_child_samples" id="lightgbm_min_child_samples" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="20">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">subsample</label>
+							<input name="lightgbm_subsample" id="lightgbm_subsample" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<label for="exampleFormControlSelect1">colsample_bytree</label>
+							<input name="lightgbm_colsample_bytree" id="lightgbm_colsample_bytree" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">learning_rate</label>
+							<input name="lightgbm_learning_rate" id="lightgbm_learning_rate" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="0.1">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">n_estimators</label>
+							<input name="lightgbm_n_estimators" id="lightgbm_n_estimators" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="100">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">num_leaves</label>
+							<input name="lightgbm_num_leaves" id="lightgbm_num_leaves" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="31">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">max_bin</label>
+							<input name="lightgbm_max_bin" id="lightgbm_max_bin" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="255">
+						</div>
+					</div>
+				</div>
+				<div id="detail_adaboost">
+					<h5>Parameters of Adaboost</h5>
+					<div class="row">
+						<div class="col">
+							<label for="exampleFormControlSelect1">algorithm</label>
+							<select name="adaboost_algorithm" id="adaboost_algorithm" class="form-control" required="required" onchange="">
+								<option value="SAMME">SAMME</option>
+								<option selected value="SAMME.R">SAMME.R</option>
+							</select>
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">n_estimators</label>
+							<input name="adaboost_n_estimators" id="adaboost_n_estimators" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="50">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">learning_rate</label>
+							<input name="adaboost_learning_rate" id="adaboost_learning_rate" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="1.0">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">max_depth</label>
+							<input name="adaboost_max_depth" id="adaboost_max_depth" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+					</div>
+				</div>
+				<div id="detail_decisiontree">
+					<h5>Parameters of DecisionTree</h5>
+					<div class="row">
+						<div class="col">
+							<label for="exampleFormControlSelect1">criterion</label>
+							<select name="decisiontree_criterion" id="decisiontree_criterion" class="form-control" required="required" onchange="">
+								<option selected value="gini">gini</option>
+								<option value="entropy">entropy</option>
+							</select>
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">splitter</label>
+							<select name="decisiontree_splitter" id="decisiontree_splitter" class="form-control" required="required" onchange="">
+								<option selected value="best">best</option>
+								<option value="random">random</option>
+							</select>
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">max_depth</label>
+							<input name="decisiontree_max_depth" id="decisiontree_max_depth" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">min_samples_split</label>
+							<input name="decisiontree_min_samples_split" id="decisiontree_min_samples_split" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="2">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">min_samples_leaf</label>
+							<input name="decisiontree_min_samples_leaf" id="decisiontree_min_samples_leaf" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">max_features</label>
+<!-- 							<input name="decisiontree_max_features" id="decisiontree_max_features" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value=""> -->
+							 <select name="decisiontree_max_features" class="form-control" id="decisiontree_max_features" required="required" onchange="">
+							 	<option value="auto">auto</option>
+							 	<option value="sqrt">sqrt</option>
+							 	<option value="log2">log2</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div id="detail_gbdt">
+					<h5>Parameters of GBDT</h5>
+					<div class="row">
+						<div class="col">
+							<label for="exampleFormControlSelect1">criterion</label>
+							<select name="gbdt_criterion" id="gbdt_criterion" class="form-control" required="required" onchange="">
+								<option selected value="friedman_mse">friedman_mse</option>
+								<option value="squared_error">squared_error</option>
+								<option value="mse">mse</option>
+								<option value="mae">mae</option>
+							</select>
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">loss</label>
+							<select name="gbdt_loss" id="gbdt_loss" class="form-control" required="required" onchange="">
+								<option selected value="deviance">deviance</option>
+								<option value="exponential">exponential</option>
+							</select>
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">learning_rate</label>
+							<input name="gbdt_learning_rate" id="gbdt_learning_rate" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="0.1">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">subsample</label>
+							<input name="gbdt_subsample" id="gbdt_subsample" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="1.0">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">min_samples_split</label>
+							<input name="gbdt_min_samples_split" id="gbdt_min_samples_split" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="2">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<label for="exampleFormControlSelect1">min_samples_leaf</label>
+							<input name="gbdt_min_samples_leaf" id="gbdt_min_samples_leaf" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">max_depth</label>
+							<input name="gbdt_max_depth" id="gbdt_max_depth" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="3">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">max_features</label>
+<!-- 							<input name="gbdt_max_features" id="gbdt_max_features" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value=""> -->
+							 <select name="gbdt_max_features" class="form-control" id="gbdt_max_features" required="required" onchange="">
+							 	<option value="auto">auto</option>
+							 	<option value="sqrt">sqrt</option>
+							 	<option value="log2">log2</option>
+							</select>
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">n_estimators</label>
+							<input name="gbdt_n_estimators" id="gbdt_n_estimators" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="100">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">validation_fraction</label>
+							<input name="gbdt_validation_fraction" id="gbdt_validation_fraction" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="0.1">
+						</div>
+						<div class="col">
+							<label for="exampleFormControlSelect1">n_iter_no_change</label>
+							<input name="gbdt_n_iter_no_change" id="gbdt_n_iter_no_change" type="text" class="form-control" onblur='data_check(this)' placeholder=""
+							 value="">
+						</div>
+					</div>
+				</div>
+				<!-- Regression -->
+				<div id="detail_linearregression">
+					<h5>Parameters of LinearRegression</h5>
+					<div class="row">
+						<div class="col-6">
+							<label for="exampleFormControlSelect1">fit intercept</label>
+							<select name="linearregression_fit_intercept" class="form-control" id="linearregression_fit_intercept" required="required" onchange="">
+								<option selected value="True">True</option>
+								<option value="False">False</option>
+							</select>
+						</div>
+<!-- 						<div class="col-6">
+							<label for="exampleFormControlSelect1">positive</label>
+							<select name="linearregression_positive" class="form-control" id="linearregression_positive" required="required" onchange="">
+								<option value="True">True</option>
+								<option selected value="False">False</option>
+							</select>
+						</div> -->
+					</div>
+				</div>
+				<div id="detail_regsvm">
+					<h5>Parameters of SVM</h5>
+					<div class="row">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">kernels</label>
+							<select name="regsvm_kernel" class="form-control" id="regsvm_kernel" required="required" onchange="regsvm_select()">
+								<option value="linear">linear</option>
+								<option value="poly">poly</option>
+								<option value="sigmoid">sigmoid</option>
+								<option selected value="rbf">rbf</option>
+							</select>
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">degree</label>
+							<input name="regsvm_degree" type="text" class="form-control" id="regsvm_degree" onblur='data_check(this)' placeholder=""
+							 disabled="disabled" value="">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">gamma</label>
+							<input name="regsvm_gamma" type="text" class="form-control" id="regsvm_gamma" onblur='data_check(this)' placeholder=""
+							  value="scale">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">coef0</label>
+							<input name="regsvm_coef0" type="text" class="form-control" id="regsvm_coef0" onblur='data_check(this)' placeholder=""
+							 disabled="disabled" value="">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">C</label>
+							<input name="regsvm_c" type="text" class="form-control" id="regsvm_c" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+					</div>
+				</div>
+				<div id="detail_ridge">
+					<h5>Parameters of Ridge</h5>
+					<div class="row">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">alphas</label>
+							<input name="ridge_alphas" type="text" class="form-control" id="ridge_alphas" onblur='data_check(this)' placeholder=""
+							 value="[0.1, 1.0, 10.0]">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">fit intercept</label>
+							<select name="ridge_fit_intercept" class="form-control" id="ridge_fit_intercept" required="required" onchange="">
+								<option selected value="True">True</option>
+								<option value="False">False</option>
+							</select>
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">positive</label>
+							<select name="ridge_positive" class="form-control" id="ridge_positive" required="required" onchange="">
+							 	<option value="True">True</option>
+							 	<option selected value="False">False</option>
+							</select>
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">gcv mode</label>
+							<select name="ridge_gcv_mode" class="form-control" id="ridge_gcv_mode" required="required" onchange="">
+								<option slected value="auto">auto</option>
+								<option value="svd">svd</option>
+								<option value="eigen">eigen</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div id="detail_lasso">
+					<h5>Parameters of Lasso</h5>
+					<div class="row">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">mode</label>
+							<select name="lasso_mode" class="form-control" id="lasso_mode" required="required" onchange="l_mode_change()">
+								<option value="eps+n_alphas">eps+n_alphas</option>
+								<option value="alphas">alphas</option>
+							</select>
+						</div>
+						<div class="col-8" id="lasso_mode_change">
+							<div class="row">
+								<div class="col-6">
+									<label for="exampleFormControlSelect1">eps</label>
+									<input name="lasso_eps" type="text" class="form-control" id="lasso_eps" onblur='data_check(this)' placeholder=""
+									 value="0.001">
+								</div>
+								<div class="col-6">
+									<label for="exampleFormControlSelect1">n_alphas</label>
+									<input name="lasso_n_alphas" type="text" class="form-control" id="lasso_n_alphas" onblur='data_check(this)' placeholder=""
+									 value="100">
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					<div class="row">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">fit intercept</label>
+							<select name="lasso_fit_intercept" class="form-control" id="lasso_fit_intercept" required="required" onchange="">
+							  	<option value="True">True</option>
+							  	<option selected value="False">False</option>
+							</select>
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">selection</label>
+							<select name="lasso_selection" class="form-control" id="lasso_selection" required="required" onchange="">
+								<option selected value="cyclic">cyclic</option>
+								<option value="random">random</option>
+							</select>
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">positive</label>
+							<select name="lasso_positive" class="form-control" id="lasso_positive" required="required" onchange="">
+							   	<option value="True">True</option>
+							   	<option selected value="False">False</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div id="detail_regdecisiontree">
+					<h5>Parameters of DecisionTree</h5>
+					<div class="row">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">criterion</label>
+							<select name="regdecisiontree_criterion" class="form-control" id="regdecisiontree_criterion" required="required" onchange="">
+								<option selected value="squared_error">squared_error</option>
+								<option value="friedman_mse">friedman_mse</option>
+								<option value="absolute_error">absolute_error</option>
+								<option value="poisson">poisson</option>
+							</select>
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">splitter</label>
+							<select name="regdecisiontree_splitter" class="form-control" id="regdecisiontree_splitter" required="required" onchange="">
+								<option selected value="best">best</option>
+								<option value="random">random</option>
+							</select>
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">max_depth</label>
+							<input name="regdecisiontree_max_depth" type="text" class="form-control" id="regdecisiontree_max_depth" onblur='data_check(this)' placeholder=""
+							 value="">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">min_samples_split</label>
+							<input name="regdecisiontree_min_samples_split" type="text" class="form-control" id="regdecisiontree_min_samples_split" onblur='data_check(this)' placeholder=""
+							 value="2">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">min_samples_leaf</label>
+							<input name="regdecisiontree_min_samples_leaf" type="text" class="form-control" id="regdecisiontree_min_samples_leaf" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">max_features</label>
+<!-- 							<input name="regdecisiontree_max_features" type="text" class="form-control" id="regdecisiontree_max_features" onblur='data_check(this)' placeholder=""
+							 value=""> -->
+							<select name="regdecisiontree_max_features" class="form-control" id="regdecisiontree_max_features" required="required" onchange="">
+							 	<option value="auto">auto</option>
+							 	<option value="sqrt">sqrt</option>
+							 	<option value="log2">log2</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div id="detail_regxgboost">
+					<h5>Parameters of XGBoost</h5>
+					<div class="row">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">booster</label>
+							<select name="regxgboost_booster" class="form-control" id="regxgboost_booster" required="required" onchange="">
+								<option selected value="gbtree">gbtree</option>
+								<option value="gblinear">gblinear</option>
+								
+							</select>
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">learning_rate</label>
+							<input name="regxgboost_learning_rate" type="text" class="form-control" id="regxgboost_learning_rate" onblur='data_check(this)' placeholder=""
+							 value="0.1">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">max_depth</label>
+							<input name="regxgboost_max_depth" type="text" class="form-control" id="regxgboost_max_depth" onblur='data_check(this)' placeholder=""
+							 value="3">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">n_estimators</label>
+							<input name="regxgboost_n_estimators" type="text" class="form-control" id="regxgboost_n_estimators" onblur='data_check(this)' placeholder=""
+							 value="100">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">gamma</label>
+							<input name="regxgboost_gamma" type="text" class="form-control" id="regxgboost_gamma" onblur='data_check(this)' placeholder=""
+							 value="0">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">min_child_weight</label>
+							<input name="regxgboost_min_child_weight" type="text" class="form-control" id="regxgboost_min_child_weight" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">colsample_bytree</label>
+							<input name="regxgboost_colsample_bytree" type="text" class="form-control" id="regxgboost_colsample_bytree" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">reg_alpha</label>
+							<input name="regxgboost_reg_alpha" type="text" class="form-control" id="regxgboost_reg_alpha" onblur='data_check(this)' placeholder=""
+							 value="0">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">reg_lambda</label>
+							<input name="regxgboost_reg_lambda" type="text" class="form-control" id="regxgboost_reg_lambda" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+					</div>
+				</div>
+				<div id="detail_regrandomforest">
+					<h5>Parameters of RandomForest</h5>
+					<div class="row">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">criterion</label>
+							<select name="regrandomforest_criterion" class="form-control" id="regrandomforest_criterion" required="required" onchange="">
+								<option selected value="squared_error">squared_error</option>
+								<option value="absolute_error">absolute_error</option>
+								<option value="friedman_mse">friedman_mse</option>
+								<option value="poisson">poisson</option>
+							</select>
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">n_estimators</label>
+							<input name="regrandomforest_n_estimators" type="text" class="form-control" id="regrandomforest_n_estimators" onblur='data_check(this)' placeholder=""
+							 value="100">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">max_depth</label>
+							<input name="regrandomforest_max_depth" type="text" class="form-control" id="regrandomforest_max_depth" onblur='data_check(this)' placeholder=""
+							 value="">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">min_samples_split</label>
+							<input name="regrandomforest_min_samples_split" type="text" class="form-control" id="regrandomforest_min_samples_split" onblur='data_check(this)' placeholder=""
+							 value="2">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">min_samples_leaf</label>
+							<input name="regrandomforest_min_samples_leaf" type="text" class="form-control" id="regrandomforest_min_samples_leaf" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">max_features</label>
+<!-- 							<input name="regrandomforest_max_features" type="text" class="form-control" id="regrandomforest_max_features" onblur='data_check(this)' placeholder=""
+							 value="1.0"> -->
+							<select name="regrandomforest_max_features" class="form-control" id="regrandomforest_max_features" required="required" onchange="">
+							  	<option value="auto">auto</option>
+							  	<option value="sqrt">sqrt</option>
+							  	<option value="log2">log2</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div id="detail_regadaboost">
+					<h5>Parameters of Adaboost</h5>
+					<div class="row">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">loss</label>
+							<select name="regadaboost_loss" class="form-control" id="regadaboost_loss" required="required" onchange="">
+								<option selected value="linear">linear</option>
+								<option value="square">square</option>
+								<option value="exponential">exponential</option>
+							</select>
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">n_estimators</label>
+							<input name="regadaboost_n_estimators" type="text" class="form-control" id="regadaboost_n_estimators" onblur='data_check(this)' placeholder=""
+							 value="50">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">learning_rate</label>
+							<input name="regadaboost_learning_rate" type="text" class="form-control" id="regadaboost_learning_rate" onblur='data_check(this)' placeholder=""
+							 value="1.0">
+						</div>
+					</div>
+				</div>
+				<div id="detail_gradientboost">
+					<h5>Parameters of GradientBoost</h5>
+					<div class="row">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">loss</label>
+							<select name="gradientboost_loss" class="form-control" id="gradientboost_loss" required="required" onchange="">
+								<option selected value="squared_error">squared_error</option>
+								<option value="absolute_error">absolute_error</option>
+								<option value="huber">huber</option>
+								<option value="quantile">quantile</option>
+							</select>
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">learning_rate</label>
+							<input name="gradientboost_learning_rate" type="text" class="form-control" id="gradientboost_learning_rate" onblur='data_check(this)' placeholder=""
+							 value="0.1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">n_estimators</label>
+							<input name="gradientboost_n_estimators" type="text" class="form-control" id="gradientboost_n_estimators" onblur='data_check(this)' placeholder=""
+							 value="100">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">subsample</label>
+							<input name="gradientboost_subsample" type="text" class="form-control" id="gradientboost_subsample" onblur='data_check(this)' placeholder=""
+							 value="1.0">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_split</label>
+							<input name="gradientboost_min_samples_split" type="text" class="form-control" id="gradientboost_min_samples_split" onblur='data_check(this)' placeholder=""
+							 value="2">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_leaf</label>
+							<input name="gradientboost_min_samples_leaf" type="text" class="form-control" id="gradientboost_min_samples_leaf" onblur='data_check(this)' placeholder=""
+							 value="1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">max_depth</label>
+							<input name="gradientboost_max_depth" type="text" class="form-control" id="gradientboost_max_depth" onblur='data_check(this)' placeholder=""
+							 value="3">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">max_features</label>
+<!-- 							<input name="gradientboost_max_features" type="text" class="form-control" id="gradientboost_max_features" onblur='data_check(this)' placeholder=""
+							 value=""> -->
+							<select name="gradientboost_max_features" class="form-control" id="gradientboost_max_features" required="required" onchange="">
+							   	<option value="auto">auto</option>
+							   	<option value="sqrt">sqrt</option>
+							   	<option value="log2">log2</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				
+				
+				
+				
+				
+				
+				<!-- Survival -->
+				<div id="detail_survivalsvm">
+					<h5>Parameters of SurvivalSVM</h5>
+					<div class="row">
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">kernels</label>
+							<select name="survivalsvm_kernel" class="form-control" id="survivalsvm_kernel" required="required" onchange="survivalsvm_select()">
+								<option value="linear">linear</option>
+								<option value="poly">poly</option>
+								<option value="sigmoid">sigmoid</option>
+								<option value="rbf">rbf</option>
+								<option value="cosine">cosine</option>
+							</select>
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">optimizer</label>
+							<select name="survivalsvm_optimizer" class="form-control" id="survivalsvm_optimizer" required="required" onchange="">
+								<option value="avltree">avltree</option>
+								<option value="rbtree">rbtree</option>
+							</select>
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">alpha</label>
+							<input name="survivalsvm_alpha" type="text" class="form-control" id="survivalsvm_alpha" onblur='data_check(this)' placeholder="" value="1">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">degree</label>
+							<input name="survivalsvm_degree" type="text" class="form-control" id="survivalsvm_degree" onblur='data_check(this)' placeholder=""
+							 disabled="disabled" value="">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">gamma</label>
+							<input name="survivalsvm_gamma" type="text" class="form-control" id="survivalsvm_gamma" onblur='data_check(this)' placeholder=""
+							 disabled="disabled" value="">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">coef0</label>
+							<input name="survivalsvm_coef0" type="text" class="form-control" id="survivalsvm_coef0" onblur='data_check(this)' placeholder=""
+							 disabled="disabled" value="">
+						</div>
+					</div>
+				</div>
+				<div id="detail_survivaltree">
+					<h5>Parameters of SurvivalTree</h5>
+					<div class="row">
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">splitter</label>
+							<select name="survivaltree_splitter" class="form-control" id="survivaltree_splitter" required="required" onchange="">
+								<option value="best">best</option>
+								<option value="random">random</option>
+							</select>
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">max_depth</label>
+							<input name="survivaltree_max_depth" type="text" class="form-control" id="survivaltree_max_depth" onblur='data_check(this)' placeholder="" value="">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">min_samples_split</label>
+							<input name="survivaltree_min_samples_split" type="text" class="form-control" id="survivaltree_min_samples_split" onblur='data_check(this)' placeholder="" value="6">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">min_samples_leaf</label>
+							<input name="survivaltree_min_samples_leaf" type="text" class="form-control" id="survivaltree_min_samples_leaf" onblur='data_check(this)' placeholder="" value="3">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">max_features</label>
+							<!-- <input name="survivaltree_max_features" type="text" class="form-control" id="survivaltree_max_features" onblur='data_check(this)' placeholder=""> -->
+							<select name="survivaltree_max_features" class="form-control" id="survivaltree_max_features" required="required" onchange="">
+								<option value="auto">auto</option>
+								<option value="sqrt">sqrt</option>
+								<option value="log2">log2</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div id="detail_extrasurvivaltrees">
+					<h5>Parameters of ExtraSurvivalTrees</h5>
+					<div class="row">
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">max_depth</label>
+							<input name="extrasurvivaltrees_max_depth" type="text" class="form-control" id="extrasurvivaltrees_max_depth" onblur='data_check(this)' placeholder="" value="">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_split</label>
+							<input name="extrasurvivaltrees_min_samples_split" type="text" class="form-control" id="extrasurvivaltrees_min_samples_split" onblur='data_check(this)' placeholder="" value="6">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples leaf</label>
+							<input name="extrasurvivaltrees_min_samples_leaf" type="text" class="form-control" id="extrasurvivaltrees_min_samples_leaf" onblur='data_check(this)' placeholder="" value="3">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">max_features</label>
+							<!-- <input name="extrasurvivaltrees_max_features" type="text" class="form-control" id="extrasurvivaltrees_max_features" onblur='data_check(this)' placeholder="" value="sqrt"> -->
+							<select name="extrasurvivaltrees_max_features" class="form-control" id="extrasurvivaltrees_max_features" required="required" onchange="">
+							   	<option value="auto">auto</option>
+							   	<option selected value="sqrt">sqrt</option>
+							   	<option value="log2">log2</option>
+							</select>
+						
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">n_estimators</label>
+							<input name="extrasurvivaltrees_n_estimators" type="text" class="form-control" id="extrasurvivaltrees_n_estimators" onblur='data_check(this)' placeholder="" value="100">
+						</div>
+					</div>
+				</div>
+				<div id="detail_randomsurvivalforest">
+					<h5>Parameters of RandomSurvivalForest</h5>
+					<div class="row">
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">splitter</label>
+							<select name="randomsurvivalforest_splitter" class="form-control" id="randomsurvivalforest_splitter" required="required" onchange="">
+								<option value="best">best</option>
+								<option value="random">random</option>
+							</select>
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">max_depth</label>
+							<input name="randomsurvivalforest_max_depth" type="text" class="form-control" id="randomsurvivalforest_max_depth" onblur='data_check(this)' placeholder="" value="">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">min_samples_split</label>
+							<input name="randomsurvivalforest_min_samples_split" type="text" class="form-control" id="randomsurvivalforest_min_samples_split" onblur='data_check(this)' placeholder="" value="6">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">min_samples_leaf</label>
+							<input name="randomsurvivalforest_min_samples_leaf" type="text" class="form-control" id="randomsurvivalforest_min_samples_leaf" onblur='data_check(this)' placeholder="" value="3">
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">max_features</label>
+							<!-- <input name="randomsurvivalforest_max_features" type="text" class="form-control" id="randomsurvivalforest_max_features" onblur='data_check(this)' placeholder=""> -->
+							<select name="randomsurvivalforest_max_features" class="form-control" id="randomsurvivalforest_max_features" required="required" onchange="">
+							   	<option value="auto">auto</option>
+							   	<option value="sqrt">sqrt</option>
+							   	<option value="log2">log2</option>
+							</select>
+						</div>
+						<div class="col-2">
+							<label for="exampleFormControlSelect1">n_estimators</label>
+							<input name="randomsurvivalforest_n_estimators" type="text" class="form-control" id="randomsurvivalforest_n_estimators" onblur='data_check(this)' placeholder="" value="100">
+						</div>
+					</div>
+				</div>
+				<div id="detail_gradientboostingsurvival">
+					<h5>Parameters of GradientBoostingSurvival</h5>
+					<div class="row">
+<!-- 						<div class="col-4">
+							<label for="exampleFormControlSelect1">loss</label>
+							<select name="gradientboostingsurvival_loss" class="form-control" id="gradientboostingsurvival_loss" required="required" onchange="">
+								<option value="coxph">coxph</option>
+								<option value="squared">squared</option>
+								<option value="ipcwls">ipcwls</option>
+							</select>
+						</div> -->
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">max_depth</label>
+							<input name="gradientboostingsurvival_max_depth" type="text" class="form-control" id="gradientboostingsurvival_max_depth" onblur='data_check(this)' placeholder="" value="3">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">min_samples_split</label>
+							<input name="gradientboostingsurvival_min_samples_split" type="text" class="form-control" id="gradientboostingsurvival_min_samples_split" onblur='data_check(this)' placeholder="" value="2">
+						</div>
+						<div class="col-4">
+							<label for="exampleFormControlSelect1">subsample</label>
+							<input name="gradientboostingsurvival_subsample" type="text" class="form-control" id="gradientboostingsurvival_min_samples_split" onblur='data_check(this)' placeholder="" value="1.0">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">min_samples_leaf</label>
+							<input name="gradientboostingsurvival_min_samples_leaf" type="text" class="form-control" id="gradientboostingsurvival_min_samples_leaf" onblur='data_check(this)' placeholder="" value="1">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">max_features</label>
+							<!-- <input name="gradientboostingsurvival_max_features" type="text" class="form-control" id="gradientboostingsurvival_max_features" onblur='data_check(this)' placeholder=""> -->
+							<select name="gradientboostingsurvival_max_features" class="form-control" id="gradientboostingsurvival_max_features" required="required" onchange="">
+							   	<option value="auto">auto</option>
+							   	<option value="sqrt">sqrt</option>
+							   	<option value="log2">log2</option>
+							</select>
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">n_estimators</label>
+							<input name="gradientboostingsurvival_n_estimators" type="text" class="form-control" id="gradientboostingsurvival_n_estimators" onblur='data_check(this)' placeholder="" value="100">
+						</div>
+						<div class="col-3">
+							<label for="exampleFormControlSelect1">learning_rate</label>
+							<input name="gradientboostingsurvival_learning_rate" type="text" class="form-control" id="gradientboostingsurvival_learning_rate" onblur='data_check(this)' placeholder="" value="0.1">
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<br />
+			<!-- email -->
+			<div id="card" class="row">
+
+				<div class="col-12">
+					<el-card shadow="never">
+						<div slot="header" >
+							<h4>Step5：Email（Optional)</h4>
+						</div>
+						<div>
+							<input type="text" name="to_mail" id="to_mail" style="width: 1400px;height: 40px;"/>
+							<br />
+							<br />
+							<p style="font-size: 14px;">Given the potential extended duration of the analysis process, we recommend 
+							submitting your email address above. This will enable us to notify you via email once the analysis is completed, 
+							providing you with access to your result page.</p>
+						</div>
+					</el-card>
+				</div>
+			</div>
+			<br />
+			</form>
+			<!-- submit -->
+			<button type="button" id="button_submit" onclick="form_sub()" class="btn btn-info" style="width: 100%;">Submit</button>
+			<br />
+			<p id="success_info" style="border: 1px solid #b3afb0; padding: 5px;border-radius: 5px;font-size: 14px;">
+				Please access your task status or results via this link
+				<!-- <h5 id="proj_link"></h5> -->
+			</p>
+			<br />
+			<br />
+
+		</div>
+		<!-- 底部 -->
+		{% include 'public_templates/footer.html' %}
+		<script>
+			new Vue().$mount('#card')
+			
+			document.querySelector('#upload_file').addEventListener('change', e => {
+			  const file = e.target.files[0];
+			  const fileReader = new FileReader()
+			  fileReader.readAsBinaryString(file);
+			  fileReader.onload = e => {
+			    const md5 = SparkMD5.hashBinary(e.target.result);
+			    // alert(md5);
+				$("#file_md5").val(md5)
+			  }
+			});
+			
+			function model_selectactive(id) {
+				$("*[id^=model_]").attr('class','card');
+				// console.log($("*[id^=model_]").attr('class','card'));
+				document.getElementById(id).className = 'card select';
+				document.getElementById('select_model').value = id;
+			}
+			
+			function cp_model_selectactive(id) {
+				$("*[id^=task_]").attr('class','card');
+				document.getElementById(id).className = 'card select';
+				document.getElementById('select_child_model').value = id;
+			}
+			function form_sub() {
+				
+			}
+			
+			function svm_select() {
+				var select = document.getElementById("svm_kernel").value;
+				var degree = document.getElementById("svm_degree");
+				var coef = document.getElementById("svm_coef");
+				var gamma = document.getElementById("svm_gamma");
+				switch (select) {
+					
+					case "linear":
+						degree.setAttribute("disabled", "disabled")
+						coef.setAttribute("disabled", "disabled")
+						gamma.setAttribute("disabled", "disabled")
+						$(":disabled").val("").attr("placeholder","");
+						break;
+					case "poly":
+						degree.removeAttribute("disabled")
+						coef.removeAttribute("disabled")
+						gamma.removeAttribute("disabled")
+						$(":disabled").val("").attr("placeholder","");
+						degree.value = 3
+						coef.value = 0
+						gamma.value = 'scale'
+						break;
+					case "sigmoid":
+						degree.setAttribute("disabled", "disabled")
+						coef.removeAttribute("disabled")
+						gamma.removeAttribute("disabled")
+						$(":disabled").val("")
+						coef.value = 0
+						gamma.value = 'scale'
+						break;
+					case "rbf":
+						degree.setAttribute("disabled", "disabled")
+						coef.setAttribute("disabled", "disabled")
+						gamma.removeAttribute("disabled")
+						$(":disabled").val("")
+						gamma.value = 'scale'
+						break;
+					default:
+						alert("error");
+				}
+			}
+			function logistic_select() {
+				var penalty = document.getElementById("logistic_penalty").value;
+				var solver = document.getElementById("logistic_solver");
+				var l1_ratio = document.getElementById("logistic_l1_ratio");
+				switch (penalty) {
+					case "l1":
+						solver.innerHTML = 
+						'<option value="liblinear">liblinear</option>'+
+						'<option value="sag">sag</option>';
+						l1_ratio.setAttribute("disabled", "disabled");
+						$(":disabled").val("");
+						break;
+					case "l2":
+						solver.innerHTML =
+						'<option value="lbfgs">lbfgs</option>'+
+						'<option value="liblinear">liblinear</option>'+
+						'<option value="newton-cg">newton-cg</option>'+
+						'<option value="newton-cholesky">newton-cholesky</option>'+
+						'<option value="sag">sag</option>'+
+						'<option value="saga">saga</option>';
+						l1_ratio.setAttribute("disabled", "disabled");
+						$(":disabled").val("");
+						break;
+					case "elasticnet":
+						solver.innerHTML = 
+						'<option value="saga">saga</option>';
+						l1_ratio.removeAttribute("disabled");
+						$(":disabled").val("");
+						l1_ratio.value = 0.5
+						break;
+					case "none":
+						solver.innerHTML = 
+						'<option value="lbfgs">lbfgs</option>'+
+						'<option value="newton-cg">newton-cg</option>'+
+						'<option value="newton-cholesky">newton-cholesky</option>'+
+						'<option value="sag">sag</option>'+
+						'<option value="saga">saga</option>';
+						l1_ratio.setAttribute("disabled", "disabled");
+						$(":disabled").val("");
+						break;
+					default:
+						alert("error");
+				}
+			}
+			function knn_select() {
+				var algorithm = document.getElementById("knn_algorithm").value;
+				var metric = document.getElementById("knn_metric").value;
+				var leaf_size = document.getElementById("knn_leaf_size")
+				var p = document.getElementById("knn_p");
+				leaf_size.setAttribute("disabled", "disabled");
+				p.setAttribute("disabled", "disabled");
+				
+				switch (algorithm) {
+					case "ball_tree":
+						leaf_size.removeAttribute("disabled")
+						leaf_size.value = 30;
+						break;
+					case "kd_tree":
+						leaf_size.removeAttribute("disabled")
+						leaf_size.value = 30;
+						break;
+					default:
+						break;
+				};
+				switch (metric) {
+					case "minkowski":
+						p.removeAttribute("disabled")
+						p.value = 2;
+						break;
+					default:
+						break;
+				};
+				$(":disabled").val("")
+			}
+			function regsvm_select() {
+				var kernel = document.getElementById("regsvm_kernel").value;
+				var degree = document.getElementById("regsvm_degree");
+				var gamma = document.getElementById("regsvm_gamma");
+				var coef = document.getElementById("regsvm_coef0");
+				switch (kernel) {
+					case "linear":
+						degree.setAttribute("disabled", "disabled")
+						gamma.setAttribute("disabled", "disabled")
+						coef.setAttribute("disabled", "disabled")
+						$(":disabled").val("")
+						break;
+					case "poly":
+						degree.removeAttribute("disabled")
+						gamma.removeAttribute("disabled")
+						coef.removeAttribute("disabled")
+						$(":disabled").val("")
+						degree.value = 3
+						gamma.value = 'scale'
+						coef.value = 0
+						break;
+					case "rbf":
+						degree.setAttribute("disabled", "disabled")
+						gamma.removeAttribute("disabled")
+						coef.setAttribute("disabled", "disabled")
+						$(":disabled").val("")
+						gamma.value = "scale"
+						break;
+					case "sigmoid":
+						degree.setAttribute("disabled", "disabled")
+						gamma.removeAttribute("disabled")
+						coef.removeAttribute("disabled")
+						$(":disabled").val("")
+						gamma.value = 'scale'
+						coef.value = 0
+						break;
+					default:
+						alert("error");
+				}
+			}
+			
+			function survivalsvm_select() {
+				var kernel = document.getElementById("survivalsvm_kernel").value;
+				var optimizer = document.getElementById("survivalsvm_optimizer");
+				var alpha = document.getElementById("survivalsvm_alpha");
+				var degree = document.getElementById("survivalsvm_degree");
+				var gamma = document.getElementById("survivalsvm_gamma");
+				var coef = document.getElementById("survivalsvm_coef");
+				switch (kernel) {
+					case "linear":
+						optimizer.removeAttribute("disabled")
+						alpha.removeAttribute("disabled")
+						degree.setAttribute("disabled", "disabled")
+						gamma.setAttribute("disabled", "disabled")
+						coef.setAttribute("disabled", "disabled")
+						$(":disabled").val("")
+						optimizer.value = "avltree"
+						break;
+					case "poly":
+						optimizer.setAttribute("disabled", "disabled")
+						alpha.removeAttribute("disabled")
+						degree.removeAttribute("disabled")
+						gamma.removeAttribute("disabled")
+						coef.removeAttribute("disabled")
+						$(":disabled").val("")
+						degree.value = 3
+						coef.value = 1
+						break;
+					case "sigmoid":
+						optimizer.setAttribute("disabled", "disabled")
+						alpha.removeAttribute("disabled")
+						degree.setAttribute("disabled", "disabled")
+						gamma.setAttribute("disabled", "disabled")
+						coef.removeAttribute("disabled")
+						$(":disabled").val("")
+						coef.value = 1
+						break;
+					case "rbf":
+						optimizer.setAttribute("disabled", "disabled")
+						alpha.removeAttribute("disabled")
+						degree.setAttribute("disabled", "disabled")
+						gamma.removeAttribute("disabled")
+						coef.setAttribute("disabled", "disabled")
+						$(":disabled").val("")
+						break;
+					case "cosine":
+						optimizer.setAttribute("disabled", "disabled")
+						alpha.removeAttribute("disabled")
+						degree.setAttribute("disabled", "disabled")
+						gamma.setAttribute("disabled", "disabled")
+						coef.setAttribute("disabled", "disabled")
+						$(":disabled").val("")
+						break;
+					default:
+						alert("error");
+				};
+				
+				
+			}
+			function l_mode_change() {
+				var m = document.getElementById("lasso_mode").value;
+				var l = document.getElementById("lasso_mode_change");
+				
+				switch (m) {
+					case "eps+n_alphas":
+						l.innerHTML =
+						'<div class="row">'+
+							'<div class="col-6">'+
+								'<label for="exampleFormControlSelect1">eps</label>'+
+								'<input name="lasso_eps" type="text" class="form-control" id="lasso_eps" onblur="data_check(this)" placeholder="" value="0.001">'+
+							'</div>'+
+							'<div class="col-6">'+
+								'<label for="exampleFormControlSelect1">n_alphas</label>'+
+								'<input name="lasso_n_alphas" type="text" class="form-control" id="lasso_n_alphas" onblur="data_check(this)" placeholder="" value="100">'+
+							'</div>'+
+						'</div>'
+						break;
+					case "alphas":
+						l.innerHTML =
+						'<label for="exampleFormControlSelect1">alphas</label>'+
+						'<input name="lasso_alphas" type="text" class="form-control" id="lasso_alphas" onblur="data_check(this)" placeholder="" value="None">'
+						
+						break;
+					default:
+						alert("error");
+				}
+			}
+			$('input[type=radio][name=data_up]').change(function() {
+			    if (this.value == 'samp_data'){
+					$('#usr_data').hide();
+					$('#samp_data').show();
+				}
+				else{
+					$('#usr_data').show();
+					$('#samp_data').hide();
+				}
+			});
+			$('input[name="samp_data"]').click(function () {
+				// console.log(this)
+			    $(this).tab('show');
+				$(this).removeClass('active');
+			});
+			
+			// $('#dl_sample').click(function(e) {
+			// 	e.preventDefault();
+			// 	let samp = $('input[name="samp_data"]:checked').val();
+			// 	window.location.href = 'download/' + samp;
+			// 	console.log(samp)
+			// });
+
+			$(document).ready(function() {
+				$("#button_submit").hide()
+				$("#cp_model_select").hide()
+				$("#cp_model_detail").hide()
+				
+				$("#survival_child_model").hide()
+				$("#regression_child_model").hide()
+				
+				$("#alphas").hide();
+				
+				$("#success_info").hide();
+				$("#button_oc").click(function() {
+					// var temp_action = $("#form_step23").attr("action").replace("_oc_result","")
+					// var temp_action = (temp_action + "_oc_result").replace("_cp_result","")
+					// $("#form_step23").attr("action",temp_action)
+					$("#strategy").val("O");
+					$(this).attr("style", "width: 100%;");
+					$("#button_cp").attr("style", "width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;");
+					$("#cp_model_select").hide()
+					$("#button_submit").show()
+					$(".cp_model_detail").hide()
+				})
+
+				$("#button_cp").click(function() {
+					// var temp_action = $("#form_step23").attr("action").replace("_cp_result","")
+					// var temp_action = (temp_action + "_cp_result").replace("_oc_result","")
+					// $("#form_step23").attr("action",temp_action)
+					$("#strategy").val("C");
+					$(this).attr("style", "width: 100%;");
+					$("#button_oc").attr("style", "width: 100%;background: #99c3c7;border: #99c3c7;height: 40.25px;");
+					$("#button_submit").hide();
+					$("#cp_model_select").show();
+					$("#cp_model_detail").show();
+					$("*[id^=task_]").attr('class','card');
+					$("*[id^=detail_]").hide();
+				});
+				
+				$("#model_bclass").click(function(){
+					$("#classification_child_model").show()
+					$("#regression_child_model").hide()
+					$("#survival_child_model").hide()
+					
+					// var temp_action = $("#form_step23").attr("action")
+					// var temp_action = ("classification_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
+					// $("#form_step23").attr("action",temp_action)
+					// $("#select_child_model").val("task_naivebayes")
+					$("*[id^=task_]").attr('class','card');
+					// document.getElementById('task_naivebayes').className = 'card select';
+					$("*[id^=detail_]").hide();
+					$("#button_submit").hide()
+				})
+				
+				$("#model_mclass").click(function(){
+					$("#classification_child_model").show()
+					$("#regression_child_model").hide()
+					$("#survival_child_model").hide()
+					
+					// var temp_action = $("#form_step23").attr("action")
+					// var temp_action = ("classification_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
+					// $("#form_step23").attr("action",temp_action)
+					// $("#select_child_model").val("task_naivebayes")
+					$("*[id^=task_]").attr('class','card');
+					// document.getElementById('task_naivebayes').className = 'card select';
+					$("*[id^=detail_]").hide();
+					$("#button_submit").hide()
+				})
+				
+				$("#model_reg").click(function(){
+					$("#regression_child_model").show()
+					$("#classification_child_model").hide()
+					$("#survival_child_model").hide()
+					
+					// var temp_action = $("#form_step23").attr("action")
+					// var temp_action = ("regression_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
+					// $("#form_step23").attr("action",temp_action)
+					// $("#select_child_model").val("task_linearregression")
+					$("*[id^=task_]").attr('class','card');
+					$("*[id^=detail_]").hide();
+					$("#button_submit").hide()
+					// document.getElementById('task_linearregression').className = 'card select';
+				})
+				
+				$("#model_sur").click(function(){
+					$("#survival_child_model").show()
+					$("#classification_child_model").hide()
+					$("#regression_child_model").hide()
+					
+					// var temp_action = $("#form_step23").attr("action")
+					// var temp_action = ("survival_" + temp_action).replace("_classification","").replace("_regression","").replace("_survival","")
+					// $("#form_step23").attr("action",temp_action)
+					// $("#select_child_model").val("task_survivalsvm")
+					$("*[id^=task_]").attr('class','card');
+					$("*[id^=detail_]").hide();
+					$("#button_submit").hide()
+					// document.getElementById('task_survivalsvm').className = 'card select';
+				})
+			})
+			
+			$("*[id^=task_]").click(function() {
+				$("*[id^=detail_]").hide();
+				var a = $(this).attr('id')
+				var detail_id = "#detail_" + a.replace('task_','')
+				$(detail_id).show();
+				$("#select_child_model").val(a);
+				$("#button_submit").show();
+			})
+			
+			$("#button_submit").click(function () {
+				var random_token = randomString()
+				$("#random_token").val(random_token)
+				var select_model = $("#select_model").val()
+				var to_mail = $("#to_mail").val()
+				console.log(to_mail)
+				//获取fsm radio中的name值 两种方法
+				// var radios = document.getElementsByName("fsm")
+				// for(var i=0;i<radios.length;i++){
+				// 	if(radios[i].checked){
+				// 		var fsm = radios[i].value;
+				// 	}
+				// }
+				
+				var fsm = ($("input[name='fsm']:checked").val())
+
+				// var form_action = $("#form_step23").attr("action")
+				if(select_model == "model_bclass"){
+					prefix = "BC" + $("#strategy").val();
+				} else if (select_model == "model_mclass"){
+					prefix = "MC" + $("#strategy").val();
+				} else if (select_model == "model_reg"){
+					prefix = "R" + $("#strategy").val();
+				} else {
+					prefix = "S" + $("#strategy").val();
+				}
+				// var prefix = (form_action.split("_")[0].slice(0,1) + form_action.split("_")[1].slice(0,1)).toUpperCase()
+				var md5 = $("#file_md5").val()
+				// if (select_model == 'model_bclass'){
+				// 	prefix = "B" + prefix
+				// }else if (select_model == 'model_mclass'){
+				// 	prefix = "M" + prefix
+				// }
+				
+				if($("#upload_file").val() != ""){
+					if(prefix.charAt(prefix.length-1) == 'C') {
+						var projectid = prefix + '-' + fsm + '-' + md5.slice(0,6) + '-' + $("#random_token").val();
+					} else {
+						var projectid = prefix + '-' + fsm + '-' + md5.slice(0,6) + '-' + $('input:radio[name="feature_select_method"]:checked').val();
+					}
+					$("#projectid").val(projectid)
+					// alert(projectid);
+				}
+				
+				if ($("#file_upload_type").val() == 'user_data'){
+					if ($("#upload_file").val() == "" && $("#projectid").val() == "") {
+					    
+						alert("Please select a file and upload!");
+						location.reload();
+					} else {
+						// var link = "www.inbirg.com/maler/" + form_action.replace("oc",'cp') + "/" + projectid;
+					    $("#form_step23").submit();
+						// alert(projectid);
+						// $("#success_info").show();
+						// var proj_link = document.getElementById("#proj_link");
+						// console.log(proj_link)
+						// alert(link);
+						// $("#success_info").text("Please access your task status or results via this link: " + link);
+						// alert("Please access your task status or results via this link \n"
+						//  + "www.inbirg.com/mlserver/" + form_action + '/' + projectid)
+					}
+				} else {
+					 $("#form_step23").submit();
+					 // alert(projectid);
+				}
+			})
+			
+			$("#usr_up").click(function (){
+				$("#file_upload_type").val('user_data')
+			})
+			$("#samp_up").click(function (){
+				$("#file_upload_type").val('example_data')
+			})
+			
+			function randomString(){
+			    var expect=6;//期望的字符串长度
+			    var str=Math.random().toString(36).substring(2);
+			    while(str.length<expect){
+			        str=Math.random().toString(36).substring(2)
+			    }
+			    return str.substring(0,expect);
+				// $("#random_token").val(str.substring(0,expect));
+			}
+			
+			{% if messages %}
+			window.onload=function(){
+								{% for msg in messages %}
+									alert('{{msg.message}}');
+								{% endfor  %}
+			}
+			{%  endif %}
+			
+			
+			
+		</script>
+	</body>
+</html>

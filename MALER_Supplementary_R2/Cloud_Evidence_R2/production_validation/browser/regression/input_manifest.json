@@ -1,0 +1,18 @@
+{
+  "task": "regression",
+  "seed": 312,
+  "synthetic": true,
+  "development_samples": 80,
+  "heldout_samples": 40,
+  "prediction_samples": 40,
+  "blind_prediction_samples": 10,
+  "labeled_prediction_samples": 30,
+  "input_features": 8,
+  "prediction_missing_cells": 32,
+  "feature_order_reversed": true,
+  "extra_feature": "ignored_extra",
+  "files": {
+    "analysis.csv": "200ce21157244fb20de256c6257977797de5cec123cef4cd25dc790e6ed9bcc1",
+    "predict.csv": "ff005511d29dcf15e0e10af1562b613071f811d7114088e375719ce619847eed"
+  }
+}

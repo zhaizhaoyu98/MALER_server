@@ -1,0 +1,43 @@
+{
+  "source": {
+    "commit": "1b3c0754f18b628a02d8efc010c69b4d95490cab",
+    "dirty": false,
+    "declared_commit_matches": true,
+    "verified": true
+  },
+  "tolerance": 1e-10,
+  "scope": "Check the current MALER builders against the preserved principal results.\n\nThis is a compatibility check, separate from the helper-independent reference.\nIt does not repeat model selection or the 50 outer evaluations.\n",
+  "tasks": {
+    "binary_classification": {
+      "metrics": {
+        "balanced_accuracy": 0.9532438478747204,
+        "roc_auc": 0.987069351230425,
+        "pr_auc": 0.9901267903797957
+      },
+      "selected_features_match": true
+    },
+    "multiclass_classification": {
+      "metrics": {
+        "balanced_accuracy": 0.9661159149650199,
+        "roc_auc_ovr_macro": 0.9952671373318527,
+        "pr_auc_macro": 0.9906500891109472
+      },
+      "selected_features_match": true
+    },
+    "regression": {
+      "metrics": {
+        "r2": 0.9083079930483887,
+        "mae": 0.026219655495800208,
+        "mse": 0.0012396378223728957,
+        "rmse": 0.035208490771018515
+      },
+      "selected_features_match": true
+    },
+    "survival": {
+      "metrics": {
+        "c_index": 0.5405438361175466
+      },
+      "selected_features_match": true
+    }
+  }
+}

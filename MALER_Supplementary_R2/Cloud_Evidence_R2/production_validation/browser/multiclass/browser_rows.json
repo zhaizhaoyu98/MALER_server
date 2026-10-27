@@ -1,0 +1,197 @@
+{
+  "blind": [
+    {
+      "Name": "S080",
+      "Label": "groupA"
+    },
+    {
+      "Name": "S081",
+      "Label": "groupA"
+    },
+    {
+      "Name": "S082",
+      "Label": "groupC"
+    },
+    {
+      "Name": "S083",
+      "Label": "groupC"
+    },
+    {
+      "Name": "S084",
+      "Label": "groupA"
+    },
+    {
+      "Name": "S085",
+      "Label": "groupA"
+    },
+    {
+      "Name": "S086",
+      "Label": "groupC"
+    },
+    {
+      "Name": "S087",
+      "Label": "groupC"
+    },
+    {
+      "Name": "S088",
+      "Label": "groupC"
+    },
+    {
+      "Name": "S089",
+      "Label": "groupC"
+    }
+  ],
+  "validation": [
+    {
+      "Name": "S090",
+      "Label": "groupA",
+      "Label2": "groupA"
+    },
+    {
+      "Name": "S091",
+      "Label": "groupB",
+      "Label2": "groupB"
+    },
+    {
+      "Name": "S092",
+      "Label": "groupC",
+      "Label2": "groupC"
+    },
+    {
+      "Name": "S093",
+      "Label": "groupC",
+      "Label2": "groupA"
+    },
+    {
+      "Name": "S094",
+      "Label": "groupB",
+      "Label2": "groupB"
+    },
+    {
+      "Name": "S095",
+      "Label": "groupC",
+      "Label2": "groupC"
+    },
+    {
+      "Name": "S096",
+      "Label": "groupC",
+      "Label2": "groupA"
+    },
+    {
+      "Name": "S097",
+      "Label": "groupA",
+      "Label2": "groupB"
+    },
+    {
+      "Name": "S098",
+      "Label": "groupC",
+      "Label2": "groupC"
+    },
+    {
+      "Name": "S099",
+      "Label": "groupA",
+      "Label2": "groupA"
+    },
+    {
+      "Name": "S100",
+      "Label": "groupA",
+      "Label2": "groupB"
+    },
+    {
+      "Name": "S101",
+      "Label": "groupC",
+      "Label2": "groupC"
+    },
+    {
+      "Name": "S102",
+      "Label": "groupB",
+      "Label2": "groupA"
+    },
+    {
+      "Name": "S103",
+      "Label": "groupA",
+      "Label2": "groupB"
+    },
+    {
+      "Name": "S104",
+      "Label": "groupC",
+      "Label2": "groupC"
+    },
+    {
+      "Name": "S105",
+      "Label": "groupA",
+      "Label2": "groupA"
+    },
+    {
+      "Name": "S106",
+      "Label": "groupC",
+      "Label2": "groupB"
+    },
+    {
+      "Name": "S107",
+      "Label": "groupC",
+      "Label2": "groupC"
+    },
+    {
+      "Name": "S108",
+      "Label": "groupA",
+      "Label2": "groupA"
+    },
+    {
+      "Name": "S109",
+      "Label": "groupA",
+      "Label2": "groupB"
+    },
+    {
+      "Name": "S110",
+      "Label": "groupC",
+      "Label2": "groupC"
+    },
+    {
+      "Name": "S111",
+      "Label": "groupA",
+      "Label2": "groupA"
+    },
+    {
+      "Name": "S112",
+      "Label": "groupC",
+      "Label2": "groupB"
+    },
+    {
+      "Name": "S113",
+      "Label": "groupA",
+      "Label2": "groupC"
+    },
+    {
+      "Name": "S114",
+      "Label": "groupA",
+      "Label2": "groupA"
+    },
+    {
+      "Name": "S115",
+      "Label": "groupA",
+      "Label2": "groupB"
+    },
+    {
+      "Name": "S116",
+      "Label": "groupC",
+      "Label2": "groupC"
+    },
+    {
+      "Name": "S117",
+      "Label": "groupA",
+      "Label2": "groupA"
+    },
+    {
+      "Name": "S118",
+      "Label": "groupA",
+      "Label2": "groupB"
+    },
+    {
+      "Name": "S119",
+      "Label": "groupC",
+      "Label2": "groupC"
+    }
+  ],
+  "survival_curves": []
+}

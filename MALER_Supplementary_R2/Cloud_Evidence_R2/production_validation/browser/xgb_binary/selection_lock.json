@@ -1,0 +1,78 @@
+{
+  "best_params": {
+    "selector__k": 8
+  },
+  "candidate_counts": {
+    "XGBoost": 1
+  },
+  "candidate_families": [
+    "XGBoost"
+  ],
+  "candidate_grids": {
+    "XGBoost": {
+      "selector__k": [
+        8
+      ]
+    }
+  },
+  "class_order": [
+    "case",
+    "control"
+  ],
+  "estimator": "mlserver.labelled_xgboost.LabelledXGBClassifier",
+  "family_selected_at": "2026-10-24T07:31:23.224572Z",
+  "feature_method": "select",
+  "fitted_model_sha256": "95de66069bfa9c250540905096c020cda6f8a609ce5161174683448e5a9de268",
+  "heldout_unlocked_at": "2026-10-24T07:31:24.285476Z",
+  "imputer_strategy": "median",
+  "inner_split_policy": "fold-local task-aware CV; grouped when subject_id supplied",
+  "input_features": [
+    "gene0",
+    "gene1",
+    "gene2",
+    "gene3",
+    "gene4",
+    "gene5",
+    "gene6",
+    "gene7"
+  ],
+  "input_sha256": "57336962e3e39e581195bbf7efe689d6c4a3d5abde6c5088bcf2dd9c1cc4d232",
+  "outer_split_ids_hash": "068aaa39daf051e3f0d389fb379e3ab9355ce751390506d28e1de254bb961558",
+  "positive_class": "case",
+  "project_id": "BCC-AZ-cbb985-i1jvzv-34c250f8",
+  "random_seed": 10,
+  "scaler": "standard",
+  "schema_version": 3,
+  "selected_at": "2026-10-24T07:31:24.285325Z",
+  "selected_family": "XGBoost",
+  "selected_features": [
+    "gene0",
+    "gene1",
+    "gene2",
+    "gene3",
+    "gene4",
+    "gene5",
+    "gene6",
+    "gene7"
+  ],
+  "selection_metric": "balanced_accuracy",
+  "selection_rule": "highest development per-family outer-CV mean; lexicographic tie-break",
+  "software_commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+  "software_identity": {
+    "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "declared_commit_matches": true,
+    "dirty": false,
+    "verified": true
+  },
+  "threshold_policy": "explicit_probability_threshold",
+  "threshold_value": 0.65,
+  "validation_budget": {
+    "actual_inner_splits": 3,
+    "actual_outer_evaluations": 10,
+    "actual_outer_repeats": 2,
+    "actual_outer_splits": 5,
+    "requested_inner_splits": 3,
+    "requested_outer_repeats": 2,
+    "requested_outer_splits": 5
+  }
+}

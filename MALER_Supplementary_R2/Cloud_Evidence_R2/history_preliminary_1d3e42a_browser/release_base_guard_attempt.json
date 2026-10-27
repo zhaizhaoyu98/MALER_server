@@ -1,0 +1,6 @@
+{
+  "script": "release_cloud.py",
+  "mode": "apply",
+  "exit_code": 1,
+  "output": "Traceback (most recent call last):\n  File \"/root/maler_xgboost_agent_20261023_cf978bcc/release_cloud.py\", line 117, in <module>\n    {'precheck': precheck, 'apply': apply}[sys.argv[1]]()\n  File \"/root/maler_xgboost_agent_20261023_cf978bcc/release_cloud.py\", line 58, in apply\n    assert set(run(['git', '-C', str(source), 'diff', '--name-only', PRIOR, 'HEAD'], user=True).splitlines()) == set(release['changed_source_files'])\nAssertionError\n"
+}

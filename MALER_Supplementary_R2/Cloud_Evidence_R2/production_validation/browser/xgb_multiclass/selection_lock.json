@@ -1,0 +1,79 @@
+{
+  "best_params": {
+    "selector__k": 8
+  },
+  "candidate_counts": {
+    "XGBoost": 1
+  },
+  "candidate_families": [
+    "XGBoost"
+  ],
+  "candidate_grids": {
+    "XGBoost": {
+      "selector__k": [
+        8
+      ]
+    }
+  },
+  "class_order": [
+    "groupA",
+    "groupB",
+    "groupC"
+  ],
+  "estimator": "mlserver.labelled_xgboost.LabelledXGBClassifier",
+  "family_selected_at": "2026-10-24T07:32:39.895399Z",
+  "feature_method": "select",
+  "fitted_model_sha256": "c669c836bb88f2ab3eea93aa5e6c50d5004095d956fa90c4e05c6ca8a9671dd2",
+  "heldout_unlocked_at": "2026-10-24T07:32:41.038370Z",
+  "imputer_strategy": "median",
+  "inner_split_policy": "fold-local task-aware CV; grouped when subject_id supplied",
+  "input_features": [
+    "feature0",
+    "feature1",
+    "feature2",
+    "feature3",
+    "feature4",
+    "feature5",
+    "feature6",
+    "feature7"
+  ],
+  "input_sha256": "154ed38d5b608ccacdc19b1e33e5e75e98e8c3fbbf2c96329c6fcdb9483deda8",
+  "outer_split_ids_hash": "abece3d8db9fc89472c8277385b949bd3ec3257d86655f626f637e08d33f8670",
+  "positive_class": null,
+  "project_id": "MCC-AZ-ec99a2-ile9n2-90ef132b",
+  "random_seed": 10,
+  "scaler": "standard",
+  "schema_version": 3,
+  "selected_at": "2026-10-24T07:32:41.038230Z",
+  "selected_family": "XGBoost",
+  "selected_features": [
+    "feature0",
+    "feature1",
+    "feature2",
+    "feature3",
+    "feature4",
+    "feature5",
+    "feature6",
+    "feature7"
+  ],
+  "selection_metric": "balanced_accuracy",
+  "selection_rule": "highest development per-family outer-CV mean; lexicographic tie-break",
+  "software_commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+  "software_identity": {
+    "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "declared_commit_matches": true,
+    "dirty": false,
+    "verified": true
+  },
+  "threshold_policy": null,
+  "threshold_value": null,
+  "validation_budget": {
+    "actual_inner_splits": 3,
+    "actual_outer_evaluations": 10,
+    "actual_outer_repeats": 2,
+    "actual_outer_splits": 5,
+    "requested_inner_splits": 3,
+    "requested_outer_repeats": 2,
+    "requested_outer_splits": 5
+  }
+}

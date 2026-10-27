@@ -1,0 +1,49 @@
+{
+  "binary_classification": {
+    "balanced_accuracy": 0.9532438478747204,
+    "pr_auc": 0.9901267903797957,
+    "roc_auc": 0.987069351230425
+  },
+  "multiclass_classification": {
+    "accuracy": 0.9658119658119658,
+    "balanced_accuracy": 0.9661159149650199,
+    "class_order": [
+      "KIRC",
+      "LUAD",
+      "LUSC"
+    ],
+    "confusion_matrix": [
+      [
+        154,
+        0,
+        0
+      ],
+      [
+        0,
+        152,
+        9
+      ],
+      [
+        0,
+        7,
+        146
+      ]
+    ],
+    "pr_auc_macro": 0.9906500891109472,
+    "roc_auc_ovr_macro": 0.9952671373318527
+  },
+  "protocol": "Independent direct scikit-learn refit using archived patient exclusions, best parameters, input hashes, and held-out partitions; no MALER pipeline/metric helpers imported.",
+  "regression": {
+    "mae": 0.026219655495800208,
+    "mse": 0.0012396378223728957,
+    "r2": 0.9083079930483887,
+    "rmse": 0.035208490771018515
+  },
+  "survival": {
+    "c_index": 0.5405438361175466,
+    "event_encoding": "1=event, 0=censored",
+    "n_test": 133,
+    "risk_direction": "higher=worse"
+  },
+  "tolerance": 1e-10
+}

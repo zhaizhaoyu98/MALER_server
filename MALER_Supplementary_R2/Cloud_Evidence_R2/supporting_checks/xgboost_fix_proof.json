@@ -1,0 +1,162 @@
+{
+  "baseline_commit": "014d65b4e0298dcab5f401ea9eabe0de3fe9a898",
+  "source_commit": "b87cae92d696798604beab228c082d713f2a0e63",
+  "registry_version": 4,
+  "red_test_run": {
+    "tests": 7,
+    "errors_including_subtests": 8,
+    "observed": true
+  },
+  "local_and_cloud_tests": 95,
+  "xgboost_regression_tests": 7,
+  "all_registry_defaults_and_grids_preserved": true,
+  "only_registry_class_changed": "classification/xgboost",
+  "metric_and_cv_function_asts_unchanged": [
+    "classification_metrics",
+    "regression_metrics",
+    "nested_cv_classification",
+    "nested_cv_regression",
+    "fit_final_model"
+  ],
+  "xgboost_binary_and_multiclass_public_mappings_verified": true,
+  "positive_class_case_has_probability_column_zero": true,
+  "paired_oneclick": {
+    "xgboost_successfully_compared": true,
+    "same_all_family_fold_scores": true,
+    "same_selected_family": "svm",
+    "same_final_params": true,
+    "all_40_labels_equal": true,
+    "balanced_accuracy_by_family": {
+      "naive_bayes": [
+        0.8571428571428572,
+        0.8571428571428572,
+        0.875,
+        0.9375,
+        0.8125,
+        0.7857142857142857,
+        0.8015873015873016,
+        0.8125,
+        0.9375,
+        0.9375
+      ],
+      "svm": [
+        0.9285714285714286,
+        0.7857142857142857,
+        0.9375,
+        0.875,
+        0.875,
+        0.8571428571428572,
+        0.7857142857142857,
+        1,
+        0.9375,
+        0.875
+      ],
+      "logistic_regression": [
+        0.873015873015873,
+        0.7301587301587301,
+        0.9375,
+        0.9375,
+        0.8125,
+        0.8571428571428572,
+        0.8571428571428572,
+        0.875,
+        1,
+        0.9375
+      ],
+      "knn": [
+        0.9285714285714286,
+        0.873015873015873,
+        0.875,
+        0.875,
+        0.75,
+        0.9285714285714286,
+        0.9444444444444444,
+        1,
+        0.75,
+        0.75
+      ],
+      "decision_tree": [
+        0.8174603174603174,
+        0.5634920634920635,
+        0.6875,
+        0.875,
+        0.8125,
+        0.6190476190476191,
+        0.6587301587301587,
+        0.6875,
+        0.8125,
+        0.9375
+      ],
+      "random_forest": [
+        0.8571428571428572,
+        0.7857142857142857,
+        0.8125,
+        0.8125,
+        0.8125,
+        0.7857142857142857,
+        0.7301587301587301,
+        0.875,
+        0.75,
+        1
+      ],
+      "adaboost": [
+        0.5,
+        0.6190476190476191,
+        0.75,
+        0.8125,
+        0.75,
+        0.5714285714285714,
+        0.6428571428571428,
+        0.625,
+        0.625,
+        0.6875
+      ],
+      "gradient_boosting": [
+        0.7301587301587301,
+        0.8015873015873016,
+        0.875,
+        0.75,
+        0.8125,
+        0.7301587301587301,
+        0.8015873015873016,
+        0.875,
+        0.8125,
+        1
+      ],
+      "xgboost": [
+        0.873015873015873,
+        0.7301587301587301,
+        1,
+        0.875,
+        0.75,
+        0.8571428571428572,
+        0.7301587301587301,
+        0.875,
+        0.875,
+        1
+      ],
+      "lightgbm": [
+        0.8571428571428572,
+        0.873015873015873,
+        0.8125,
+        0.875,
+        0.875,
+        0.6587301587301587,
+        0.873015873015873,
+        0.6875,
+        0.8125,
+        0.875
+      ]
+    }
+  },
+  "legacy_model": {
+    "source_commit": "014d65b4e0298dcab5f401ea9eabe0de3fe9a898",
+    "prediction_rows": 40,
+    "same_predictions_as_previous_browser": true,
+    "new_fits": 0
+  },
+  "independent_verification_uid": 1000,
+  "runtime_upgraded": false,
+  "new_50_fold_experiment": false,
+  "additional_fix": "Remove two unused Axios CDN script tags after an actual ORB failure; no Axios callers found."
+}

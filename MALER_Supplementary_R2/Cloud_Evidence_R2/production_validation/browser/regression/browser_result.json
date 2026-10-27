@@ -1,0 +1,450 @@
+{
+  "created_utc": "2026-10-24T07:24:32Z",
+  "dataset": {
+    "blind_samples": 0,
+    "cohort_provenance_supplied": false,
+    "development_subjects": null,
+    "features": 8,
+    "independent_external_cohort_verified": false,
+    "patient_level_audit": {
+      "collapsed_within_partition_patients": 0,
+      "excluded_cross_partition_patients": 0,
+      "retained_patients": 120,
+      "source_samples": 120
+    },
+    "split_level": "sample",
+    "testing_samples": 40,
+    "training_samples": 80
+  },
+  "failures": [],
+  "feature_reduction": "select",
+  "models": [
+    {
+      "best_params": {
+        "selector__k": 8
+      },
+      "candidate_count": 1,
+      "candidate_grid": {
+        "selector__k": [
+          8
+        ]
+      },
+      "effective_feature_method": "select",
+      "estimator": "sklearn.linear_model._ridge.RidgeCV",
+      "heldout_test": {
+        "mae": 0.45218217016364487,
+        "mse": 0.5139907744889515,
+        "r2": 0.8357012655238789,
+        "rmse": 0.7169314991607996
+      },
+      "hyperparameter_candidate_count": 1,
+      "key": "Ridge",
+      "model_bundle": "Ridge.maler",
+      "nested_cv": {
+        "actual_repeats": 2,
+        "candidate_count": 1,
+        "candidate_grid": {
+          "selector__k": [
+            8
+          ]
+        },
+        "folds": [
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "fold": 1,
+            "mae": 0.43238729765250195,
+            "mse": 0.4937770629227306,
+            "n_test": 16,
+            "n_train": 64,
+            "r2": 0.773694537874297,
+            "rmse": 0.7026927229755056,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "fold": 2,
+            "mae": 0.5813165076745133,
+            "mse": 0.5372655834866096,
+            "n_test": 16,
+            "n_train": 64,
+            "r2": 0.863076256776066,
+            "rmse": 0.7329840267608904,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "fold": 3,
+            "mae": 0.3156531463653257,
+            "mse": 0.12620089563286585,
+            "n_test": 16,
+            "n_train": 64,
+            "r2": 0.9245996348051126,
+            "rmse": 0.35524765394421093,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "fold": 4,
+            "mae": 0.39362924529205257,
+            "mse": 0.45964900722195845,
+            "n_test": 16,
+            "n_train": 64,
+            "r2": 0.8807126451652668,
+            "rmse": 0.6779741936253609,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "fold": 5,
+            "mae": 0.4989992672910481,
+            "mse": 0.45028187288643057,
+            "n_test": 16,
+            "n_train": 64,
+            "r2": 0.7950143625785441,
+            "rmse": 0.6710304560051135,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "fold": 6,
+            "mae": 0.4501068621221972,
+            "mse": 0.4319856191165722,
+            "n_test": 16,
+            "n_train": 64,
+            "r2": 0.770387748561106,
+            "rmse": 0.657256129006472,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "fold": 7,
+            "mae": 0.4309269777756054,
+            "mse": 0.5696874597267219,
+            "n_test": 16,
+            "n_train": 64,
+            "r2": 0.8549899244998884,
+            "rmse": 0.7547764302935817,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "fold": 8,
+            "mae": 0.32849013216996115,
+            "mse": 0.14260705683469338,
+            "n_test": 16,
+            "n_train": 64,
+            "r2": 0.93783168524575,
+            "rmse": 0.3776334953823527,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "fold": 9,
+            "mae": 0.3883128549115253,
+            "mse": 0.419662270275794,
+            "n_test": 16,
+            "n_train": 64,
+            "r2": 0.8655553388564631,
+            "rmse": 0.6478134532994773,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ]
+          },
+          {
+            "best_params": {
+              "selector__k": 8
+            },
+            "fold": 10,
+            "mae": 0.3233299490856749,
+            "mse": 0.1444140223219068,
+            "n_test": 16,
+            "n_train": 64,
+            "r2": 0.9567664094495114,
+            "rmse": 0.38001844997566475,
+            "selected_features": [
+              "feature0",
+              "feature1",
+              "feature2",
+              "feature3",
+              "feature4",
+              "feature5",
+              "feature6",
+              "feature7"
+            ]
+          }
+        ],
+        "split_ids_hash": "c8c3fc34d228adefe9152458c48227192a3abfa5f96c5418cf3ffdab61aab3a3",
+        "summary": {
+          "fold": {
+            "max": 10,
+            "mean": 5.5,
+            "min": 1,
+            "n": 10,
+            "std": 3.0276503540974917
+          },
+          "mae": {
+            "max": 0.5813165076745133,
+            "mean": 0.41431522403404053,
+            "min": 0.3156531463653257,
+            "n": 10,
+            "std": 0.08394900080241033
+          },
+          "mse": {
+            "max": 0.5696874597267219,
+            "mean": 0.3775530850426283,
+            "min": 0.12620089563286585,
+            "n": 10,
+            "std": 0.17173247808185646
+          },
+          "n_test": {
+            "max": 16,
+            "mean": 16,
+            "min": 16,
+            "n": 10,
+            "std": 0
+          },
+          "n_train": {
+            "max": 64,
+            "mean": 64,
+            "min": 64,
+            "n": 10,
+            "std": 0
+          },
+          "r2": {
+            "max": 0.9567664094495114,
+            "mean": 0.8622628543812005,
+            "min": 0.770387748561106,
+            "n": 10,
+            "std": 0.06644962844722298
+          },
+          "rmse": {
+            "max": 0.7547764302935817,
+            "mean": 0.5957427011268629,
+            "min": 0.35524765394421093,
+            "n": 10,
+            "std": 0.15861805661783754
+          }
+        }
+      },
+      "prediction_files": {
+        "testing": "Ridge_testing_predictions.csv"
+      },
+      "scaler": "standard",
+      "selected_features": [
+        "feature0",
+        "feature1",
+        "feature2",
+        "feature3",
+        "feature4",
+        "feature5",
+        "feature6",
+        "feature7"
+      ]
+    }
+  ],
+  "positive_class": null,
+  "project_id": "RC-AZ-89fdeb-zggz2q-d7bd2682",
+  "registry_version": 4,
+  "schema_version": 3,
+  "selected_family": "Ridge",
+  "selection": {
+    "best_params": {
+      "selector__k": 8
+    },
+    "candidate_counts": {
+      "Ridge": 1
+    },
+    "candidate_families": [
+      "Ridge"
+    ],
+    "candidate_grids": {
+      "Ridge": {
+        "selector__k": [
+          8
+        ]
+      }
+    },
+    "class_order": null,
+    "estimator": "sklearn.linear_model._ridge.RidgeCV",
+    "family_selected_at": "2026-10-24T07:24:32.418606Z",
+    "feature_method": "select",
+    "fitted_model_sha256": "30fa7f3907b39ecce606604a88d2770caada48b78c02c69ae1c471cb96b1b75f",
+    "heldout_unlocked_at": "2026-10-24T07:24:32.449971Z",
+    "imputer_strategy": "median",
+    "inner_split_policy": "fold-local task-aware CV; grouped when subject_id supplied",
+    "input_features": [
+      "feature0",
+      "feature1",
+      "feature2",
+      "feature3",
+      "feature4",
+      "feature5",
+      "feature6",
+      "feature7"
+    ],
+    "input_sha256": "200ce21157244fb20de256c6257977797de5cec123cef4cd25dc790e6ed9bcc1",
+    "outer_split_ids_hash": "c8c3fc34d228adefe9152458c48227192a3abfa5f96c5418cf3ffdab61aab3a3",
+    "positive_class": null,
+    "project_id": "RC-AZ-89fdeb-zggz2q-d7bd2682",
+    "random_seed": 10,
+    "scaler": "standard",
+    "schema_version": 3,
+    "selected_at": "2026-10-24T07:24:32.449856Z",
+    "selected_family": "Ridge",
+    "selected_features": [
+      "feature0",
+      "feature1",
+      "feature2",
+      "feature3",
+      "feature4",
+      "feature5",
+      "feature6",
+      "feature7"
+    ],
+    "selection_metric": "r2",
+    "selection_rule": "highest development per-family outer-CV mean; lexicographic tie-break",
+    "software_commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "software_identity": {
+      "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+      "declared_commit_matches": true,
+      "dirty": false,
+      "verified": true
+    },
+    "threshold_policy": null,
+    "threshold_value": null,
+    "validation_budget": {
+      "actual_inner_splits": 3,
+      "actual_outer_evaluations": 10,
+      "actual_outer_repeats": 2,
+      "actual_outer_splits": 5,
+      "requested_inner_splits": 3,
+      "requested_outer_repeats": 2,
+      "requested_outer_splits": 5
+    }
+  },
+  "selection_lock_sha256": "9a72901fbeeef638c97365dd9a8988a04e9f959d2b33b7ca7064c791c237dda7",
+  "software": {
+    "commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "declared_commit_matches": true,
+    "dirty": false,
+    "verified": true
+  },
+  "strategy": "custom",
+  "task": "regression",
+  "validation": {
+    "family_scope": "fixed family per outer CV; family selected from development summaries",
+    "inner_splits": 3,
+    "outer_repeats": 2,
+    "outer_splits": 5,
+    "preprocessing_scope": "fit within inner and outer training folds; FSS/BSS internal scoring uses upstream training-fold preprocessing",
+    "random_state": 10,
+    "requested_budget": {
+      "inner_splits": 3,
+      "outer_repeats": 2,
+      "outer_splits": 5
+    },
+    "selection_metric": "r2",
+    "threshold_policy": "not applicable",
+    "threshold_value": null
+  },
+  "warnings": [
+    "The development outer-CV scores describe fixed estimator families; the winning family was selected using those scores. Only the selected family has a heldout result."
+  ]
+}

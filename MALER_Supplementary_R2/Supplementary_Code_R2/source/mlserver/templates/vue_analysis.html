@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+                // 点击连接websocket按钮，则启动访问websocket
+                $('#connect_websocket').click(function () {
+					// 设置websocket的服务端url
+
+					
+					// heartCheck.start();
+
+                    if(window.s){
+                        window.s.close()
+                    }
+					var s = new WebSocket("ws://" + window.location.host + "/maler/acceptsocket");
+					// var s = new WebSocket("ws://inbirg.com/maler/accept_socket");
+					
+					window.s = s;
+                    // 打开连接websocket服务，连接成功则打印信息
+                    s.onopen = function () {
+                        console.log('WebSocket open');//成功连接上Websocket
+						// window.s.send("heartbeat")
+                    };
+ 
+                    // 接收服务端发送过来的数据，在浏览器上刷新
+                    s.onmessage = function (msg) {
+						// heartCheck.reset();
+                        console.log('message: ' + msg.data);//打印出服务端返回过来的数据
+                        // $('#messagecontainer').prepend('<p>' + msg.data + '</p>');
+						var m = JSON.parse(msg.data)
+						// if (m['status'] == 1){
+						// 	window.s.close();
+						// 	console.log('websocket is closed!');
+						// }
+						
+                    };
+ 
+ 
+                    setInterval(() => {
+                      if (window.s.readyState === WebSocket.OPEN) {
+                        window.s.send("heartbeat");
+                      }
+                    }, 1000);
+                });
+ 
+                // 点击发送消息按钮，则通过websocket发送数据至服务端
+                $('#send_message').click(function () {
+                    if (!window.s) {
+                        alert("Please connect server.");
+                    } else {
+                        window.s.send($('#message').val());//通过websocket发送数据
+                    }
+                });
+ 
+                // 点击关闭websocket连接
+                $('#close_websocket').click(function () {
+                    if (window.s) {
+                        window.s.close();//关闭websocket
+                        console.log('websocket is closed!');
+                    }
+                });
+        });
+		
+		// 发送心跳数据代码
+		var heartCheck = {
+		            timeout: 1000,//1s
+		            timeoutObj: null,
+		            reset: function(){
+		                clearInterval(this.timeoutObj);
+		                this.start();
+		            },
+		            start: function(){
+		                this.timeoutObj = setInterval(function(){
+		                    if(websocket.readyState==1){
+		                        websocket.send("HeartBeat");
+		                    }
+		                }, this.timeout)
+		            }
+		        };
+		// var analysis_results = localStorage.getItem("analysis_results");
+		window.addEventListener("message", (event) => {
+			console.log(event.origin)
+		    if (event.origin === "http://127.0.0.1:8000/maler/vue_analysis") {
+				var analysis_results = event.data;
+				console.log(analysis_results);
+		   }
+		});
+		
+    </script>
+</head>
+<body>
+ 
+<input type="text" id="message" value="Open websocket!" />
+<button type="button" id="connect_websocket">连接websocket</button>
+<button type="button" id="send_message">发送 message</button>
+<button type="button" id="close_websocket">关闭websocket</button>
+
+<!-- <a style="font-size: 18px; font-weight: 700; text-align: center;" href="' + url + '">--》Click here to see the results《--</a>' -->
+
+<h1>Received Messages</h1>
+
+<span style="font-size: 13pt; font-family: 'Times New Roman', Times, serif;"> cor: 0.9 <br> pvalue: 0.05</span>
+ <script>
+	 
+
+	 // console.log(analysis_results);
+	 // document.write(analysis_results);
+ </script>
+ 
+ 
+<div id="messagecontainer"></div>
+ 
+
+</body>
+</html>
+ 

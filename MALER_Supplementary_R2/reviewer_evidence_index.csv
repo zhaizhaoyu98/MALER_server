@@ -1,0 +1,78 @@
+reviewer_subitem,location
+M1.1,Supplementary_Code_R2/source/mlserver/validated_analysis.py
+M1.1,Submitted separately: Supplementary_Information_R2.docx
+M1.2,Supplementary_Code_R2/source/mlserver/validated_analysis.py
+M1.2,Supplementary_Code_R2/source/mlserver/tests_submission.py
+M1.3,Supplementary_Code_R2/evidence/selection_scope_ledger.json
+M1.3,Supplementary_Code_R2/evidence/primary_results/provenance.json
+M1.4,Supplementary_Code_R2/evidence/selection_scope_ledger.json
+M1.4,Submitted separately: MALER_manuscript_clean_R2.docx
+M2.1,Supplementary_Code_R2/source/mlserver/validated_analysis.py
+M2.1,Supplementary_Code_R2/source/mlserver/tests_submission.py
+M2.2,Supplementary_Code_R2/source/mlserver/tests_submission.py
+M2.2,Supplementary_Code_R2/source/mlserver/safe_ml.py
+M2.3,Supplementary_Code_R2/source/mlserver/templates/help.html
+M2.3,Submitted separately: MALER_manuscript_clean_R2.docx
+M2.4,Supplementary_Code_R2/evidence/primary_results/binary_classification.json
+M2.4,Submitted separately: Supplementary_Information_R2.docx
+M3.1,Cloud_Evidence_R2/production_validation/workflow_verification.json
+M3.1,Cloud_Evidence_R2/production_validation/browser/binary_custom/selection_lock.json
+M3.1,Cloud_Evidence_R2/production_validation/browser/xgb_binary/selection_lock.json
+M3.1,Supplementary_Code_R2/source/mlserver/tests_xgboost.py
+M3.2,Supplementary_Code_R2/source/mlserver/tests_submission.py
+M3.2,Supplementary_Code_R2/source/mlserver/safe_ml.py
+M3.3,Supplementary_Code_R2/evidence/selection_scope_ledger.json
+M3.3,Supplementary_Code_R2/source/mlserver/validated_analysis.py
+M3.4,Supplementary_Code_R2/source/mlserver/validated_analysis.py
+M3.4,Supplementary_Code_R2/source/mlserver/templates/help.html
+M4.1,Cloud_Evidence_R2/production_validation/workflow_verification.json
+M4.1,Cloud_Evidence_R2/operations_checks/ops_rehearsal.json
+M4.1,Cloud_Evidence_R2/supporting_checks/hsts_assessment.json
+M4.1,Cloud_Evidence_R2/production_validation/final_public_checks.json
+M4.2,Submitted separately: MALER_manuscript_clean_R2.docx
+M4.2,Submitted separately: Response_to_Reviewers_R2.docx
+M4.3,Cloud_Evidence_R2/production_validation/release_applied.json
+M4.3,Cloud_Evidence_R2/production_validation/current_identity.json
+M4.3,Cloud_Evidence_R2/production_validation/visual_release_proof.json
+M4.3,Supplementary_Code_R2/source_file_manifest.json
+M4.4,Cloud_Evidence_R2/public_online_0b24354/scheduled_cleanup_runs.jsonl
+M4.4,Cloud_Evidence_R2/production_validation/task_cleanup_confirmed.json
+M4.4,Cloud_Evidence_R2/operations_checks/ops_rehearsal.json
+M4.4,Cloud_Evidence_R2/supporting_checks/preliminary_cleanup_verified.json
+M4.4,Cloud_Evidence_R2/production_validation/prior_release_cleanup_verified.json
+M4.5,Supplementary_Code_R2/source/mlserver/templates/public_templates/service_notice.html
+M4.5,Submitted separately: Supplementary_Information_R2.docx
+M4.5,Cloud_Evidence_R2/production_validation/interface_capture/capture_manifest.json
+M4.6,Cloud_Evidence_R2/operations_checks/ops_settings_correction.json
+M4.6,Submitted separately: Response_to_Reviewers_R2.docx
+M4.7,Supplementary_Code_R2/source/mlserver/templates/public_templates/service_notice.html
+M4.7,Submitted separately: Cover_Letter_R2.docx
+M5.1,Cloud_Evidence_R2/production_validation/workflow_verification.json
+M5.1,Cloud_Evidence_R2/production_validation/browser/multiclass/browser_report.json
+M5.1,Cloud_Evidence_R2/production_validation/interface_capture/capture_manifest.json
+M5.2,Supplementary_Code_R2/evidence/primary_results/reference_parity_check.json
+M5.2,Supplementary_Code_R2/evidence/primary_results/current_fixed_refit_parity.json
+M5.3,Supplementary_Code_R2/evidence/product_missingness/product_missingness_report.json
+M5.3,Supplementary_Code_R2/evidence/executed_product_missingness_e2e.py
+M5.4,Cloud_Evidence_R2/production_validation/workflow_verification.json
+M5.4,Cloud_Evidence_R2/production_validation/browser/regression/browser_rows.json
+M5.4,Supplementary_Code_R2/source/mlserver/labelled_xgboost.py
+M5.4,Cloud_Evidence_R2/supporting_checks/xgboost_fix_proof.json
+M5.5,Cloud_Evidence_R2/production_validation/workflow_verification.json
+M5.5,Cloud_Evidence_R2/production_validation/browser/survival/browser_rows.json
+M5.6,Cloud_Evidence_R2/production_validation/workflow_verification.json
+M5.6,Cloud_Evidence_R2/supporting_checks/public_asset_retry_note.json
+M5.6,Supplementary_Code_R2/evidence/transport_checks/first_regression_transport_failure.json
+M5.6,Cloud_Evidence_R2/supporting_checks/xgboost_fix_proof.json
+M5.6,Cloud_Evidence_R2/history_preliminary_1d3e42a_browser/release_base_guard_attempt.json
+m1.1,Submitted separately: MALER_manuscript_clean_R2.docx
+m2.1,Supplementary_Code_R2/evidence/comparison_sources/comparison_sources.json
+m2.1,Submitted separately: MALER_manuscript_clean_R2.docx
+m3.1,Supplementary_Code_R2/source/mlserver/context_processors.py
+m3.1,Cloud_Evidence_R2/production_validation/browser/multiclass/selection_lock.json
+m3.2,Supplementary_Code_R2/evidence/selection_scope_ledger.json
+m3.2,Submitted separately: Supplementary_Information_R2.docx
+m4.1,Supplementary_Code_R2/evidence/primary_results/provenance.json
+m4.1,Submitted separately: MALER_manuscript_clean_R2.docx
+m4.2,Submitted separately: MALER_manuscript_clean_R2.docx
+m4.2,Submitted separately: Supplementary_Information_R2.docx

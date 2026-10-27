@@ -1,0 +1,18 @@
+{
+  "task": "survival",
+  "seed": 313,
+  "synthetic": true,
+  "development_samples": 80,
+  "heldout_samples": 40,
+  "prediction_samples": 40,
+  "blind_prediction_samples": 10,
+  "labeled_prediction_samples": 30,
+  "input_features": 8,
+  "prediction_missing_cells": 29,
+  "feature_order_reversed": true,
+  "extra_feature": "ignored_extra",
+  "files": {
+    "analysis.csv": "c62f1762121bd0f51a208e5c4787d043afe1a330db81646d9be147b6bfe8dbd6",
+    "predict.csv": "d154709d4bcb9ff7a7ad88d307c8ebb3723ff1aee79759856dba86461d76adb8"
+  }
+}

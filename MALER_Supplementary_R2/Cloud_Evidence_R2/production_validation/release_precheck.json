@@ -1,0 +1,31 @@
+{
+  "server_utc": "2026-10-24T07:12:00.680219Z",
+  "current": {
+    "server_utc": "2026-10-24T07:11:58.177843Z",
+    "source_commit": "b87cae92d696798604beab228c082d713f2a0e63",
+    "source_clean": true,
+    "source_directory": "/mnt/home/liqiang/maler_revision2_20260930/source_public_b87cae9",
+    "process_exe": "/mnt/home/liqiang/.conda/envs/gene_edit/bin/python3.7",
+    "master_pid": 2576095,
+    "public_uploads_enabled": true,
+    "task_root": "/var/lib/maler_public_r2/tasks"
+  },
+  "resolved_settings": {
+    "settings_module": "public_online_settings",
+    "database_path": "/var/lib/maler_public_r2/state/public.sqlite3",
+    "task_root": "/var/lib/maler_public_r2/tasks",
+    "upload_tmp": "/var/lib/maler_public_r2/django_tmp",
+    "static_root": "/mnt/home/liqiang/maler_revision2_20260930/public_static",
+    "ssl_redirect": true,
+    "hsts_seconds": 0
+  },
+  "versions": {
+    "python": "3.7.11",
+    "django": "2.1.8",
+    "xgboost": "1.6.2",
+    "sklearn": "1.0.2"
+  },
+  "next_commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+  "runtime_upgrade_planned": false,
+  "nas_policy_change_planned": false
+}

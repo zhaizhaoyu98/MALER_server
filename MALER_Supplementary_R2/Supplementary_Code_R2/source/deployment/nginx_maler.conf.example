@@ -1,0 +1,48 @@
+limit_req_zone $binary_remote_addr zone=maler_uploads:10m rate=10r/m;
+
+server {
+    listen 443 ssl http2;
+    server_name maler.example.org;
+
+    ssl_certificate /etc/letsencrypt/live/maler.example.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/maler.example.org/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 1d;
+
+    client_max_body_size 200m;
+    client_body_timeout 120s;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header X-Frame-Options DENY always;
+    add_header Referrer-Policy same-origin always;
+
+    # Project caches can contain uploaded biomedical data and models. Never
+    # expose this subtree through the generic static-file alias.
+    location ^~ /mlserver_static/cache/ {
+        deny all;
+        return 404;
+    }
+
+    location /mlserver_static/ {
+        alias /srv/maler/MLSERVER/staticfiles/;
+        autoindex off;
+    }
+
+    location / {
+        limit_req zone=maler_uploads burst=20 nodelay;
+        include uwsgi_params;
+        uwsgi_param HTTP_X_FORWARDED_PROTO $scheme;
+        uwsgi_param HTTP_X_FORWARDED_HOST $host;
+        uwsgi_read_timeout 1800s;
+        uwsgi_send_timeout 1800s;
+        uwsgi_pass unix:/run/maler/maler.sock;
+    }
+}
+
+server {
+    listen 80;
+    server_name maler.example.org;
+    return 301 https://$host$request_uri;
+}
+

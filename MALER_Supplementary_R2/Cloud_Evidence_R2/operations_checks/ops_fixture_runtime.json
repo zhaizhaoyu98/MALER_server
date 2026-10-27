@@ -1,0 +1,24 @@
+{
+  "start": {
+    "exit_code": 0,
+    "output": ""
+  },
+  "actual_unit": {
+    "exit_code": 0,
+    "output": "ExecStart={ path=/mnt/home/liqiang/.conda/envs/gene_edit/bin/python3.7 ; argv[]=/mnt/home/liqiang/.conda/envs/gene_edit/bin/python3.7 /run/maler_recovery_check_20261022/migrate_guard.py ; ignore_errors=no ; start_time=[Thu 2026-10-22 21:04:12 CST] ; stop_time=[Thu 2026-10-22 21:04:14 CST] ; pid=2428368 ; code=exited ; status=0 }\nEnvironmentFiles=/mnt/home/liqiang/maler_revision2_20260930/runtime/public_online_environment.env (ignore_errors=no)\nEnvironmentFiles=/run/maler_recovery_check_20261022/fixture.env (ignore_errors=no)\nUser=liqiang\nFragmentPath=/run/systemd/system/maler-recovery-audit-app.service"
+  },
+  "fixture_unit_content": "[Unit]\nRequires=maler-recovery-audit-storage.service\nAfter=maler-recovery-audit-storage.service\n[Service]\nType=oneshot\nUser=liqiang\nGroup=liqiang\nWorkingDirectory=/mnt/home/liqiang/maler_revision2_20260930/source_public_0b24354\nEnvironmentFile=/mnt/home/liqiang/maler_revision2_20260930/runtime/public_online_environment.env\nEnvironmentFile=/run/maler_recovery_check_20261022/fixture.env\nExecStart=/mnt/home/liqiang/.conda/envs/gene_edit/bin/python3.7 /run/maler_recovery_check_20261022/migrate_guard.py\nRemainAfterExit=yes\nUMask=0077\n",
+  "guard_content": "import os,sys,json\nsys.path.insert(0,'/mnt/home/liqiang/maler_revision2_20260930/source_public_0b24354')\nos.environ.setdefault(\"DJANGO_SETTINGS_MODULE\",\"ML_WebServer.settings\")\nimport django\ndjango.setup()\nfrom django.conf import settings\nexpected='/run/maler_recovery_check_20261022/volume/state/recovery.sqlite3'\nif os.environ[\"MALER_TASK_ROOT\"]!='/run/maler_recovery_check_20261022/volume/tasks' or str(settings.DATABASES[\"default\"][\"NAME\"])!=expected:raise RuntimeError(\"Fixture environment isolation failed\")\nprint(json.dumps({\"fixture_database\":str(settings.DATABASES[\"default\"][\"NAME\"]),\"settings_module\":os.environ[\"DJANGO_SETTINGS_MODULE\"],\"optimize\":sys.flags.optimize}),flush=True)\nfrom django.core.management import call_command\ncall_command(\"migrate\",interactive=False,verbosity=1)\n",
+  "state_exists": true,
+  "state_entries": [
+    {
+      "name": "recovery.sqlite3",
+      "uid": 1000,
+      "bytes": 131072
+    }
+  ],
+  "fixture_mount": {
+    "exit_code": 0,
+    "output": "/run/maler_recovery_check_20261022/volume tmpfs"
+  }
+}

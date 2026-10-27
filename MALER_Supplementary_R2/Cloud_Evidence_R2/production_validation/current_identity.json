@@ -1,0 +1,22 @@
+{
+  "identity": {
+    "server_utc": "2026-10-24T07:47:42.029405Z",
+    "source_commit": "961b45a0c1cee66c91c15efac1546af3262cc7db",
+    "source_clean": true,
+    "source_directory": "/mnt/home/liqiang/maler_revision2_20260930/source_public_961b45a",
+    "process_exe": "/mnt/home/liqiang/.conda/envs/gene_edit/bin/python3.7",
+    "master_pid": 2817537,
+    "public_uploads_enabled": true,
+    "task_root": "/var/lib/maler_public_r2/tasks"
+  },
+  "resolved_settings": {
+    "settings_module": "public_online_settings",
+    "database_path": "/var/lib/maler_public_r2/state/public.sqlite3",
+    "task_root": "/var/lib/maler_public_r2/tasks",
+    "upload_tmp": "/var/lib/maler_public_r2/django_tmp",
+    "static_root": "/mnt/home/liqiang/maler_revision2_20260930/public_static",
+    "ssl_redirect": true,
+    "hsts_seconds": 0
+  },
+  "scope": "Post-browser exact production identity"
+}

@@ -1,0 +1,4945 @@
+{
+  "dataset": {
+    "dataset": "multiclass_classification",
+    "missing_test": 0,
+    "missing_train": 0,
+    "n_features": 1648,
+    "n_test": 468,
+    "n_train": 482,
+    "patient_level_audit": {
+      "collapsed_within_partition_patients": [
+        {
+          "partition": "test",
+          "patient": "TCGA-B2-3923",
+          "samples": [
+            "TCGA-B2-3923-01A",
+            "TCGA-B2-3923-01B"
+          ],
+          "selected": "TCGA-B2-3923-01A"
+        }
+      ],
+      "excluded_cross_partition_patients": [
+        {
+          "patient": "TCGA-44-2656",
+          "test_samples": [
+            "TCGA-44-2656-01A"
+          ],
+          "train_samples": [
+            "TCGA-44-2656-01B"
+          ]
+        },
+        {
+          "patient": "TCGA-44-6146",
+          "test_samples": [
+            "TCGA-44-6146-01A"
+          ],
+          "train_samples": [
+            "TCGA-44-6146-01B"
+          ]
+        },
+        {
+          "patient": "TCGA-B2-3924",
+          "test_samples": [
+            "TCGA-B2-3924-01B"
+          ],
+          "train_samples": [
+            "TCGA-B2-3924-01A"
+          ]
+        }
+      ],
+      "retained_patients": 950,
+      "rule": "Exclude cross-partition patients from both sets; otherwise keep one aliquot per patient, preferring sample type 01 and vial A without using outcomes.",
+      "source_samples": 957
+    },
+    "source_path": "E:\\CodeProject\\Server\\MLSERVER\\mlserver\\static\\cache\\example\\multiclass_classification_example.csv",
+    "source_sha256": "fd5a1ac21d2fbb81631cf4f9967cea033b53a6d08ef68e7295be85550984af29",
+    "task": "classification",
+    "test_class_counts": {
+      "KIRC": 154,
+      "LUAD": 161,
+      "LUSC": 153
+    },
+    "train_class_counts": {
+      "KIRC": 176,
+      "LUAD": 170,
+      "LUSC": 136
+    }
+  },
+  "dummy_test_metrics": {
+    "accuracy": 0.32905982905982906,
+    "balanced_accuracy": 0.3333333333333333,
+    "f1": 0.16505894962486603,
+    "mcc": 0.0,
+    "per_class": {
+      "KIRC": {
+        "sensitivity": 1.0,
+        "specificity": 0.0
+      },
+      "LUAD": {
+        "sensitivity": 0.0,
+        "specificity": 1.0
+      },
+      "LUSC": {
+        "sensitivity": 0.0,
+        "specificity": 1.0
+      }
+    },
+    "pr_auc_macro": 0.3333333333333333,
+    "precision": 0.10968660968660969,
+    "recall_sensitivity": 0.3333333333333333,
+    "roc_auc_ovr_macro": 0.5,
+    "specificity": 0.6666666666666666
+  },
+  "feature_stability": {
+    "mean_pairwise_jaccard": 0.8248499664665208,
+    "std_pairwise_jaccard": 0.04718083579438504,
+    "top_selection_frequency": [
+      {
+        "feature": "LINC02532",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "CEACAM5",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "PDZK1",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "SLC6A13",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "CLEC18B",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "NAT8",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "NPY6R",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "HAO2",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "IGSF9",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "CDH16",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "NR1H4",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "OVOL2",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "SLC17A3",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "PAX2",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "LINC02274",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "CCDC198",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "GRHL2",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "FXYD2",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "SFTPA1",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "SLC3A1",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "SFTPA2",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "EMX2",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "SLC6A14",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "CUBN",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "SLC28A1",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "OTX1",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "EMX2OS",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "FAM83E",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "AGR2",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "CXCL17",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "SDR16C5",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "CEACAM6",
+        "folds": 50,
+        "fraction": 1.0
+      },
+      {
+        "feature": "TBX4",
+        "folds": 49,
+        "fraction": 0.98
+      },
+      {
+        "feature": "PRSS22",
+        "folds": 49,
+        "fraction": 0.98
+      },
+      {
+        "feature": "SFTPB",
+        "folds": 49,
+        "fraction": 0.98
+      },
+      {
+        "feature": "ADAMTS9-AS1",
+        "folds": 48,
+        "fraction": 0.96
+      },
+      {
+        "feature": "ALDH3B2",
+        "folds": 47,
+        "fraction": 0.94
+      },
+      {
+        "feature": "DSG3",
+        "folds": 47,
+        "fraction": 0.94
+      },
+      {
+        "feature": "SOX2",
+        "folds": 47,
+        "fraction": 0.94
+      },
+      {
+        "feature": "FOXA1",
+        "folds": 45,
+        "fraction": 0.9
+      },
+      {
+        "feature": "BHMT",
+        "folds": 45,
+        "fraction": 0.9
+      },
+      {
+        "feature": "SLC5A10",
+        "folds": 43,
+        "fraction": 0.86
+      },
+      {
+        "feature": "SLC22A11",
+        "folds": 42,
+        "fraction": 0.84
+      },
+      {
+        "feature": "SIX4",
+        "folds": 41,
+        "fraction": 0.82
+      },
+      {
+        "feature": "FAM83A",
+        "folds": 38,
+        "fraction": 0.76
+      },
+      {
+        "feature": "ASPA",
+        "folds": 38,
+        "fraction": 0.76
+      },
+      {
+        "feature": "SLC22A31",
+        "folds": 37,
+        "fraction": 0.74
+      },
+      {
+        "feature": "KCNJ3",
+        "folds": 29,
+        "fraction": 0.58
+      },
+      {
+        "feature": "LINC02894",
+        "folds": 26,
+        "fraction": 0.52
+      },
+      {
+        "feature": "DUOXA1",
+        "folds": 26,
+        "fraction": 0.52
+      }
+    ]
+  },
+  "final_best_params": {
+    "model__C": 10.0,
+    "selector__k": 50
+  },
+  "final_selected_features": [
+    "CUBN",
+    "BHMT",
+    "AGR2",
+    "CDH16",
+    "SFTPA1",
+    "TBX4",
+    "OVOL2",
+    "SFTPB",
+    "NAT8",
+    "FAM83A",
+    "PAX2",
+    "SFTPA2",
+    "SLC22A31",
+    "KCNJ3",
+    "DSG3",
+    "PDZK1",
+    "FOXA1",
+    "DUOXA1",
+    "SLC3A1",
+    "EMX2",
+    "SLC6A13",
+    "SLC6A14",
+    "SLC17A3",
+    "SLC28A1",
+    "CCDC198",
+    "SOX2",
+    "LINC02894",
+    "SLC22A11",
+    "SLC5A10",
+    "FXYD2",
+    "LINC02274",
+    "CEACAM5",
+    "CLEC18B",
+    "SIX4",
+    "IGSF9",
+    "OTX1",
+    "HAO2",
+    "NR1H4",
+    "SDR16C5",
+    "ALDH3B2",
+    "ADAMTS9-AS1",
+    "ASPA",
+    "LINC02532",
+    "FAM83E",
+    "CEACAM6",
+    "NPY6R",
+    "CXCL17",
+    "PRSS22",
+    "GRHL2",
+    "EMX2OS"
+  ],
+  "model_bundle": {
+    "path": "E:\\CodeProject\\Server\\MLSERVER\\validation\\results\\multiclass_classification_pipeline.maler",
+    "sha256": "df4dacfd974ff7ea0779a4f932afc52f14852eb585c0c735be226a5847d74456"
+  },
+  "nested_cv": {
+    "folds": [
+      {
+        "accuracy": 0.9896907216494846,
+        "balanced_accuracy": 0.9880952380952381,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 50
+        },
+        "f1": 0.9891084760649979,
+        "fold": 1,
+        "mcc": 0.9846086047317278,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9841269841269841
+          },
+          "LUSC": {
+            "sensitivity": 0.9642857142857143,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc_macro": 0.9997198879551821,
+        "precision": 0.9904761904761905,
+        "recall_sensitivity": 0.9880952380952381,
+        "roc_auc_ovr_macro": 0.9998443821973234,
+        "selected_features": [
+          "CUBN",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "TMPRSS4",
+          "SFTPA2",
+          "SLC22A31",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "ETV4",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "EHF",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "LINC00989",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9947089947089948
+      },
+      {
+        "accuracy": 0.9484536082474226,
+        "balanced_accuracy": 0.9458968772694263,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9448213478064225,
+        "fold": 2,
+        "mcc": 0.9223616719955203,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9117647058823529,
+            "specificity": 0.9682539682539683
+          },
+          "LUSC": {
+            "sensitivity": 0.9259259259259259,
+            "specificity": 0.9571428571428572
+          }
+        },
+        "pr_auc_macro": 0.9852223900121047,
+        "precision": 0.9440836940836941,
+        "recall_sensitivity": 0.9458968772694263,
+        "roc_auc_ovr_macro": 0.9913995227720718,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "TMEM252",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "EPB41L4B",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9751322751322752
+      },
+      {
+        "accuracy": 0.96875,
+        "balanced_accuracy": 0.9655047204066812,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9666393218485098,
+        "fold": 3,
+        "mcc": 0.9529362086997915,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9705882352941176,
+            "specificity": 0.967741935483871
+          },
+          "LUSC": {
+            "sensitivity": 0.9259259259259259,
+            "specificity": 0.9855072463768116
+          }
+        },
+        "pr_auc_macro": 0.99830692296197,
+        "precision": 0.9681318681318681,
+        "recall_sensitivity": 0.9655047204066812,
+        "roc_auc_ovr_macro": 0.9991677709298185,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "SLC3A1",
+          "UPB1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "ETV4",
+          "SLC17A3",
+          "SLC28A1",
+          "GLYATL1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "SLC22A5",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HOXD3",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9844163939535608
+      },
+      {
+        "accuracy": 0.96875,
+        "balanced_accuracy": 0.9680464778503994,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9668928086838534,
+        "fold": 4,
+        "mcc": 0.9530436529350758,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9411764705882353,
+            "specificity": 0.9838709677419355
+          },
+          "LUSC": {
+            "sensitivity": 0.9629629629629629,
+            "specificity": 0.9710144927536232
+          }
+        },
+        "pr_auc_macro": 0.9943132021267899,
+        "precision": 0.9660894660894662,
+        "recall_sensitivity": 0.9680464778503994,
+        "roc_auc_ovr_macro": 0.9973035947882174,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "EGFL6",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "HS6ST2",
+          "FOXA1",
+          "DUOXA1",
+          "CLCA2",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "DSC3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "ENTPD3",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "ST6GALNAC1",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9849618201651862
+      },
+      {
+        "accuracy": 0.96875,
+        "balanced_accuracy": 0.9655047204066812,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9666393218485098,
+        "fold": 5,
+        "mcc": 0.9529362086997915,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9705882352941176,
+            "specificity": 0.967741935483871
+          },
+          "LUSC": {
+            "sensitivity": 0.9259259259259259,
+            "specificity": 0.9855072463768116
+          }
+        },
+        "pr_auc_macro": 0.9914989248235476,
+        "precision": 0.9681318681318681,
+        "recall_sensitivity": 0.9655047204066812,
+        "roc_auc_ovr_macro": 0.9956183415308534,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "PAX2",
+          "SFTPA2",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "DSC3",
+          "FUT2",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NRG3",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9844163939535608
+      },
+      {
+        "accuracy": 0.9484536082474226,
+        "balanced_accuracy": 0.9404761904761904,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 50
+        },
+        "f1": 0.9444892112095981,
+        "fold": 6,
+        "mcc": 0.9257111382401028,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9206349206349206
+          },
+          "LUSC": {
+            "sensitivity": 0.8214285714285714,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc_macro": 0.9941803173804303,
+        "precision": 0.9572649572649573,
+        "recall_sensitivity": 0.9404761904761904,
+        "roc_auc_ovr_macro": 0.9972022625475311,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "EGFL6",
+          "SFTPA2",
+          "SLC22A31",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "CLCA2",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "ENTPD3",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "WNT7B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9735449735449735
+      },
+      {
+        "accuracy": 0.979381443298969,
+        "balanced_accuracy": 0.9778503994190269,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 50
+        },
+        "f1": 0.9778503994190269,
+        "fold": 7,
+        "mcc": 0.9688503532434168,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9705882352941176,
+            "specificity": 0.9841269841269841
+          },
+          "LUSC": {
+            "sensitivity": 0.9629629629629629,
+            "specificity": 0.9857142857142858
+          }
+        },
+        "pr_auc_macro": 0.9978998808871934,
+        "precision": 0.9778503994190269,
+        "recall_sensitivity": 0.9778503994190269,
+        "roc_auc_ovr_macro": 0.9990040460628696,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "GLYATL1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "EPB41L4B",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.98994708994709
+      },
+      {
+        "accuracy": 0.9895833333333334,
+        "balanced_accuracy": 0.9876543209876543,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9888797739495031,
+        "fold": 8,
+        "mcc": 0.9844219688220355,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9838709677419355
+          },
+          "LUSC": {
+            "sensitivity": 0.9629629629629629,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc_macro": 1.0,
+        "precision": 0.9904761904761905,
+        "recall_sensitivity": 0.9876543209876543,
+        "roc_auc_ovr_macro": 1.0,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "DSG3",
+          "PDZK1",
+          "HS6ST2",
+          "FOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "ETV4",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HOXD3",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9946236559139785
+      },
+      {
+        "accuracy": 0.9479166666666666,
+        "balanced_accuracy": 0.9484386347131445,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 50
+        },
+        "f1": 0.945119208277103,
+        "fold": 9,
+        "mcc": 0.9230158323913201,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.8823529411764706,
+            "specificity": 0.9838709677419355
+          },
+          "LUSC": {
+            "sensitivity": 0.9629629629629629,
+            "specificity": 0.9420289855072463
+          }
+        },
+        "pr_auc_macro": 0.9938563030468516,
+        "precision": 0.9448028673835126,
+        "recall_sensitivity": 0.9484386347131445,
+        "roc_auc_ovr_macro": 0.9969873392537455,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NRG3",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.975299984416394
+      },
+      {
+        "accuracy": 0.9791666666666666,
+        "balanced_accuracy": 0.9753086419753086,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 50
+        },
+        "f1": 0.9776556776556777,
+        "fold": 10,
+        "mcc": 0.9691238154030312,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.967741935483871
+          },
+          "LUSC": {
+            "sensitivity": 0.9259259259259259,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc_macro": 0.9972350853991058,
+        "precision": 0.9814814814814815,
+        "recall_sensitivity": 0.9753086419753086,
+        "roc_auc_ovr_macro": 0.9986517973941087,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "PAX2",
+          "SFTPA2",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "ETV4",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "ENTPD3",
+          "FXYD2",
+          "LINC02274",
+          "PKLR",
+          "CEACAM5",
+          "CLEC18B",
+          "TMEM252",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.989247311827957
+      },
+      {
+        "accuracy": 0.9587628865979382,
+        "balanced_accuracy": 0.9523809523809524,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 50
+        },
+        "f1": 0.9558404558404558,
+        "fold": 11,
+        "mcc": 0.9400582238699092,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9365079365079365
+          },
+          "LUSC": {
+            "sensitivity": 0.8571428571428571,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc_macro": 0.9986196585914059,
+        "precision": 0.9649122807017544,
+        "recall_sensitivity": 0.9523809523809524,
+        "roc_auc_ovr_macro": 0.99934369883219,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "CLCA2",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "ETV4",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HOXD3",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.978835978835979
+      },
+      {
+        "accuracy": 0.9896907216494846,
+        "balanced_accuracy": 0.9901960784313726,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 50
+        },
+        "f1": 0.9889642695612845,
+        "fold": 12,
+        "mcc": 0.9846010335145223,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9705882352941176,
+            "specificity": 1.0
+          },
+          "LUSC": {
+            "sensitivity": 1.0,
+            "specificity": 0.9857142857142858
+          }
+        },
+        "pr_auc_macro": 0.9985571732122204,
+        "precision": 0.9880952380952381,
+        "recall_sensitivity": 0.9901960784313726,
+        "roc_auc_ovr_macro": 0.9993360307085798,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "FUT2",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9952380952380953
+      },
+      {
+        "accuracy": 0.9479166666666666,
+        "balanced_accuracy": 0.943355119825708,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 50
+        },
+        "f1": 0.9443988697475162,
+        "fold": 13,
+        "mcc": 0.9214504485775474,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9411764705882353,
+            "specificity": 0.9516129032258065
+          },
+          "LUSC": {
+            "sensitivity": 0.8888888888888888,
+            "specificity": 0.9710144927536232
+          }
+        },
+        "pr_auc_macro": 0.9882594805366486,
+        "precision": 0.9457875457875456,
+        "recall_sensitivity": 0.943355119825708,
+        "roc_auc_ovr_macro": 0.9933837576725494,
+        "selected_features": [
+          "CUBN",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "HS6ST2",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "ENTPD3",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "WNT7B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "EPB41L4B",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9742091319931432
+      },
+      {
+        "accuracy": 0.9479166666666666,
+        "balanced_accuracy": 0.9484386347131445,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.945119208277103,
+        "fold": 14,
+        "mcc": 0.9230158323913201,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.8823529411764706,
+            "specificity": 0.9838709677419355
+          },
+          "LUSC": {
+            "sensitivity": 0.9629629629629629,
+            "specificity": 0.9420289855072463
+          }
+        },
+        "pr_auc_macro": 0.9892639413223195,
+        "precision": 0.9448028673835126,
+        "recall_sensitivity": 0.9484386347131445,
+        "roc_auc_ovr_macro": 0.9943325242759649,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "DSC3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "EHF",
+          "SIX4",
+          "NECTIN4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.975299984416394
+      },
+      {
+        "accuracy": 1.0,
+        "balanced_accuracy": 1.0,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 50
+        },
+        "f1": 1.0,
+        "fold": 15,
+        "mcc": 1.0,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUSC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc_macro": 1.0,
+        "precision": 1.0,
+        "recall_sensitivity": 1.0,
+        "roc_auc_ovr_macro": 1.0,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "GLYATL1",
+          "CCDC198",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "TMEM252",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NRG3",
+          "NPY6R",
+          "LINC00989",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9896907216494846,
+        "balanced_accuracy": 0.9901960784313726,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9891769224055164,
+        "fold": 16,
+        "mcc": 0.984637857191737,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9705882352941176,
+            "specificity": 1.0
+          },
+          "LUSC": {
+            "sensitivity": 1.0,
+            "specificity": 0.9855072463768116
+          }
+        },
+        "pr_auc_macro": 0.99611549759131,
+        "precision": 0.9885057471264368,
+        "recall_sensitivity": 0.9901960784313726,
+        "roc_auc_ovr_macro": 0.9980480114751215,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "DSG3",
+          "PDZK1",
+          "HS6ST2",
+          "FOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "ETV4",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "SLC22A5",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "TMEM252",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9951690821256038
+      },
+      {
+        "accuracy": 0.9587628865979382,
+        "balanced_accuracy": 0.9557007988380537,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 50
+        },
+        "f1": 0.9557007988380537,
+        "fold": 17,
+        "mcc": 0.9377007064868337,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9411764705882353,
+            "specificity": 0.9682539682539683
+          },
+          "LUSC": {
+            "sensitivity": 0.9259259259259259,
+            "specificity": 0.9714285714285714
+          }
+        },
+        "pr_auc_macro": 0.9932404262352152,
+        "precision": 0.9557007988380537,
+        "recall_sensitivity": 0.9557007988380537,
+        "roc_auc_ovr_macro": 0.9967009025832555,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "EGFL6",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "ETV4",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "WNT7B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9798941798941799
+      },
+      {
+        "accuracy": 0.9791666666666666,
+        "balanced_accuracy": 0.9803921568627452,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9779942279942281,
+        "fold": 18,
+        "mcc": 0.9692622504894717,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9411764705882353,
+            "specificity": 1.0
+          },
+          "LUSC": {
+            "sensitivity": 1.0,
+            "specificity": 0.9710144927536232
+          }
+        },
+        "pr_auc_macro": 0.997161853247046,
+        "precision": 0.9770114942528735,
+        "recall_sensitivity": 0.9803921568627452,
+        "roc_auc_ovr_macro": 0.9986517973941087,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "HS6ST2",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "TMEM252",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HOXD3",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9903381642512077
+      },
+      {
+        "accuracy": 1.0,
+        "balanced_accuracy": 1.0,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 1.0,
+        "fold": 19,
+        "mcc": 1.0,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUSC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc_macro": 1.0,
+        "precision": 1.0,
+        "recall_sensitivity": 1.0,
+        "roc_auc_ovr_macro": 1.0,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "FUT2",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "NECTIN4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "CNKSR1",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9479166666666666,
+        "balanced_accuracy": 0.94081336238199,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 50
+        },
+        "f1": 0.9438460830341526,
+        "fold": 20,
+        "mcc": 0.9224931405522178,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9705882352941176,
+            "specificity": 0.9354838709677419
+          },
+          "LUSC": {
+            "sensitivity": 0.8518518518518519,
+            "specificity": 0.9855072463768116
+          }
+        },
+        "pr_auc_macro": 0.9877414855760001,
+        "precision": 0.950075075075075,
+        "recall_sensitivity": 0.94081336238199,
+        "roc_auc_ovr_macro": 0.9939330882734893,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "CLCA2",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "DSC3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9736637057815178
+      },
+      {
+        "accuracy": 0.9484536082474226,
+        "balanced_accuracy": 0.9404761904761904,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 50
+        },
+        "f1": 0.9444892112095981,
+        "fold": 21,
+        "mcc": 0.9257111382401028,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9206349206349206
+          },
+          "LUSC": {
+            "sensitivity": 0.8214285714285714,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc_macro": 0.995933765915663,
+        "precision": 0.9572649572649573,
+        "recall_sensitivity": 0.9404761904761904,
+        "roc_auc_ovr_macro": 0.9980310964965696,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "CLCA2",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "DSC3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "NECTIN4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9735449735449735
+      },
+      {
+        "accuracy": 0.979381443298969,
+        "balanced_accuracy": 0.9803921568627452,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9779942279942281,
+        "fold": 22,
+        "mcc": 0.969542765512655,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9411764705882353,
+            "specificity": 1.0
+          },
+          "LUSC": {
+            "sensitivity": 1.0,
+            "specificity": 0.9714285714285714
+          }
+        },
+        "pr_auc_macro": 0.9963618582391276,
+        "precision": 0.9770114942528735,
+        "recall_sensitivity": 0.9803921568627452,
+        "roc_auc_ovr_macro": 0.9983400767714494,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "ST6GALNAC1",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "LINC00989",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9904761904761905
+      },
+      {
+        "accuracy": 0.9791666666666666,
+        "balanced_accuracy": 0.9803921568627452,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9779942279942281,
+        "fold": 23,
+        "mcc": 0.9692622504894717,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9411764705882353,
+            "specificity": 1.0
+          },
+          "LUSC": {
+            "sensitivity": 1.0,
+            "specificity": 0.9710144927536232
+          }
+        },
+        "pr_auc_macro": 0.995740338880724,
+        "precision": 0.9770114942528735,
+        "recall_sensitivity": 0.9803921568627452,
+        "roc_auc_ovr_macro": 0.997977696091163,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "ENTPD3",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "NECTIN4",
+          "IGSF9",
+          "OTX1",
+          "HOXD3",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9903381642512077
+      },
+      {
+        "accuracy": 0.96875,
+        "balanced_accuracy": 0.9705882352941176,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9670715249662619,
+        "fold": 24,
+        "mcc": 0.9543986975974709,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9117647058823529,
+            "specificity": 1.0
+          },
+          "LUSC": {
+            "sensitivity": 1.0,
+            "specificity": 0.9565217391304348
+          }
+        },
+        "pr_auc_macro": 0.9915809314388184,
+        "precision": 0.9666666666666667,
+        "recall_sensitivity": 0.9705882352941176,
+        "roc_auc_ovr_macro": 0.9943615525617377,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "DSG3",
+          "PDZK1",
+          "HS6ST2",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "CNKSR1",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9855072463768115
+      },
+      {
+        "accuracy": 0.96875,
+        "balanced_accuracy": 0.9629629629629629,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 50
+        },
+        "f1": 0.9663076498204916,
+        "fold": 25,
+        "mcc": 0.9540932624052108,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9516129032258065
+          },
+          "LUSC": {
+            "sensitivity": 0.8888888888888888,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc_macro": 0.9992789708475982,
+        "precision": 0.9729729729729729,
+        "recall_sensitivity": 0.9629629629629629,
+        "roc_auc_ovr_macro": 0.9996629493485272,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "ETV4",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "EPB41L4B",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9838709677419355
+      },
+      {
+        "accuracy": 0.979381443298969,
+        "balanced_accuracy": 0.9782913165266107,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9782913165266107,
+        "fold": 26,
+        "mcc": 0.9689301729660474,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9705882352941176,
+            "specificity": 0.9841269841269841
+          },
+          "LUSC": {
+            "sensitivity": 0.9642857142857143,
+            "specificity": 0.9855072463768116
+          }
+        },
+        "pr_auc_macro": 0.9935111062473269,
+        "precision": 0.9782913165266107,
+        "recall_sensitivity": 0.9782913165266107,
+        "roc_auc_ovr_macro": 0.9968910269421779,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "SCEL",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "DSG3",
+          "PDZK1",
+          "HS6ST2",
+          "FOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "ST6GALNAC1",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9898780768345986
+      },
+      {
+        "accuracy": 0.9690721649484536,
+        "balanced_accuracy": 0.9680464778503994,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 50
+        },
+        "f1": 0.9668928086838534,
+        "fold": 27,
+        "mcc": 0.9534813527550213,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9411764705882353,
+            "specificity": 0.9841269841269841
+          },
+          "LUSC": {
+            "sensitivity": 0.9629629629629629,
+            "specificity": 0.9714285714285714
+          }
+        },
+        "pr_auc_macro": 0.9946903669959832,
+        "precision": 0.9660894660894662,
+        "recall_sensitivity": 0.9680464778503994,
+        "roc_auc_ovr_macro": 0.9969395165473598,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "PAX2",
+          "EGFL6",
+          "SFTPA2",
+          "SLC22A31",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "SLC3A1",
+          "UPB1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "GLYATL1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9851851851851853
+      },
+      {
+        "accuracy": 0.96875,
+        "balanced_accuracy": 0.9655047204066812,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9666393218485098,
+        "fold": 28,
+        "mcc": 0.9529362086997915,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9705882352941176,
+            "specificity": 0.967741935483871
+          },
+          "LUSC": {
+            "sensitivity": 0.9259259259259259,
+            "specificity": 0.9855072463768116
+          }
+        },
+        "pr_auc_macro": 0.992692405923604,
+        "precision": 0.9681318681318681,
+        "recall_sensitivity": 0.9655047204066812,
+        "roc_auc_ovr_macro": 0.9964505706010348,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "DSC3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "WNT7B",
+          "NECTIN4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9844163939535608
+      },
+      {
+        "accuracy": 1.0,
+        "balanced_accuracy": 1.0,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 50
+        },
+        "f1": 1.0,
+        "fold": 29,
+        "mcc": 1.0,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUSC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc_macro": 1.0,
+        "precision": 1.0,
+        "recall_sensitivity": 1.0,
+        "roc_auc_ovr_macro": 1.0,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "ENTPD3",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "TMEM252",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NRG3",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 1.0
+      },
+      {
+        "accuracy": 0.9583333333333334,
+        "balanced_accuracy": 0.9557007988380537,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 50
+        },
+        "f1": 0.9557007988380537,
+        "fold": 30,
+        "mcc": 0.937111038322961,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9411764705882353,
+            "specificity": 0.967741935483871
+          },
+          "LUSC": {
+            "sensitivity": 0.9259259259259259,
+            "specificity": 0.9710144927536232
+          }
+        },
+        "pr_auc_macro": 0.993483841415789,
+        "precision": 0.9557007988380537,
+        "recall_sensitivity": 0.9557007988380537,
+        "roc_auc_ovr_macro": 0.9968084163695087,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "CLCA2",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "TMEM252",
+          "IGSF9",
+          "OTX1",
+          "HOXD3",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9795854760791647
+      },
+      {
+        "accuracy": 0.9587628865979382,
+        "balanced_accuracy": 0.9607843137254902,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 50
+        },
+        "f1": 0.9569444444444445,
+        "fold": 31,
+        "mcc": 0.9404998102720052,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.8823529411764706,
+            "specificity": 1.0
+          },
+          "LUSC": {
+            "sensitivity": 1.0,
+            "specificity": 0.9420289855072463
+          }
+        },
+        "pr_auc_macro": 0.9987430869783811,
+        "precision": 0.9583333333333334,
+        "recall_sensitivity": 0.9607843137254902,
+        "roc_auc_ovr_macro": 0.9992219109866168,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "PAX2",
+          "EGFL6",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "ETV4",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "SLC22A5",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9806763285024154
+      },
+      {
+        "accuracy": 0.979381443298969,
+        "balanced_accuracy": 0.9778503994190269,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 50
+        },
+        "f1": 0.9778503994190269,
+        "fold": 32,
+        "mcc": 0.9688503532434168,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9705882352941176,
+            "specificity": 0.9841269841269841
+          },
+          "LUSC": {
+            "sensitivity": 0.9629629629629629,
+            "specificity": 0.9857142857142858
+          }
+        },
+        "pr_auc_macro": 0.9990144205830479,
+        "precision": 0.9778503994190269,
+        "recall_sensitivity": 0.9778503994190269,
+        "roc_auc_ovr_macro": 0.9995123975516133,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "HS6ST2",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "EHF",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.98994708994709
+      },
+      {
+        "accuracy": 0.9791666666666666,
+        "balanced_accuracy": 0.9753086419753086,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 50
+        },
+        "f1": 0.9776556776556777,
+        "fold": 33,
+        "mcc": 0.9691238154030312,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.967741935483871
+          },
+          "LUSC": {
+            "sensitivity": 0.9259259259259259,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc_macro": 1.0,
+        "precision": 0.9814814814814815,
+        "recall_sensitivity": 0.9753086419753086,
+        "roc_auc_ovr_macro": 1.0,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "ENTPD3",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "ST6GALNAC1",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.989247311827957
+      },
+      {
+        "accuracy": 0.9895833333333334,
+        "balanced_accuracy": 0.9876543209876543,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9888797739495031,
+        "fold": 34,
+        "mcc": 0.9844219688220355,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9838709677419355
+          },
+          "LUSC": {
+            "sensitivity": 0.9629629629629629,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc_macro": 1.0,
+        "precision": 0.9904761904761905,
+        "recall_sensitivity": 0.9876543209876543,
+        "roc_auc_ovr_macro": 1.0,
+        "selected_features": [
+          "TMPRSS13",
+          "CUBN",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "ETV4",
+          "SLC17A3",
+          "FUT2",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HOXD3",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9946236559139785
+      },
+      {
+        "accuracy": 0.9479166666666666,
+        "balanced_accuracy": 0.9382716049382717,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 50
+        },
+        "f1": 0.9431553443295128,
+        "fold": 35,
+        "mcc": 0.9247891717993106,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9193548387096774
+          },
+          "LUSC": {
+            "sensitivity": 0.8148148148148148,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc_macro": 0.9769080925526584,
+        "precision": 0.9572649572649573,
+        "recall_sensitivity": 0.9382716049382717,
+        "roc_auc_ovr_macro": 0.9881616369644494,
+        "selected_features": [
+          "CUBN",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "CLCA2",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "CERS3",
+          "SLC17A3",
+          "DSC3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "IGSF9",
+          "OTX1",
+          "HOXD3",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "LINC00989",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9731182795698925
+      },
+      {
+        "accuracy": 0.9381443298969072,
+        "balanced_accuracy": 0.9327731092436974,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 50
+        },
+        "f1": 0.9343915343915343,
+        "fold": 36,
+        "mcc": 0.9071963142327744,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9411764705882353,
+            "specificity": 0.9365079365079365
+          },
+          "LUSC": {
+            "sensitivity": 0.8571428571428571,
+            "specificity": 0.9710144927536232
+          }
+        },
+        "pr_auc_macro": 0.9820679601486001,
+        "precision": 0.9373219373219372,
+        "recall_sensitivity": 0.9327731092436974,
+        "roc_auc_ovr_macro": 0.9911399342345634,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "SCEL",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "CLCA2",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "CERS3",
+          "SLC17A3",
+          "DSC3",
+          "SLC28A1",
+          "CCDC198",
+          "SLC22A11",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "NECTIN4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9691741430871866
+      },
+      {
+        "accuracy": 0.979381443298969,
+        "balanced_accuracy": 0.9753086419753086,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 50
+        },
+        "f1": 0.9776556776556777,
+        "fold": 37,
+        "mcc": 0.9694082590924676,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.9682539682539683
+          },
+          "LUSC": {
+            "sensitivity": 0.9259259259259259,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc_macro": 0.9919436356157915,
+        "precision": 0.9814814814814815,
+        "recall_sensitivity": 0.9753086419753086,
+        "roc_auc_ovr_macro": 0.9958398174084447,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "PDZK1",
+          "SLC3A1",
+          "UPB1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "TMEM252",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "EPB41L4B",
+          "HOXD3",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "LINC00989",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9894179894179894
+      },
+      {
+        "accuracy": 0.9270833333333334,
+        "balanced_accuracy": 0.9262890341321715,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 50
+        },
+        "f1": 0.9231668915879442,
+        "fold": 38,
+        "mcc": 0.8916329671851693,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.8529411764705882,
+            "specificity": 0.967741935483871
+          },
+          "LUSC": {
+            "sensitivity": 0.9259259259259259,
+            "specificity": 0.927536231884058
+          }
+        },
+        "pr_auc_macro": 0.9689876905867534,
+        "precision": 0.9229390681003585,
+        "recall_sensitivity": 0.9262890341321715,
+        "roc_auc_ovr_macro": 0.9782996588242764,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "EGFL6",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "ENTPD3",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9650927224559763
+      },
+      {
+        "accuracy": 0.9479166666666666,
+        "balanced_accuracy": 0.94081336238199,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 50
+        },
+        "f1": 0.9438460830341526,
+        "fold": 39,
+        "mcc": 0.9224931405522178,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9705882352941176,
+            "specificity": 0.9354838709677419
+          },
+          "LUSC": {
+            "sensitivity": 0.8518518518518519,
+            "specificity": 0.9855072463768116
+          }
+        },
+        "pr_auc_macro": 0.9909621113295225,
+        "precision": 0.950075075075075,
+        "recall_sensitivity": 0.94081336238199,
+        "roc_auc_ovr_macro": 0.9956183415308534,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "GLYATL1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9736637057815178
+      },
+      {
+        "accuracy": 0.9791666666666666,
+        "balanced_accuracy": 0.9778503994190269,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9778503994190269,
+        "fold": 40,
+        "mcc": 0.9685555191614805,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9705882352941176,
+            "specificity": 0.9838709677419355
+          },
+          "LUSC": {
+            "sensitivity": 0.9629629629629629,
+            "specificity": 0.9855072463768116
+          }
+        },
+        "pr_auc_macro": 0.9954081623402214,
+        "precision": 0.9778503994190269,
+        "recall_sensitivity": 0.9778503994190269,
+        "roc_auc_ovr_macro": 0.9978195683239272,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTA3",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "FUT2",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "ST6GALNAC1",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NRG3",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9897927380395823
+      },
+      {
+        "accuracy": 0.979381443298969,
+        "balanced_accuracy": 0.9803921568627452,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9784047370254267,
+        "fold": 41,
+        "mcc": 0.9696105186851863,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9411764705882353,
+            "specificity": 1.0
+          },
+          "LUSC": {
+            "sensitivity": 1.0,
+            "specificity": 0.9710144927536232
+          }
+        },
+        "pr_auc_macro": 0.9993093789239834,
+        "precision": 0.9777777777777779,
+        "recall_sensitivity": 0.9803921568627452,
+        "roc_auc_ovr_macro": 0.999671849416095,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "PAX2",
+          "SFTPA2",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "CLCA2",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "FUT2",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HOXD3",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9903381642512077
+      },
+      {
+        "accuracy": 0.9278350515463918,
+        "balanced_accuracy": 0.9212055192447348,
+        "best_params": {
+          "model__C": 1.0,
+          "selector__k": 50
+        },
+        "f1": 0.9221584176465226,
+        "fold": 42,
+        "mcc": 0.8909975215292564,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9117647058823529,
+            "specificity": 0.9365079365079365
+          },
+          "LUSC": {
+            "sensitivity": 0.8518518518518519,
+            "specificity": 0.9571428571428572
+          }
+        },
+        "pr_auc_macro": 0.9887628742385278,
+        "precision": 0.9234432234432234,
+        "recall_sensitivity": 0.9212055192447348,
+        "roc_auc_ovr_macro": 0.9945326278659613,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "CLCA2",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "GLYATL1",
+          "CCDC198",
+          "SOX2",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "WNT7B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9645502645502645
+      },
+      {
+        "accuracy": 0.9375,
+        "balanced_accuracy": 0.9360929557007989,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 50
+        },
+        "f1": 0.933982683982684,
+        "fold": 43,
+        "mcc": 0.9064760318342833,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.8823529411764706,
+            "specificity": 0.967741935483871
+          },
+          "LUSC": {
+            "sensitivity": 0.9259259259259259,
+            "specificity": 0.9420289855072463
+          }
+        },
+        "pr_auc_macro": 0.9827856429318699,
+        "precision": 0.9331896551724137,
+        "recall_sensitivity": 0.9360929557007989,
+        "roc_auc_ovr_macro": 0.9905751437069901,
+        "selected_features": [
+          "TMPRSS13",
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "TMPRSS4",
+          "SFTPA2",
+          "PDZK1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "ETV4",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "ENTPD3",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "EPB41L4B",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9699236403303724
+      },
+      {
+        "accuracy": 0.96875,
+        "balanced_accuracy": 0.9683265898952174,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9671833423751582,
+        "fold": 44,
+        "mcc": 0.9530515000312,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 0.9714285714285714,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9705882352941176,
+            "specificity": 0.9838709677419355
+          },
+          "LUSC": {
+            "sensitivity": 0.9629629629629629,
+            "specificity": 0.9710144927536232
+          }
+        },
+        "pr_auc_macro": 0.9988684618163995,
+        "precision": 0.9663865546218489,
+        "recall_sensitivity": 0.9683265898952174,
+        "roc_auc_ovr_macro": 0.9994840264642902,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "SLC3A1",
+          "UPB1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "SLC22A5",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "TMEM252",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9849618201651862
+      },
+      {
+        "accuracy": 0.96875,
+        "balanced_accuracy": 0.9655047204066812,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 50
+        },
+        "f1": 0.9666393218485098,
+        "fold": 45,
+        "mcc": 0.9529362086997915,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9705882352941176,
+            "specificity": 0.967741935483871
+          },
+          "LUSC": {
+            "sensitivity": 0.9259259259259259,
+            "specificity": 0.9855072463768116
+          }
+        },
+        "pr_auc_macro": 0.997832089153803,
+        "precision": 0.9681318681318681,
+        "recall_sensitivity": 0.9655047204066812,
+        "roc_auc_ovr_macro": 0.9989888480455815,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTA3",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "DSC3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "ST6GALNAC1",
+          "IGSF9",
+          "OTX1",
+          "HOXD3",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9844163939535608
+      },
+      {
+        "accuracy": 0.9587628865979382,
+        "balanced_accuracy": 0.9565826330532213,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9565826330532213,
+        "fold": 46,
+        "mcc": 0.9378603459320948,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9411764705882353,
+            "specificity": 0.9682539682539683
+          },
+          "LUSC": {
+            "sensitivity": 0.9285714285714286,
+            "specificity": 0.9710144927536232
+          }
+        },
+        "pr_auc_macro": 0.993930224816057,
+        "precision": 0.9565826330532213,
+        "recall_sensitivity": 0.9565826330532213,
+        "roc_auc_ovr_macro": 0.9970466447448545,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "TMEM252",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "EPB41L4B",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9797561536691971
+      },
+      {
+        "accuracy": 0.9484536082474226,
+        "balanced_accuracy": 0.943355119825708,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 50
+        },
+        "f1": 0.9443988697475162,
+        "fold": 47,
+        "mcc": 0.9221872579378951,
+        "n_test": 97,
+        "n_train": 385,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9411764705882353,
+            "specificity": 0.9523809523809523
+          },
+          "LUSC": {
+            "sensitivity": 0.8888888888888888,
+            "specificity": 0.9714285714285714
+          }
+        },
+        "pr_auc_macro": 0.993803016943402,
+        "precision": 0.9457875457875456,
+        "recall_sensitivity": 0.943355119825708,
+        "roc_auc_ovr_macro": 0.9973026247536051,
+        "selected_features": [
+          "TMPRSS13",
+          "CUBN",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "DSG3",
+          "PDZK1",
+          "HS6ST2",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "DSC3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9746031746031746
+      },
+      {
+        "accuracy": 0.9791666666666666,
+        "balanced_accuracy": 0.9753086419753086,
+        "best_params": {
+          "model__C": 0.1,
+          "selector__k": 50
+        },
+        "f1": 0.9776556776556777,
+        "fold": 48,
+        "mcc": 0.9691238154030312,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 1.0,
+            "specificity": 0.967741935483871
+          },
+          "LUSC": {
+            "sensitivity": 0.9259259259259259,
+            "specificity": 1.0
+          }
+        },
+        "pr_auc_macro": 0.9958168274641235,
+        "precision": 0.9814814814814815,
+        "recall_sensitivity": 0.9753086419753086,
+        "roc_auc_ovr_macro": 0.997977696091163,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "KCNJ3",
+          "DSG3",
+          "PDZK1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "ETV4",
+          "SLC17A3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "LINC02894",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HOXD3",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.989247311827957
+      },
+      {
+        "accuracy": 0.9375,
+        "balanced_accuracy": 0.938914825189335,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9350452978638885,
+        "fold": 49,
+        "mcc": 0.9080396905435836,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 0.9714285714285714,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.8823529411764706,
+            "specificity": 0.9838709677419355
+          },
+          "LUSC": {
+            "sensitivity": 0.9629629629629629,
+            "specificity": 0.927536231884058
+          }
+        },
+        "pr_auc_macro": 0.9909197483783289,
+        "precision": 0.935483870967742,
+        "recall_sensitivity": 0.938914825189335,
+        "roc_auc_ovr_macro": 0.993962116559262,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "DSC3",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "TMEM252",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HOXD3",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9704690665419978
+      },
+      {
+        "accuracy": 0.9895833333333334,
+        "balanced_accuracy": 0.9901960784313726,
+        "best_params": {
+          "model__C": 10.0,
+          "selector__k": 50
+        },
+        "f1": 0.9889642695612845,
+        "fold": 50,
+        "mcc": 0.9844572806369701,
+        "n_test": 96,
+        "n_train": 386,
+        "per_class": {
+          "KIRC": {
+            "sensitivity": 1.0,
+            "specificity": 1.0
+          },
+          "LUAD": {
+            "sensitivity": 0.9705882352941176,
+            "specificity": 1.0
+          },
+          "LUSC": {
+            "sensitivity": 1.0,
+            "specificity": 0.9855072463768116
+          }
+        },
+        "pr_auc_macro": 0.9997198879551821,
+        "precision": 0.9880952380952381,
+        "recall_sensitivity": 0.9901960784313726,
+        "roc_auc_ovr_macro": 0.9998418722327641,
+        "selected_features": [
+          "CUBN",
+          "BHMT",
+          "AGR2",
+          "CDH16",
+          "SFTPA1",
+          "TBX4",
+          "OVOL2",
+          "SFTPB",
+          "NAT8",
+          "FAM83A",
+          "PAX2",
+          "SFTPA2",
+          "SLC22A31",
+          "DSG3",
+          "PDZK1",
+          "FOXA1",
+          "DUOXA1",
+          "SLC3A1",
+          "EMX2",
+          "SLC6A13",
+          "SLC6A14",
+          "SLC17A3",
+          "FUT2",
+          "SLC28A1",
+          "CCDC198",
+          "SOX2",
+          "SLC22A11",
+          "SLC5A10",
+          "ENTPD3",
+          "FXYD2",
+          "LINC02274",
+          "CEACAM5",
+          "CLEC18B",
+          "SIX4",
+          "IGSF9",
+          "OTX1",
+          "HAO2",
+          "NR1H4",
+          "SDR16C5",
+          "ALDH3B2",
+          "ADAMTS9-AS1",
+          "ASPA",
+          "LINC02532",
+          "FAM83E",
+          "CEACAM6",
+          "NPY6R",
+          "CXCL17",
+          "PRSS22",
+          "GRHL2",
+          "EMX2OS"
+        ],
+        "specificity": 0.9951690821256038
+      }
+    ],
+    "summary": {
+      "accuracy": {
+        "max": 1.0,
+        "mean": 0.9670189003436427,
+        "min": 0.9270833333333334,
+        "n": 50,
+        "std": 0.01905212054153116
+      },
+      "balanced_accuracy": {
+        "max": 1.0,
+        "mean": 0.9647077497665734,
+        "min": 0.9212055192447348,
+        "n": 50,
+        "std": 0.020491693323488814
+      },
+      "f1": {
+        "max": 1.0,
+        "mean": 0.9648585789397948,
+        "min": 0.9221584176465226,
+        "n": 50,
+        "std": 0.02029914799129664
+      },
+      "fold": {
+        "max": 50.0,
+        "mean": 25.5,
+        "min": 1.0,
+        "n": 50,
+        "std": 14.577379737113251
+      },
+      "mcc": {
+        "max": 1.0,
+        "mean": 0.950948146524426,
+        "min": 0.8909975215292564,
+        "n": 50,
+        "std": 0.02830967187964527
+      },
+      "n_test": {
+        "max": 97.0,
+        "mean": 96.4,
+        "min": 96.0,
+        "n": 50,
+        "std": 0.49487165930539345
+      },
+      "n_train": {
+        "max": 386.0,
+        "mean": 385.6,
+        "min": 385.0,
+        "n": 50,
+        "std": 0.4948716593053936
+      },
+      "pr_auc_macro": {
+        "max": 1.0,
+        "mean": 0.9940049865913326,
+        "min": 0.9689876905867534,
+        "n": 50,
+        "std": 0.0063332328529305355
+      },
+      "precision": {
+        "max": 1.0,
+        "mean": 0.9666851047420064,
+        "min": 0.9229390681003585,
+        "n": 50,
+        "std": 0.019490507656578594
+      },
+      "recall_sensitivity": {
+        "max": 1.0,
+        "mean": 0.9647077497665734,
+        "min": 0.9212055192447348,
+        "n": 50,
+        "std": 0.020491693323488814
+      },
+      "roc_auc_ovr_macro": {
+        "max": 1.0,
+        "mean": 0.9967873697225328,
+        "min": 0.9782996588242764,
+        "n": 50,
+        "std": 0.003853673899924353
+      },
+      "specificity": {
+        "max": 1.0,
+        "mean": 0.9837987785421166,
+        "min": 0.9645502645502645,
+        "n": 50,
+        "std": 0.00936279684097964
+      }
+    }
+  },
+  "nested_cv_fold_intervals": {
+    "accuracy": {
+      "fold_percentile_2.5": 0.9300096649484536,
+      "fold_percentile_97.5": 1.0
+    },
+    "balanced_accuracy": {
+      "fold_percentile_2.5": 0.9277479510322648,
+      "fold_percentile_97.5": 1.0
+    },
+    "f1": {
+      "fold_percentile_2.5": 0.9256004448767606,
+      "fold_percentile_97.5": 1.0
+    },
+    "fold": {
+      "fold_percentile_2.5": 2.225,
+      "fold_percentile_97.5": 48.775
+    },
+    "mcc": {
+      "fold_percentile_2.5": 0.89497265673122,
+      "fold_percentile_97.5": 1.0
+    },
+    "n_test": {
+      "fold_percentile_2.5": 96.0,
+      "fold_percentile_97.5": 97.0
+    },
+    "n_train": {
+      "fold_percentile_2.5": 385.0,
+      "fold_percentile_97.5": 386.0
+    },
+    "pr_auc_macro": {
+      "fold_percentile_2.5": 0.9780690627617453,
+      "fold_percentile_97.5": 1.0
+    },
+    "precision": {
+      "fold_percentile_2.5": 0.9256361705822912,
+      "fold_percentile_97.5": 1.0
+    },
+    "recall_sensitivity": {
+      "fold_percentile_2.5": 0.9277479510322648,
+      "fold_percentile_97.5": 1.0
+    },
+    "roc_auc_ovr_macro": {
+      "fold_percentile_2.5": 0.988704675981521,
+      "fold_percentile_97.5": 1.0
+    },
+    "specificity": {
+      "fold_percentile_2.5": 0.9660110420979986,
+      "fold_percentile_97.5": 1.0
+    }
+  },
+  "no_feature_selection_baseline": {
+    "protocol": "repeated stratified 5-fold x 2; fixed C=1",
+    "summary": {
+      "accuracy": {
+        "max": 0.9896907216494846,
+        "mean": 0.9698883161512027,
+        "min": 0.9479166666666666,
+        "n": 10,
+        "std": 0.013395512933764278
+      },
+      "balanced_accuracy": {
+        "max": 0.9880952380952381,
+        "mean": 0.9669275858491545,
+        "min": 0.9487187467579624,
+        "n": 10,
+        "std": 0.013452678103128423
+      },
+      "f1": {
+        "max": 0.9891084760649979,
+        "mean": 0.9679630017009087,
+        "min": 0.9458518090097038,
+        "n": 10,
+        "std": 0.014080633266113751
+      },
+      "fold": {
+        "max": 10.0,
+        "mean": 5.5,
+        "min": 1.0,
+        "n": 10,
+        "std": 3.0276503540974917
+      },
+      "mcc": {
+        "max": 0.9846086047317278,
+        "mean": 0.9551179570539962,
+        "min": 0.9230158323913201,
+        "n": 10,
+        "std": 0.019940919735561034
+      },
+      "n_test": {
+        "max": 97.0,
+        "mean": 96.4,
+        "min": 96.0,
+        "n": 10,
+        "std": 0.5163977794943222
+      },
+      "n_train": {
+        "max": 386.0,
+        "mean": 385.6,
+        "min": 385.0,
+        "n": 10,
+        "std": 0.5163977794943223
+      },
+      "pr_auc_macro": {
+        "max": 1.0,
+        "mean": 0.9950137555509253,
+        "min": 0.9816962017706133,
+        "n": 10,
+        "std": 0.005675526878310804
+      },
+      "precision": {
+        "max": 0.9904761904761905,
+        "mean": 0.9703729948435832,
+        "min": 0.9460317460317461,
+        "n": 10,
+        "std": 0.01452221896530839
+      },
+      "recall_sensitivity": {
+        "max": 0.9880952380952381,
+        "mean": 0.9669275858491545,
+        "min": 0.9487187467579624,
+        "n": 10,
+        "std": 0.013452678103128423
+      },
+      "roc_auc_ovr_macro": {
+        "max": 1.0,
+        "mean": 0.9974613257158836,
+        "min": 0.9903309471936922,
+        "n": 10,
+        "std": 0.0029931013907817084
+      },
+      "specificity": {
+        "max": 0.9947089947089948,
+        "mean": 0.985001406904012,
+        "min": 0.9752118476280985,
+        "n": 10,
+        "std": 0.006376585645196218
+      }
+    }
+  },
+  "performance": {
+    "baseline_seconds": 5.9849279999999965,
+    "nested_cv_seconds": 79.34518870000001
+  },
+  "protocol": {
+    "inner_cv": "stratified 3-fold",
+    "outer_cv": "repeated stratified 5-fold x 10"
+  },
+  "test_bootstrap": {
+    "accuracy": {
+      "bootstrap_95_ci": [
+        0.9487179487179487,
+        0.9807692307692307
+      ],
+      "estimate": 0.9658119658119658,
+      "n_bootstrap": 1000
+    },
+    "balanced_accuracy": {
+      "bootstrap_95_ci": [
+        0.948698236626662,
+        0.9811989163633106
+      ],
+      "estimate": 0.9661159149650199,
+      "n_bootstrap": 1000
+    },
+    "f1": {
+      "bootstrap_95_ci": [
+        0.948466345368823,
+        0.9812971105170384
+      ],
+      "estimate": 0.9660173160173159,
+      "n_bootstrap": 1000
+    },
+    "mcc": {
+      "bootstrap_95_ci": [
+        0.9230798154586437,
+        0.9711845073632097
+      ],
+      "estimate": 0.948736218014261,
+      "n_bootstrap": 1000
+    },
+    "pr_auc_macro": {
+      "bootstrap_95_ci": [
+        0.9796336184417888,
+        0.9968990958264922
+      ],
+      "estimate": 0.9893000148695693,
+      "n_bootstrap": 1000
+    },
+    "precision": {
+      "bootstrap_95_ci": [
+        0.948715870106678,
+        0.981366610839232
+      ],
+      "estimate": 0.9659701088794211,
+      "n_bootstrap": 1000
+    },
+    "recall_sensitivity": {
+      "bootstrap_95_ci": [
+        0.948698236626662,
+        0.9811989163633106
+      ],
+      "estimate": 0.9661159149650199,
+      "n_bootstrap": 1000
+    },
+    "roc_auc_ovr_macro": {
+      "bootstrap_95_ci": [
+        0.9889097569214546,
+        0.9984143123144417
+      ],
+      "estimate": 0.9942517929399752,
+      "n_bootstrap": 1000
+    },
+    "specificity": {
+      "bootstrap_95_ci": [
+        0.9742986320538389,
+        0.9904358222538947
+      ],
+      "estimate": 0.9828757561656585,
+      "n_bootstrap": 1000
+    }
+  },
+  "test_metrics": {
+    "accuracy": 0.9658119658119658,
+    "balanced_accuracy": 0.9661159149650199,
+    "f1": 0.9660173160173159,
+    "mcc": 0.948736218014261,
+    "per_class": {
+      "KIRC": {
+        "sensitivity": 1.0,
+        "specificity": 1.0
+      },
+      "LUAD": {
+        "sensitivity": 0.9440993788819876,
+        "specificity": 0.9771986970684039
+      },
+      "LUSC": {
+        "sensitivity": 0.954248366013072,
+        "specificity": 0.9714285714285714
+      }
+    },
+    "pr_auc_macro": 0.9893000148695693,
+    "precision": 0.9659701088794211,
+    "recall_sensitivity": 0.9661159149650199,
+    "roc_auc_ovr_macro": 0.9942517929399752,
+    "specificity": 0.9828757561656585
+  }
+}

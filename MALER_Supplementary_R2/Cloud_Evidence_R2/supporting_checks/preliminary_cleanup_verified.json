@@ -1,0 +1,75 @@
+{
+  "server_utc": "2026-10-24T06:18:00.965026Z",
+  "absent_preliminary_synthetic_tasks": [
+    "BCC-AZ-cbb985-pu8w72-bbbe594f",
+    "PRED-BCLASS-d178b0-dbba67-6ee5c4eb",
+    "BCO-AZ-cbb985-TopK-a67a691b",
+    "PRED-BCLASS-58a486-dbba67-30b4b1c5",
+    "BCC-AZ-cbb985-anld6e-c3a375f8",
+    "PRED-BCLASS-c7238a-dbba67-98a1d64a",
+    "MCC-AZ-ec99a2-45lryw-4536b8ed",
+    "PRED-MCLASS-b4a6de-b36ea3-85580e18"
+  ],
+  "public_delete_report": {
+    "completed_utc": "2026-10-23T06:56:38.429Z",
+    "scope": "Explicit protected deletion of only identified synthetic tasks",
+    "records": [
+      {
+        "workflow": "binary_custom",
+        "project_id": "BCC-AZ-cbb985-pu8w72-bbbe594f",
+        "missing_token_status": 403,
+        "delete_final_status": 200,
+        "after_delete_status": 403
+      },
+      {
+        "workflow": "binary_custom",
+        "project_id": "PRED-BCLASS-d178b0-dbba67-6ee5c4eb",
+        "missing_token_status": 403,
+        "delete_final_status": 200,
+        "after_delete_status": 403
+      },
+      {
+        "workflow": "oneclick",
+        "project_id": "BCO-AZ-cbb985-TopK-a67a691b",
+        "missing_token_status": 403,
+        "delete_final_status": 200,
+        "after_delete_status": 403
+      },
+      {
+        "workflow": "oneclick",
+        "project_id": "PRED-BCLASS-58a486-dbba67-30b4b1c5",
+        "missing_token_status": 403,
+        "delete_final_status": 200,
+        "after_delete_status": 403
+      },
+      {
+        "workflow": "xgb_binary",
+        "project_id": "BCC-AZ-cbb985-anld6e-c3a375f8",
+        "missing_token_status": 403,
+        "delete_final_status": 200,
+        "after_delete_status": 403
+      },
+      {
+        "workflow": "xgb_binary",
+        "project_id": "PRED-BCLASS-c7238a-dbba67-98a1d64a",
+        "missing_token_status": 403,
+        "delete_final_status": 200,
+        "after_delete_status": 403
+      },
+      {
+        "workflow": "xgb_multiclass",
+        "project_id": "MCC-AZ-ec99a2-45lryw-4536b8ed",
+        "missing_token_status": 403,
+        "delete_final_status": 200,
+        "after_delete_status": 403
+      },
+      {
+        "workflow": "xgb_multiclass",
+        "project_id": "PRED-MCLASS-b4a6de-b36ea3-85580e18",
+        "missing_token_status": 403,
+        "delete_final_status": 200,
+        "after_delete_status": 403
+      }
+    ]
+  }
+}

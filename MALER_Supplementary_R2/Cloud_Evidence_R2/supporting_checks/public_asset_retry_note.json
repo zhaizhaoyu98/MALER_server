@@ -1,0 +1,18 @@
+{
+  "scope": "Historical execution failures retained separately; all final source workflows completed without JavaScript/unexpected resource failures",
+  "earlier_regression_font_failure": {
+    "resource": "Font Awesome woff2 from cdnjs",
+    "error": "net::ERR_QUIC_PROTOCOL_ERROR",
+    "successful_retry_retained": true
+  },
+  "post_overlay_oneclick_asset_integrity_request": {
+    "resource": "Local Plotly 2.8.3 public byte download",
+    "initial_timeout_seconds": 30,
+    "response_header_status": 200,
+    "analysis_task_not_created_in_that_attempt": true,
+    "retry_timeout_seconds": 90,
+    "successful_retry_retained": true
+  },
+  "initial_environment_network_access_denied": "Default tool sandbox denied browser network; re-executed with approved network access. This was not a site response.",
+  "private_execution_logs_excluded": "Raw browser API debug logs can include CSRF cookies; selected reports/screenshots exclude those private logs."
+}

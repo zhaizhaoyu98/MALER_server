@@ -1,0 +1,213 @@
+{
+  "server_utc": "2026-10-23T06:27:48.265192Z",
+  "nginx_config_test_passed": true,
+  "server_bindings": [
+    {
+      "server_names": [
+        "_"
+      ],
+      "listen": [
+        "80 default_server",
+        "[::]:80 default_server"
+      ],
+      "locations": [
+        "/",
+        "= /40x.html",
+        "= /50x.html"
+      ],
+      "included_configuration_paths": [
+        "/etc/nginx/default.d/*.conf"
+      ],
+      "has_hsts": false
+    },
+    {
+      "server_names": [
+        "www.inbirg.com"
+      ],
+      "listen": [
+        "80",
+        "443 ssl"
+      ],
+      "locations": [
+        "/",
+        "/ddpd/",
+        "/static/",
+        "/pertorg/",
+        "/pertorg_static/",
+        "/organoid_db/",
+        "/organoidb_static/",
+        "/MedStator/",
+        "^~ /mlserver_static/cache/",
+        "/mlserver_static/",
+        "/PreProOmics/",
+        "/datapre_static/",
+        "/cellcommunet/",
+        "/cellcommunet_static/",
+        "/GeTeSEPdb/",
+        "/timecourse_app_static/",
+        "/disignatlas/",
+        "/diseasedb_static/",
+        "/brptool/",
+        "/blood_db_static/",
+        "/blood_db/",
+        "/DMRdb/",
+        "/gto/",
+        "/gtd/",
+        "/gtdbapp_static/",
+        "/dmrdb_static/",
+        "/dmrdb_media/",
+        "/blood/",
+        "/BRPtools_static/",
+        "/download_gwasData/",
+        "/ROAS/",
+        "/organelleACT_static/",
+        "/bsab/",
+        "/bsab_app_static/",
+        "/hrd/",
+        "/hrd_static/",
+        "/hrd_media/",
+        "/ppd/",
+        "/ppd_static/",
+        "/hlrmdb/",
+        "/lrmgdb_static/",
+        "/download_gwas/",
+        "^~/panlab/"
+      ],
+      "included_configuration_paths": [
+        "uwsgi_params",
+        "uwsgi_params",
+        "uwsgi_params",
+        "/etc/nginx/maler_public_locations.conf",
+        "uwsgi_params",
+        "uwsgi_params",
+        "uwsgi_params",
+        "uwsgi_params",
+        "uwsgi_params",
+        "uwsgi_params",
+        "uwsgi_params",
+        "uwsgi_params",
+        "uwsgi_params",
+        "uwsgi_params",
+        "uwsgi_params",
+        "uwsgi_params",
+        "uwsgi_params",
+        "uwsgi_params",
+        "/etc/letsencrypt/options-ssl-nginx.conf"
+      ],
+      "has_hsts": false
+    }
+  ],
+  "certificate_verifying_https_pages": [
+    {
+      "path": "/",
+      "status": 200,
+      "final_url": "https://www.inbirg.com/",
+      "hsts": null,
+      "body_sha256": "20339c3fe8d5e19bd601889a19eeb64674ef11b2378912fb721f225b2e8180ce"
+    },
+    {
+      "path": "/maler/home",
+      "status": 200,
+      "final_url": "https://www.inbirg.com/maler/home",
+      "hsts": null,
+      "body_sha256": "92525b92ee5440d10ce6a5772694a3dde96eb49c94d44e3ab2a769d6d018371d"
+    },
+    {
+      "path": "/maler/analysis",
+      "status": 200,
+      "final_url": "https://www.inbirg.com/maler/analysis",
+      "hsts": null,
+      "body_sha256": "fb59b9b00a5db4e87a71aa8c678db2671da84a2855b31bdcf403e39ca11ff539"
+    },
+    {
+      "path": "/maler/predict",
+      "status": 200,
+      "final_url": "https://www.inbirg.com/maler/predict",
+      "hsts": null,
+      "body_sha256": "0908c6bf81a9cae3445bc5558a194ddf9de5fab44e5c55074d6fad417ee00168"
+    },
+    {
+      "path": "/maler/help",
+      "status": 200,
+      "final_url": "https://www.inbirg.com/maler/help",
+      "hsts": null,
+      "body_sha256": "ad797981379752a054df576b2ca3f4bbed878f588c3e8e6a5c35bdc859688b98"
+    }
+  ],
+  "read_only_other_application_samples": [
+    {
+      "path": "/ddpd/",
+      "status": 200,
+      "final_host": "www.inbirg.com",
+      "same_host_http_links_in_initial_html": [
+        {
+          "path": "/",
+          "explicit_port": null
+        }
+      ]
+    },
+    {
+      "path": "/pertorg/",
+      "status": 200,
+      "final_host": "www.inbirg.com",
+      "same_host_http_links_in_initial_html": [
+        {
+          "path": "/",
+          "explicit_port": null
+        },
+        {
+          "path": "/pertorg/",
+          "explicit_port": null
+        }
+      ]
+    },
+    {
+      "path": "/MedStator/",
+      "error_type": "timeout"
+    },
+    {
+      "path": "/PreProOmics/",
+      "error_type": "HTTPError"
+    },
+    {
+      "path": "/ROAS/",
+      "error_type": "HTTPError"
+    },
+    {
+      "path": "/bsab/",
+      "status": 200,
+      "final_host": "www.inbirg.com",
+      "same_host_http_links_in_initial_html": [
+        {
+          "path": "/",
+          "explicit_port": null
+        },
+        {
+          "path": "/bsab",
+          "explicit_port": null
+        }
+      ]
+    },
+    {
+      "path": "/hrd/",
+      "status": 200,
+      "final_host": "www.inbirg.com",
+      "same_host_http_links_in_initial_html": [
+        {
+          "path": "/",
+          "explicit_port": null
+        }
+      ]
+    },
+    {
+      "path": "/ppd/",
+      "status": 200,
+      "final_host": "www.inbirg.com",
+      "same_host_http_links_in_initial_html": []
+    }
+  ],
+  "sampling_limit": "Initial public HTML only; no logins/forms/JavaScript/download or nonstandard-port compatibility was tested.",
+  "hsts_scope": "Host www.inbirg.com, every path and port; not scoped to /maler/. No includeSubDomains or preload considered.",
+  "configuration_changed": false,
+  "assessment": "Do not enable host-wide HSTS during this MALER-only release. Numerous shared applications need a full HTTPS/path/port/browser audit or MALER needs its own HTTPS hostname. A short max-age does not isolate the policy to a path."
+}

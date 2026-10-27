@@ -1,0 +1,31 @@
+{
+  "server_utc": "2026-10-22T13:22:02.927985Z",
+  "source_commit": "0b2435434a5fde670e317670980619dbabdfc372",
+  "tests_passed": 87,
+  "resolved_django_settings": {
+    "settings_module": "public_online_settings",
+    "overlay_file": "/mnt/home/liqiang/maler_revision2_20260930/runtime/public_online_settings.py",
+    "base_settings_file": "/mnt/home/liqiang/maler_revision2_20260930/source_public_0b24354/ML_WebServer/settings.py",
+    "database_path": "/var/lib/maler_public_r2/state/public.sqlite3",
+    "task_root": "/var/lib/maler_public_r2/tasks",
+    "upload_tmp": "/var/lib/maler_public_r2/django_tmp",
+    "static_root": "/mnt/home/liqiang/maler_revision2_20260930/public_static"
+  },
+  "identity_after": {
+    "server_utc": "2026-10-22T13:22:02.877123Z",
+    "source_commit": "0b2435434a5fde670e317670980619dbabdfc372",
+    "source_clean": true,
+    "source_directory": "/mnt/home/liqiang/maler_revision2_20260930/source_public_0b24354",
+    "process_exe": "/mnt/home/liqiang/.conda/envs/gene_edit/bin/python3.7",
+    "master_pid": 2428053,
+    "public_uploads_enabled": true,
+    "task_root": "/var/lib/maler_public_r2/tasks",
+    "database_path": "/var/lib/maler_public_r2/state/public.sqlite3"
+  },
+  "production_service_restarted_for_tests": false,
+  "runtime_upgraded": false,
+  "test_process_https_redirect_disabled": true,
+  "test_process_default_capacity_minimum": 0,
+  "production_https_and_capacity_controls_unchanged": true,
+  "initial_attempts": "Production SSL redirect caused 35 ordinary HTTP Django Client assertions to see redirects; production capacity admission then rejected three not-yet-created isolated fixture roots. Failed logs retained. Isolated test process uses normal unit-test defaults; dedicated capacity/HTTPS tests override their settings, and actual public controls are checked separately."
+}

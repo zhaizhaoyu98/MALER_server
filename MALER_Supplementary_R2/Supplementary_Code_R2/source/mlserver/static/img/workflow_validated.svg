@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 1070" role="img" aria-labelledby="workflow-title workflow-desc">
+<title id="workflow-title">MALER reviewed local development and prediction workflow</title>
+<desc id="workflow-desc">Methods and binary policy are fixed before analysis. Inner search refits learned transformations and tunes counts and parameters for each family. One-click chooses a family after comparing outer development means; its winning mean may be optimistic. Only the chosen family is retuned and fitted on development data. The fitted configuration is locked before the declared held-out role is evaluated, and its signed pipeline is reused without retraining. A held-out role does not establish independent provenance. Grouped and explicit-cutoff FSS/BSS are rejected; their additional internal scores do not refit enclosing-fold preprocessing. Public uploads remain paused.</desc>
+<defs>
+<marker id="blue" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#2c7fb8"/></marker>
+<marker id="gold" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#c98900"/></marker>
+<marker id="green" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#2e8b57"/></marker>
+<style>
+.frame{stroke-width:1.8}.input{fill:#eef7fa;stroke:#247c92}.dev{fill:#f2f7fb;stroke:#2c7fb8}.test{fill:#fff8e8;stroke:#c98900}.export{fill:#f1f8f3;stroke:#2e8b57}.external{fill:#f7f9fa;stroke:#708890}.inner{fill:#fff;stroke:#8eb9d2;stroke-width:1.4}
+text{font-family:"Segoe UI",Arial,sans-serif;text-anchor:middle;fill:#1f3540}.title{font-size:22px;font-weight:700}.box{font-size:19px;font-weight:700}.side{font-size:16px;font-weight:700}.body{font-size:15px;fill:#415b66}.small{font-size:14px;fill:#4e6872}.tiny{font-size:13px;fill:#4e6872}.chip{fill:#fff;stroke:#72b5c5;stroke-width:1.2}.chiptext{font-size:14px;fill:#285f6d}.flow{fill:none;stroke:#2c7fb8;stroke-width:2.8;marker-end:url(#blue)}.testflow{fill:none;stroke:#c98900;stroke-width:2.8;marker-end:url(#gold)}.heldline{fill:none;stroke:#c98900;stroke-width:2.2;stroke-dasharray:7 6;marker-end:url(#gold)}.join{fill:none;stroke:#2e8b57;stroke-width:2.6}.out{fill:none;stroke:#2e8b57;stroke-width:2.8;marker-end:url(#green)}
+</style></defs>
+<g data-box="task-selection"><rect x="35" y="22" width="570" height="102" rx="8" class="frame input"/>
+<text x="320" y="53" class="title">Choose a task; fix methods and endpoint policy</text>
+<rect x="68" y="76" width="116" height="29" rx="14" class="chip"/><rect x="198" y="76" width="116" height="29" rx="14" class="chip"/><rect x="328" y="76" width="116" height="29" rx="14" class="chip"/><rect x="458" y="76" width="116" height="29" rx="14" class="chip"/>
+<text x="126" y="96" class="chiptext">Binary</text><text x="256" y="96" class="chiptext">Multiclass</text><text x="386" y="96" class="chiptext">Regression</text><text x="516" y="96" class="chiptext">Survival</text></g>
+<path d="M320 124V136H227.5V150" class="flow"/><path d="M320 136H527.5V150" class="testflow"/>
+<g data-box="development-data"><rect x="35" y="160" width="385" height="70" rx="8" class="frame dev"/><text x="227.5" y="190" class="box">Development data</text><text x="227.5" y="215" class="body">training and model selection</text></g>
+<g data-box="held-out-role"><rect x="450" y="160" width="155" height="70" rx="8" class="frame test"/><text x="527.5" y="189" class="side">Held-out role</text><text x="527.5" y="213" class="tiny">provenance separate</text></g>
+<path d="M227.5 230V260" class="flow"/>
+<g data-box="per-family-development"><rect x="35" y="270" width="385" height="165" rx="8" class="frame dev"/><text x="227.5" y="301" class="box">Per-family development</text>
+<rect x="55" y="319" width="345" height="44" rx="5" class="inner"/><text x="227.5" y="339" class="side">Inner search within training folds</text><text x="227.5" y="357" class="tiny">refit transforms; tune counts and parameters</text>
+<rect x="55" y="371" width="345" height="44" rx="5" class="inner"/><text x="227.5" y="391" class="side">Outer estimates per family</text><text x="227.5" y="409" class="tiny">methods and cutoff fixed beforehand</text></g>
+<path d="M227.5 435V455" class="flow"/>
+<g data-box="family-choice"><rect x="35" y="465" width="385" height="90" rx="8" class="frame input"/><text x="227.5" y="491" class="box">Choose from outer family means</text><text x="227.5" y="516" class="small">Customized mode keeps its chosen family</text><text x="227.5" y="540" class="small">One-click winning mean may be optimistic</text></g>
+<path d="M227.5 555V575" class="flow"/>
+<g data-box="final-fit"><rect x="35" y="585" width="385" height="78" rx="8" class="frame dev"/><text x="227.5" y="615" class="box">Retune and fit chosen family</text><text x="227.5" y="641" class="body">development data only</text></g>
+<path d="M227.5 663V685" class="flow"/>
+<g data-box="configuration-lock"><rect x="35" y="695" width="385" height="83" rx="8" class="frame input"/><text x="227.5" y="725" class="box">Write fitted-configuration lock</text><text x="227.5" y="751" class="small">parameters, features, policy and hashes</text></g>
+<path d="M527.5 230V247H618V675H527.5V685" class="heldline"/><text x="526" y="293" class="small">No learned fitting</text><text x="526" y="319" class="small">No feature selection</text><text x="526" y="345" class="small">No model tuning</text>
+<path d="M420 736H440" class="testflow"/>
+<g data-box="held-out-evaluation"><rect x="450" y="695" width="155" height="83" rx="8" class="frame test"/><text x="527.5" y="720" class="side">Evaluate once</text><text x="527.5" y="744" class="small">chosen family</text><text x="527.5" y="765" class="small">after fitted lock</text></g>
+<path d="M227.5 778V805" class="flow"/>
+<g data-box="model-export"><rect x="35" y="815" width="385" height="78" rx="8" class="frame export"/><text x="227.5" y="845" class="box">Export signed .maler model</text><text x="227.5" y="871" class="body">fitted pipeline and feature identifiers</text></g>
+<g data-box="prediction-data"><rect x="450" y="815" width="155" height="78" rx="8" class="frame external"/><text x="527.5" y="843" class="side">Prediction data</text><text x="527.5" y="865" class="tiny">identifier-aligned</text><text x="527.5" y="884" class="tiny">features</text></g>
+<path d="M227.5 893V924H320" class="join"/><path d="M527.5 893V924H320" class="join"/><circle cx="320" cy="924" r="4" fill="#2e8b57"/><path d="M320 928V949" class="out"/>
+<g data-box="prediction"><rect x="95" y="959" width="450" height="60" rx="8" class="frame export"/><text x="320" y="986" class="box">Predict without retraining</text><text x="320" y="1009" class="small">same fitted transforms and decision policy</text></g>
+<text x="320" y="1047" class="small">Reviewed local workflow; public uploads remain paused</text>
+</svg>
